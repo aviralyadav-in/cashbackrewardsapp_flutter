@@ -1,0 +1,8 @@
+{"flutter":
+{"platforms":
+{"android":
+{"default":
+{"projectId":"cashback-reward-app",
+"appId":"1:429532715808:android:6f09ab507a4f5318bf1545",
+"fileOutput":"android/app/google-services.json"}},
+"dart":{"lib/firebase_options.dart":{"projectId":"cashback-reward-app","configurations":{"android":"1:429532715808:android:6f09ab507a4f5318bf1545","ios":"1:429532715808:ios:ce391696d967f602bf1545","macos":"1:429532715808:ios:ce391696d967f602bf1545","web":"1:429532715808:web:971b13ba20ebececbf1545","windows":"1:429532715808:web:1ec18f49b60b8d44bf1545"}}}}}}

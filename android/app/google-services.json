@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "429532715808",
+    "project_id": "cashback-reward-app",
+    "storage_bucket": "cashback-reward-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:429532715808:android:6f09ab507a4f5318bf1545",
+        "android_client_info": {
+          "package_name": "com.example.cashback_reward_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAyeOXhEOEMA6Fwo44RGqwB_TSwtd1S7OU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
