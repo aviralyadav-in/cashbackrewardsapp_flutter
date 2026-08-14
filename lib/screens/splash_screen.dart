@@ -279,10 +279,11 @@ class _SplashScreenState extends State<SplashScreen>
                   position: _textSlideAnimation,
 
                   child: const Text(
-                    'Cashback & Rewards',
+                    'CashKaro',
 
-                    style: TextStyle(
-                      fontSize: 28,
+                    style: TextStyle( 
+                      fontFamily: 'HandwrittenItalic',
+                      fontSize: 30,
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
                       letterSpacing: 0.8,
@@ -312,7 +313,7 @@ class _SplashScreenState extends State<SplashScreen>
                 opacity: _subtitleAnimation,
 
                 child: const Text(
-                  'SHOP  •  EARN  •  SAVE',
+                  'India\'s #1 Cashback App',
 
                   style: TextStyle(
                     fontSize: 14,

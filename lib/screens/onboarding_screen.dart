@@ -22,13 +22,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
       icon: Icons.local_offer_outlined,
       title: 'Discover Great Offers',
       description:
-          'Explore exclusive cashback deals, discount coupons, and daily offers from your favorite brands.',
+          'Explore exclusive cashback deals, discount coupons, and daily offers across top brands.',
     ),
     _OnboardingPageData(
-      icon: Icons.favorite_outline,
-      title: 'Save Your Favorites',
+      icon: Icons.confirmation_number_outlined,
+      title: 'Track Your Tickets',
       description:
-          'Keep track of your most loved offers by saving them to your personal favorites list.',
+          'Easily view and track your golden tickets and missing cashback claims in one place.',
     ),
     _OnboardingPageData(
       icon: Icons.monetization_on_outlined,

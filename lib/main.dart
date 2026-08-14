@@ -3,17 +3,18 @@ import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'providers/category_provider.dart';
-import 'providers/favorite_provider.dart';
-import 'providers/product_detail_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/search_provider.dart';
 import 'providers/theme_provider.dart';
 import 'screens/categories_screen.dart';
-import 'screens/favorites_screen.dart';
 import 'screens/home_screen.dart';
 // import 'screens/login_screen.dart';
+import 'screens/missing_tickets_screen.dart';
+import 'screens/my_earnings_screen.dart';
+import 'screens/notifications_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/profile_screen.dart';
+import 'screens/refer_earn_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/splash_screen.dart';
 
@@ -38,19 +39,11 @@ class CashbackRewardApp extends StatelessWidget {
         ChangeNotifierProvider<ProductProvider>(
           create: (_) => ProductProvider(),
         ),
-        ChangeNotifierProvider<ProductDetailProvider>(
-          create: (_) => ProductDetailProvider(),
-        ),
         ChangeNotifierProvider<CategoryProvider>(
           create: (_) => CategoryProvider(),
         ),
 
         ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
-
-
-
-       ChangeNotifierProvider<FavoriteProvider>(
-            create: (_) => FavoriteProvider(),),
 
 
         ChangeNotifierProvider<ThemeProvider>(
@@ -229,10 +222,13 @@ class CashbackRewardApp extends StatelessWidget {
             routes: {
               HomeScreen.routeName: (_) => const HomeScreen(),
               CategoriesScreen.routeName: (_) => const CategoriesScreen(),
-              FavoritesScreen.routeName: (_) => const FavoritesScreen(),
               ProfileScreen.routeName: (_) => const ProfileScreen(),
               SearchScreen.routeName: (_) => const SearchScreen(),
               OnboardingScreen.routeName: (_) => const OnboardingScreen(),
+              ReferEarnScreen.routeName: (_) => const ReferEarnScreen(),
+              MyEarningsScreen.routeName: (_) => const MyEarningsScreen(),
+              MissingTicketsScreen.routeName: (_) => const MissingTicketsScreen(),
+              NotificationsScreen.routeName: (_) => const NotificationsScreen(),
             },
           );
         },

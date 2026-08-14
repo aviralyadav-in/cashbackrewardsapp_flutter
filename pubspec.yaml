@@ -63,6 +63,14 @@ flutter:
   # the material Icons class.
   uses-material-design: true
 
+  fonts:
+    - family: Algerian
+      fonts:
+        - asset: assets/fonts/Algerian.ttf
+    - family: HandwrittenItalic
+      fonts:
+        - asset: assets/fonts/BrushScript.ttf
+
   # To add assets to your application, add an assets section, like this:
   # assets:
   #   - images/a_dot_burr.jpeg
