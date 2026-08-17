@@ -116,37 +116,20 @@ class _HomeScreenState extends State<HomeScreen> {
                   gradient: LinearGradient(
                     colors: [Colors.redAccent, Colors.red],
                   ),
+                  borderRadius: BorderRadius.only(
+                    topRight: Radius.circular(24),
+                    bottomRight: Radius.circular(24),
+                  ),
                 ),
                 child: Text(
                   'CashKaro',
+                  textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'HandwrittenItalic',
                     color: Colors.white,
-                    fontSize: 32,
+                    fontSize:30,
                     fontWeight: FontWeight.w900,
-                    letterSpacing: 1.0,
-                    shadows: [
-                      Shadow(
-                        offset: const Offset(0.4, 0.4),
-                        blurRadius: 1.0,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                      Shadow(
-                        offset: const Offset(-0.4, -0.4),
-                        blurRadius: 1.0,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                      Shadow(
-                        offset: const Offset(0.4, -0.4),
-                        blurRadius: 1.0,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                      Shadow(
-                        offset: const Offset(-0.4, 0.4),
-                        blurRadius: 1.0,
-                        color: Colors.white.withValues(alpha: 0.9),
-                      ),
-                    ],
+                    letterSpacing: 3.0,                
                   ),
                 ),
               ),

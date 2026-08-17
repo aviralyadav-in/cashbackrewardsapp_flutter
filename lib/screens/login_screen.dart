@@ -1,5 +1,9 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+
 import '../models/country.dart';
+import '../providers/user_provider.dart';
 import '../widgets/phone_input_field.dart';
 import 'home_screen.dart';
 
@@ -14,6 +18,7 @@ class LoginScreen extends StatefulWidget {
 
 class _LoginScreenState extends State<LoginScreen> {
   final _mainFormKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _phoneController = TextEditingController();
   final _emailController = TextEditingController();
   final _otpController = TextEditingController();
@@ -27,6 +32,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   void dispose() {
+    _nameController.dispose();
     _phoneController.dispose();
     _emailController.dispose();
     _otpController.dispose();
@@ -56,12 +62,13 @@ class _LoginScreenState extends State<LoginScreen> {
         content: Text(message),
         backgroundColor: isError ? Colors.redAccent : Colors.green,
         behavior: SnackBarBehavior.floating,
-        duration: const Duration(seconds: 4),
+        duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
     );
   }
 
+  /// Handles initial submit when user clicks Continue
   Future<void> _handleInitialSubmit() async {
     if (!_mainFormKey.currentState!.validate()) return;
 
@@ -71,20 +78,16 @@ class _LoginScreenState extends State<LoginScreen> {
 
     try {
       if (_isPhoneMode) {
-        // Flow 2 / Flow 3: Send OTP directly to phone number.
-        // DO NOT read Firestore before authentication to prevent permission-denied.
+        // Mock Phone OTP flow: switch to OTP screen state
         final phone = _formatPhoneNumber(_phoneController.text);
         _targetPhone = phone;
-        await _requestPhoneOtp(phone);
+        await _requestMockPhoneOtp(phone);
       } else {
-        // Flow 1: New User with Email or Existing Email user
+        // Email flow: Open registration bottom sheet
         final email = _emailController.text.trim().toLowerCase();
-
         setState(() {
           _isLoading = false;
         });
-
-        // Prompt for Full Name & Phone Number in Bottom Sheet to perform OTP verification
         _showEmailRegistrationBottomSheet(email);
       }
     } catch (e) {
@@ -97,12 +100,13 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
-  Future<void> _requestPhoneOtp(String phone) async {
+  /// Simulates requesting OTP for phone number
+  Future<void> _requestMockPhoneOtp(String phone) async {
     setState(() {
       _isLoading = true;
     });
 
-    await Future.delayed(const Duration(milliseconds: 400));
+    await Future.delayed(const Duration(milliseconds: 300));
 
     if (mounted) {
       setState(() {
@@ -113,6 +117,7 @@ class _LoginScreenState extends State<LoginScreen> {
     }
   }
 
+  /// Verifies entered 6-digit mock OTP for phone mode
   Future<void> _verifyEnteredOtp() async {
     final otp = _otpController.text.trim();
     if (otp.length < 6) {
@@ -124,20 +129,38 @@ class _LoginScreenState extends State<LoginScreen> {
       _isLoading = true;
     });
 
-    await Future.delayed(const Duration(milliseconds: 500));
+    await Future.delayed(const Duration(milliseconds: 400));
 
     if (mounted) {
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final authUser = FirebaseAuth.instance.currentUser;
+      final uid = authUser?.uid ?? 'user_${DateTime.now().millisecondsSinceEpoch}';
+
+      final enteredName = _nameController.text.trim();
+      final userName = enteredName.isNotEmpty
+          ? enteredName
+          : (userProvider.fullName.isNotEmpty ? userProvider.fullName : 'Cashback User');
+
+      await userProvider.setInitialUserProfile(
+        uid: uid,
+        fullName: userName,
+        email: userProvider.email,
+        phoneNumber: _targetPhone,
+      );
+
+      if (!mounted) return;
+
       setState(() {
         _isLoading = false;
       });
+
+      _showSnackBar('OTP verified successfully!', isError: false);
       Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
     }
   }
 
-
-
   // ==========================================
-  // BOTTOM SHEET: Flow 1 (New User with Email)
+  // BOTTOM SHEET: Email Registration Flow
   // ==========================================
   void _showEmailRegistrationBottomSheet(String email) {
     final sheetFormKey = GlobalKey<FormState>();
@@ -169,7 +192,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
               sheetFormattedPhone = _formatPhoneNumber(phoneController.text, sheetSelectedCountry);
 
-              await Future.delayed(const Duration(milliseconds: 400));
+              await Future.delayed(const Duration(milliseconds: 300));
 
               setSheetState(() {
                 isSendingOtp = false;
@@ -189,12 +212,26 @@ class _LoginScreenState extends State<LoginScreen> {
                 isSendingOtp = true;
               });
 
-              await Future.delayed(const Duration(milliseconds: 500));
+              await Future.delayed(const Duration(milliseconds: 400));
 
-              if (context.mounted) {
-                Navigator.of(context).pop();
-                Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-              }
+              if (!context.mounted) return;
+
+              final userProvider = Provider.of<UserProvider>(context, listen: false);
+              final authUser = FirebaseAuth.instance.currentUser;
+              final uid = authUser?.uid ?? 'user_${DateTime.now().millisecondsSinceEpoch}';
+
+              await userProvider.setInitialUserProfile(
+                uid: uid,
+                fullName: nameController.text.trim(),
+                email: email,
+                phoneNumber: sheetFormattedPhone,
+              );
+
+              if (!context.mounted) return;
+
+              _showSnackBar('OTP verified successfully!', isError: false);
+              Navigator.of(context).pop();
+              Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
             }
 
             return Padding(
@@ -363,8 +400,6 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 
-
-
   InputDecoration _buildInputDecoration({
     required String label,
     required IconData icon,
@@ -373,11 +408,12 @@ class _LoginScreenState extends State<LoginScreen> {
     return InputDecoration(
       labelText: label,
       hintText: hint,
-      labelStyle: TextStyle(color: Colors.grey.shade400),
-      hintStyle: TextStyle(color: Colors.grey.shade600),
+      labelStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
+      hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
       filled: true,
       fillColor: const Color(0xFF1A1A1A),
-      prefixIcon: Icon(icon, color: Colors.grey.shade400),
+      prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 20),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
@@ -505,9 +541,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: _isPhoneMode
-                                      ? Colors.redAccent
-                                      : Colors.transparent,
+                                  color: _isPhoneMode ? Colors.redAccent : Colors.transparent,
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Text(
@@ -515,9 +549,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: _isPhoneMode
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
+                                    fontWeight:
+                                        _isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -534,9 +567,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: !_isPhoneMode
-                                      ? Colors.redAccent
-                                      : Colors.transparent,
+                                  color: !_isPhoneMode ? Colors.redAccent : Colors.transparent,
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Text(
@@ -544,9 +575,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
                                     color: Colors.white,
-                                    fontWeight: !_isPhoneMode
-                                        ? FontWeight.bold
-                                        : FontWeight.normal,
+                                    fontWeight:
+                                        !_isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
                                 ),
                               ),
@@ -563,7 +593,24 @@ class _LoginScreenState extends State<LoginScreen> {
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
                         if (!_isOtpSent) ...[
-                          if (_isPhoneMode)
+                          if (_isPhoneMode) ...[
+                            TextFormField(
+                              key: const ValueKey('main_name_input'),
+                              controller: _nameController,
+                              style: const TextStyle(color: Colors.white, fontSize: 15),
+                              decoration: _buildInputDecoration(
+                                label: 'Full Name',
+                                icon: Icons.person_outline_rounded,
+                                hint: 'Enter your full name',
+                              ),
+                              validator: (value) {
+                                if (value == null || value.trim().isEmpty) {
+                                  return 'Please enter your full name';
+                                }
+                                return null;
+                              },
+                            ),
+                            const SizedBox(height: 16),
                             PhoneInputWithCountrySelector(
                               inputKey: const ValueKey('main_phone_input'),
                               controller: _phoneController,
@@ -583,8 +630,8 @@ class _LoginScreenState extends State<LoginScreen> {
                                 }
                                 return null;
                               },
-                            )
-                          else
+                            ),
+                          ] else
                             TextFormField(
                               key: const ValueKey('main_email_input'),
                               controller: _emailController,
@@ -710,14 +757,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                 onPressed: _isLoading
                                     ? null
                                     : () {
-                                        _requestPhoneOtp(_targetPhone);
+                                        _requestMockPhoneOtp(_targetPhone);
                                       },
                                 child: const Text(
                                   'Resend OTP',
                                   style: TextStyle(
                                     color: Colors.redAccent,
                                     fontWeight: FontWeight.bold,
-                                    ),
+                                  ),
                                 ),
                               ),
                             ],

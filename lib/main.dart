@@ -6,13 +6,17 @@ import 'providers/category_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/search_provider.dart';
 import 'providers/theme_provider.dart';
+import 'providers/user_provider.dart';
+import 'screens/account_settings_screen.dart';
 import 'screens/categories_screen.dart';
+import 'screens/get_help_screen.dart';
 import 'screens/home_screen.dart';
 // import 'screens/login_screen.dart';
 import 'screens/missing_tickets_screen.dart';
 import 'screens/my_earnings_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/onboarding_screen.dart';
+import 'screens/privacy_policy_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/refer_earn_screen.dart';
 import 'screens/search_screen.dart';
@@ -45,6 +49,9 @@ class CashbackRewardApp extends StatelessWidget {
 
         ChangeNotifierProvider<SearchProvider>(create: (_) => SearchProvider()),
 
+        ChangeNotifierProvider<UserProvider>(
+          create: (_) => UserProvider(),
+        ),
 
         ChangeNotifierProvider<ThemeProvider>(
           create: (_) {
@@ -223,6 +230,9 @@ class CashbackRewardApp extends StatelessWidget {
               HomeScreen.routeName: (_) => const HomeScreen(),
               CategoriesScreen.routeName: (_) => const CategoriesScreen(),
               ProfileScreen.routeName: (_) => const ProfileScreen(),
+              AccountSettingsScreen.routeName: (_) => const AccountSettingsScreen(),
+              GetHelpScreen.routeName: (_) => const GetHelpScreen(),
+              PrivacyPolicyScreen.routeName: (_) => const PrivacyPolicyScreen(),
               SearchScreen.routeName: (_) => const SearchScreen(),
               OnboardingScreen.routeName: (_) => const OnboardingScreen(),
               ReferEarnScreen.routeName: (_) => const ReferEarnScreen(),

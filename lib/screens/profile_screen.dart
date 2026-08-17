@@ -3,10 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
+import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
+import 'account_settings_screen.dart';
+import 'get_help_screen.dart';
 import 'login_screen.dart';
 import 'missing_tickets_screen.dart';
 import 'my_earnings_screen.dart';
+import 'privacy_policy_screen.dart';
 import 'refer_earn_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
@@ -88,6 +92,8 @@ class ProfileScreen extends StatelessWidget {
           ElevatedButton(
             onPressed: () async {
               Navigator.of(ctx).pop();
+              final userProvider = Provider.of<UserProvider>(context, listen: false);
+              await userProvider.clearUser();
               final authService = AuthService();
               await authService.signOut();
 
@@ -111,9 +117,6 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final user = FirebaseAuth.instance.currentUser;
-    final currentUserName = user?.displayName?.trim();
-    final currentUserEmail = user?.email?.trim();
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -141,164 +144,220 @@ class ProfileScreen extends StatelessWidget {
         centerTitle: true,
       ),
       body: SafeArea(
-        child: SingleChildScrollView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // 2. USER SUMMARY SECTION
-              Container(
-                padding: const EdgeInsets.all(16),
-                decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
-                  ),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
-                      blurRadius: 8,
-                      offset: const Offset(0, 2),
-                    ),
-                  ],
-                ),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      'Hello,',
-                      style: TextStyle(
-                        fontSize: 13,
-                        fontWeight: FontWeight.w500,
-                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                      ),
-                    ),
-                    const SizedBox(height: 2),
-                    Text(
-                      currentUserName != null && currentUserName.isNotEmpty
-                          ? currentUserName
-                          : 'Cashback User',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
-                    ),
-                    const SizedBox(height: 16),
+        child: Consumer<UserProvider>(
+          builder: (context, userProvider, child) {
+            final firebaseUser = FirebaseAuth.instance.currentUser;
 
-                    // Two Summary Cards: Total Cashback & Total Rewards
-                    Row(
-                      children: [
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF1C1C1F) : const Color(0xFFF8F9FA),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.account_balance_wallet_outlined,
-                                      size: 16,
-                                      color: Colors.redAccent,
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      'Total Cashback',
-                                      style: TextStyle(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  '₹0.0',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    color: isDark ? Colors.white : Colors.black87,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        const SizedBox(width: 10),
-                        Expanded(
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
-                            decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF1C1C1F) : const Color(0xFFF8F9FA),
-                              borderRadius: BorderRadius.circular(12),
-                              border: Border.all(
-                                color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
-                              ),
-                            ),
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              children: [
-                                Row(
-                                  children: [
-                                    const Icon(
-                                      Icons.card_giftcard_outlined,
-                                      size: 16,
-                                      color: Colors.redAccent,
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Text(
-                                      'Total Rewards',
-                                      style: TextStyle(
-                                        fontSize: 11.5,
-                                        fontWeight: FontWeight.w600,
-                                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 6),
-                                Text(
-                                  '₹0.0',
-                                  style: TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w900,
-                                    color: isDark ? Colors.white : Colors.black87,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
+            final userName = userProvider.fullName.isNotEmpty
+                ? userProvider.fullName
+                : (firebaseUser?.displayName?.trim().isNotEmpty == true
+                    ? firebaseUser!.displayName!.trim()
+                    : 'Cashback User');
+
+            final userEmail = userProvider.email.isNotEmpty
+                ? userProvider.email
+                : (firebaseUser?.email?.trim() ?? '');
+
+            final userPhone = userProvider.phoneNumber.isNotEmpty
+                ? userProvider.phoneNumber
+                : (firebaseUser?.phoneNumber?.trim() ?? '');
+
+            return SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 14.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  // 2. USER SUMMARY SECTION
+                  Container(
+                    padding: const EdgeInsets.all(16),
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF161618) : Colors.white,
+                      borderRadius: BorderRadius.circular(18),
+                      border: Border.all(
+                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
                         ),
                       ],
                     ),
-                  ],
-                ),
-              ),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Hello,',
+                          style: TextStyle(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          userName,
+                          style: TextStyle(
+                            fontSize: 20,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                        if (userEmail.isNotEmpty || userPhone.isNotEmpty) ...[
+                          const SizedBox(height: 8),
+                          if (userEmail.isNotEmpty)
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.email_outlined,
+                                  size: 14,
+                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    userEmail,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          if (userPhone.isNotEmpty) ...[
+                            const SizedBox(height: 4),
+                            Row(
+                              children: [
+                                Icon(
+                                  Icons.phone_outlined,
+                                  size: 14,
+                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                ),
+                                const SizedBox(width: 6),
+                                Text(
+                                  userPhone,
+                                  style: TextStyle(
+                                    fontSize: 13,
+                                    color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ],
+                        const SizedBox(height: 16),
 
-              const SizedBox(height: 14),
+                        // Two Summary Cards: Total Cashback & Total Rewards
+                        Row(
+                          children: [
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: isDark ? const Color(0xFF1C1C1F) : const Color(0xFFF8F9FA),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.account_balance_wallet_outlined,
+                                          size: 16,
+                                          color: Colors.redAccent,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          'Total Cashback',
+                                          style: TextStyle(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w600,
+                                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '₹0.0',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                        color: isDark ? Colors.white : Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 10),
+                            Expanded(
+                              child: Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 12),
+                                decoration: BoxDecoration(
+                                  color: isDark ? const Color(0xFF1C1C1F) : const Color(0xFFF8F9FA),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                  ),
+                                ),
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        const Icon(
+                                          Icons.card_giftcard_outlined,
+                                          size: 16,
+                                          color: Colors.redAccent,
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Text(
+                                          'Total Rewards',
+                                          style: TextStyle(
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w600,
+                                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 6),
+                                    Text(
+                                      '₹0.0',
+                                      style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w900,
+                                        color: isDark ? Colors.white : Colors.black87,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ],
+                    ),
+                  ),
 
-              // 3. ACCOUNT SETTINGS
-              _ProfileOptionTile(
-                icon: Icons.settings_outlined,
-                title: 'Account Settings',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Account Settings',
-                  'Name: ${currentUserName ?? "Cashback User"}\nEmail: ${currentUserEmail ?? "Not available"}',
-                ),
-              ),
+                  const SizedBox(height: 14),
+
+                  // 3. ACCOUNT SETTINGS
+                  _ProfileOptionTile(
+                    icon: Icons.settings_outlined,
+                    title: 'Account Settings',
+                    isDark: isDark,
+                    onTap: () => Navigator.of(context).pushNamed(AccountSettingsScreen.routeName),
+                  ),
 
               // 4. CASHBACK & REWARDS SECTION
               _ProfileSectionHeader(title: 'Cashback & Rewards', isDark: isDark),
@@ -370,11 +429,7 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.help_outline_rounded,
                 title: 'Get Help',
                 isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Get Help',
-                  'How Cashback Works:\n1. Click store link via CashKaro.\n2. Shop as normal.\n3. Get cashback credited within 72 hours.',
-                ),
+                onTap: () => Navigator.of(context).pushNamed(GetHelpScreen.routeName),
               ),
               _ProfileOptionTile(
                 icon: Icons.call_outlined,
@@ -403,11 +458,7 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.privacy_tip_outlined,
                 title: 'Privacy Policy',
                 isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Privacy Policy',
-                  'CashKaro values your privacy. Your personal information is encrypted and 100% secure.',
-                ),
+                onTap: () => Navigator.of(context).pushNamed(PrivacyPolicyScreen.routeName),
               ),
 
               // 8. THEME SETTINGS
@@ -472,10 +523,12 @@ class ProfileScreen extends StatelessWidget {
               const SizedBox(height: 24),
             ],
           ),
-        ),
-      ),
-    );
-  }
+        );
+      },
+    ),
+  ),
+);
+}
 }
 
 // ==========================================
