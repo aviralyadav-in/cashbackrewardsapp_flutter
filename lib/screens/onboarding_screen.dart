@@ -82,19 +82,26 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
   @override
   Widget build(BuildContext context) {
     final isLastPage = _currentPage == _pages.length - 1;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF000000),
-              Color(0xFF180000),
-              Color(0xFF000000),
-            ],
+            colors: isDark
+                ? const [
+                    Color(0xFF000000),
+                    Color(0xFF180000),
+                    Color(0xFF000000),
+                  ]
+                : const [
+                    Color(0xFFFFFFFF),
+                    Color(0xFFFFEBEE),
+                    Color(0xFFFFFFFF),
+                  ],
           ),
         ),
         child: SafeArea(
@@ -122,10 +129,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Text(
+                        Text(
                           'Cashback & Rewards',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black87,
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.5,
@@ -136,10 +143,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                     if (!isLastPage)
                       TextButton(
                         onPressed: _completeOnboarding,
-                        child: const Text(
+                        child: Text(
                           'Skip',
                           style: TextStyle(
-                            color: Colors.grey,
+                            color: isDark ? Colors.grey : Colors.grey.shade600,
                             fontSize: 15,
                             fontWeight: FontWeight.w600,
                           ),
@@ -173,14 +180,14 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             height: 130,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: const Color(0xFF121212),
+                              color: isDark ? const Color(0xFF121212) : Colors.white,
                               border: Border.all(
                                 color: Colors.redAccent.withValues(alpha: 0.8),
                                 width: 2,
                               ),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.red.withValues(alpha: 0.4),
+                                  color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
                                   blurRadius: 35,
                                   spreadRadius: 4,
                                 ),
@@ -196,8 +203,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           Text(
                             page.title,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                             ),
@@ -207,7 +214,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             page.description,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: Colors.grey.shade400,
+                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                               fontSize: 15,
                               height: 1.5,
                             ),
@@ -238,7 +245,9 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             borderRadius: BorderRadius.circular(4),
                             color: isActive
                                 ? Colors.redAccent
-                                : Colors.white.withValues(alpha: 0.2),
+                                : (isDark
+                                    ? Colors.white.withValues(alpha: 0.2)
+                                    : Colors.black.withValues(alpha: 0.15)),
                             boxShadow: isActive
                                 ? [
                                     BoxShadow(
@@ -263,7 +272,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               onPressed: _onBack,
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(
-                                  color: Colors.grey.shade700,
+                                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
                                 ),
                                 padding:
                                     const EdgeInsets.symmetric(vertical: 16),
@@ -271,10 +280,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                                   borderRadius: BorderRadius.circular(16),
                                 ),
                               ),
-                              child: const Text(
+                              child: Text(
                                 'Back',
                                 style: TextStyle(
-                                  color: Colors.white,
+                                  color: isDark ? Colors.white : Colors.black87,
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),

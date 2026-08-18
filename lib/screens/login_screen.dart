@@ -172,11 +172,12 @@ class _LoginScreenState extends State<LoginScreen> {
     bool isSendingOtp = false;
     bool isOtpSentInSheet = false;
     String sheetFormattedPhone = '';
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF161618),
+      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -253,18 +254,18 @@ class _LoginScreenState extends State<LoginScreen> {
                           width: 40,
                           height: 4,
                           decoration: BoxDecoration(
-                            color: Colors.grey.shade700,
+                            color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                             borderRadius: BorderRadius.circular(2),
                           ),
                         ),
                       ),
                       const SizedBox(height: 16),
-                      const Text(
+                      Text(
                         'Complete Registration',
                         style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
-                          color: Colors.white,
+                          color: isDark ? Colors.white : Colors.black87,
                         ),
                       ),
                       const SizedBox(height: 4),
@@ -272,7 +273,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         'Registering with: $email',
                         style: TextStyle(
                           fontSize: 13,
-                          color: Colors.grey.shade400,
+                          color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                         ),
                       ),
                       const SizedBox(height: 20),
@@ -280,10 +281,11 @@ class _LoginScreenState extends State<LoginScreen> {
                         TextFormField(
                           key: const ValueKey('sheet_name_input'),
                           controller: nameController,
-                          style: const TextStyle(color: Colors.white),
+                          style: TextStyle(color: isDark ? Colors.white : Colors.black87),
                           decoration: _buildInputDecoration(
                             label: 'Full Name',
                             icon: Icons.person_outline,
+                            isDark: isDark,
                           ),
                           validator: (val) {
                             if (val == null || val.trim().isEmpty) {
@@ -353,8 +355,8 @@ class _LoginScreenState extends State<LoginScreen> {
                           keyboardType: TextInputType.number,
                           maxLength: 6,
                           textAlign: TextAlign.center,
-                          style: const TextStyle(
-                            color: Colors.white,
+                          style: TextStyle(
+                            color: isDark ? Colors.white : Colors.black87,
                             fontSize: 22,
                             letterSpacing: 8,
                             fontWeight: FontWeight.bold,
@@ -362,6 +364,7 @@ class _LoginScreenState extends State<LoginScreen> {
                           decoration: _buildInputDecoration(
                             label: 'Enter 6-digit OTP',
                             icon: Icons.lock_clock_outlined,
+                            isDark: isDark,
                           ),
                         ),
                         const SizedBox(height: 20),
@@ -404,23 +407,38 @@ class _LoginScreenState extends State<LoginScreen> {
     required String label,
     required IconData icon,
     String? hint,
+    bool isDark = true,
   }) {
     return InputDecoration(
       labelText: label,
       hintText: hint,
-      labelStyle: TextStyle(color: Colors.grey.shade400, fontSize: 14),
-      hintStyle: TextStyle(color: Colors.grey.shade600, fontSize: 14),
+      labelStyle: TextStyle(
+        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+        fontSize: 14,
+      ),
+      hintStyle: TextStyle(
+        color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+        fontSize: 14,
+      ),
       filled: true,
-      fillColor: const Color(0xFF1A1A1A),
-      prefixIcon: Icon(icon, color: Colors.grey.shade400, size: 20),
+      fillColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+      prefixIcon: Icon(
+        icon,
+        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+        size: 20,
+      ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+        borderSide: BorderSide(
+          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+        ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
-        borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+        borderSide: BorderSide(
+          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+        ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
@@ -446,18 +464,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF000000),
-              Color(0xFF180000),
-              Color(0xFF000000),
-            ],
+            colors: isDark
+                ? const [
+                    Color(0xFF000000),
+                    Color(0xFF180000),
+                    Color(0xFF000000),
+                  ]
+                : const [
+                    Color(0xFFFFFFFF),
+                    Color(0xFFFFEBEE),
+                    Color(0xFFFFFFFF),
+                  ],
           ),
         ),
         child: SafeArea(
@@ -477,14 +503,14 @@ class _LoginScreenState extends State<LoginScreen> {
                       height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF121212),
+                        color: isDark ? const Color(0xFF121212) : Colors.white,
                         border: Border.all(
                           color: Colors.redAccent.withValues(alpha: 0.8),
                           width: 2,
                         ),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.red.withValues(alpha: 0.4),
+                            color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
                             blurRadius: 30,
                             spreadRadius: 3,
                           ),
@@ -498,15 +524,15 @@ class _LoginScreenState extends State<LoginScreen> {
                     ),
                   ),
                   const SizedBox(height: 24),
-                  const Text(
+                  Text(
                     'CashKaro',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontFamily: 'HandwrittenItalic',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 0.5,
+                      color: isDark ? Colors.white : Colors.black87,
+                      letterSpacing: 3.0,
                     ),
                   ),
                   const SizedBox(height: 8),
@@ -515,7 +541,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       fontSize: 15,
-                      color: Colors.grey.shade400,
+                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                     ),
                   ),
                   const SizedBox(height: 28),
@@ -524,9 +550,11 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (!_isOtpSent)
                     Container(
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1A1A1A),
+                        color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE5E5EA),
                         borderRadius: BorderRadius.circular(16),
-                        border: Border.all(color: const Color(0xFF2E2E2E)),
+                        border: Border.all(
+                          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                        ),
                       ),
                       child: Row(
                         children: [
@@ -548,7 +576,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'Phone Number',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: _isPhoneMode
+                                        ? Colors.white
+                                        : (isDark ? Colors.white : Colors.black87),
                                     fontWeight:
                                         _isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
@@ -574,7 +604,9 @@ class _LoginScreenState extends State<LoginScreen> {
                                   'Email',
                                   textAlign: TextAlign.center,
                                   style: TextStyle(
-                                    color: Colors.white,
+                                    color: !_isPhoneMode
+                                        ? Colors.white
+                                        : (isDark ? Colors.white : Colors.black87),
                                     fontWeight:
                                         !_isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
@@ -597,11 +629,15 @@ class _LoginScreenState extends State<LoginScreen> {
                             TextFormField(
                               key: const ValueKey('main_name_input'),
                               controller: _nameController,
-                              style: const TextStyle(color: Colors.white, fontSize: 15),
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
+                                fontSize: 15,
+                              ),
                               decoration: _buildInputDecoration(
                                 label: 'Full Name',
                                 icon: Icons.person_outline_rounded,
                                 hint: 'Enter your full name',
+                                isDark: isDark,
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
@@ -636,14 +672,15 @@ class _LoginScreenState extends State<LoginScreen> {
                               key: const ValueKey('main_email_input'),
                               controller: _emailController,
                               keyboardType: TextInputType.emailAddress,
-                              style: const TextStyle(
-                                color: Colors.white,
+                              style: TextStyle(
+                                color: isDark ? Colors.white : Colors.black87,
                                 fontSize: 16,
                               ),
                               decoration: _buildInputDecoration(
                                 label: 'Email Address',
                                 icon: Icons.email_outlined,
                                 hint: 'user@example.com',
+                                isDark: isDark,
                               ),
                               validator: (value) {
                                 if (value == null || value.trim().isEmpty) {
@@ -702,8 +739,8 @@ class _LoginScreenState extends State<LoginScreen> {
                             keyboardType: TextInputType.number,
                             maxLength: 6,
                             textAlign: TextAlign.center,
-                            style: const TextStyle(
-                              color: Colors.white,
+                            style: TextStyle(
+                              color: isDark ? Colors.white : Colors.black87,
                               fontSize: 24,
                               letterSpacing: 10,
                               fontWeight: FontWeight.bold,
@@ -711,6 +748,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             decoration: _buildInputDecoration(
                               label: 'Enter 6-Digit OTP',
                               icon: Icons.lock_clock_outlined,
+                              isDark: isDark,
                             ),
                           ),
                           const SizedBox(height: 20),
@@ -748,9 +786,11 @@ class _LoginScreenState extends State<LoginScreen> {
                                     _otpController.clear();
                                   });
                                 },
-                                child: const Text(
+                                child: Text(
                                   'Change Number',
-                                  style: TextStyle(color: Colors.grey),
+                                  style: TextStyle(
+                                    color: isDark ? Colors.grey : Colors.grey.shade600,
+                                  ),
                                 ),
                               ),
                               TextButton(

@@ -49,9 +49,10 @@
 
 
 import 'dart:async';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
 import 'home_screen.dart';
@@ -130,28 +131,30 @@ class _SplashScreenState extends State<SplashScreen>
 
     _controller.forward();
 
-    // Check Firebase authentication state and onboarding status after splash animation delay
+    // Check user authentication state after 3-second splash animation
     Timer(const Duration(seconds: 3), () async {
       if (!mounted) return;
 
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
       final authService = AuthService();
       final storageService = AppStorageService();
 
-      Widget destinationScreen;
-
-      // Reliable check for persisted Firebase user session
-      User? user = authService.currentUser;
-      if (user == null) {
-        try {
-          user = await authService.authStateChanges
-              .first
-              .timeout(const Duration(seconds: 2), onTimeout: () => authService.currentUser);
-        } catch (_) {
-          user = authService.currentUser;
-        }
+      // Ensure profile is loaded from cache if not yet loaded in state
+      if (userProvider.user == null) {
+        await userProvider.loadUserProfile();
       }
 
-      if (user != null) {
+      final cachedProfile = await storageService.getUserProfileCache();
+      final firebaseUser = authService.currentUser;
+
+      // User is logged in if UserProvider has user, local cache has profile, or Firebase User exists
+      final bool isLoggedIn = userProvider.user != null ||
+          (cachedProfile != null && cachedProfile.isNotEmpty) ||
+          firebaseUser != null;
+
+      Widget destinationScreen;
+
+      if (isLoggedIn) {
         destinationScreen = const HomeScreen();
       } else {
         final hasSeenOnboarding = await storageService.getHasSeenOnboarding();
@@ -194,22 +197,30 @@ class _SplashScreenState extends State<SplashScreen>
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      backgroundColor: Colors.black,
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
 
       body: Container(
         width: double.infinity,
         height: double.infinity,
 
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [
-              Color(0xFF000000),
-              Color(0xFF180000),
-              Color(0xFF000000),
-            ],
+            colors: isDark
+                ? const [
+                    Color(0xFF000000),
+                    Color(0xFF180000),
+                    Color(0xFF000000),
+                  ]
+                : const [
+                    Color(0xFFFFFFFF),
+                    Color(0xFFFFEBEE),
+                    Color(0xFFFFFFFF),
+                  ],
           ),
         ),
 
@@ -232,7 +243,7 @@ class _SplashScreenState extends State<SplashScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
 
-                    color: const Color(0xFF0D0D0D),
+                    color: isDark ? const Color(0xFF0D0D0D) : Colors.white,
 
                     border: Border.all(
                       color: Colors.redAccent,
@@ -242,14 +253,14 @@ class _SplashScreenState extends State<SplashScreen>
                     boxShadow: [
                       // Outer red glow
                       BoxShadow(
-                        color: Colors.red.withValues(alpha: 0.8),
+                        color: Colors.red.withValues(alpha: isDark ? 0.8 : 0.4),
                         blurRadius: 35,
                         spreadRadius: 8,
                       ),
 
                       // Inner glow
                       BoxShadow(
-                        color: Colors.red.withValues(alpha: 0.4),
+                        color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
                         blurRadius: 60,
                         spreadRadius: 2,
                       ),
@@ -278,26 +289,33 @@ class _SplashScreenState extends State<SplashScreen>
                 child: SlideTransition(
                   position: _textSlideAnimation,
 
-                  child: const Text(
+                  child: Text(
                     'CashKaro',
 
                     style: TextStyle( 
                       fontFamily: 'HandwrittenItalic',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: Colors.white,
-                      letterSpacing: 0.8,
+                      color: isDark ? Colors.white : Colors.black87,
+                      letterSpacing: 3.0,
 
-                      shadows: [
-                        Shadow(
-                          color: Colors.red,
-                          blurRadius: 15,
-                        ),
-                        Shadow(
-                          color: Colors.redAccent,
-                          blurRadius: 30,
-                        ),
-                      ],
+                      shadows: isDark
+                          ? const [
+                              Shadow(
+                                color: Colors.red,
+                                blurRadius: 15,
+                              ),
+                              Shadow(
+                                color: Colors.redAccent,
+                                blurRadius: 30,
+                              ),
+                            ]
+                          : const [
+                              Shadow(
+                                color: Colors.redAccent,
+                                blurRadius: 10,
+                              ),
+                            ],
                     ),
                   ),
                 ),
@@ -312,7 +330,7 @@ class _SplashScreenState extends State<SplashScreen>
               FadeTransition(
                 opacity: _subtitleAnimation,
 
-                child: const Text(
+                child: Text(
                   'India\'s #1 Cashback App',
 
                   style: TextStyle(
@@ -321,12 +339,14 @@ class _SplashScreenState extends State<SplashScreen>
                     color: Colors.redAccent,
                     letterSpacing: 2.5,
 
-                    shadows: [
-                      Shadow(
-                        color: Colors.red,
-                        blurRadius: 10,
-                      ),
-                    ],
+                    shadows: isDark
+                        ? const [
+                            Shadow(
+                              color: Colors.red,
+                              blurRadius: 10,
+                            ),
+                          ]
+                        : const [],
                   ),
                 ),
               ),

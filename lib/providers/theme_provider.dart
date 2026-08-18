@@ -5,7 +5,7 @@ import '../services/storage_service.dart';
 class ThemeProvider extends ChangeNotifier {
   final AppStorageService _storageService;
 
-  bool isDarkMode = false;
+  bool isDarkMode = true;
 
   ThemeProvider({AppStorageService? storageService})
     : _storageService = storageService ?? AppStorageService();

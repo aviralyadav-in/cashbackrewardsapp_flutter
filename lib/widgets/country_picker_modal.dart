@@ -16,10 +16,12 @@ class CountryPickerModal extends StatefulWidget {
     required ValueChanged<Country> onSelectCountry,
     Country? selectedCountry,
   }) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: const Color(0xFF161618),
+      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -73,6 +75,7 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
   Widget build(BuildContext context) {
     final mediaQuery = MediaQuery.of(context);
     final bottomInset = mediaQuery.viewInsets.bottom;
+    final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Container(
       height: mediaQuery.size.height * 0.75,
@@ -91,46 +94,58 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: Colors.grey.shade700,
+                color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
           ),
           const SizedBox(height: 16),
           // Title
-          const Text(
+          Text(
             'Select Country',
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.white,
+              color: isDark ? Colors.white : Colors.black87,
             ),
           ),
           const SizedBox(height: 16),
           // Search Field
           TextField(
             controller: _searchController,
-            style: const TextStyle(color: Colors.white),
+            style: TextStyle(color: isDark ? Colors.white : Colors.black87),
             decoration: InputDecoration(
               hintText: 'Search country or code',
-              hintStyle: TextStyle(color: Colors.grey.shade500),
-              prefixIcon: Icon(Icons.search, color: Colors.grey.shade400),
+              hintStyle: TextStyle(
+                color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+              ),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
-                      icon: Icon(Icons.clear, color: Colors.grey.shade400),
+                      icon: Icon(
+                        Icons.clear,
+                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                      ),
                       onPressed: () => _searchController.clear(),
                     )
                   : null,
               filled: true,
-              fillColor: const Color(0xFF242426),
+              fillColor: isDark ? const Color(0xFF242426) : const Color(0xFFF0F2F5),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+                borderSide: BorderSide(
+                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+                borderSide: BorderSide(
+                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
@@ -145,13 +160,17 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                 ? Center(
                     child: Text(
                       'No countries found',
-                      style: TextStyle(color: Colors.grey.shade500),
+                      style: TextStyle(
+                        color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+                      ),
                     ),
                   )
                 : ListView.separated(
                     itemCount: _filteredCountries.length,
-                    separatorBuilder: (context, index) =>
-                        Divider(height: 1, color: Colors.grey.shade800),
+                    separatorBuilder: (context, index) => Divider(
+                      height: 1,
+                      color: isDark ? Colors.grey.shade800 : Colors.grey.shade300,
+                    ),
                     itemBuilder: (context, index) {
                       final country = _filteredCountries[index];
                       final isSelected =
@@ -171,7 +190,7 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                         title: Text(
                           '${country.name} (${country.code})',
                           style: TextStyle(
-                            color: Colors.white,
+                            color: isDark ? Colors.white : Colors.black87,
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
@@ -181,7 +200,9 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                             Text(
                               country.dialCode,
                               style: TextStyle(
-                                color: isSelected ? Colors.redAccent : Colors.grey.shade400,
+                                color: isSelected
+                                    ? Colors.redAccent
+                                    : (isDark ? Colors.grey.shade400 : Colors.grey.shade600),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
                               ),

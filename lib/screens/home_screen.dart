@@ -306,32 +306,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           'CashKaro',
                           style: TextStyle(
                             fontFamily: 'HandwrittenItalic',
-                            fontSize: 27,
+                            fontSize: 30,
                             fontWeight: FontWeight.w800,
                             color: Colors.redAccent,
-                            letterSpacing: 2.7,
-                            shadows: [
-                              Shadow(
-                                offset: const Offset(0.3, 0.3),
-                                blurRadius: 0.8,
-                                color: Colors.redAccent.withValues(alpha: 0.8),
-                              ),
-                              Shadow(
-                                offset: const Offset(-0.3, -0.3),
-                                blurRadius: 0.8,
-                                color: Colors.redAccent.withValues(alpha: 0.8),
-                              ),
-                              Shadow(
-                                offset: const Offset(0.3, -0.3),
-                                blurRadius: 0.8,
-                                color: Colors.redAccent.withValues(alpha: 0.8),
-                              ),
-                              Shadow(
-                                offset: const Offset(-0.3, 0.3),
-                                blurRadius: 0.8,
-                                color: Colors.redAccent.withValues(alpha: 0.8),
-                              ),
-                            ],
+                            letterSpacing: 3.0,
+
                           ),
                         ),
                       ],

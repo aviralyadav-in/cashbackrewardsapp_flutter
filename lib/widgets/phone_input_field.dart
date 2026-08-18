@@ -22,6 +22,8 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -40,9 +42,11 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
             height: 56,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: const Color(0xFF1A1A1A),
+              color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
               borderRadius: BorderRadius.circular(16),
-              border: Border.all(color: const Color(0xFF2E2E2E)),
+              border: Border.all(
+                color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+              ),
             ),
             child: Row(
               mainAxisSize: MainAxisSize.min,
@@ -54,8 +58,8 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                 const SizedBox(width: 6),
                 Text(
                   selectedCountry.dialCode,
-                  style: const TextStyle(
-                    color: Colors.white,
+                  style: TextStyle(
+                    color: isDark ? Colors.white : Colors.black87,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
@@ -63,7 +67,7 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                 const SizedBox(width: 4),
                 Icon(
                   Icons.arrow_drop_down,
-                  color: Colors.grey.shade400,
+                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                   size: 20,
                 ),
               ],
@@ -78,25 +82,36 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
             controller: controller,
             keyboardType: TextInputType.phone,
             enabled: enabled,
-            style: const TextStyle(
-              color: Colors.white,
+            style: TextStyle(
+              color: isDark ? Colors.white : Colors.black87,
               fontSize: 16,
             ),
             decoration: InputDecoration(
               labelText: 'Phone Number',
               hintText: '10-digit phone number',
-              labelStyle: TextStyle(color: Colors.grey.shade400),
-              hintStyle: TextStyle(color: Colors.grey.shade600),
+              labelStyle: TextStyle(
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+              ),
+              hintStyle: TextStyle(
+                color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+              ),
               filled: true,
-              fillColor: const Color(0xFF1A1A1A),
-              prefixIcon: Icon(Icons.phone_outlined, color: Colors.grey.shade400),
+              fillColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+              prefixIcon: Icon(
+                Icons.phone_outlined,
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+              ),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+                borderSide: BorderSide(
+                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Color(0xFF2E2E2E)),
+                borderSide: BorderSide(
+                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
