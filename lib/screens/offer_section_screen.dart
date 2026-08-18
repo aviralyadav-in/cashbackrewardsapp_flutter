@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../widgets/network_image_with_skeleton.dart';
 
 class OfferSectionItem {
   final int id;
@@ -85,8 +86,8 @@ class OfferSectionScreen extends StatelessWidget {
                           child: Stack(
                             fit: StackFit.expand,
                             children: [
-                              Image.network(
-                                item.imageUrl,
+                              NetworkImageWithSkeleton(
+                                imageUrl: item.imageUrl,
                                 fit: BoxFit.cover,
                                 errorBuilder: (context, error, stackTrace) {
                                   return Container(

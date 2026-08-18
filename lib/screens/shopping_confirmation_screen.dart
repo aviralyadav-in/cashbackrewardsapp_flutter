@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../models/brand_model.dart';
 import '../services/url_launcher_service.dart';
+import '../widgets/network_image_with_skeleton.dart';
 
 class ShoppingConfirmationScreen extends StatelessWidget {
   static const String routeName = '/shopping-confirmation';
@@ -79,9 +80,12 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                         ),
                       ),
                       child: ClipOval(
-                        child: Image.network(
-                          brand.logoUrl,
+                        child: NetworkImageWithSkeleton(
+                          imageUrl: brand.logoUrl,
+                          width: 66,
+                          height: 66,
                           fit: BoxFit.contain,
+                          shape: BoxShape.circle,
                           errorBuilder: (context, error, stackTrace) {
                             return Center(
                               child: Text(

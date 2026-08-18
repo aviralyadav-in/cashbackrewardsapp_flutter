@@ -13,6 +13,7 @@ import 'refer_earn_screen.dart';
 import 'search_screen.dart';
 import 'ticket_screen.dart';
 import '../widgets/cashback_banner_carousel.dart';
+import '../widgets/network_image_with_skeleton.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -997,8 +998,8 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                                   child: Stack(
                                     fit: StackFit.expand,
                                     children: [
-                                      Image.network(
-                                        item.imageUrl,
+                                      NetworkImageWithSkeleton(
+                                        imageUrl: item.imageUrl,
                                         fit: BoxFit.cover,
                                         errorBuilder: (context, error, stackTrace) {
                                           return Container(

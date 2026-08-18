@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/brand_model.dart';
 import '../screens/shopping_confirmation_screen.dart';
 import '../services/brand_service.dart';
+import 'network_image_with_skeleton.dart';
 
 class CashbackBannerCarousel extends StatefulWidget {
   const CashbackBannerCarousel({super.key});
@@ -11,18 +12,20 @@ class CashbackBannerCarousel extends StatefulWidget {
 }
 
 class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
+  static const int _kInitialPage = 10000;
   late final PageController _pageController;
   final BrandService _brandService = BrandService();
 
   List<BrandModel> _brands = [];
   bool _isLoading = true;
-  int _currentPage = 0;
+  int _currentPage = _kInitialPage;
 
   @override
   void initState() {
     super.initState();
-    // viewportFraction: 0.85 creates the next-banner peek effect on the right edge
-    _pageController = PageController(viewportFraction: 0.85);
+    // viewportFraction: 0.85 creates the next-banner peek effect on the right edge.
+    // initialPage: 10000 allows infinite circular swiping in both left and right directions without boundaries.
+    _pageController = PageController(viewportFraction: 0.85, initialPage: _kInitialPage);
     _fetchBrands();
   }
 
@@ -55,7 +58,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
-      return SizedBox(
+      return const SizedBox(
         height: 180,
         child: Center(
           child: CircularProgressIndicator(
@@ -69,21 +72,23 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
       return const SizedBox.shrink();
     }
 
+    final activeIndex = ((_currentPage % _brands.length) + _brands.length) % _brands.length;
+
     return Column(
       children: [
-        // HORIZONTAL SWIPEABLE CAROUSEL WITH PEEK EFFECT
+        // HORIZONTAL SWIPEABLE CAROUSEL WITH PEEK EFFECT & INFINITE CIRCULAR LOOP
         SizedBox(
           height: 180,
           child: PageView.builder(
             controller: _pageController,
-            itemCount: _brands.length,
             onPageChanged: (index) {
               setState(() {
                 _currentPage = index;
               });
             },
             itemBuilder: (context, index) {
-              final brand = _brands[index];
+              final actualIndex = ((index % _brands.length) + _brands.length) % _brands.length;
+              final brand = _brands[actualIndex];
 
               return Padding(
                 // Margin creates visible horizontal spacing between cards
@@ -111,8 +116,8 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                         children: [
                           // BACKGROUND BANNER IMAGE WITH GRADIENT OVERLAY
                           Positioned.fill(
-                            child: Image.network(
-                              brand.bannerUrl,
+                            child: NetworkImageWithSkeleton(
+                              imageUrl: brand.bannerUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
@@ -121,15 +126,6 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                     Icons.shopping_cart_outlined,
                                     size: 60,
                                     color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
-                                  ),
-                                );
-                              },
-                              loadingBuilder: (context, child, loadingProgress) {
-                                if (loadingProgress == null) return child;
-                                return Container(
-                                  color: isDark ? const Color(0xFF242426) : const Color(0xFFF0F2F5),
-                                  child: const Center(
-                                    child: CircularProgressIndicator(strokeWidth: 2),
                                   ),
                                 );
                               },
@@ -172,9 +168,12 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                         shape: BoxShape.circle,
                                       ),
                                       child: ClipOval(
-                                        child: Image.network(
-                                          brand.logoUrl,
+                                        child: NetworkImageWithSkeleton(
+                                          imageUrl: brand.logoUrl,
+                                          width: 28,
+                                          height: 28,
                                           fit: BoxFit.contain,
+                                          shape: BoxShape.circle,
                                           errorBuilder: (context, error, stackTrace) {
                                             return Center(
                                               child: Text(
@@ -306,7 +305,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: List.generate(_brands.length, (index) {
-            final isActive = _currentPage == index;
+            final isActive = activeIndex == index;
             return AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               margin: const EdgeInsets.symmetric(horizontal: 3),

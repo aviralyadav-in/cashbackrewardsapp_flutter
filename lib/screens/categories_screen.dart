@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/category_provider.dart';
+import '../widgets/network_image_with_skeleton.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = '/categories';
@@ -13,6 +14,9 @@ class CategoriesScreen extends StatefulWidget {
 }
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
+  final ScrollController _categoryScrollController = ScrollController();
+  String? _lastScrolledCategory;
+
   @override
   void initState() {
     super.initState();
@@ -20,7 +24,63 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
 
-      context.read<CategoryProvider>().fetchCategories();
+      final provider = context.read<CategoryProvider>();
+      provider.fetchCategories().then((_) {
+        if (mounted && provider.selectedCategory != null) {
+          _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
+        }
+      });
+    });
+  }
+
+  @override
+  void dispose() {
+    _categoryScrollController.dispose();
+    super.dispose();
+  }
+
+  void _scrollToSelectedCategory(String? selectedCategory, List<String> categories) {
+    if (selectedCategory == null || categories.isEmpty) return;
+
+    final selectedIndex = categories.indexOf(selectedCategory);
+    if (selectedIndex < 0) return;
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_categoryScrollController.hasClients) return;
+
+      final screenWidth = MediaQuery.of(context).size.width;
+
+      double targetOffset = 0.0;
+      for (int i = 0; i < selectedIndex; i++) {
+        final tp = TextPainter(
+          text: TextSpan(
+            text: categories[i],
+            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+          ),
+          textDirection: TextDirection.ltr,
+        )..layout();
+        // Item padding horizontal (18*2 = 36) + separator (10)
+        targetOffset += tp.width + 36.0 + 10.0;
+      }
+
+      final selectedTp = TextPainter(
+        text: TextSpan(
+          text: categories[selectedIndex],
+          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+        ),
+        textDirection: TextDirection.ltr,
+      )..layout();
+      final selectedWidth = selectedTp.width + 36.0;
+
+      final centeredOffset = targetOffset - (screenWidth / 2) + (selectedWidth / 2) + 16.0;
+      final maxScroll = _categoryScrollController.position.maxScrollExtent;
+      final clampedOffset = centeredOffset.clamp(0.0, maxScroll);
+
+      _categoryScrollController.animateTo(
+        clampedOffset,
+        duration: const Duration(milliseconds: 350),
+        curve: Curves.easeOutCubic,
+      );
     });
   }
 
@@ -82,6 +142,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             );
           }
 
+          // Trigger auto-scroll whenever selectedCategory updates
+          if (provider.selectedCategory != null &&
+              _lastScrolledCategory != provider.selectedCategory) {
+            _lastScrolledCategory = provider.selectedCategory;
+            _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
+          }
+
           return Padding(
             padding: const EdgeInsets.all(16),
             child: Column(
@@ -96,10 +163,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
                 const SizedBox(height: 12),
 
-                // NORMAL CATEGORY LIST
+                // ALL CATEGORIES HORIZONTAL SCROLLABLE LIST WITH AUTO-SCROLL
                 SizedBox(
                   height: 55,
                   child: ListView.separated(
+                    controller: _categoryScrollController,
                     scrollDirection: Axis.horizontal,
                     itemCount: provider.categories.length,
                     separatorBuilder: (context, index) =>
@@ -113,6 +181,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       return GestureDetector(
                         onTap: () {
                           provider.fetchProductsByCategory(category);
+                          _scrollToSelectedCategory(category, provider.categories);
                         },
                         child: Container(
                           padding: const EdgeInsets.symmetric(
@@ -254,17 +323,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        product.thumbnail,
+                      child: NetworkImageWithSkeleton(
+                        imageUrl: product.thumbnail,
                         width: 100,
                         height: 100,
                         fit: BoxFit.cover,
-                        errorBuilder:
-                            (context, error, stackTrace) {
+                        borderRadius: BorderRadius.circular(12),
+                        errorBuilder: (context, error, stackTrace) {
                           return Container(
                             width: 100,
                             height: 100,
-                            color: Colors.grey.shade200,
+                            color: Theme.of(context).brightness == Brightness.dark
+                                ? const Color(0xFF242426)
+                                : Colors.grey.shade200,
                             child: const Icon(
                               Icons.broken_image,
                               size: 40,

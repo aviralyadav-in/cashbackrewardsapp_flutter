@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/search_provider.dart';
+import '../widgets/network_image_with_skeleton.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search';
@@ -121,30 +122,33 @@ class _SearchScreenState extends State<SearchScreen> {
                                   crossAxisAlignment:
                                       CrossAxisAlignment.start,
                                   children: [
-                                    ClipRRect(
-                                      borderRadius: BorderRadius.circular(
-                                        12,
-                                      ),
-                                      child: Image.network(
-                                        product.thumbnail,
-                                        width: 100,
-                                        height: 100,
-                                        fit: BoxFit.cover,
-                                        errorBuilder:
-                                            (context, error, stackTrace) {
-                                              return Container(
-                                                width: 100,
-                                                height: 100,
-                                                color: Colors.grey.shade200,
-                                                child: const Icon(
-                                                  Icons.broken_image,
-                                                  size: 40,
-                                                  color: Colors.grey,
-                                                ),
-                                              );
-                                            },
-                                      ),
-                                    ),
+                                     ClipRRect(
+                                       borderRadius: BorderRadius.circular(
+                                         12,
+                                       ),
+                                       child: NetworkImageWithSkeleton(
+                                         imageUrl: product.thumbnail,
+                                         width: 100,
+                                         height: 100,
+                                         fit: BoxFit.cover,
+                                         borderRadius: BorderRadius.circular(12),
+                                         errorBuilder:
+                                             (context, error, stackTrace) {
+                                               return Container(
+                                                 width: 100,
+                                                 height: 100,
+                                                 color: Theme.of(context).brightness == Brightness.dark
+                                                     ? const Color(0xFF242426)
+                                                     : Colors.grey.shade200,
+                                                 child: const Icon(
+                                                   Icons.broken_image,
+                                                   size: 40,
+                                                   color: Colors.grey,
+                                                 ),
+                                               );
+                                             },
+                                       ),
+                                     ),
                                     const SizedBox(width: 12),
                                     Expanded(
                                       child: Column(
