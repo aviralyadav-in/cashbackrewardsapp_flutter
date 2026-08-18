@@ -12,6 +12,7 @@ import 'profile_screen.dart';
 import 'refer_earn_screen.dart';
 import 'search_screen.dart';
 import 'ticket_screen.dart';
+import '../widgets/cashback_banner_carousel.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -380,6 +381,10 @@ class _HomeScreenState extends State<HomeScreen> {
                       padding: const EdgeInsets.all(16),
                       children: [
                         const GoldenTicketBanner(),
+                        const SizedBox(height: 20),
+
+                        // DYNAMIC E-COMMERCE CASHBACK BANNER CAROUSEL
+                        const CashbackBannerCarousel(),
                         const SizedBox(height: 24),
 
                         // FLIPKART – FREEDOM SALE
