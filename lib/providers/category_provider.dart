@@ -18,6 +18,28 @@ class CategoryProvider extends ChangeNotifier {
   CategoryProvider({CategoryService? service})
     : _service = service ?? CategoryService();
 
+  void _moveSelectedCategoryToFirst(String category) {
+    if (categories.isEmpty) return;
+
+    final lowerQuery = category.trim().toLowerCase().replaceAll(' ', '-');
+    final index = categories.indexWhere(
+      (cat) =>
+          cat.toLowerCase().replaceAll(' ', '-') == lowerQuery ||
+          cat.toLowerCase().contains(lowerQuery) ||
+          lowerQuery.contains(cat.toLowerCase().replaceAll(' ', '-')),
+    );
+
+    if (index > 0) {
+      final selectedItem = categories.removeAt(index);
+      categories.insert(0, selectedItem);
+      selectedCategory = selectedItem;
+    } else if (index == 0) {
+      selectedCategory = categories[0];
+    } else {
+      selectedCategory = category;
+    }
+  }
+
   Future<void> fetchCategories() async {
     categoriesStatus = CategoryStatus.loading;
     errorMessage = '';
@@ -26,7 +48,9 @@ class CategoryProvider extends ChangeNotifier {
     try {
       categories = await _service.fetchCategories();
       categoriesStatus = CategoryStatus.loaded;
-      if (categories.isNotEmpty && selectedCategory == null) {
+      if (selectedCategory != null) {
+        _moveSelectedCategoryToFirst(selectedCategory!);
+      } else if (categories.isNotEmpty) {
         await fetchProductsByCategory(categories.first);
         return;
       }
@@ -41,12 +65,14 @@ class CategoryProvider extends ChangeNotifier {
 
   Future<void> fetchProductsByCategory(String category) async {
     selectedCategory = category;
+    _moveSelectedCategoryToFirst(category);
+
     productsStatus = CategoryStatus.loading;
     errorMessage = '';
     notifyListeners();
 
     try {
-      products = await _service.fetchProductsByCategory(category);
+      products = await _service.fetchProductsByCategory(selectedCategory ?? category);
       productsStatus = CategoryStatus.loaded;
     } catch (e) {
       debugPrint('Error fetching category products: $e');

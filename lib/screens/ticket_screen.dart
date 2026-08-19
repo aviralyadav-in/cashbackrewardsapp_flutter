@@ -1,124 +1,140 @@
 import 'package:flutter/material.dart';
 
 class GoldenTicketBanner extends StatelessWidget {
-  const GoldenTicketBanner({super.key});
+  final VoidCallback? onTap;
+
+  const GoldenTicketBanner({super.key, this.onTap});
 
   @override
   Widget build(BuildContext context) {
-    return ClipPath(
-      clipper: GoldenTicketClipper(),
-      child: Container(
-        width: double.infinity,
-        height: 155,
-        decoration: const BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topLeft,
-            end: Alignment.bottomRight,
-            colors: [Color(0xFFFFE082), Color(0xFFFFC107), Color(0xFFFFA000)],
-          ),
-        ),
-        child: Stack(
-          children: [
-            Positioned(
-              top: -55,
-              right: -35,
-              child: Container(
-                width: 160,
-                height: 160,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color: Colors.white.withValues(alpha: 0.13),
-                ),
-              ),
-            ),
-            Row(
-              children: [
-                Expanded(
-                  flex: 6,
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                      left: 24,
-                      top: 18,
-                      bottom: 18,
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Row(
-                          children: [
-                            _GoldenTag(),
-                            SizedBox(width: 5),
-                            Text(
-                              'TICKET',
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontSize: 17,
-                                fontWeight: FontWeight.w900,
-                                letterSpacing: 1,
-                              ),
-                            ),
-                          ],
-                        ),
-                        SizedBox(height: 7),
-                        Text(
-                          '100% Cashback',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 23,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        SizedBox(height: 4),
-                        Text(
-                          'Shop now & get rewarded!',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 12,
-                            fontWeight: FontWeight.w500,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-                SizedBox(
-                  height: 115,
-                  width: 2,
-                  child: CustomPaint(painter: DashedVerticalLinePainter()),
-                ),
-                Expanded(
-                  flex: 4,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 12, right: 20),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: const [
-                        Text(
-                          'UP TO',
-                          style: TextStyle(
-                            color: Colors.black87,
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        Text(
-                          '₹500',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 26,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                        SizedBox(height: 8),
-                        _ParticipateButton(),
-                      ],
-                    ),
-                  ),
-                ),
+    return GestureDetector(
+      onTap: onTap,
+      child: ClipPath(
+        clipper: GoldenTicketClipper(),
+        child: Container(
+          width: double.infinity,
+          height: 155,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+              colors: [
+                Color(0xFFFFE082),
+                Color(0xFFFFC107),
+                Color(0xFFFFA000),
               ],
             ),
-          ],
+          ),
+          child: Stack(
+            children: [
+              Positioned(
+                top: -55,
+                right: -35,
+                child: Container(
+                  width: 160,
+                  height: 160,
+                  decoration: BoxDecoration(
+                    shape: BoxShape.circle,
+                    color: Colors.white.withValues(alpha: 0.13),
+                  ),
+                ),
+              ),
+              Row(
+                children: [
+                  Expanded(
+                    flex: 6,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 24,
+                        top: 18,
+                        bottom: 18,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: const [
+                          Row(
+                            children: [
+                              _GoldenTag(),
+                              SizedBox(width: 5),
+                              Text(
+                                'TICKET',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.w900,
+                                  letterSpacing: 1,
+                                ),
+                              ),
+                            ],
+                          ),
+                          SizedBox(height: 7),
+                          Text(
+                            '100% Cashback',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 23,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          SizedBox(height: 4),
+                          Text(
+                            'Shop now & get rewarded!',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 12,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                  SizedBox(
+                    height: 115,
+                    width: 2,
+                    child: CustomPaint(
+                      painter: DashedVerticalLinePainter(),
+                    ),
+                  ),
+                  Expanded(
+                    flex: 4,
+                    child: Padding(
+                      padding: const EdgeInsets.only(
+                        left: 12,
+                        right: 20,
+                      ),
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Text(
+                            'UP TO',
+                            style: TextStyle(
+                              color: Colors.black87,
+                              fontSize: 10,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          const Text(
+                            '₹500',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 26,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          _ParticipateButton(
+                            onTap: onTap,
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -131,7 +147,10 @@ class _GoldenTag extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(
+        horizontal: 8,
+        vertical: 4,
+      ),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(5),
@@ -150,7 +169,11 @@ class _GoldenTag extends StatelessWidget {
 }
 
 class _ParticipateButton extends StatelessWidget {
-  const _ParticipateButton();
+  final VoidCallback? onTap;
+
+  const _ParticipateButton({
+    this.onTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -158,17 +181,22 @@ class _ParticipateButton extends StatelessWidget {
       width: double.infinity,
       height: 34,
       child: ElevatedButton(
-        onPressed: () {},
+        onPressed: onTap ?? () {},
         style: ElevatedButton.styleFrom(
           backgroundColor: Colors.black,
           foregroundColor: Colors.white,
           elevation: 0,
           padding: EdgeInsets.zero,
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(7)),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(7),
+          ),
         ),
         child: const Text(
           'PARTICIPATE',
-          style: TextStyle(fontSize: 10, fontWeight: FontWeight.w900),
+          style: TextStyle(
+            fontSize: 10,
+            fontWeight: FontWeight.w900,
+          ),
         ),
       ),
     );
@@ -184,12 +212,17 @@ class GoldenTicketClipper extends CustomClipper<Path> {
 
     final path = Path();
 
-    // Top edge stays straight and professional.
+    // Top edge
     path.moveTo(cornerRadius, 0);
     path.lineTo(width - cornerRadius, 0);
-    path.quadraticBezierTo(width, 0, width, cornerRadius);
+    path.quadraticBezierTo(
+      width,
+      0,
+      width,
+      cornerRadius,
+    );
 
-    // Right torn edge: deep, uneven, manually irregular paper tear.
+    // Right torn edge
     path.lineTo(width, 10);
     path.lineTo(width - 7, 25);
     path.lineTo(width, 36);
@@ -202,12 +235,22 @@ class GoldenTicketClipper extends CustomClipper<Path> {
     path.lineTo(width - 13, 133);
     path.lineTo(width, height - cornerRadius);
 
-    // Bottom edge stays straight.
-    path.quadraticBezierTo(width, height, width - cornerRadius, height);
+    // Bottom edge
+    path.quadraticBezierTo(
+      width,
+      height,
+      width - cornerRadius,
+      height,
+    );
     path.lineTo(cornerRadius, height);
-    path.quadraticBezierTo(0, height, 0, height - cornerRadius);
+    path.quadraticBezierTo(
+      0,
+      height,
+      0,
+      height - cornerRadius,
+    );
 
-    // Left torn edge: deep irregular paper tears in opposite direction.
+    // Left torn edge
     path.lineTo(0, 128);
     path.lineTo(9, 112);
     path.lineTo(0, 99);
@@ -225,7 +268,10 @@ class GoldenTicketClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(CustomClipper<Path> oldClipper) => false;
+  bool shouldReclip(
+    CustomClipper<Path> oldClipper,
+  ) =>
+      false;
 }
 
 class DashedVerticalLinePainter extends CustomPainter {
@@ -237,10 +283,16 @@ class DashedVerticalLinePainter extends CustomPainter {
 
     const dashHeight = 5.0;
     const gap = 5.0;
+
     double y = 0;
 
     while (y < size.height) {
-      canvas.drawLine(Offset(0, y), Offset(0, y + dashHeight), paint);
+      canvas.drawLine(
+        Offset(0, y),
+        Offset(0, y + dashHeight),
+        paint,
+      );
+
       y += dashHeight + gap;
     }
   }
