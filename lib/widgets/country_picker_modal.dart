@@ -21,7 +21,7 @@ class CountryPickerModal extends StatefulWidget {
     return showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? const Color(0xFF151D2A) : Colors.white,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -133,23 +133,23 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                     )
                   : null,
               filled: true,
-              fillColor: isDark ? const Color(0xFF242426) : const Color(0xFFF0F2F5),
+              fillColor: isDark ? const Color(0xFF1E293B) : const Color(0xFFF0F2F5),
               contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
-                borderSide: const BorderSide(color: Colors.redAccent, width: 2),
+                borderSide: const BorderSide(color: Color(0xFF1E90FF), width: 2),
               ),
             ),
           ),
@@ -201,7 +201,7 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                               country.dialCode,
                               style: TextStyle(
                                 color: isSelected
-                                    ? Colors.redAccent
+                                    ? const Color(0xFF1E90FF)
                                     : (isDark ? Colors.grey.shade400 : Colors.grey.shade600),
                                 fontWeight: FontWeight.bold,
                                 fontSize: 15,
@@ -211,7 +211,7 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                               const SizedBox(width: 8),
                               const Icon(
                                 Icons.check_circle,
-                                color: Colors.redAccent,
+                                color: Color(0xFF1E90FF),
                                 size: 20,
                               ),
                             ],

@@ -15,7 +15,7 @@ class GetHelpScreen extends StatelessWidget {
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
         title: Row(
           children: [
-            const Icon(Icons.help_outline_rounded, color: Colors.redAccent, size: 24),
+            const Icon(Icons.help_outline_rounded, color: Color(0xFF1E90FF), size: 24),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
@@ -45,7 +45,7 @@ class GetHelpScreen extends StatelessWidget {
             child: const Text(
               'Got It',
               style: TextStyle(
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -86,10 +86,10 @@ class GetHelpScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.redAccent.withValues(alpha: 0.12),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.headset_mic_rounded, color: Colors.redAccent, size: 26),
+                  child: const Icon(Icons.headset_mic_rounded, color: Color(0xFF1E90FF), size: 26),
                 ),
                 const SizedBox(width: 14),
                 Column(
@@ -143,7 +143,7 @@ class GetHelpScreen extends StatelessWidget {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: const Text('Helpline: 1800-CASHKARO (Mon-Sat 10AM-7PM)'),
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: const Color(0xFF1E90FF),
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
@@ -219,11 +219,11 @@ class GetHelpScreen extends StatelessWidget {
                       height: 48,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.redAccent.withValues(alpha: 0.12),
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                       ),
                       child: const Icon(
                         Icons.help_center_rounded,
-                        color: Colors.redAccent,
+                        color: Color(0xFF1E90FF),
                         size: 26,
                       ),
                     ),
@@ -342,11 +342,11 @@ class GetHelpScreen extends StatelessWidget {
                   color: cardColor,
                   borderRadius: BorderRadius.circular(18),
                   border: Border.all(
-                    color: Colors.redAccent.withValues(alpha: 0.4),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.red.withValues(alpha: isDark ? 0.2 : 0.06),
+                      color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.2 : 0.06),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
@@ -356,7 +356,7 @@ class GetHelpScreen extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.headset_mic_outlined,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                       size: 36,
                     ),
                     const SizedBox(height: 10),
@@ -384,10 +384,10 @@ class GetHelpScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => _contactSupport(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
+                          backgroundColor: const Color(0xFF1E90FF),
                           foregroundColor: Colors.white,
                           elevation: 3,
-                          shadowColor: Colors.red.withValues(alpha: 0.35),
+                          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(14),
                           ),
@@ -437,7 +437,7 @@ class _SectionTitle extends StatelessWidget {
             width: 4,
             height: 16,
             decoration: BoxDecoration(
-              color: Colors.redAccent,
+              color: const Color(0xFF1E90FF),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -494,13 +494,13 @@ class _HelpTopicTile extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: Colors.redAccent.withValues(alpha: 0.1),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     icon,
                     size: 22,
-                    color: Colors.redAccent,
+                    color: const Color(0xFF1E90FF),
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -570,7 +570,7 @@ class _ContactTile extends StatelessWidget {
       child: ListTile(
         onTap: onTap,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        leading: Icon(icon, color: Colors.redAccent, size: 22),
+        leading: Icon(icon, color: const Color(0xFF1E90FF), size: 22),
         title: Text(
           title,
           style: TextStyle(
@@ -586,7 +586,7 @@ class _ContactTile extends StatelessWidget {
             color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
           ),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Colors.redAccent),
+        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Color(0xFF1E90FF)),
       ),
     );
   }

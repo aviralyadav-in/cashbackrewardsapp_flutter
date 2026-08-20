@@ -62,7 +62,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
         height: 180,
         child: Center(
           child: CircularProgressIndicator(
-            color: Colors.redAccent,
+            color: Color(0xFF1E90FF),
           ),
         ),
       );
@@ -97,10 +97,10 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                   onTap: () => _onBannerTap(brand),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF161618) : Colors.white,
+                      color: isDark ? const Color(0xFF151D2A) : Colors.white,
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -121,7 +121,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
-                                  color: isDark ? const Color(0xFF242426) : const Color(0xFFF0F2F5),
+                                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF0F2F5),
                                   child: Icon(
                                     Icons.shopping_cart_outlined,
                                     size: 60,
@@ -179,7 +179,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                               child: Text(
                                                 brand.name.substring(0, 1).toUpperCase(),
                                                 style: const TextStyle(
-                                                  color: Colors.redAccent,
+                                                  color: Color(0xFF1E90FF),
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -236,12 +236,12 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                             ),
                                             decoration: BoxDecoration(
                                               gradient: const LinearGradient(
-                                                colors: [Colors.redAccent, Colors.red],
+                                                colors: [Color(0xFF1E90FF), Color(0xFF0066CC)],
                                               ),
                                               borderRadius: BorderRadius.circular(8),
                                               boxShadow: [
                                                 BoxShadow(
-                                                  color: Colors.red.withValues(alpha: 0.5),
+                                                  color: const Color(0xFF1E90FF).withValues(alpha: 0.4),
                                                   blurRadius: 6,
                                                 ),
                                               ],
@@ -314,7 +314,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: isActive
-                    ? Colors.redAccent
+                    ? const Color(0xFF1E90FF)
                     : (isDark ? Colors.grey.shade800 : Colors.grey.shade300),
               ),
             );

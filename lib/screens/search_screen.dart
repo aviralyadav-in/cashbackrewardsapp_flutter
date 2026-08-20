@@ -63,7 +63,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircularProgressIndicator(),
+                            CircularProgressIndicator(color: Color(0xFF1E90FF)),
                             SizedBox(height: 12),
                             Text('Searching...'),
                           ],
@@ -79,7 +79,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               const Icon(
                                 Icons.error_outline,
                                 size: 48,
-                                color: Colors.redAccent,
+                                color: Color(0xFF1E90FF),
                               ),
                               const SizedBox(height: 12),
                               Text(

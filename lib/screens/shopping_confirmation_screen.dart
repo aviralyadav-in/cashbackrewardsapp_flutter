@@ -20,7 +20,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Could not open ${brand.name} website: ${brand.websiteUrl}'),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: const Color(0xFF1E90FF),
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -75,7 +75,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                         color: isDark ? const Color(0xFF242426) : const Color(0xFFF8F9FA),
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.redAccent.withValues(alpha: 0.3),
+                          color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                           width: 1.5,
                         ),
                       ),
@@ -93,7 +93,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                                 style: const TextStyle(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.redAccent,
+                                  color: Color(0xFF1E90FF),
                                 ),
                               ),
                             );
@@ -122,13 +122,13 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Colors.redAccent.withValues(alpha: 0.1),
+                          color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           brand.category,
                           style: const TextStyle(
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                             fontSize: 12,
                             fontWeight: FontWeight.w600,
                           ),
@@ -211,12 +211,12 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: Colors.redAccent.withValues(alpha: 0.12),
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                         shape: BoxShape.circle,
                       ),
                       child: const Icon(
                         Icons.shopping_bag_outlined,
-                        color: Colors.redAccent,
+                        color: Color(0xFF1E90FF),
                         size: 24,
                       ),
                     ),
@@ -244,10 +244,10 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                 child: ElevatedButton.icon(
                   onPressed: () => _handleShopNow(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: Colors.redAccent,
+                    backgroundColor: const Color(0xFF1E90FF),
                     foregroundColor: Colors.white,
-                    elevation: 6,
-                    shadowColor: Colors.red.withValues(alpha: 0.4),
+                    elevation: 4,
+                    shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(16),
                     ),

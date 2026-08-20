@@ -96,7 +96,7 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                 color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
               ),
               filled: true,
-              fillColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+              fillColor: isDark ? const Color(0xFF151D2A) : Colors.white,
               prefixIcon: Icon(
                 Icons.phone_outlined,
                 color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
@@ -104,19 +104,19 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                 ),
               ),
               enabledBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                 ),
               ),
               focusedBorder: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(16),
                 borderSide: const BorderSide(
-                  color: Colors.redAccent,
+                  color: Color(0xFF1E90FF),
                   width: 2,
                 ),
               ),

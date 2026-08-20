@@ -42,7 +42,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        backgroundColor: isError ? const Color(0xFFEF4444) : Colors.green,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -140,11 +140,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             height: 50,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: Colors.redAccent.withValues(alpha: 0.12),
+                              color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                             ),
                             child: const Icon(
                               Icons.manage_accounts_rounded,
-                              color: Colors.redAccent,
+                              color: Color(0xFF1E90FF),
                               size: 28,
                             ),
                           ),
@@ -281,10 +281,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                       child: ElevatedButton(
                         onPressed: userProvider.isLoading ? null : _handleSaveChanges,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.redAccent,
+                          backgroundColor: const Color(0xFF1E90FF),
                           foregroundColor: Colors.white,
                           elevation: 4,
-                          shadowColor: Colors.red.withValues(alpha: 0.35),
+                          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(16),
                           ),
@@ -351,7 +351,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(
-          color: Colors.redAccent,
+          color: Color(0xFF1E90FF),
           width: 2,
         ),
       ),

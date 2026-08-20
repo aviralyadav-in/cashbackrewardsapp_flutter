@@ -60,7 +60,7 @@ class _LoginScreenState extends State<LoginScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? Colors.redAccent : Colors.green,
+        backgroundColor: isError ? const Color(0xFFEF4444) : Colors.green,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -343,7 +343,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         Text(
                           'OTP sent to $sheetFormattedPhone',
                           style: const TextStyle(
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                             fontSize: 14,
                             fontWeight: FontWeight.w500,
                           ),
@@ -421,7 +421,7 @@ class _LoginScreenState extends State<LoginScreen> {
         fontSize: 14,
       ),
       filled: true,
-      fillColor: isDark ? const Color(0xFF1A1A1A) : Colors.white,
+      fillColor: isDark ? const Color(0xFF151D2A) : Colors.white,
       prefixIcon: Icon(
         icon,
         color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
@@ -431,19 +431,19 @@ class _LoginScreenState extends State<LoginScreen> {
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(
-          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide(
-          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
         ),
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: const BorderSide(
-          color: Colors.redAccent,
+          color: Color(0xFF1E90FF),
           width: 2,
         ),
       ),
@@ -452,10 +452,10 @@ class _LoginScreenState extends State<LoginScreen> {
 
   ButtonStyle _buildButtonStyle() {
     return ElevatedButton.styleFrom(
-      backgroundColor: Colors.redAccent,
+      backgroundColor: const Color(0xFF1E90FF),
       foregroundColor: Colors.white,
-      elevation: 6,
-      shadowColor: Colors.red.withValues(alpha: 0.4),
+      elevation: 4,
+      shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(16),
       ),
@@ -467,7 +467,7 @@ class _LoginScreenState extends State<LoginScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFFFFFFF),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -475,13 +475,13 @@ class _LoginScreenState extends State<LoginScreen> {
             end: Alignment.bottomCenter,
             colors: isDark
                 ? const [
-                    Color(0xFF000000),
-                    Color(0xFF180000),
-                    Color(0xFF000000),
+                    Color(0xFF0D0D0D),
+                    Color(0xFF151D2A),
+                    Color(0xFF0D0D0D),
                   ]
                 : const [
                     Color(0xFFFFFFFF),
-                    Color(0xFFFFEBEE),
+                    Color(0xFFF0F7FF),
                     Color(0xFFFFFFFF),
                   ],
           ),
@@ -496,30 +496,23 @@ class _LoginScreenState extends State<LoginScreen> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  // App Logo
+                  // App Logo (No Glow)
                   Center(
                     child: Container(
                       width: 100,
                       height: 100,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isDark ? const Color(0xFF121212) : Colors.white,
+                        color: isDark ? const Color(0xFF151D2A) : Colors.white,
                         border: Border.all(
-                          color: Colors.redAccent.withValues(alpha: 0.8),
+                          color: const Color(0xFF1E90FF),
                           width: 2,
                         ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
-                            blurRadius: 30,
-                            spreadRadius: 3,
-                          ),
-                        ],
                       ),
                       child: const Icon(
                         Icons.card_giftcard,
                         size: 50,
-                        color: Colors.redAccent,
+                        color: Color(0xFF1E90FF),
                       ),
                     ),
                   ),
@@ -531,7 +524,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       fontFamily: 'HandwrittenItalic',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
+                      color: isDark ? Colors.white : const Color(0xFF1F2937),
                       letterSpacing: 3.0,
                     ),
                   ),
@@ -550,10 +543,10 @@ class _LoginScreenState extends State<LoginScreen> {
                   if (!_isOtpSent)
                     Container(
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1A1A1A) : const Color(0xFFE5E5EA),
+                        color: isDark ? const Color(0xFF151D2A) : const Color(0xFFF0F2F5),
                         borderRadius: BorderRadius.circular(16),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                          color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
                         ),
                       ),
                       child: Row(
@@ -569,7 +562,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: _isPhoneMode ? Colors.redAccent : Colors.transparent,
+                                  color: _isPhoneMode ? const Color(0xFF1E90FF) : Colors.transparent,
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Text(
@@ -578,7 +571,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: TextStyle(
                                     color: _isPhoneMode
                                         ? Colors.white
-                                        : (isDark ? Colors.white : Colors.black87),
+                                        : (isDark ? Colors.white : const Color(0xFF1F2937)),
                                     fontWeight:
                                         _isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
@@ -597,7 +590,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 duration: const Duration(milliseconds: 200),
                                 padding: const EdgeInsets.symmetric(vertical: 12),
                                 decoration: BoxDecoration(
-                                  color: !_isPhoneMode ? Colors.redAccent : Colors.transparent,
+                                  color: !_isPhoneMode ? const Color(0xFF1E90FF) : Colors.transparent,
                                   borderRadius: BorderRadius.circular(14),
                                 ),
                                 child: Text(
@@ -606,7 +599,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                   style: TextStyle(
                                     color: !_isPhoneMode
                                         ? Colors.white
-                                        : (isDark ? Colors.white : Colors.black87),
+                                        : (isDark ? Colors.white : const Color(0xFF1F2937)),
                                     fontWeight:
                                         !_isPhoneMode ? FontWeight.bold : FontWeight.normal,
                                   ),
@@ -727,7 +720,7 @@ class _LoginScreenState extends State<LoginScreen> {
                             'OTP sent to $_targetPhone',
                             textAlign: TextAlign.center,
                             style: const TextStyle(
-                              color: Colors.redAccent,
+                              color: Color(0xFF1E90FF),
                               fontSize: 15,
                               fontWeight: FontWeight.bold,
                             ),
@@ -802,7 +795,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 child: const Text(
                                   'Resend OTP',
                                   style: TextStyle(
-                                    color: Colors.redAccent,
+                                    color: Color(0xFF1E90FF),
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),

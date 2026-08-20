@@ -164,7 +164,7 @@ class OfferSectionScreen extends StatelessWidget {
                                     style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w900,
-                                      color: Colors.redAccent,
+                                      color: Color(0xFF1E90FF),
                                     ),
                                   ),
                                   Container(
@@ -173,7 +173,7 @@ class OfferSectionScreen extends StatelessWidget {
                                       vertical: 2,
                                     ),
                                     decoration: BoxDecoration(
-                                      color: Colors.redAccent
+                                      color: const Color(0xFF1E90FF)
                                           .withValues(alpha: 0.1),
                                       borderRadius: BorderRadius.circular(4),
                                     ),
@@ -182,7 +182,7 @@ class OfferSectionScreen extends StatelessWidget {
                                       style: const TextStyle(
                                         fontSize: 8,
                                         fontWeight: FontWeight.bold,
-                                        color: Colors.redAccent,
+                                        color: Color(0xFF1E90FF),
                                       ),
                                     ),
                                   ),

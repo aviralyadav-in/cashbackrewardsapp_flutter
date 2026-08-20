@@ -85,7 +85,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFFFFFFF),
       body: Container(
         decoration: BoxDecoration(
           gradient: LinearGradient(
@@ -93,13 +93,13 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
             end: Alignment.bottomCenter,
             colors: isDark
                 ? const [
-                    Color(0xFF000000),
-                    Color(0xFF180000),
-                    Color(0xFF000000),
+                    Color(0xFF0D0D0D),
+                    Color(0xFF151D2A),
+                    Color(0xFF0D0D0D),
                   ]
                 : const [
                     Color(0xFFFFFFFF),
-                    Color(0xFFFFEBEE),
+                    Color(0xFFF0F7FF),
                     Color(0xFFFFFFFF),
                   ],
           ),
@@ -120,11 +120,11 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           padding: const EdgeInsets.all(6),
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: Colors.redAccent.withValues(alpha: 0.15),
+                            color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
                           ),
                           child: const Icon(
                             Icons.card_giftcard,
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                             size: 20,
                           ),
                         ),
@@ -132,7 +132,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           'Cashback & Rewards',
                           style: TextStyle(
-                            color: isDark ? Colors.white : Colors.black87,
+                            color: isDark ? Colors.white : const Color(0xFF1F2937),
                             fontSize: 15,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 0.5,
@@ -180,23 +180,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             height: 130,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: isDark ? const Color(0xFF121212) : Colors.white,
+                              color: isDark ? const Color(0xFF151D2A) : Colors.white,
                               border: Border.all(
-                                color: Colors.redAccent.withValues(alpha: 0.8),
+                                color: const Color(0xFF1E90FF),
                                 width: 2,
                               ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
-                                  blurRadius: 35,
-                                  spreadRadius: 4,
-                                ),
-                              ],
                             ),
                             child: Icon(
                               page.icon,
                               size: 60,
-                              color: Colors.redAccent,
+                              color: const Color(0xFF1E90FF),
                             ),
                           ),
                           const SizedBox(height: 40),
@@ -204,7 +197,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                             page.title,
                             textAlign: TextAlign.center,
                             style: TextStyle(
-                              color: isDark ? Colors.white : Colors.black87,
+                              color: isDark ? Colors.white : const Color(0xFF1F2937),
                               fontSize: 26,
                               fontWeight: FontWeight.bold,
                             ),
@@ -244,18 +237,10 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(4),
                             color: isActive
-                                ? Colors.redAccent
+                                ? const Color(0xFF1E90FF)
                                 : (isDark
                                     ? Colors.white.withValues(alpha: 0.2)
                                     : Colors.black.withValues(alpha: 0.15)),
-                            boxShadow: isActive
-                                ? [
-                                    BoxShadow(
-                                      color: Colors.red.withValues(alpha: 0.6),
-                                      blurRadius: 8,
-                                    ),
-                                  ]
-                                : [],
                           ),
                         );
                       }),
@@ -283,7 +268,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                               child: Text(
                                 'Back',
                                 style: TextStyle(
-                                  color: isDark ? Colors.white : Colors.black87,
+                                  color: isDark ? Colors.white : const Color(0xFF1F2937),
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                 ),
@@ -296,12 +281,12 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                           child: ElevatedButton(
                             onPressed: _onNext,
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.redAccent,
+                              backgroundColor: const Color(0xFF1E90FF),
                               foregroundColor: Colors.white,
                               padding:
                                   const EdgeInsets.symmetric(vertical: 16),
-                              elevation: 6,
-                              shadowColor: Colors.red.withValues(alpha: 0.4),
+                              elevation: 4,
+                              shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
                               ),

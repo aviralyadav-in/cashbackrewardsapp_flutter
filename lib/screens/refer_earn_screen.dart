@@ -163,15 +163,15 @@ class _PromotionalCarouselWidgetState
         borderRadius: BorderRadius.circular(20),
         gradient: const LinearGradient(
           colors: [
-            Colors.redAccent,
-            Color(0xFFC62828),
+            Color(0xFF1E90FF),
+            Color(0xFF0F172A),
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.redAccent.withValues(alpha: 0.35),
+            color: Color(0xFF1E90FF).withValues(alpha: 0.35),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -218,7 +218,7 @@ class _PromotionalCarouselWidgetState
                                 child: Text(
                                   slide.tag,
                                   style: const TextStyle(
-                                    color: Colors.redAccent,
+                                    color: Color(0xFF1E90FF),
                                     fontSize: 9.5,
                                     fontWeight: FontWeight.w900,
                                     letterSpacing: 0.4,
@@ -354,7 +354,7 @@ class _ReferralLinkSection extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: const Color(0xFF1E90FF),
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -375,7 +375,7 @@ class _ReferralLinkSection extends StatelessWidget {
               width: 4,
               height: 18,
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: const Color(0xFF1E90FF),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -413,7 +413,7 @@ class _ReferralLinkSection extends StatelessWidget {
             children: [
               const Icon(
                 Icons.link_rounded,
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
                 size: 22,
               ),
               const SizedBox(width: 10),
@@ -433,7 +433,7 @@ class _ReferralLinkSection extends StatelessWidget {
 
               // Copy Button
               Material(
-                color: Colors.redAccent.withValues(alpha: isDark ? 0.12 : 0.1),
+                color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.12 : 0.1),
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
                   onTap: () => _copyToClipboard(context),
@@ -446,7 +446,7 @@ class _ReferralLinkSection extends StatelessWidget {
                         Icon(
                           Icons.copy_rounded,
                           size: 16,
-                          color: Colors.redAccent,
+                          color: Color(0xFF1E90FF),
                         ),
                         SizedBox(width: 4),
                         Text(
@@ -454,7 +454,7 @@ class _ReferralLinkSection extends StatelessWidget {
                           style: TextStyle(
                             fontSize: 13,
                             fontWeight: FontWeight.bold,
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                           ),
                         ),
                       ],
@@ -498,7 +498,7 @@ class _InviteFriendsButton extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: Colors.redAccent,
+        backgroundColor: const Color(0xFF1E90FF),
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -515,10 +515,10 @@ class _InviteFriendsButton extends StatelessWidget {
       child: ElevatedButton(
         onPressed: () => _shareViaWhatsApp(context),
         style: ElevatedButton.styleFrom(
-          backgroundColor: Colors.redAccent,
+          backgroundColor: const Color(0xFF1E90FF),
           foregroundColor: Colors.white,
           elevation: 4,
-          shadowColor: Colors.redAccent.withValues(alpha: 0.4),
+          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(16),
           ),
@@ -566,7 +566,7 @@ class _HowItWorksSection extends StatelessWidget {
               width: 4,
               height: 18,
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: const Color(0xFF1E90FF),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -624,14 +624,14 @@ class _HowItWorksSection extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: Colors.redAccent.withValues(alpha: isDark ? 0.12 : 0.1),
+              color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.12 : 0.1),
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Text(
                 stepNumber,
                 style: const TextStyle(
-                  color: Colors.redAccent,
+                  color: Color(0xFF1E90FF),
                   fontSize: 16,
                   fontWeight: FontWeight.bold,
                 ),

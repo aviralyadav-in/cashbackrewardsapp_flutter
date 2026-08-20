@@ -36,12 +36,12 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: Colors.redAccent.withValues(alpha: 0.12),
+                  color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.exit_to_app_rounded,
-                  color: Colors.redAccent,
+                  color: Color(0xFF1E90FF),
                   size: 32,
                 ),
               ),
@@ -77,14 +77,14 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                   color: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFF8F9FA),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: Colors.redAccent.withValues(alpha: 0.25),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.25),
                   ),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.card_giftcard_rounded,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                       size: 22,
                     ),
                     const SizedBox(width: 10),
@@ -97,7 +97,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                             style: const TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.bold,
-                              color: Colors.redAccent,
+                              color: Color(0xFF1E90FF),
                             ),
                           ),
                           Text(
@@ -150,14 +150,14 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Could not open ${brand.name} website'),
-                              backgroundColor: Colors.redAccent,
+                              backgroundColor: const Color(0xFF1E90FF),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
+                        backgroundColor: const Color(0xFF1E90FF),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         elevation: 2,
@@ -215,13 +215,13 @@ class TopCategoryBrandsScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 gradient: const LinearGradient(
-                  colors: [Colors.redAccent, Color(0xFFC62828)],
+                  colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
                 ),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.redAccent.withValues(alpha: 0.3),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                     blurRadius: 10,
                     offset: const Offset(0, 4),
                   ),
@@ -288,7 +288,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                   width: 4,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: Colors.redAccent,
+                    color: const Color(0xFF1E90FF),
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -419,7 +419,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                       color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: Colors.redAccent.withValues(alpha: 0.3),
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                         width: 1,
                       ),
                     ),
@@ -432,7 +432,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                             brand.name.substring(0, 1),
                             style: const TextStyle(
                               fontWeight: FontWeight.bold,
-                              color: Colors.redAccent,
+                              color: Color(0xFF1E90FF),
                             ),
                           ),
                         ),
@@ -474,7 +474,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () => _showConfirmationDialog(context, brand),
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: const Color(0xFF1E90FF),
                       foregroundColor: Colors.white,
                       elevation: 2,
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),

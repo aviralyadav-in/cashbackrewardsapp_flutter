@@ -67,11 +67,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       height: 48,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: Colors.redAccent.withValues(alpha: 0.12),
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                       ),
                       child: const Icon(
                         Icons.privacy_tip_rounded,
-                        color: Colors.redAccent,
+                        color: Color(0xFF1E90FF),
                         size: 26,
                       ),
                     ),
@@ -290,7 +290,7 @@ class _PolicySectionCard extends StatelessWidget {
         children: [
           Row(
             children: [
-              Icon(icon, color: Colors.redAccent, size: 20),
+              Icon(icon, color: const Color(0xFF1E90FF), size: 20),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(

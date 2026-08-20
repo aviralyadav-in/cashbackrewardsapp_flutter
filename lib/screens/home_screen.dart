@@ -121,7 +121,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
-                    colors: [Colors.redAccent, Colors.red],
+                    colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
                   ),
                   borderRadius: BorderRadius.only(
                     topRight: Radius.circular(24),
@@ -355,25 +355,24 @@ class _HomeScreenState extends State<HomeScreen> {
                         Container(
                           padding: const EdgeInsets.all(5),
                           decoration: BoxDecoration(
-                            color: Colors.redAccent.withValues(alpha: 0.15),
+                            color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(
                             Icons.card_giftcard,
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                             size: 22,
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Text(
+                        const Text(
                           'CashKaro',
                           style: TextStyle(
                             fontFamily: 'HandwrittenItalic',
                             fontSize: 30,
                             fontWeight: FontWeight.w800,
-                            color: Colors.redAccent,
+                            color: Color(0xFF1E90FF),
                             letterSpacing: 3.0,
-
                           ),
                         ),
                       ],
@@ -532,7 +531,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   const Icon(
                                     Icons.error_outline,
                                     size: 48,
-                                    color: Colors.redAccent,
+                                    color: Color(0xFF1E90FF),
                                   ),
                                   const SizedBox(height: 12),
                                   Text(
@@ -662,7 +661,7 @@ class _HomeScreenState extends State<HomeScreen> {
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _selectedIndex,
         type: BottomNavigationBarType.fixed,
-        selectedItemColor: Colors.redAccent,
+        selectedItemColor: const Color(0xFF1E90FF),
         unselectedItemColor: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
         backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
         selectedFontSize: 11,
@@ -718,7 +717,7 @@ class _DrawerSectionHeader extends StatelessWidget {
           fontSize: 11,
           fontWeight: FontWeight.w800,
           letterSpacing: 1.0,
-          color: isDark ? Colors.redAccent.shade100 : Colors.redAccent.shade700,
+          color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1E90FF),
         ),
       ),
     );
@@ -759,7 +758,7 @@ class _DrawerCategoryItem extends StatelessWidget {
                     fontSize: 13.5,
                     fontWeight: FontWeight.bold,
                     color: isHighlight
-                        ? Colors.redAccent
+                        ? const Color(0xFF1E90FF)
                         : (isDark ? Colors.white : const Color(0xFF1F1F21)),
                   ),
                 ),
@@ -966,7 +965,7 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                     width: 4,
                     height: 18,
                     decoration: BoxDecoration(
-                      color: Colors.redAccent,
+                      color: const Color(0xFF1E90FF),
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -993,7 +992,7 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
               child: Container(
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                 decoration: BoxDecoration(
-                  color: Colors.redAccent.withValues(alpha: 0.1),
+                  color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
                   borderRadius: BorderRadius.circular(16),
                 ),
                 child: const Row(
@@ -1004,14 +1003,14 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 12,
                         fontWeight: FontWeight.bold,
-                        color: Colors.redAccent,
+                        color: Color(0xFF1E90FF),
                       ),
                     ),
                     SizedBox(width: 2),
                     Icon(
                       Icons.arrow_forward_ios,
                       size: 10,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                     ),
                   ],
                 ),
@@ -1135,7 +1134,7 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                                             style: const TextStyle(
                                               fontSize: 13,
                                               fontWeight: FontWeight.w900,
-                                              color: Colors.redAccent,
+                                              color: Color(0xFF1E90FF),
                                             ),
                                           ),
                                           Container(
@@ -1144,7 +1143,7 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                                               vertical: 2,
                                             ),
                                             decoration: BoxDecoration(
-                                              color: Colors.redAccent.withValues(alpha: 0.1),
+                                              color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
                                               borderRadius: BorderRadius.circular(4),
                                             ),
                                             child: Text(
@@ -1152,7 +1151,7 @@ class _OfferSectionCarouselWidget extends StatelessWidget {
                                               style: const TextStyle(
                                                 fontSize: 8,
                                                 fontWeight: FontWeight.bold,
-                                                color: Colors.redAccent,
+                                                color: Color(0xFF1E90FF),
                                               ),
                                             ),
                                           ),
@@ -1298,12 +1297,12 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                 width: 64,
                 height: 64,
                 decoration: BoxDecoration(
-                  color: Colors.redAccent.withValues(alpha: 0.12),
+                  color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: const Icon(
                   Icons.exit_to_app_rounded,
-                  color: Colors.redAccent,
+                  color: Color(0xFF1E90FF),
                   size: 32,
                 ),
               ),
@@ -1339,14 +1338,14 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                   color: isDark ? const Color(0xFF2C2C2E) : const Color(0xFFF8F9FA),
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: Colors.redAccent.withValues(alpha: 0.25),
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.25),
                   ),
                 ),
                 child: Row(
                   children: [
                     const Icon(
                       Icons.card_giftcard_rounded,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                       size: 22,
                     ),
                     const SizedBox(width: 10),
@@ -1359,7 +1358,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                             style: const TextStyle(
                               fontSize: 13.5,
                               fontWeight: FontWeight.bold,
-                              color: Colors.redAccent,
+                              color: Color(0xFF1E90FF),
                             ),
                           ),
                           Text(
@@ -1412,14 +1411,14 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                           ScaffoldMessenger.of(context).showSnackBar(
                             SnackBar(
                               content: Text('Could not open ${brand.name} website'),
-                              backgroundColor: Colors.redAccent,
+                              backgroundColor: const Color(0xFF1E90FF),
                               behavior: SnackBarBehavior.floating,
                             ),
                           );
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.redAccent,
+                        backgroundColor: const Color(0xFF1E90FF),
                         foregroundColor: Colors.white,
                         padding: const EdgeInsets.symmetric(vertical: 14),
                         elevation: 2,
@@ -1457,7 +1456,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
               width: 4,
               height: 18,
               decoration: BoxDecoration(
-                color: Colors.redAccent,
+                color: const Color(0xFF1E90FF),
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
@@ -1502,22 +1501,22 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: isSelected
-                              ? Colors.redAccent
+                              ? const Color(0xFF1E90FF)
                               : (isDark
                                   ? const Color(0xFF1E1E20)
-                                  : Colors.redAccent.withValues(alpha: 0.08)),
+                                  : const Color(0xFF1E90FF).withValues(alpha: 0.08)),
                           border: Border.all(
                             color: isSelected
-                                ? Colors.redAccent
+                                ? const Color(0xFF1E90FF)
                                 : (isDark
                                     ? const Color(0xFF2C2C2E)
-                                    : Colors.redAccent.withValues(alpha: 0.2)),
+                                    : const Color(0xFF1E90FF).withValues(alpha: 0.2)),
                             width: isSelected ? 2 : 1.2,
                           ),
                           boxShadow: isSelected
                               ? [
                                   BoxShadow(
-                                    color: Colors.redAccent.withValues(alpha: 0.35),
+                                    color: const Color(0xFF1E90FF).withValues(alpha: 0.35),
                                     blurRadius: 8,
                                     offset: const Offset(0, 3),
                                   ),
@@ -1528,7 +1527,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                           child: Icon(
                             cat.icon,
                             size: 26,
-                            color: isSelected ? Colors.white : Colors.redAccent,
+                            color: isSelected ? Colors.white : const Color(0xFF1E90FF),
                           ),
                         ),
                       ),
@@ -1543,7 +1542,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                           fontWeight: isSelected ? FontWeight.bold : FontWeight.w600,
                           height: 1.15,
                           color: isSelected
-                              ? Colors.redAccent
+                              ? const Color(0xFF1E90FF)
                               : (isDark ? Colors.grey.shade300 : Colors.black87),
                         ),
                       ),
@@ -1735,7 +1734,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                             : Colors.grey.shade100,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: Colors.redAccent.withValues(alpha: 0.35),
+                          color: const Color(0xFF1E90FF).withValues(alpha: 0.35),
                           width: 1.2,
                         ),
                       ),
@@ -1749,7 +1748,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                               style: const TextStyle(
                                 fontSize: 13,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.redAccent,
+                                color: Color(0xFF1E90FF),
                               ),
                             ),
                           ),
@@ -1777,11 +1776,11 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                       width: double.infinity,
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       decoration: BoxDecoration(
-                        color: Colors.redAccent,
+                        color: const Color(0xFF1E90FF),
                         borderRadius: BorderRadius.circular(8),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.redAccent.withValues(alpha: 0.3),
+                            color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),

@@ -33,7 +33,7 @@ class MyEarningsScreen extends StatelessWidget {
             child: const Text(
               'OK',
               style: TextStyle(
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -101,7 +101,7 @@ class MyEarningsScreen extends StatelessWidget {
                         'Minimum confirmed balance of ₹250 required to withdraw.',
                         style: TextStyle(fontWeight: FontWeight.bold),
                       ),
-                      backgroundColor: Colors.redAccent,
+                      backgroundColor: const Color(0xFF1E90FF),
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                     ),
@@ -206,7 +206,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                     child: Icon(
                       Icons.info_outline_rounded,
                       size: 16,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                     ),
                   ),
                 ),
@@ -248,7 +248,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 32,
-                  color: Colors.redAccent.withValues(alpha: isDark ? 0.25 : 0.18),
+                  color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.25 : 0.18),
                 ),
                 Expanded(
                   child: _buildBreakdownItem(
@@ -260,7 +260,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 32,
-                  color: Colors.redAccent.withValues(alpha: isDark ? 0.25 : 0.18),
+                  color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.25 : 0.18),
                 ),
                 Expanded(
                   child: _buildBreakdownItem(
@@ -281,7 +281,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 const Icon(
                   Icons.access_time_rounded,
                   size: 14,
-                  color: Colors.redAccent,
+                  color: Color(0xFF1E90FF),
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -312,7 +312,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 14, color: Colors.redAccent),
+            Icon(icon, size: 14, color: const Color(0xFF1E90FF)),
             const SizedBox(width: 4),
             Text(
               title,
@@ -375,12 +375,12 @@ class _ConfirmedEarningsCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: Colors.redAccent.withValues(alpha: isDark ? 0.12 : 0.1),
+              color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.12 : 0.1),
               shape: BoxShape.circle,
             ),
             child: const Icon(
               Icons.check_circle_rounded,
-              color: Colors.redAccent,
+              color: Color(0xFF1E90FF),
               size: 24,
             ),
           ),
@@ -414,11 +414,11 @@ class _ConfirmedEarningsCard extends StatelessWidget {
           ElevatedButton(
             onPressed: onWithdrawTap,
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
+              backgroundColor: const Color(0xFF1E90FF),
               foregroundColor: Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
               elevation: 3,
-              shadowColor: Colors.redAccent.withValues(alpha: 0.35),
+              shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
@@ -515,8 +515,8 @@ class _PendingEarningsCard extends StatelessWidget {
           OutlinedButton(
             onPressed: onKnowWhyTap,
             style: OutlinedButton.styleFrom(
-              foregroundColor: Colors.redAccent,
-              side: const BorderSide(color: Colors.redAccent, width: 1.2),
+              foregroundColor: const Color(0xFF1E90FF),
+              side: const BorderSide(color: Color(0xFF1E90FF), width: 1.2),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -527,7 +527,7 @@ class _PendingEarningsCard extends StatelessWidget {
               style: TextStyle(
                 fontSize: 13,
                 fontWeight: FontWeight.bold,
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
               ),
             ),
           ),
@@ -578,7 +578,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.receipt_long_rounded,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                       size: 20,
                     ),
                     const SizedBox(width: 14),
@@ -624,7 +624,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                   children: [
                     const Icon(
                       Icons.help_outline_rounded,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                       size: 20,
                     ),
                     const SizedBox(width: 14),

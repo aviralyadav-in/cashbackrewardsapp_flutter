@@ -117,7 +117,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     const Icon(
                       Icons.error_outline,
                       size: 48,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                     ),
                     const SizedBox(height: 12),
                     Text(
@@ -190,13 +190,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           ),
                           decoration: BoxDecoration(
                             color: isSelected
-                                ? Colors.redAccent
+                                ? const Color(0xFF1E90FF)
                                 : Theme.of(context).cardTheme.color,
                             border: Border.all(
                               color: isSelected
-                                  ? Colors.redAccent
+                                  ? const Color(0xFF1E90FF)
                                   : (Theme.of(context).brightness == Brightness.dark
-                                      ? const Color(0xFF2E2E2E)
+                                      ? const Color(0xFF1E293B)
                                       : const Color(0xFFE5E5EA)),
                             ),
                             borderRadius: BorderRadius.circular(25),
@@ -251,7 +251,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(),
+            CircularProgressIndicator(color: Color(0xFF1E90FF)),
             SizedBox(height: 12),
             Text('Loading products...'),
           ],
@@ -269,7 +269,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               const Icon(
                 Icons.error_outline,
                 size: 48,
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
               ),
               const SizedBox(height: 12),
               Text(

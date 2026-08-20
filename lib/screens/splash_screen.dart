@@ -200,7 +200,7 @@ class _SplashScreenState extends State<SplashScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFFFFFFF),
 
       body: Container(
         width: double.infinity,
@@ -212,13 +212,13 @@ class _SplashScreenState extends State<SplashScreen>
             end: Alignment.bottomCenter,
             colors: isDark
                 ? const [
-                    Color(0xFF000000),
-                    Color(0xFF180000),
-                    Color(0xFF000000),
+                    Color(0xFF0D0D0D),
+                    Color(0xFF151D2A),
+                    Color(0xFF0D0D0D),
                   ]
                 : const [
                     Color(0xFFFFFFFF),
-                    Color(0xFFFFEBEE),
+                    Color(0xFFF0F7FF),
                     Color(0xFFFFFFFF),
                   ],
           ),
@@ -230,7 +230,7 @@ class _SplashScreenState extends State<SplashScreen>
             children: [
 
               // =========================
-              // GLOWING RED LOGO
+              // CLEAN SHARP LOGO (NO GLOW)
               // =========================
 
               ScaleTransition(
@@ -243,35 +243,19 @@ class _SplashScreenState extends State<SplashScreen>
                   decoration: BoxDecoration(
                     shape: BoxShape.circle,
 
-                    color: isDark ? const Color(0xFF0D0D0D) : Colors.white,
+                    color: isDark ? const Color(0xFF151D2A) : Colors.white,
 
                     border: Border.all(
-                      color: Colors.redAccent,
+                      color: const Color(0xFF1E90FF),
                       width: 2,
                     ),
-
-                    boxShadow: [
-                      // Outer red glow
-                      BoxShadow(
-                        color: Colors.red.withValues(alpha: isDark ? 0.8 : 0.4),
-                        blurRadius: 35,
-                        spreadRadius: 8,
-                      ),
-
-                      // Inner glow
-                      BoxShadow(
-                        color: Colors.red.withValues(alpha: isDark ? 0.4 : 0.2),
-                        blurRadius: 60,
-                        spreadRadius: 2,
-                      ),
-                    ],
                   ),
 
                   child: const Center(
                     child: Icon(
                       Icons.card_giftcard,
                       size: 70,
-                      color: Colors.redAccent,
+                      color: Color(0xFF1E90FF),
                     ),
                   ),
                 ),
@@ -296,26 +280,8 @@ class _SplashScreenState extends State<SplashScreen>
                       fontFamily: 'HandwrittenItalic',
                       fontSize: 30,
                       fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
+                      color: isDark ? Colors.white : const Color(0xFF1F2937),
                       letterSpacing: 3.0,
-
-                      shadows: isDark
-                          ? const [
-                              Shadow(
-                                color: Colors.red,
-                                blurRadius: 15,
-                              ),
-                              Shadow(
-                                color: Colors.redAccent,
-                                blurRadius: 30,
-                              ),
-                            ]
-                          : const [
-                              Shadow(
-                                color: Colors.redAccent,
-                                blurRadius: 10,
-                              ),
-                            ],
                     ),
                   ),
                 ),
@@ -330,23 +296,14 @@ class _SplashScreenState extends State<SplashScreen>
               FadeTransition(
                 opacity: _subtitleAnimation,
 
-                child: Text(
+                child: const Text(
                   'India\'s #1 Cashback App',
 
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
-                    color: Colors.redAccent,
+                    color: Color(0xFF1E90FF),
                     letterSpacing: 2.5,
-
-                    shadows: isDark
-                        ? const [
-                            Shadow(
-                              color: Colors.red,
-                              blurRadius: 10,
-                            ),
-                          ]
-                        : const [],
                   ),
                 ),
               ),

@@ -46,7 +46,7 @@ class ProfileScreen extends StatelessWidget {
             child: const Text(
               'OK',
               style: TextStyle(
-                color: Colors.redAccent,
+                color: Color(0xFF1E90FF),
                 fontWeight: FontWeight.bold,
               ),
             ),
@@ -105,7 +105,7 @@ class ProfileScreen extends StatelessWidget {
               }
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: Colors.redAccent,
+              backgroundColor: const Color(0xFF1E90FF),
               foregroundColor: Colors.white,
             ),
             child: const Text('Logout'),
@@ -272,7 +272,7 @@ class ProfileScreen extends StatelessWidget {
                                         const Icon(
                                           Icons.account_balance_wallet_outlined,
                                           size: 16,
-                                          color: Colors.redAccent,
+                                          color: Color(0xFF1E90FF),
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
@@ -317,7 +317,7 @@ class ProfileScreen extends StatelessWidget {
                                         const Icon(
                                           Icons.card_giftcard_outlined,
                                           size: 16,
-                                          color: Colors.redAccent,
+                                          color: Color(0xFF1E90FF),
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
@@ -480,7 +480,7 @@ class ProfileScreen extends StatelessWidget {
                         themeProvider.isDarkMode
                             ? Icons.dark_mode_outlined
                             : Icons.light_mode_outlined,
-                        color: Colors.redAccent,
+                        color: const Color(0xFF1E90FF),
                       ),
                       title: Text(
                         'Dark Mode',
@@ -499,7 +499,7 @@ class ProfileScreen extends StatelessWidget {
                       ),
                       trailing: Switch(
                         value: themeProvider.isDarkMode,
-                        activeThumbColor: Colors.redAccent,
+                        activeThumbColor: const Color(0xFF1E90FF),
                         onChanged: (_) {
                           themeProvider.toggleTheme();
                         },
@@ -553,7 +553,7 @@ class _ProfileSectionHeader extends StatelessWidget {
             width: 4,
             height: 16,
             decoration: BoxDecoration(
-              color: Colors.redAccent,
+              color: const Color(0xFF1E90FF),
               borderRadius: BorderRadius.circular(2),
             ),
           ),
@@ -611,7 +611,7 @@ class _ProfileOptionTile extends StatelessWidget {
                 Icon(
                   icon,
                   size: 20,
-                  color: Colors.redAccent,
+                  color: const Color(0xFF1E90FF),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -621,7 +621,7 @@ class _ProfileOptionTile extends StatelessWidget {
                       fontSize: 14.5,
                       fontWeight: FontWeight.w600,
                       color: isDestructive
-                          ? Colors.redAccent
+                          ? const Color(0xFFEF4444)
                           : (isDark ? Colors.white : Colors.black87),
                     ),
                   ),
