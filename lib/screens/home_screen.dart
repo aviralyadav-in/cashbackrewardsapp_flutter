@@ -30,6 +30,17 @@ class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
 
+  bool _showAllFashion = false;
+  bool _showAllBeauty = false;
+  bool _showAllLifetimeCards = false;
+  bool _showAllElectronics = false;
+  bool _showAllShoppingCards = false;
+  bool _showAllMedicines = false;
+  bool _showAllCardsLoans = false;
+  bool _showAllHotelBooking = false;
+  bool _showAllPersonalLoans = false;
+  bool _showAllAmazonDeals = false;
+
   @override
   void initState() {
     super.initState();
@@ -454,6 +465,198 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 24),
 
+                        // 1. CASHBACK ON MOST POPULAR BRANDS
+                        _buildSubtleSectionContainer(
+                          title: 'Cashback on Most Popular Brands',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFEFF6FF), Colors.white],
+                          darkGradientColors: const [Color(0xFF0F172A), Color(0xFF0D0D0D)],
+                          child: _buildHorizontalBrandCarousel(_popularBrandsCatalog, isDark),
+                        ),
+
+                        // 2. GET CASHBACK ON FASHION BUYS
+                        _buildSubtleSectionContainer(
+                          title: 'Get Cashback on Fashion Buys',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFFFF0F5), Colors.white],
+                          darkGradientColors: const [Color(0xFF1E1016), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllFashion = !_showAllFashion;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _fashionBrandsCatalog,
+                            isDark,
+                            isExpanded: _showAllFashion,
+                            initialCount: 3,
+                          ),
+                        ),
+
+                        // 3. TRENDING BRANDS
+                        _buildSubtleSectionContainer(
+                          title: 'Trending Brands',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFF5F0FF), Colors.white],
+                          darkGradientColors: const [Color(0xFF161022), Color(0xFF0D0D0D)],
+                          child: _buildTrendingBannerCarousel(_trendingBannerCatalog, isDark),
+                        ),
+
+                        // 4. GET CASHBACK ON BEAUTY BRANDS
+                        _buildSubtleSectionContainer(
+                          title: 'Get Cashback on Beauty Brands',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFFFF5EE), Colors.white],
+                          darkGradientColors: const [Color(0xFF1E1410), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllBeauty = !_showAllBeauty;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _beautyBrandsCatalog,
+                            isDark,
+                            isExpanded: _showAllBeauty,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 5. REWARDS ON LIFETIME FREE CARDS
+                        _buildSubtleSectionContainer(
+                          title: 'Rewards on Lifetime Free Cards',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFFFFDF0), Colors.white],
+                          darkGradientColors: const [Color(0xFF1C1A10), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllLifetimeCards = !_showAllLifetimeCards;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _lifetimeFreeCardsCatalog,
+                            isDark,
+                            isExpanded: _showAllLifetimeCards,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 6. GET CASHBACK ON ELECTRONICS
+                        _buildSubtleSectionContainer(
+                          title: 'Get Cashback on Electronics',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFF0FAF7), Colors.white],
+                          darkGradientColors: const [Color(0xFF101E1A), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllElectronics = !_showAllElectronics;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _electronicsBrandsCatalog,
+                            isDark,
+                            isExpanded: _showAllElectronics,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 7. BEST CARDS FOR SHOPPING
+                        _buildSubtleSectionContainer(
+                          title: 'Best Cards for Shopping',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFFFF8F0), Colors.white],
+                          darkGradientColors: const [Color(0xFF1E1610), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllShoppingCards = !_showAllShoppingCards;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _shoppingCardsCatalog,
+                            isDark,
+                            isExpanded: _showAllShoppingCards,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 8. GET CASHBACK ON MEDICINES
+                        _buildSubtleSectionContainer(
+                          title: 'Get Cashback on Medicines',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFF0FFF4), Colors.white],
+                          darkGradientColors: const [Color(0xFF101F14), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllMedicines = !_showAllMedicines;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _medicineBrandsCatalog,
+                            isDark,
+                            isExpanded: _showAllMedicines,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 9. GET REWARDS ON CARDS AND LOANS
+                        _buildSubtleSectionContainer(
+                          title: 'Get Rewards on Cards and Loans',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFFFFBF0), Colors.white],
+                          darkGradientColors: const [Color(0xFF1D1B10), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllCardsLoans = !_showAllCardsLoans;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _cardsAndLoansCatalog,
+                            isDark,
+                            isExpanded: _showAllCardsLoans,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 10. GET CASHBACK ON HOTEL BOOKING
+                        _buildSubtleSectionContainer(
+                          title: 'Get Cashback on Hotel Booking',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFF0F9FF), Colors.white],
+                          darkGradientColors: const [Color(0xFF101B24), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllHotelBooking = !_showAllHotelBooking;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _hotelBookingCatalog,
+                            isDark,
+                            isExpanded: _showAllHotelBooking,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 11. GET REWARDS ON PERSONAL LOANS
+                        _buildSubtleSectionContainer(
+                          title: 'Get Rewards on Personal Loans',
+                          isDark: isDark,
+                          lightGradientColors: const [Color(0xFFF3F0FF), Colors.white],
+                          darkGradientColors: const [Color(0xFF141022), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            setState(() {
+                              _showAllPersonalLoans = !_showAllPersonalLoans;
+                            });
+                          },
+                          child: _buildGridCardsSection(
+                            _personalLoansCatalog,
+                            isDark,
+                            isExpanded: _showAllPersonalLoans,
+                            initialCount: 6,
+                          ),
+                        ),
+
+                        // 12. TOP AMAZON DEALS (FINAL HOMEPAGE SECTION - NO GRADIENT BACKGROUND)
+                        _buildTopAmazonDealsSection(isDark),
+
                         // FLIPKART – FREEDOM SALE
                         _OfferSectionCarouselWidget(
                           title: 'Flipkart – Freedom Sale',
@@ -698,6 +901,1495 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  // =========================================================================
+  // HELPER WIDGETS & RENDERERS FOR THE 11 DISCOVERY SECTIONS
+  // =========================================================================
+
+  Widget _buildSubtleSectionContainer({
+    required String title,
+    required Widget child,
+    required bool isDark,
+    required List<Color> lightGradientColors,
+    required List<Color> darkGradientColors,
+    VoidCallback? onViewAllTap,
+  }) {
+    final gradientColors = isDark ? darkGradientColors : lightGradientColors;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 24),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          colors: gradientColors,
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+        borderRadius: BorderRadius.circular(20),
+      ),
+      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section Header Row
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E90FF),
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      title,
+                      style: TextStyle(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                        letterSpacing: 0.2,
+                      ),
+                    ),
+                  ],
+                ),
+                if (onViewAllTap != null)
+                  InkWell(
+                    onTap: onViewAllTap,
+                    borderRadius: BorderRadius.circular(16),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                      decoration: BoxDecoration(
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
+                        borderRadius: BorderRadius.circular(16),
+                      ),
+                      child: const Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'View All',
+                            style: TextStyle(
+                              fontSize: 12,
+                              fontWeight: FontWeight.bold,
+                              color: Color(0xFF1E90FF),
+                            ),
+                          ),
+                          SizedBox(width: 2),
+                          Icon(
+                            Icons.arrow_forward_ios,
+                            size: 10,
+                            color: Color(0xFF1E90FF),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 14),
+
+          // Section Child
+          child,
+        ],
+      ),
+    );
+  }
+
+  Widget _buildHorizontalBrandCarousel(List<BrandModel> brands, bool isDark) {
+    return SizedBox(
+      height: 152,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: brands.length,
+        separatorBuilder: (context, index) => const SizedBox(width: 10),
+        itemBuilder: (context, index) {
+          final brand = brands[index];
+          return SizedBox(
+            width: 122,
+            child: _buildGridBrandCard(context, brand, isDark),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildTrendingBannerCarousel(List<_TrendingBannerItemData> items, bool isDark) {
+    return SizedBox(
+      height: 135,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: items.length,
+        itemBuilder: (context, index) {
+          final item = items[index];
+          return GestureDetector(
+            onTap: () => _showConfirmationDialog(context, item.brand),
+            child: Container(
+              width: 290,
+              height: 135,
+              margin: const EdgeInsets.only(right: 12),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF161618) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Row(
+                  children: [
+                    // Left Image Part (38%)
+                    SizedBox(
+                      width: 105,
+                      height: double.infinity,
+                      child: NetworkImageWithSkeleton(
+                        imageUrl: item.brand.bannerUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // Right Content Part (62%)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: 22,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
+                                    border: Border.all(
+                                      color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                                    ),
+                                  ),
+                                  child: ClipOval(
+                                    child: NetworkImageWithSkeleton(
+                                      imageUrl: item.brand.logoUrl,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (ctx, err, stack) => Center(
+                                        child: Text(
+                                          item.brand.name.substring(0, 1),
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF1E90FF),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    item.brand.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: isDark ? Colors.white : Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              item.tagline,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w500,
+                                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                              ),
+                            ),
+                            Text(
+                              item.brand.offerText,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.1),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                item.brand.cashbackPercentage,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1E90FF),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildGridCardsSection(
+    List<BrandModel> brands,
+    bool isDark, {
+    required bool isExpanded,
+    int initialCount = 6,
+  }) {
+    final displayBrands = isExpanded || brands.length <= initialCount
+        ? brands
+        : brands.sublist(0, initialCount);
+
+    final List<List<BrandModel>> rows = [];
+    for (var i = 0; i < displayBrands.length; i += 3) {
+      rows.add(
+        displayBrands.sublist(
+            i, i + 3 > displayBrands.length ? displayBrands.length : i + 3),
+      );
+    }
+
+    return Column(
+      children: List.generate(rows.length, (rowIndex) {
+        final rowBrands = rows[rowIndex];
+        final isLastRow = rowIndex == rows.length - 1;
+
+        return Padding(
+          padding: EdgeInsets.only(bottom: isLastRow ? 0.0 : 10.0),
+          child: IntrinsicHeight(
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Expanded(
+                  child: _buildGridBrandCard(context, rowBrands[0], isDark),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: rowBrands.length > 1
+                      ? _buildGridBrandCard(context, rowBrands[1], isDark)
+                      : const SizedBox.shrink(),
+                ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: rowBrands.length > 2
+                      ? _buildGridBrandCard(context, rowBrands[2], isDark)
+                      : const SizedBox.shrink(),
+                ),
+              ],
+            ),
+          ),
+        );
+      }),
+    );
+  }
+
+  // =========================================================================
+  // DATA CATALOGS FOR THE 11 HOMEPAGE DISCOVERY SECTIONS
+  // =========================================================================
+
+  List<BrandModel> get _popularBrandsCatalog => const [
+        BrandModel(
+          name: 'Amazon.in',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 8% Rewards',
+          category: 'Popular',
+          offerText: 'Up to 80% Off',
+          websiteUrl: 'https://www.amazon.in',
+        ),
+        BrandModel(
+          name: 'Flipkart',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 7% Rewards',
+          category: 'Popular',
+          offerText: 'Up to 75% Off',
+          websiteUrl: 'https://www.flipkart.com',
+        ),
+        BrandModel(
+          name: 'Myntra',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Myntra_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 7.5% Rewards',
+          category: 'Popular',
+          offerText: 'Up to 60% Off',
+          websiteUrl: 'https://www.myntra.com',
+        ),
+        BrandModel(
+          name: 'AJIO',
+          logoUrl: 'https://assets.ajio.com/static/img/Ajio-Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Rewards',
+          category: 'Popular',
+          offerText: 'Flat 50% Off',
+          websiteUrl: 'https://www.ajio.com',
+        ),
+        BrandModel(
+          name: 'MakeMyTrip',
+          logoUrl: 'https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 8% Rewards',
+          category: 'Popular',
+          offerText: 'Up to 35% Off',
+          websiteUrl: 'https://www.makemytrip.com',
+        ),
+        BrandModel(
+          name: 'Samsung',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 9% Rewards',
+          category: 'Popular',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www.samsung.com/in',
+        ),
+      ];
+
+  List<BrandModel> get _fashionBrandsCatalog => const [
+        BrandModel(
+          name: 'Myntra',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Myntra_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 7.5% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 70% Off',
+          websiteUrl: 'https://www.myntra.com',
+        ),
+        BrandModel(
+          name: 'AJIO',
+          logoUrl: 'https://assets.ajio.com/static/img/Ajio-Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 60% Off',
+          websiteUrl: 'https://www.ajio.com',
+        ),
+        BrandModel(
+          name: 'Nike',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 9% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 40% Off',
+          websiteUrl: 'https://www.nike.com/in',
+        ),
+        BrandModel(
+          name: 'H&M',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 8% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www2.hm.com/en_in',
+        ),
+        BrandModel(
+          name: 'Zara',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 6% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 30% Off',
+          websiteUrl: 'https://www.zara.com/in',
+        ),
+        BrandModel(
+          name: 'ASOS',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 8% Cashback',
+          category: 'Fashion',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www.asos.com',
+        ),
+      ];
+
+  List<_TrendingBannerItemData> get _trendingBannerCatalog => const [
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Amazon.in',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 8% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 80% Off',
+            websiteUrl: 'https://www.amazon.in',
+          ),
+          tagline: 'Great Freedom Festival & Deals',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Flipkart',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 7% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 75% Off',
+            websiteUrl: 'https://www.flipkart.com',
+          ),
+          tagline: 'Big Billion Days & Electronics',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Myntra',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Myntra_Logo.png',
+            bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Flat 7.5% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 70% Off',
+            websiteUrl: 'https://www.myntra.com',
+          ),
+          tagline: 'End of Reason Sale Deals',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'AJIO',
+            logoUrl: 'https://assets.ajio.com/static/img/Ajio-Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Flat 10% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Flat 50% Off',
+            websiteUrl: 'https://www.ajio.com',
+          ),
+          tagline: 'Trends & International Fashion',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Meesho',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 6% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 60% Off',
+            websiteUrl: 'https://www.meesho.com',
+          ),
+          tagline: 'Lowest Price Quality Deals',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Tata CLiQ',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Myntra_Logo.png',
+            bannerUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 8% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 50% Off',
+            websiteUrl: 'https://www.tatacliq.com',
+          ),
+          tagline: 'Luxury Fashion & Electronics',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Nykaa',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/00/Nykaa_New_Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 8% Rewards',
+            category: 'Beauty',
+            offerText: 'Up to 50% Off',
+            websiteUrl: 'https://www.nykaa.com',
+          ),
+          tagline: 'Pink Friday Beauty & Cosmetics',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Croma',
+            logoUrl: 'https://media.croma.com/image/upload/v1637759004/Croma%20Assets/CMS/Category%20Icon/Croma_Logo.png',
+            bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Flat 6% Rewards',
+            category: 'Electronics',
+            offerText: 'Up to 50% Off',
+            websiteUrl: 'https://www.croma.com',
+          ),
+          tagline: 'Electronics & Home Appliances',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Reliance Digital',
+            logoUrl: 'https://www.reliancedigital.in/build/client/images/rel_stat_svg.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 5% Rewards',
+            category: 'Electronics',
+            offerText: 'Up to 45% Off',
+            websiteUrl: 'https://www.reliancedigital.in',
+          ),
+          tagline: 'Digital India Tech Deals',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Snapdeal',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 7% Rewards',
+            category: 'E-Commerce',
+            offerText: 'Up to 65% Off',
+            websiteUrl: 'https://www.snapdeal.com',
+          ),
+          tagline: 'Daily Bargains & Essentials',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Nike',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 9% Rewards',
+            category: 'Fashion',
+            offerText: 'Up to 40% Off',
+            websiteUrl: 'https://www.nike.com/in',
+          ),
+          tagline: 'Air Jordan & Sportswear Drops',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Adidas',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 8% Rewards',
+            category: 'Fashion',
+            offerText: 'Up to 45% Off',
+            websiteUrl: 'https://www.adidas.co.in',
+          ),
+          tagline: 'Originals & Running Sneakers',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'H&M',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Flat 8% Rewards',
+            category: 'Fashion',
+            offerText: 'Up to 50% Off',
+            websiteUrl: 'https://www2.hm.com/en_in',
+          ),
+          tagline: 'Sustainable High Fashion',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Zara',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 6% Rewards',
+            category: 'Fashion',
+            offerText: 'Up to 30% Off',
+            websiteUrl: 'https://www.zara.com/in',
+          ),
+          tagline: 'New Seasonal Outfits & Trends',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Sephora',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Sephora_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Flat 10% Rewards',
+            category: 'Beauty',
+            offerText: 'Up to 40% Off',
+            websiteUrl: 'https://sephora.in',
+          ),
+          tagline: 'Premium Cosmetics & Skincare',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Etsy',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 5% Rewards',
+            category: 'Global',
+            offerText: 'Up to 30% Off',
+            websiteUrl: 'https://www.etsy.com',
+          ),
+          tagline: 'Handcrafted & Unique Gifts',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'eBay',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 4% Rewards',
+            category: 'Global',
+            offerText: 'Global Deals',
+            websiteUrl: 'https://www.ebay.com',
+          ),
+          tagline: 'Refurbished Tech & Collectibles',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Walmart',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 5% Rewards',
+            category: 'Global',
+            offerText: 'Rollback Prices',
+            websiteUrl: 'https://www.walmart.com',
+          ),
+          tagline: 'Everyday Low Prices & Savings',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Best Buy',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Best_Buy_Logo.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 6% Rewards',
+            category: 'Global',
+            offerText: 'Tech Outlet Sale',
+            websiteUrl: 'https://www.bestbuy.com',
+          ),
+          tagline: 'Expert Electronics & Gadgets',
+        ),
+        _TrendingBannerItemData(
+          brand: BrandModel(
+            name: 'Target',
+            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Target_Corporation_logo_vector.svg',
+            bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
+            cashbackPercentage: 'Up to 5% Rewards',
+            category: 'Global',
+            offerText: 'Target Circle Deals',
+            websiteUrl: 'https://www.target.com',
+          ),
+          tagline: 'Style, Home & Daily Essentials',
+        ),
+      ];
+
+  List<BrandModel> get _beautyBrandsCatalog => const [
+        BrandModel(
+          name: 'Nykaa',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/0/00/Nykaa_New_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 8% Cashback',
+          category: 'Beauty',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www.nykaa.com',
+        ),
+        BrandModel(
+          name: 'Sephora',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Sephora_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Cashback',
+          category: 'Beauty',
+          offerText: 'Up to 40% Off',
+          websiteUrl: 'https://sephora.in',
+        ),
+        BrandModel(
+          name: 'Mamaearth',
+          logoUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=80',
+          bannerUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 12% Cashback',
+          category: 'Beauty',
+          offerText: 'Buy 1 Get 1 Free',
+          websiteUrl: 'https://mamaearth.in',
+        ),
+        BrandModel(
+          name: 'Plum Goodness',
+          logoUrl: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=400&auto=format&fit=crop&q=80',
+          bannerUrl: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 15% Cashback',
+          category: 'Beauty',
+          offerText: 'Flat 30% Off',
+          websiteUrl: 'https://plumgoodness.com',
+        ),
+        BrandModel(
+          name: 'Minimalist',
+          logoUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=400&auto=format&fit=crop&q=80',
+          bannerUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Cashback',
+          category: 'Beauty',
+          offerText: 'Flat ₹100 Off',
+          websiteUrl: 'https://beminimalist.co',
+        ),
+        BrandModel(
+          name: 'Sugar Cosmetics',
+          logoUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=400&auto=format&fit=crop&q=80',
+          bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 12% Cashback',
+          category: 'Beauty',
+          offerText: 'Up to 45% Off',
+          websiteUrl: 'https://sugarcosmetics.com',
+        ),
+      ];
+
+  List<BrandModel> get _lifetimeFreeCardsCatalog => const [
+        BrandModel(
+          name: 'HDFC Freedom',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Bonus',
+          category: 'Cards',
+          offerText: 'Lifetime Free Card',
+          websiteUrl: 'https://www.hdfcbank.com',
+        ),
+        BrandModel(
+          name: 'SBI SimplyCLICK',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Cashback',
+          category: 'Cards',
+          offerText: 'Zero Annual Fee',
+          websiteUrl: 'https://www.sbicard.com',
+        ),
+        BrandModel(
+          name: 'Axis MyZone',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Cashback',
+          category: 'Cards',
+          offerText: 'Lifetime Free Card',
+          websiteUrl: 'https://www.axisbank.com',
+        ),
+        BrandModel(
+          name: 'ICICI Amazon Pay',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1556742049-0a67dd385203?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Rewards',
+          category: 'Cards',
+          offerText: 'Zero Joining Fee',
+          websiteUrl: 'https://www.icicibank.com',
+        ),
+        BrandModel(
+          name: 'IDFC Millennia',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a2/IDFC_First_Bank_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Bonus',
+          category: 'Cards',
+          offerText: 'Lifetime Free Card',
+          websiteUrl: 'https://www.idfcfirstbank.com',
+        ),
+        BrandModel(
+          name: 'OneCard Credit',
+          logoUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=400&auto=format&fit=crop&q=80',
+          bannerUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹800 Cashback',
+          category: 'Cards',
+          offerText: 'Metal Card Free',
+          websiteUrl: 'https://getonecard.app',
+        ),
+      ];
+
+  List<BrandModel> get _electronicsBrandsCatalog => const [
+        BrandModel(
+          name: 'Amazon',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 6% Cashback',
+          category: 'Electronics',
+          offerText: 'Up to 65% Off',
+          websiteUrl: 'https://www.amazon.in',
+        ),
+        BrandModel(
+          name: 'Flipkart',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 7% Cashback',
+          category: 'Electronics',
+          offerText: 'Up to 70% Off',
+          websiteUrl: 'https://www.flipkart.com',
+        ),
+        BrandModel(
+          name: 'Croma',
+          logoUrl: 'https://media.croma.com/image/upload/v1637759004/Croma%20Assets/CMS/Category%20Icon/Croma_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 6% Cashback',
+          category: 'Electronics',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www.croma.com',
+        ),
+        BrandModel(
+          name: 'Apple Store',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fa/Apple_logo_black.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 4% Cashback',
+          category: 'Electronics',
+          offerText: 'Save up to ₹10,000',
+          websiteUrl: 'https://www.apple.com/in',
+        ),
+        BrandModel(
+          name: 'Samsung',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/24/Samsung_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 8% Cashback',
+          category: 'Electronics',
+          offerText: 'Up to 55% Off',
+          websiteUrl: 'https://www.samsung.com/in',
+        ),
+        BrandModel(
+          name: 'Reliance Digital',
+          logoUrl: 'https://www.reliancedigital.in/build/client/images/rel_stat_svg.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 5% Cashback',
+          category: 'Electronics',
+          offerText: 'Up to 45% Off',
+          websiteUrl: 'https://www.reliancedigital.in',
+        ),
+      ];
+
+  List<BrandModel> get _shoppingCardsCatalog => const [
+        BrandModel(
+          name: 'HDFC Millennia',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Bonus',
+          category: 'Shopping Cards',
+          offerText: '5% Online Cashback',
+          websiteUrl: 'https://www.hdfcbank.com',
+        ),
+        BrandModel(
+          name: 'SBI CashCard',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/cc/SBI-Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Cashback',
+          category: 'Shopping Cards',
+          offerText: '5% Unlimited Online',
+          websiteUrl: 'https://www.sbicard.com',
+        ),
+        BrandModel(
+          name: 'Axis Flipkart Card',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Cashback',
+          category: 'Shopping Cards',
+          offerText: '5% Flipkart Cashback',
+          websiteUrl: 'https://www.axisbank.com',
+        ),
+        BrandModel(
+          name: 'ICICI Amazon Pay',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1556742049-0a67dd385203?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Rewards',
+          category: 'Shopping Cards',
+          offerText: '5% Amazon Cashback',
+          websiteUrl: 'https://www.icicibank.com',
+        ),
+        BrandModel(
+          name: 'HSBC Cashback',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Bonus',
+          category: 'Shopping Cards',
+          offerText: '10% Dining Cashback',
+          websiteUrl: 'https://www.hsbc.co.in',
+        ),
+        BrandModel(
+          name: 'StanChart Smart',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Bonus',
+          category: 'Shopping Cards',
+          offerText: '2% Online Cashback',
+          websiteUrl: 'https://www.sc.com/in',
+        ),
+      ];
+
+  List<BrandModel> get _medicineBrandsCatalog => const [
+        BrandModel(
+          name: 'Tata 1mg',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/1mg_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 12% Cashback',
+          category: 'Medicines',
+          offerText: 'Up to 25% Off',
+          websiteUrl: 'https://www.1mg.com',
+        ),
+        BrandModel(
+          name: 'PharmEasy',
+          logoUrl: 'https://pharmeasy.in/assets/src/images/logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 15% Cashback',
+          category: 'Medicines',
+          offerText: 'Up to 30% Off',
+          websiteUrl: 'https://www.pharmeasy.in',
+        ),
+        BrandModel(
+          name: 'Netmeds',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/1mg_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Cashback',
+          category: 'Medicines',
+          offerText: 'Flat 20% Off',
+          websiteUrl: 'https://www.netmeds.com',
+        ),
+        BrandModel(
+          name: 'Apollo Pharmacy',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/6/6f/1mg_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 8% Cashback',
+          category: 'Medicines',
+          offerText: 'Up to 15% Off',
+          websiteUrl: 'https://www.apollopharmacy.in',
+        ),
+        BrandModel(
+          name: 'HealthKart',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/d/d7/HealthKart_Logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579722821273-0f6c7d44362f?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 10% Cashback',
+          category: 'Medicines',
+          offerText: 'Up to 40% Off',
+          websiteUrl: 'https://www.healthkart.com',
+        ),
+        BrandModel(
+          name: 'PharmEasy Lab',
+          logoUrl: 'https://pharmeasy.in/assets/src/images/logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹500 Cashback',
+          category: 'Medicines',
+          offerText: 'Flat 70% Off Labs',
+          websiteUrl: 'https://www.pharmeasy.in',
+        ),
+      ];
+
+  List<BrandModel> get _cardsAndLoansCatalog => const [
+        BrandModel(
+          name: 'MoneyTap Line',
+          logoUrl: 'https://www.moneytap.com/images/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Bonus',
+          category: 'Cards & Loans',
+          offerText: 'Credit Line ₹5 Lakhs',
+          websiteUrl: 'https://www.moneytap.com',
+        ),
+        BrandModel(
+          name: 'Navi Financial',
+          logoUrl: 'https://navi.com/assets/images/navi_logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Cashback',
+          category: 'Cards & Loans',
+          offerText: 'Instant Cash Loans',
+          websiteUrl: 'https://navi.com',
+        ),
+        BrandModel(
+          name: 'KreditBee',
+          logoUrl: 'https://www.moneytap.com/images/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹800 Cashback',
+          category: 'Cards & Loans',
+          offerText: 'Personal Credit Line',
+          websiteUrl: 'https://www.kreditbee.in',
+        ),
+        BrandModel(
+          name: 'Bajaj Finserv',
+          logoUrl: 'https://navi.com/assets/images/navi_logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Bonus',
+          category: 'Cards & Loans',
+          offerText: 'Insta EMI Card Free',
+          websiteUrl: 'https://www.bajajfinserv.in',
+        ),
+        BrandModel(
+          name: 'IndusInd Card',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/12/ICICI_Bank_Logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Rewards',
+          category: 'Cards & Loans',
+          offerText: 'Lifetime Free Card',
+          websiteUrl: 'https://www.indusind.com',
+        ),
+        BrandModel(
+          name: 'BoB Credit Card',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1a/Axis_Bank_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1563013544-824ae1b704d3?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Cashback',
+          category: 'Cards & Loans',
+          offerText: 'Zero Annual Fee',
+          websiteUrl: 'https://www.bobfinancial.com',
+        ),
+      ];
+
+  List<BrandModel> get _hotelBookingCatalog => const [
+        BrandModel(
+          name: 'MakeMyTrip',
+          logoUrl: 'https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 8% Cashback',
+          category: 'Travel',
+          offerText: 'Up to 35% Off',
+          websiteUrl: 'https://www.makemytrip.com',
+        ),
+        BrandModel(
+          name: 'Booking.com',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Booking.com_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Up to 9% Cashback',
+          category: 'Travel',
+          offerText: 'Up to 40% Off',
+          websiteUrl: 'https://www.booking.com',
+        ),
+        BrandModel(
+          name: 'Agoda',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Agoda_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 10% Cashback',
+          category: 'Travel',
+          offerText: 'Up to 50% Off',
+          websiteUrl: 'https://www.agoda.com',
+        ),
+        BrandModel(
+          name: 'Expedia',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ce/Agoda_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1488646953014-85cb44e25828?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 7% Cashback',
+          category: 'Travel',
+          offerText: 'Up to 30% Off',
+          websiteUrl: 'https://www.expedia.com',
+        ),
+        BrandModel(
+          name: 'Air India',
+          logoUrl: 'https://imgak.mmtcdn.com/pwa_v3/pwa_commons_assets/desktop/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 6% Cashback',
+          category: 'Travel',
+          offerText: 'Flight Deals',
+          websiteUrl: 'https://www.airindia.com',
+        ),
+        BrandModel(
+          name: 'Qatar Airways',
+          logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/be/Booking.com_logo.svg',
+          bannerUrl: 'https://images.unsplash.com/photo-1566073771259-6a8506099945?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat 8% Cashback',
+          category: 'Travel',
+          offerText: 'Global Flights',
+          websiteUrl: 'https://www.qatarairways.com',
+        ),
+      ];
+
+  List<BrandModel> get _personalLoansCatalog => const [
+        BrandModel(
+          name: 'Navi Loans',
+          logoUrl: 'https://navi.com/assets/images/navi_logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,200 Cashback',
+          category: 'Personal Loans',
+          offerText: 'Loans up to ₹20 Lakhs',
+          websiteUrl: 'https://navi.com',
+        ),
+        BrandModel(
+          name: 'MoneyTap',
+          logoUrl: 'https://www.moneytap.com/images/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,000 Bonus',
+          category: 'Personal Loans',
+          offerText: 'Instant Credit Line',
+          websiteUrl: 'https://www.moneytap.com',
+        ),
+        BrandModel(
+          name: 'Tata Capital',
+          logoUrl: 'https://navi.com/assets/images/navi_logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹1,500 Bonus',
+          category: 'Personal Loans',
+          offerText: 'Low Interest Rates',
+          websiteUrl: 'https://www.tatacapital.com',
+        ),
+        BrandModel(
+          name: 'Paysense',
+          logoUrl: 'https://www.moneytap.com/images/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹800 Cashback',
+          category: 'Personal Loans',
+          offerText: 'Quick Disbursal',
+          websiteUrl: 'https://www.gopaysense.com',
+        ),
+        BrandModel(
+          name: 'CASHe',
+          logoUrl: 'https://navi.com/assets/images/navi_logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹700 Cashback',
+          category: 'Personal Loans',
+          offerText: 'Instant Salary Loan',
+          websiteUrl: 'https://www.cashe.co.in',
+        ),
+        BrandModel(
+          name: 'mPokket',
+          logoUrl: 'https://www.moneytap.com/images/logo.png',
+          bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
+          cashbackPercentage: 'Flat ₹500 Cashback',
+          category: 'Personal Loans',
+          offerText: 'Student & Youth Loan',
+          websiteUrl: 'https://mpokket.in',
+        ),
+      ];
+
+  // =========================================================================
+  // TOP AMAZON DEALS SECTION & PRODUCT CARDS (NO GRADIENT BACKGROUND)
+  // =========================================================================
+
+  Widget _buildTopAmazonDealsSection(bool isDark) {
+    final deals = _amazonDealsCatalog;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.only(bottom: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Section Header Row
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    width: 4,
+                    height: 18,
+                    decoration: BoxDecoration(
+                      color: const Color(0xFF1E90FF),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Top Amazon Deals',
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                ],
+              ),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _showAllAmazonDeals = !_showAllAmazonDeals;
+                  });
+                },
+                borderRadius: BorderRadius.circular(16),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
+                    borderRadius: BorderRadius.circular(16),
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        _showAllAmazonDeals ? 'Show Less' : 'View All',
+                        style: const TextStyle(
+                          fontSize: 12,
+                          fontWeight: FontWeight.bold,
+                          color: Color(0xFF1E90FF),
+                        ),
+                      ),
+                      const SizedBox(width: 2),
+                      Icon(
+                        _showAllAmazonDeals ? Icons.keyboard_arrow_up : Icons.arrow_forward_ios,
+                        size: 10,
+                        color: const Color(0xFF1E90FF),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ],
+          ),
+          const SizedBox(height: 14),
+
+          // Horizontal Slider OR Grid View based on _showAllAmazonDeals
+          if (!_showAllAmazonDeals)
+            SizedBox(
+              height: 275,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                physics: const BouncingScrollPhysics(),
+                itemCount: deals.length,
+                itemBuilder: (context, index) {
+                  final deal = deals[index];
+                  return Container(
+                    width: 175,
+                    margin: const EdgeInsets.only(right: 12),
+                    child: _buildAmazonProductCard(context, deal, isDark),
+                  );
+                },
+              ),
+            )
+          else
+            GridView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: deals.length,
+              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                crossAxisCount: 2,
+                childAspectRatio: 0.64,
+                crossAxisSpacing: 10,
+                mainAxisSpacing: 12,
+              ),
+              itemBuilder: (context, index) {
+                final deal = deals[index];
+                return _buildAmazonProductCard(context, deal, isDark);
+              },
+            ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildAmazonProductCard(
+    BuildContext context,
+    _AmazonDealItemData deal,
+    bool isDark,
+  ) {
+    final brandModel = BrandModel(
+      name: '${deal.brandName} - ${deal.productName}',
+      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+      bannerUrl: deal.imageUrl,
+      cashbackPercentage: 'Flat ${deal.rewardPercentage.toInt()}% Reward',
+      category: 'Amazon Deals',
+      offerText: 'After Rewards: ₹${_formatCurrency(deal.finalPrice)}',
+      websiteUrl: deal.productUrl,
+    );
+
+    return GestureDetector(
+      onTap: () => _showConfirmationDialog(context, brandModel),
+      child: Container(
+        decoration: BoxDecoration(
+          color: isDark ? const Color(0xFF161618) : Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          border: Border.all(
+            color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+            width: 1,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+              blurRadius: 8,
+              offset: const Offset(0, 3),
+            ),
+          ],
+        ),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(16),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // TOP PART: Product Image + Brand + Product Name + Actual Price
+              Expanded(
+                child: Padding(
+                  padding: const EdgeInsets.all(10),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      // Product Image Container
+                      Expanded(
+                        child: Center(
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(10),
+                            child: NetworkImageWithSkeleton(
+                              imageUrl: deal.imageUrl,
+                              fit: BoxFit.cover,
+                            ),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+
+                      // Brand Name
+                      Text(
+                        deal.brandName.toUpperCase(),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 10,
+                          fontWeight: FontWeight.w800,
+                          letterSpacing: 0.5,
+                          color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+
+                      // Product Name
+                      Text(
+                        deal.productName,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 12.5,
+                          fontWeight: FontWeight.bold,
+                          height: 1.2,
+                          color: isDark ? Colors.white : Colors.black87,
+                        ),
+                      ),
+                      const SizedBox(height: 4),
+
+                      // Actual Price
+                      Row(
+                        children: [
+                          Text(
+                            'Actual Price: ',
+                            style: TextStyle(
+                              fontSize: 10.5,
+                              color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+                            ),
+                          ),
+                          Text(
+                            '₹${_formatCurrency(deal.actualPrice.round())}',
+                            style: TextStyle(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              decoration: TextDecoration.lineThrough,
+                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+
+              // DASHED DIVIDER LINE
+              CustomPaint(
+                size: const Size(double.infinity, 1),
+                painter: _DashedLinePainter(
+                  color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  dashWidth: 5,
+                  dashSpace: 4,
+                ),
+              ),
+
+              // BOTTOM PART: Reward % + Final Price
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                color: isDark
+                    ? const Color(0xFF1E90FF).withValues(alpha: 0.08)
+                    : const Color(0xFF1E90FF).withValues(alpha: 0.04),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'After Rewards of ${deal.rewardPercentage.toStringAsFixed(deal.rewardPercentage % 1 == 0 ? 0 : 1)}%',
+                      style: const TextStyle(
+                        fontSize: 10.5,
+                        fontWeight: FontWeight.w600,
+                        color: Color(0xFF1E90FF),
+                      ),
+                    ),
+                    const SizedBox(height: 2),
+                    Row(
+                      children: [
+                        Text(
+                          'Final Price: ',
+                          style: TextStyle(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w600,
+                            color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+                          ),
+                        ),
+                        Text(
+                          '₹${_formatCurrency(deal.finalPrice)}',
+                          style: TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.w900,
+                            color: isDark ? Colors.white : Colors.black87,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  List<_AmazonDealItemData> get _amazonDealsCatalog => const [
+        _AmazonDealItemData(
+          brandName: 'Samsung',
+          productName: 'Samsung Galaxy S24 Ultra 5G (256GB)',
+          imageUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 129999,
+          rewardPercentage: 5.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Apple',
+          productName: 'Apple MacBook Air M3 (15-inch, 16GB)',
+          imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 134900,
+          rewardPercentage: 4.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Sony',
+          productName: 'Sony WH-1000XM5 Wireless Headphones',
+          imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 29990,
+          rewardPercentage: 6.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Nike',
+          productName: "Nike Air Force 1 '07 Sneakers",
+          imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 8695,
+          rewardPercentage: 8.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Logitech',
+          productName: 'Logitech MX Master 3S Mouse',
+          imageUrl: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 10995,
+          rewardPercentage: 5.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Bose',
+          productName: 'Bose QuietComfort Ultra Earbuds',
+          imageUrl: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 25900,
+          rewardPercentage: 7.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Dyson',
+          productName: 'Dyson V15 Detect Vacuum Cleaner',
+          imageUrl: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 65900,
+          rewardPercentage: 5.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+        _AmazonDealItemData(
+          brandName: 'Asus',
+          productName: 'Asus ROG Zephyrus G16 Gaming Laptop',
+          imageUrl: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&auto=format&fit=crop&q=80',
+          actualPrice: 189990,
+          rewardPercentage: 5.0,
+          productUrl: 'https://www.amazon.in',
+        ),
+      ];
 }
 
 class _DrawerSectionHeader extends StatelessWidget {
@@ -2079,7 +3771,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
           ),
         ];
 
-      default:
+            default:
         return const [
           BrandModel(
             name: 'Amazon.in',
@@ -2093,4 +3785,380 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
         ];
     }
   }
+}
+
+class _TrendingBannerItemData {
+  final BrandModel brand;
+  final String tagline;
+
+  const _TrendingBannerItemData({
+    required this.brand,
+    required this.tagline,
+  });
+}
+
+void _showConfirmationDialog(BuildContext context, BrandModel brand) {
+  final isDark = Theme.of(context).brightness == Brightness.dark;
+
+  showDialog(
+    context: context,
+    barrierDismissible: true,
+    builder: (ctx) {
+      return AlertDialog(
+        backgroundColor: isDark ? const Color(0xFF1C1C1E) : Colors.white,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(24),
+        ),
+        contentPadding: const EdgeInsets.all(24),
+        content: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            // Icon Header
+            Container(
+              width: 64,
+              height: 64,
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                shape: BoxShape.circle,
+              ),
+              child: const Icon(
+                Icons.exit_to_app_rounded,
+                color: Color(0xFF1E90FF),
+                size: 32,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Title
+            Text(
+              'Redirecting to ${brand.name}',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+            const SizedBox(height: 8),
+
+            // Description Subtitle
+            Text(
+              'You are leaving our app to visit ${brand.name}\'s official website.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 13,
+                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                height: 1.35,
+              ),
+            ),
+            const SizedBox(height: 16),
+
+            // Offer Summary Pill
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+              decoration: BoxDecoration(
+                color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.15 : 0.08),
+                borderRadius: BorderRadius.circular(12),
+                border: Border.all(
+                  color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                  width: 1,
+                ),
+              ),
+              child: Row(
+                children: [
+                  const Icon(
+                    Icons.card_giftcard,
+                    color: Color(0xFF1E90FF),
+                    size: 20,
+                  ),
+                  const SizedBox(width: 10),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          brand.cashbackPercentage,
+                          style: const TextStyle(
+                            fontSize: 13.5,
+                            fontWeight: FontWeight.bold,
+                            color: Color(0xFF1E90FF),
+                          ),
+                        ),
+                        Text(
+                          'Cashback will be tracked automatically.',
+                          style: TextStyle(
+                            fontSize: 11,
+                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 24),
+
+            // Action Buttons
+            Row(
+              children: [
+                // Cancel / Go Back Button
+                Expanded(
+                  child: OutlinedButton(
+                    onPressed: () => Navigator.of(ctx).pop(),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: isDark ? Colors.white : Colors.black87,
+                      side: BorderSide(
+                        color: isDark ? const Color(0xFF3A3A3C) : const Color(0xFFD1D1D6),
+                      ),
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      'Cancel',
+                      style: TextStyle(fontWeight: FontWeight.w600),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 12),
+
+                // Continue / Visit Website Button
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Navigator.of(ctx).pop();
+                      final success = await UrlLauncherService.openUrl(brand.websiteUrl);
+                      if (!success && context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('Could not open ${brand.name} website'),
+                            backgroundColor: const Color(0xFF1E90FF),
+                            behavior: SnackBarBehavior.floating,
+                          ),
+                        );
+                      }
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF1E90FF),
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      elevation: 2,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(14),
+                      ),
+                    ),
+                    child: const Text(
+                      'Continue',
+                      style: TextStyle(fontWeight: FontWeight.bold),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildGridBrandCard(BuildContext context, BrandModel brand, bool isDark) {
+  final imageUrl = brand.logoUrl.isNotEmpty ? brand.logoUrl : brand.bannerUrl;
+
+  return GestureDetector(
+    onTap: () => _showConfirmationDialog(context, brand),
+    child: Container(
+      height: 148,
+      padding: const EdgeInsets.all(8),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161618) : Colors.white,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(
+          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+            blurRadius: 8,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          // Top: Offer / Discount % Tag
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+            decoration: BoxDecoration(
+              color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              brand.offerText,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 9.5,
+                fontWeight: FontWeight.bold,
+                color: isDark ? Colors.white : Colors.black87,
+              ),
+            ),
+          ),
+
+          // Center: Brand Image / Logo + Brand Name
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 2),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  // Brand Logo Container
+                  Container(
+                    width: 36,
+                    height: 36,
+                    decoration: BoxDecoration(
+                      color: isDark ? const Color(0xFF222225) : Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isDark
+                            ? const Color(0xFF333336)
+                            : const Color(0xFFEEEEEE),
+                        width: 0.8,
+                      ),
+                    ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.all(4),
+                        child: NetworkImageWithSkeleton(
+                          imageUrl: imageUrl,
+                          fit: BoxFit.contain,
+                          errorBuilder: (context, error, stackTrace) => Container(
+                            color: isDark
+                                ? const Color(0xFF242426)
+                                : Colors.grey.shade200,
+                            child: const Icon(
+                              Icons.storefront_outlined,
+                              size: 18,
+                              color: Color(0xFF1E90FF),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(height: 4),
+
+                  // Brand Name
+                  Text(
+                    brand.name,
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      fontSize: 11,
+                      fontWeight: FontWeight.bold,
+                      color: isDark ? Colors.white : Colors.black87,
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+
+          // Bottom: Cashback / Reward % Badge
+          Container(
+            width: double.infinity,
+            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
+            decoration: BoxDecoration(
+              color: const Color(0xFF1E90FF)
+                  .withValues(alpha: isDark ? 0.16 : 0.1),
+              borderRadius: BorderRadius.circular(6),
+            ),
+            child: Text(
+              brand.cashbackPercentage,
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.center,
+              style: const TextStyle(
+                fontSize: 9.5,
+                fontWeight: FontWeight.bold,
+                color: Color(0xFF1E90FF),
+              ),
+            ),
+          ),
+        ],
+      ),
+    ),
+  );
+}
+
+class _AmazonDealItemData {
+  final String brandName;
+  final String productName;
+  final String imageUrl;
+  final double actualPrice;
+  final double rewardPercentage;
+  final String productUrl;
+
+  const _AmazonDealItemData({
+    required this.brandName,
+    required this.productName,
+    required this.imageUrl,
+    required this.actualPrice,
+    required this.rewardPercentage,
+    this.productUrl = 'https://www.amazon.in',
+  });
+
+  int get finalPrice => (actualPrice * (1.0 - (rewardPercentage / 100.0))).round();
+}
+
+class _DashedLinePainter extends CustomPainter {
+  final Color color;
+  final double dashWidth;
+  final double dashSpace;
+
+  const _DashedLinePainter({
+    required this.color,
+    this.dashWidth = 5.0,
+    this.dashSpace = 4.0,
+  });
+
+  @override
+  void paint(Canvas canvas, Size size) {
+    final paint = Paint()
+      ..color = color
+      ..strokeWidth = 1.0
+      ..style = PaintingStyle.stroke;
+
+    double startX = 0;
+    final y = size.height / 2;
+    while (startX < size.width) {
+      canvas.drawLine(
+        Offset(startX, y),
+        Offset((startX + dashWidth).clamp(0, size.width), y),
+        paint,
+      );
+      startX += dashWidth + dashSpace;
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _DashedLinePainter oldDelegate) {
+    return oldDelegate.color != color ||
+        oldDelegate.dashWidth != dashWidth ||
+        oldDelegate.dashSpace != dashSpace;
+  }
+}
+
+String _formatCurrency(num amount) {
+  final str = amount.round().toString();
+  final reg = RegExp(r'(\d+?)(?=(\d{3})+(?!\d))');
+  return str.replaceAllMapped(reg, (Match m) => '${m[1]},');
 }
