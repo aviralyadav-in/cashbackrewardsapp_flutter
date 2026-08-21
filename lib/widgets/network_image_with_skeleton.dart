@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/flutter_svg.dart';
 
 class NetworkImageWithSkeleton extends StatefulWidget {
   final String imageUrl;
@@ -27,6 +28,13 @@ class NetworkImageWithSkeleton extends StatefulWidget {
 class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
     with SingleTickerProviderStateMixin {
   late AnimationController _shimmerController;
+  bool _useFallbackFavicon = false;
+
+  static const Map<String, String> _networkHeaders = {
+    'User-Agent':
+        'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+    'Accept': 'image/avif,image/webp,image/apng,image/svg+xml,image/*,*/*;q=0.8',
+  };
 
   @override
   void initState() {
@@ -38,22 +46,137 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
   }
 
   @override
+  void didUpdateWidget(covariant NetworkImageWithSkeleton oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (oldWidget.imageUrl != widget.imageUrl) {
+      setState(() {
+        _useFallbackFavicon = false;
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _shimmerController.dispose();
     super.dispose();
   }
 
+  String _sanitizeUrl(String rawUrl) {
+    String url = rawUrl.trim();
+    if (url.isEmpty) return '';
+
+    if (url.startsWith('//')) {
+      url = 'https:$url';
+    } else if (!url.startsWith('http://') && !url.startsWith('https://')) {
+      url = 'https://$url';
+    }
+    return url;
+  }
+
+  bool _isWebpageUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri == null || !uri.hasAuthority) return false;
+
+    final path = uri.path.toLowerCase();
+    final hasImageExt = path.endsWith('.png') ||
+        path.endsWith('.jpg') ||
+        path.endsWith('.jpeg') ||
+        path.endsWith('.webp') ||
+        path.endsWith('.gif') ||
+        path.endsWith('.svg') ||
+        path.endsWith('.ico') ||
+        path.endsWith('.bmp') ||
+        path.endsWith('.avif');
+
+    if (hasImageExt) return false;
+
+    final hasImageQuery = uri.query.toLowerCase().contains('format=') ||
+        uri.query.toLowerCase().contains('w=') ||
+        uri.query.toLowerCase().contains('fit=') ||
+        uri.query.toLowerCase().contains('image');
+
+    if (hasImageQuery) return false;
+
+    // If path is root or HTML/ASP page or standard web path, consider it a webpage URL
+    return path.isEmpty ||
+        path == '/' ||
+        path.endsWith('.html') ||
+        path.endsWith('.htm') ||
+        path.endsWith('.php') ||
+        !path.contains('.');
+  }
+
+  String _getFaviconUrl(String url) {
+    final uri = Uri.tryParse(url);
+    if (uri != null && uri.host.isNotEmpty) {
+      return 'https://www.google.com/s2/favicons?domain=${uri.host}&sz=128';
+    }
+    return url;
+  }
+
+  bool _isSvgUrl(String url) {
+    final clean = url.toLowerCase();
+    return clean.endsWith('.svg') || clean.contains('.svg?') || clean.contains('.svg#');
+  }
+
   @override
   Widget build(BuildContext context) {
-    if (widget.imageUrl.trim().isEmpty) {
+    final sanitized = _sanitizeUrl(widget.imageUrl);
+
+    if (sanitized.isEmpty) {
       return _buildErrorWidget(context, 'Empty URL', null);
     }
 
+    String activeUrl = sanitized;
+
+    if (_useFallbackFavicon || _isWebpageUrl(sanitized)) {
+      activeUrl = _getFaviconUrl(sanitized);
+    }
+
+    if (_isSvgUrl(activeUrl)) {
+      return SvgPicture.network(
+        activeUrl,
+        width: widget.width,
+        height: widget.height,
+        fit: widget.fit,
+        headers: _networkHeaders,
+        placeholderBuilder: (context) => _ShimmerSkeletonBox(
+          controller: _shimmerController,
+          width: widget.width,
+          height: widget.height,
+          borderRadius: widget.borderRadius,
+          shape: widget.shape,
+        ),
+        errorBuilder: (context, error, stackTrace) {
+          if (!_useFallbackFavicon && !_isWebpageUrl(sanitized)) {
+            WidgetsBinding.instance.addPostFrameCallback((_) {
+              if (mounted) {
+                setState(() {
+                  _useFallbackFavicon = true;
+                });
+              }
+            });
+            return _ShimmerSkeletonBox(
+              controller: _shimmerController,
+              width: widget.width,
+              height: widget.height,
+              borderRadius: widget.borderRadius,
+              shape: widget.shape,
+            );
+          }
+          return widget.errorBuilder != null
+              ? widget.errorBuilder!(context, error, stackTrace)
+              : _buildErrorWidget(context, error, stackTrace);
+        },
+      );
+    }
+
     return Image.network(
-      widget.imageUrl,
+      activeUrl,
       width: widget.width,
       height: widget.height,
       fit: widget.fit,
+      headers: _networkHeaders,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         if (wasSynchronouslyLoaded || frame != null) {
           return child;
@@ -78,8 +201,27 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
           shape: widget.shape,
         );
       },
-      errorBuilder: widget.errorBuilder ??
-          (context, error, stackTrace) => _buildErrorWidget(context, error, stackTrace),
+      errorBuilder: (context, error, stackTrace) {
+        if (!_useFallbackFavicon && !_isWebpageUrl(sanitized)) {
+          WidgetsBinding.instance.addPostFrameCallback((_) {
+            if (mounted) {
+              setState(() {
+                _useFallbackFavicon = true;
+              });
+            }
+          });
+          return _ShimmerSkeletonBox(
+            controller: _shimmerController,
+            width: widget.width,
+            height: widget.height,
+            borderRadius: widget.borderRadius,
+            shape: widget.shape,
+          );
+        }
+        return widget.errorBuilder != null
+            ? widget.errorBuilder!(context, error, stackTrace)
+            : _buildErrorWidget(context, error, stackTrace);
+      },
     );
   }
 

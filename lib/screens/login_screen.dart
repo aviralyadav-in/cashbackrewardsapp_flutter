@@ -497,25 +497,25 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   // App Logo (No Glow)
-                  Center(
-                    child: Container(
-                      width: 100,
-                      height: 100,
-                      decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: isDark ? const Color(0xFF151D2A) : Colors.white,
-                        border: Border.all(
-                          color: const Color(0xFF1E90FF),
-                          width: 2,
-                        ),
-                      ),
-                      child: const Icon(
-                        Icons.card_giftcard,
-                        size: 50,
-                        color: Color(0xFF1E90FF),
-                      ),
-                    ),
-                  ),
+                  // Center(
+                  //   child: Container(
+                  //     width: 100,
+                  //     height: 100,
+                  //     decoration: BoxDecoration(
+                  //       shape: BoxShape.circle,
+                  //       color: isDark ? const Color(0xFF151D2A) : Colors.white,
+                  //       border: Border.all(
+                  //         color: const Color(0xFF1E90FF),
+                  //         width: 2,
+                  //       ),
+                  //     ),
+                  //     child: const Icon(
+                  //       Icons.card_giftcard,
+                  //       size: 50,
+                  //       color: Color(0xFF1E90FF),
+                  //     ),
+                  //   ),
+                  // ),
                   const SizedBox(height: 24),
                   Text(
                     'CashKaro',

@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -121,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // LEFT CATEGORIES DRAWER
       // =========================
       drawer: Drawer(
-        width: MediaQuery.of(context).size.width * 0.5,
+        width: MediaQuery.of(context).size.width * 0.75,
         backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
         child: SafeArea(
           child: Column(
@@ -145,189 +146,153 @@ class _HomeScreenState extends State<HomeScreen> {
                   style: TextStyle(
                     fontFamily: 'HandwrittenItalic',
                     color: Colors.white,
-                    fontSize:30,
+                    fontSize: 30,
                     fontWeight: FontWeight.w900,
-                    letterSpacing: 3.0,                
+                    letterSpacing: 3.0,
                   ),
                 ),
               ),
 
-              // SCROLLABLE SECTIONED CATEGORIES LIST
+              // SCROLLABLE SECTIONED CATEGORIES LIST FILLING FULL SCREEN HEIGHT
               Expanded(
                 child: Consumer<CategoryProvider>(
                   builder: (context, categoryProvider, child) {
-                    return SingleChildScrollView(
-                      physics: const BouncingScrollPhysics(),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.stretch,
-                        children: [
-                          // 1. SHOP & EARN
-                          const _DrawerSectionHeader(title: 'Shop & Earn'),
-                          _DrawerCategoryItem(
-                            title: 'Highest Cashback Stores',
-                            onTap: () => _onCategoryTap(categoryProvider, 'laptops'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Retailers By Category',
-                            onTap: () => _onCategoryTap(categoryProvider, 'groceries'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Top Product Deals',
-                            onTap: () => _onCategoryTap(categoryProvider, 'beauty'),
-                          ),
+                    return LayoutBuilder(
+                      builder: (context, constraints) {
+                        return SingleChildScrollView(
+                          physics: const BouncingScrollPhysics(),
+                          child: ConstrainedBox(
+                            constraints: BoxConstraints(
+                              minHeight: constraints.maxHeight,
+                            ),
+                            child: IntrinsicHeight(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.stretch,
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.stretch,
+                                    children: [
+                                      // 1. SHOP & EARN
+                                      const _DrawerSectionHeader(title: 'Shop & Earn'),
+                                      _DrawerCategoryItem(
+                                        title: 'Highest Cashback Stores',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'laptops'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Retailers By Category',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'groceries'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Top Product Deals',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'beauty'),
+                                      ),
 
-                          const SizedBox(height: 6),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
-                          ),
+                                      const SizedBox(height: 6),
+                                      Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                      ),
 
-                          // 2. SHOP BY DEVICE
-                          const _DrawerSectionHeader(title: 'Shop By Device'),
-                          _DrawerCategoryItem(
-                            title: 'Laptops',
-                            onTap: () => _onCategoryTap(categoryProvider, 'laptops'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Smartphones',
-                            onTap: () => _onCategoryTap(categoryProvider, 'smartphones'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Tablets',
-                            onTap: () => _onCategoryTap(categoryProvider, 'tablets'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Mobile Accessories',
-                            onTap: () => _onCategoryTap(categoryProvider, 'mobile-accessories'),
-                          ),
+                                      // 2. SHOP BY DEVICES
+                                      const _DrawerSectionHeader(title: 'Shop by Devices'),
+                                      _DrawerCategoryItem(
+                                        title: 'Laptop',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'laptops'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Smartphones',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'smartphones'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Tablets',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'tablets'),
+                                      ),
 
-                          const SizedBox(height: 6),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
-                          ),
+                                      const SizedBox(height: 6),
+                                      Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                      ),
 
-                          // 3. FASHION & LIFESTYLE
-                          const _DrawerSectionHeader(title: 'Fashion & Lifestyle'),
-                          _DrawerCategoryItem(
-                            title: 'Mens Shirts',
-                            onTap: () => _onCategoryTap(categoryProvider, 'mens-shirts'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Mens Shoes',
-                            onTap: () => _onCategoryTap(categoryProvider, 'mens-shoes'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Mens Watches',
-                            onTap: () => _onCategoryTap(categoryProvider, 'mens-watches'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Womens Dresses',
-                            onTap: () => _onCategoryTap(categoryProvider, 'womens-dresses'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Womens Shoes',
-                            onTap: () => _onCategoryTap(categoryProvider, 'womens-shoes'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Womens Bags',
-                            onTap: () => _onCategoryTap(categoryProvider, 'womens-bags'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Womens Jewellery',
-                            onTap: () => _onCategoryTap(categoryProvider, 'womens-jewellery'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Womens Watches',
-                            onTap: () => _onCategoryTap(categoryProvider, 'womens-watches'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Tops',
-                            onTap: () => _onCategoryTap(categoryProvider, 'tops'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Sunglasses',
-                            onTap: () => _onCategoryTap(categoryProvider, 'sunglasses'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Beauty',
-                            onTap: () => _onCategoryTap(categoryProvider, 'beauty'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Fragrances',
-                            onTap: () => _onCategoryTap(categoryProvider, 'fragrances'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Skin Care',
-                            onTap: () => _onCategoryTap(categoryProvider, 'skin-care'),
-                          ),
+                                      // 3. FASHION & LIFESTYLES
+                                      const _DrawerSectionHeader(title: 'Fashion & Lifestyles'),
+                                      _DrawerCategoryItem(
+                                        title: 'Men Shirts',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'mens-shirts'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Women Dresses',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'womens-dresses'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Men Shoes',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'mens-shoes'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Women Shoes',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'womens-shoes'),
+                                      ),
 
-                          const SizedBox(height: 6),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
-                          ),
+                                      const SizedBox(height: 6),
+                                      Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                      ),
 
-                          // 4. MORE CATEGORIES
-                          const _DrawerSectionHeader(title: 'More Categories'),
-                          _DrawerCategoryItem(
-                            title: 'Furniture',
-                            onTap: () => _onCategoryTap(categoryProvider, 'furniture'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Groceries',
-                            onTap: () => _onCategoryTap(categoryProvider, 'groceries'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Home Decoration',
-                            onTap: () => _onCategoryTap(categoryProvider, 'home-decoration'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Kitchen Accessories',
-                            onTap: () => _onCategoryTap(categoryProvider, 'kitchen-accessories'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Motorcycle',
-                            onTap: () => _onCategoryTap(categoryProvider, 'motorcycle'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Vehicle',
-                            onTap: () => _onCategoryTap(categoryProvider, 'vehicle'),
-                          ),
-                          _DrawerCategoryItem(
-                            title: 'Sports Accessories',
-                            onTap: () => _onCategoryTap(categoryProvider, 'sports-accessories'),
-                          ),
+                                      // 4. MORE CATEGORIES
+                                      const _DrawerSectionHeader(title: 'More Categories'),
+                                      _DrawerCategoryItem(
+                                        title: 'Beauty',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'beauty'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Grocery',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'groceries'),
+                                      ),
+                                      _DrawerCategoryItem(
+                                        title: 'Kitchen Accessories',
+                                        onTap: () => _onCategoryTap(categoryProvider, 'kitchen-accessories'),
+                                      ),
+                                    ],
+                                  ),
 
-                          const SizedBox(height: 10),
-                          Divider(
-                            height: 1,
-                            thickness: 1,
-                            color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                  // BOTTOM: SEE ALL CATEGORIES
+                                  Column(
+                                    children: [
+                                      const SizedBox(height: 10),
+                                      Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                      ),
+                                      const SizedBox(height: 6),
+                                      _DrawerCategoryItem(
+                                        title: 'See All Categories',
+                                        isHighlight: true,
+                                        showChevron: true,
+                                        onTap: () {
+                                          Navigator.of(context).pop();
+                                          if (categoryProvider.categories.isNotEmpty) {
+                                            categoryProvider.fetchProductsByCategory(
+                                              categoryProvider.categories.first,
+                                            );
+                                          }
+                                          Navigator.of(context).pushNamed(CategoriesScreen.routeName);
+                                        },
+                                      ),
+                                      const SizedBox(height: 16),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
                           ),
-                          const SizedBox(height: 6),
-
-                          // SEE ALL CATEGORIES
-                          _DrawerCategoryItem(
-                            title: 'See All Categories',
-                            isHighlight: true,
-                            showChevron: true,
-                            onTap: () {
-                              Navigator.of(context).pop();
-                              if (categoryProvider.categories.isNotEmpty) {
-                                categoryProvider.fetchProductsByCategory(
-                                  categoryProvider.categories.first,
-                                );
-                              }
-                              Navigator.of(context).pushNamed(CategoriesScreen.routeName);
-                            },
-                          ),
-                          const SizedBox(height: 16),
-                        ],
-                      ),
+                        );
+                      },
                     );
                   },
                 ),
@@ -363,18 +328,18 @@ class _HomeScreenState extends State<HomeScreen> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Container(
-                          padding: const EdgeInsets.all(5),
-                          decoration: BoxDecoration(
-                            color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(
-                            Icons.card_giftcard,
-                            color: Color(0xFF1E90FF),
-                            size: 22,
-                          ),
-                        ),
+                        // Container(
+                        //   padding: const EdgeInsets.all(5),
+                        //   decoration: BoxDecoration(
+                        //     color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
+                        //     shape: BoxShape.circle,
+                        //   ),
+                        //   child: const Icon(
+                        //     Icons.card_giftcard,
+                        //     color: Color(0xFF1E90FF),
+                        //     size: 22,
+                        //   ),
+                        // ),
                         const SizedBox(width: 8),
                         const Text(
                           'CashKaro',
@@ -473,6 +438,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           darkGradientColors: const [Color(0xFF0F172A), Color(0xFF0D0D0D)],
                           child: _buildHorizontalBrandCarousel(_popularBrandsCatalog, isDark),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _popularBrandsBanner,
+                          isDark: isDark,
+                        ),
 
                         // 2. GET CASHBACK ON FASHION BUYS
                         _buildSubtleSectionContainer(
@@ -492,6 +461,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 3,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _fashionBanner,
+                          isDark: isDark,
+                        ),
 
                         // 3. TRENDING BRANDS
                         _buildSubtleSectionContainer(
@@ -499,7 +472,15 @@ class _HomeScreenState extends State<HomeScreen> {
                           isDark: isDark,
                           lightGradientColors: const [Color(0xFFF5F0FF), Colors.white],
                           darkGradientColors: const [Color(0xFF161022), Color(0xFF0D0D0D)],
-                          child: _buildTrendingBannerCarousel(_trendingBannerCatalog, isDark),
+                          child: _TrendingBrandsCarouselWidget(
+                            items: _trendingBannerCatalog,
+                            isDark: isDark,
+                            onBrandTap: (brand) => _showConfirmationDialog(context, brand),
+                          ),
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _trendingBanner,
+                          isDark: isDark,
                         ),
 
                         // 4. GET CASHBACK ON BEAUTY BRANDS
@@ -520,6 +501,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 6,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _beautyBanner,
+                          isDark: isDark,
+                        ),
 
                         // 5. REWARDS ON LIFETIME FREE CARDS
                         _buildSubtleSectionContainer(
@@ -538,6 +523,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             isExpanded: _showAllLifetimeCards,
                             initialCount: 6,
                           ),
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _lifetimeCardsBanner,
+                          isDark: isDark,
                         ),
 
                         // 6. GET CASHBACK ON ELECTRONICS
@@ -558,6 +547,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 6,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _electronicsBanner,
+                          isDark: isDark,
+                        ),
 
                         // 7. BEST CARDS FOR SHOPPING
                         _buildSubtleSectionContainer(
@@ -576,6 +569,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             isExpanded: _showAllShoppingCards,
                             initialCount: 6,
                           ),
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _shoppingCardsBanner,
+                          isDark: isDark,
                         ),
 
                         // 8. GET CASHBACK ON MEDICINES
@@ -596,6 +593,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 6,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _medicineBanner,
+                          isDark: isDark,
+                        ),
 
                         // 9. GET REWARDS ON CARDS AND LOANS
                         _buildSubtleSectionContainer(
@@ -614,6 +615,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             isExpanded: _showAllCardsLoans,
                             initialCount: 6,
                           ),
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _cardsLoansBanner,
+                          isDark: isDark,
                         ),
 
                         // 10. GET CASHBACK ON HOTEL BOOKING
@@ -634,6 +639,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 6,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _hotelBookingBanner,
+                          isDark: isDark,
+                        ),
 
                         // 11. GET REWARDS ON PERSONAL LOANS
                         _buildSubtleSectionContainer(
@@ -653,9 +662,17 @@ class _HomeScreenState extends State<HomeScreen> {
                             initialCount: 6,
                           ),
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _personalLoansBanner,
+                          isDark: isDark,
+                        ),
 
                         // 12. TOP AMAZON DEALS (FINAL HOMEPAGE SECTION - NO GRADIENT BACKGROUND)
                         _buildTopAmazonDealsSection(isDark),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _amazonDealsBanner,
+                          isDark: isDark,
+                        ),
 
                         // FLIPKART – FREEDOM SALE
                         _OfferSectionCarouselWidget(
@@ -671,6 +688,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _flipkartBanner,
+                          isDark: isDark,
                         ),
                         const SizedBox(height: 24),
 
@@ -689,6 +710,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             );
                           },
                         ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _meeshoBanner,
+                          isDark: isDark,
+                        ),
                         const SizedBox(height: 24),
 
                         // BEST OF LOANS
@@ -705,6 +730,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
+                        ),
+                        _SubcategoryPromotionalBannerWidget(
+                          bannerData: _bestOfLoansBanner,
+                          isDark: isDark,
                         ),
                         const SizedBox(height: 24),
 
@@ -794,60 +823,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
 
                         // ABSOLUTE BOTTOM FADED BRANDING SECTION (VERY LARGE, BRAND-STYLED TAGLINE)
-                        Padding(
-                          padding: const EdgeInsets.only(
-                            top: 50,
-                            bottom: 50,
-                            left: 4,
-                            right: 4,
-                          ),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              Text(
-                                'Your Shopping.',
-                                style: TextStyle(
-                                  fontFamily: 'HandwrittenItalic',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.1,
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.16)
-                                      : const Color(0xFF1F1F21).withValues(alpha: 0.16),
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Text(
-                                'Your Cashback.',
-                                style: TextStyle(
-                                  fontFamily: 'HandwrittenItalic',
-                                  fontSize: 60,
-                                  fontWeight: FontWeight.bold,
-                                  height: 1.1,
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.16)
-                                      : const Color(0xFF1F1F21).withValues(alpha: 0.16),
-                                  letterSpacing: 0.5,
-                                ),
-                              ),
-                              const SizedBox(height: 24),
-                              Text(
-                                'Made for smart shoppers 😎',
-                                style: TextStyle(
-                                  fontFamily: 'HandwrittenItalic',
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark
-                                      ? Colors.white.withValues(alpha: 0.40)
-                                      : const Color(0xFF1F1F21).withValues(alpha: 0.40),
-                                  letterSpacing: 0.3,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                        const SizedBox(height: 40),
+                                                // const SizedBox(height: 40),
                       ],
                     );
                   },
@@ -1021,151 +997,7 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildTrendingBannerCarousel(List<_TrendingBannerItemData> items, bool isDark) {
-    return SizedBox(
-      height: 135,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        physics: const BouncingScrollPhysics(),
-        itemCount: items.length,
-        itemBuilder: (context, index) {
-          final item = items[index];
-          return GestureDetector(
-            onTap: () => _showConfirmationDialog(context, item.brand),
-            child: Container(
-              width: 290,
-              height: 135,
-              margin: const EdgeInsets.only(right: 12),
-              decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF161618) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
-                border: Border.all(
-                  color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
-                  width: 1,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
-                    blurRadius: 8,
-                    offset: const Offset(0, 3),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
-                child: Row(
-                  children: [
-                    // Left Image Part (38%)
-                    SizedBox(
-                      width: 105,
-                      height: double.infinity,
-                      child: NetworkImageWithSkeleton(
-                        imageUrl: item.brand.bannerUrl,
-                        fit: BoxFit.cover,
-                      ),
-                    ),
-                    // Right Content Part (62%)
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.all(10),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Container(
-                                  width: 22,
-                                  height: 22,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
-                                    border: Border.all(
-                                      color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
-                                    ),
-                                  ),
-                                  child: ClipOval(
-                                    child: NetworkImageWithSkeleton(
-                                      imageUrl: item.brand.logoUrl,
-                                      fit: BoxFit.contain,
-                                      errorBuilder: (ctx, err, stack) => Center(
-                                        child: Text(
-                                          item.brand.name.substring(0, 1),
-                                          style: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                            color: Color(0xFF1E90FF),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    item.brand.name,
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                      color: isDark ? Colors.white : Colors.black87,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                            Text(
-                              item.tagline,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w500,
-                                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                              ),
-                            ),
-                            Text(
-                              item.brand.offerText,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
-                                color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
-                              ),
-                            ),
-                            Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.1),
-                                borderRadius: BorderRadius.circular(6),
-                              ),
-                              child: Text(
-                                item.brand.cashbackPercentage,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1E90FF),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-          );
-        },
-      ),
-    );
-  }
+
 
   Widget _buildGridCardsSection(
     List<BrandModel> brands,
@@ -2392,6 +2224,232 @@ class _HomeScreenState extends State<HomeScreen> {
       ];
 }
 
+class _TrendingBrandsCarouselWidget extends StatefulWidget {
+  final List<_TrendingBannerItemData> items;
+  final bool isDark;
+  final Function(BrandModel brand) onBrandTap;
+
+  const _TrendingBrandsCarouselWidget({
+    required this.items,
+    required this.isDark,
+    required this.onBrandTap,
+  });
+
+  @override
+  State<_TrendingBrandsCarouselWidget> createState() =>
+      _TrendingBrandsCarouselWidgetState();
+}
+
+class _TrendingBrandsCarouselWidgetState
+    extends State<_TrendingBrandsCarouselWidget> {
+  late PageController _pageController;
+  Timer? _autoSlideTimer;
+  static const int _kInfiniteInitialPage = 5000;
+
+  @override
+  void initState() {
+    super.initState();
+    final initialPage = widget.items.isNotEmpty
+        ? _kInfiniteInitialPage - (_kInfiniteInitialPage % widget.items.length)
+        : 0;
+
+    _pageController = PageController(
+      initialPage: initialPage,
+      viewportFraction: 0.84,
+    );
+
+    _startAutoSlide();
+  }
+
+  void _startAutoSlide() {
+    _autoSlideTimer?.cancel();
+    if (widget.items.isEmpty) return;
+
+    _autoSlideTimer = Timer.periodic(const Duration(seconds: 2), (timer) {
+      if (!mounted || !_pageController.hasClients) return;
+      final nextPage = _pageController.page!.round() + 1;
+      _pageController.animateToPage(
+        nextPage,
+        duration: const Duration(milliseconds: 600),
+        curve: Curves.easeInOut,
+      );
+    });
+  }
+
+  @override
+  void dispose() {
+    _autoSlideTimer?.cancel();
+    _pageController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    if (widget.items.isEmpty) return const SizedBox.shrink();
+
+    return SizedBox(
+      height: 135,
+      child: PageView.builder(
+        controller: _pageController,
+        physics: const BouncingScrollPhysics(),
+        itemBuilder: (context, index) {
+          final actualIndex = index % widget.items.length;
+          final item = widget.items[actualIndex];
+
+          return GestureDetector(
+            onTap: () => widget.onBrandTap(item.brand),
+            child: Container(
+              margin: const EdgeInsets.symmetric(horizontal: 6),
+              decoration: BoxDecoration(
+                color: widget.isDark ? const Color(0xFF161618) : Colors.white,
+                borderRadius: BorderRadius.circular(16),
+                border: Border.all(
+                  color: widget.isDark
+                      ? const Color(0xFF28282A)
+                      : const Color(0xFFE5E5EA),
+                  width: 1,
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black.withValues(
+                      alpha: widget.isDark ? 0.3 : 0.04,
+                    ),
+                    blurRadius: 8,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
+              ),
+              child: ClipRRect(
+                borderRadius: BorderRadius.circular(16),
+                child: Row(
+                  children: [
+                    // Left Image Part (38%)
+                    SizedBox(
+                      width: 105,
+                      height: double.infinity,
+                      child: NetworkImageWithSkeleton(
+                        imageUrl: item.brand.bannerUrl,
+                        fit: BoxFit.cover,
+                      ),
+                    ),
+                    // Right Content Part (62%)
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Row(
+                              children: [
+                                Container(
+                                  width: 22,
+                                  height: 22,
+                                  decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    color: widget.isDark
+                                        ? const Color(0xFF242426)
+                                        : Colors.grey.shade100,
+                                    border: Border.all(
+                                      color: const Color(0xFF1E90FF)
+                                          .withValues(alpha: 0.3),
+                                    ),
+                                  ),
+                                  child: ClipOval(
+                                    child: NetworkImageWithSkeleton(
+                                      imageUrl: item.brand.logoUrl,
+                                      fit: BoxFit.contain,
+                                      errorBuilder: (ctx, err, stack) => Center(
+                                        child: Text(
+                                          item.brand.name.substring(0, 1),
+                                          style: const TextStyle(
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            color: Color(0xFF1E90FF),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Expanded(
+                                  child: Text(
+                                    item.brand.name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: TextStyle(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.bold,
+                                      color: widget.isDark
+                                          ? Colors.white
+                                          : Colors.black87,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Text(
+                              item.tagline,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 10.5,
+                                fontWeight: FontWeight.w500,
+                                color: widget.isDark
+                                    ? Colors.grey.shade400
+                                    : Colors.grey.shade600,
+                              ),
+                            ),
+                            Text(
+                              item.brand.offerText,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: TextStyle(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w700,
+                                color: widget.isDark
+                                    ? Colors.grey.shade300
+                                    : Colors.grey.shade800,
+                              ),
+                            ),
+                            Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 6,
+                                vertical: 3,
+                              ),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1E90FF).withValues(
+                                  alpha: widget.isDark ? 0.16 : 0.1,
+                                ),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Text(
+                                item.brand.cashbackPercentage,
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Color(0xFF1E90FF),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        },
+      ),
+    );
+  }
+}
+
 class _DrawerSectionHeader extends StatelessWidget {
   final String title;
 
@@ -2447,8 +2505,8 @@ class _DrawerCategoryItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.bold,
+                    fontSize: 14,
+                    fontWeight: FontWeight.normal,
                     color: isHighlight
                         ? const Color(0xFF1E90FF)
                         : (isDark ? Colors.white : const Color(0xFF1F1F21)),
@@ -3328,11 +3386,15 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
 
   Widget _buildGridBrandCard(
       BuildContext context, BrandModel brand, bool isDark) {
+    final imageUrl = brand.logoUrl.isNotEmpty
+        ? brand.logoUrl
+        : (brand.bannerUrl.isNotEmpty ? brand.bannerUrl : brand.websiteUrl);
+
     return GestureDetector(
       onTap: () => _showConfirmationDialog(context, brand),
       child: Container(
         height: 148,
-        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 16),
+        padding: const EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF161618) : Colors.white,
           borderRadius: BorderRadius.circular(16),
@@ -3352,8 +3414,9 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            // 1. Offer / Discount Percentage (Top Text)
+            // 1. Offer / Discount Percentage (Top Tag)
             Container(
+              width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
               decoration: BoxDecoration(
                 color: isDark
@@ -3367,26 +3430,67 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: TextStyle(
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                  color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                  fontSize: 9.5,
+                  fontWeight: FontWeight.bold,
+                  color: isDark ? Colors.grey.shade300 : Colors.black87,
                 ),
               ),
             ),
 
-            // 2. Brand Name (Center Main Text)
-            Padding(
-              padding: const EdgeInsets.symmetric(vertical: 2),
-              child: Text(
-                brand.name,
-                maxLines: 2,
-                textAlign: TextAlign.center,
-                overflow: TextOverflow.ellipsis,
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.w800,
-                  height: 1.2,
-                  color: isDark ? Colors.white : Colors.black87,
+            // 2. Center: Brand Logo / Image + Brand Name
+            Expanded(
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 2),
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Container(
+                      width: 36,
+                      height: 36,
+                      decoration: BoxDecoration(
+                        color: isDark ? const Color(0xFF222225) : Colors.grey.shade50,
+                        borderRadius: BorderRadius.circular(10),
+                        border: Border.all(
+                          color: isDark
+                              ? const Color(0xFF333336)
+                              : const Color(0xFFEEEEEE),
+                          width: 0.8,
+                        ),
+                      ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(10),
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: NetworkImageWithSkeleton(
+                            imageUrl: imageUrl,
+                            fit: BoxFit.contain,
+                            errorBuilder: (context, error, stackTrace) => Container(
+                              color: isDark
+                                  ? const Color(0xFF242426)
+                                  : Colors.grey.shade200,
+                              child: const Icon(
+                                Icons.storefront_outlined,
+                                size: 18,
+                                color: Color(0xFF1E90FF),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 3),
+                    Text(
+                      brand.name,
+                      maxLines: 1,
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             ),
@@ -3394,10 +3498,10 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
             // 3. Reward / Cashback Percentage (Bottom Text - Dodger Blue Accent)
             Container(
               width: double.infinity,
-              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
+              padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 4),
               decoration: BoxDecoration(
                 color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.1),
-                borderRadius: BorderRadius.circular(10),
+                borderRadius: BorderRadius.circular(8),
                 border: Border.all(
                   color: const Color(0xFF1E90FF).withValues(alpha: 0.25),
                   width: 1,
@@ -3405,13 +3509,12 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
               ),
               child: Text(
                 brand.cashbackPercentage,
-                maxLines: 2,
+                maxLines: 1,
                 textAlign: TextAlign.center,
                 overflow: TextOverflow.ellipsis,
                 style: const TextStyle(
-                  fontSize: 11,
+                  fontSize: 10,
                   fontWeight: FontWeight.bold,
-                  height: 1.15,
                   color: Color(0xFF1E90FF),
                 ),
               ),
@@ -3428,16 +3531,16 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
         return const [
           BrandModel(
             name: 'Amazon.in',
-            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-            bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+            logoUrl: 'https://www.freepnglogos.com/uploads/amazon-png-logo-vector/woodland-gardening-amazon-png-logo-vector-8.png',
+            bannerUrl: 'https://www.freepnglogos.com/uploads/amazon-png-logo-vector/woodland-gardening-amazon-png-logo-vector-8.png',
             cashbackPercentage: 'Up to 8% Rewards',
             category: 'Most Popular',
-            offerText: 'Up to 80% Off',
+            offerText: 'Up to 8000000% Off',
             websiteUrl: 'https://www.amazon.in',
           ),
           BrandModel(
             name: 'Flipkart',
-            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+            logoUrl: 'https://www.freepnglogos.com/uploads/flipkart-logo-png/flipkart-logo-transparent-vector-3.png',
             bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
             cashbackPercentage: 'Up to 7% Rewards',
             category: 'Most Popular',
@@ -3655,7 +3758,7 @@ class _TopCategoriesSectionState extends State<_TopCategoriesSection> {
           ),
           BrandModel(
             name: 'Flipkart',
-            logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+            logoUrl: 'https://www.freepnglogos.com/uploads/flipkart-logo-png/flipkart-logo-transparent-vector-3.png',
             bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
             cashbackPercentage: 'Up to 7% Cashback',
             category: 'Electronics',
@@ -3965,8 +4068,9 @@ void _showConfirmationDialog(BuildContext context, BrandModel brand) {
 }
 
 Widget _buildGridBrandCard(BuildContext context, BrandModel brand, bool isDark) {
-  final imageUrl = brand.logoUrl.isNotEmpty ? brand.logoUrl : brand.bannerUrl;
-
+  final imageUrl = brand.logoUrl.isNotEmpty
+      ? brand.logoUrl
+      : (brand.bannerUrl.isNotEmpty ? brand.bannerUrl : brand.websiteUrl);
   return GestureDetector(
     onTap: () => _showConfirmationDialog(context, brand),
     child: Container(
@@ -4162,3 +4266,400 @@ String _formatCurrency(num amount) {
   final reg = RegExp(r'(\d+?)(?=(\d{3})+(?!\d))');
   return str.replaceAllMapped(reg, (Match m) => '${m[1]},');
 }
+
+class _SubcategoryBannerData {
+  final String brandName;
+  final String headline;
+  final String subText;
+  final String offerTag;
+  final String buttonText;
+  final Color themeColor;
+  final Color lightColor;
+  final IconData logoIcon;
+
+  const _SubcategoryBannerData({
+    required this.brandName,
+    required this.headline,
+    required this.subText,
+    required this.offerTag,
+    required this.buttonText,
+    required this.themeColor,
+    required this.lightColor,
+    required this.logoIcon,
+  });
+}
+
+const _popularBrandsBanner = _SubcategoryBannerData(
+  brandName: 'Mega Fest',
+  headline: 'TOP POPULAR STORES FESTIVAL',
+  subText: 'Get Flat 15% Real Cashback across 500+ Top Online Retailers',
+  offerTag: 'FLAT 15% CASHBACK',
+  buttonText: 'Explore Stores',
+  themeColor: Color(0xFF1E90FF),
+  lightColor: Color(0xFFCBE2FE),
+  logoIcon: Icons.stars_rounded,
+);
+
+const _fashionBanner = _SubcategoryBannerData(
+  brandName: 'Fashion Hub',
+  headline: 'SEASON END FASHION SALE',
+  subText: 'Up to 80% OFF + Extra 12% Real Cashback on Top Clothing Brands',
+  offerTag: 'UP TO 80% OFF',
+  buttonText: 'Shop Fashion',
+  themeColor: Color(0xFFEC4899),
+  lightColor: Color(0xFFFBCFE8),
+  logoIcon: Icons.checkroom_rounded,
+);
+
+const _trendingBanner = _SubcategoryBannerData(
+  brandName: 'Trending Zone',
+  headline: 'HOT VIRAL DEALS OF THE WEEK',
+  subText: 'Grab Extra Rewards on Top Trending & Viral Products',
+  offerTag: 'HOT DEALS ⚡',
+  buttonText: 'Grab Deals',
+  themeColor: Color(0xFF8B5CF6),
+  lightColor: Color(0xFFDDD6FE),
+  logoIcon: Icons.local_fire_department_rounded,
+);
+
+const _beautyBanner = _SubcategoryBannerData(
+  brandName: 'Beauty Glam',
+  headline: 'GLOW & CARE BEAUTY DAYS',
+  subText: 'Flat 50% OFF + Extra 15% Rewards on Skincare & Makeup',
+  offerTag: 'FLAT 50% OFF',
+  buttonText: 'Shop Beauty',
+  themeColor: Color(0xFFF43F5E),
+  lightColor: Color(0xFFFECDD3),
+  logoIcon: Icons.spa_rounded,
+);
+
+const _lifetimeCardsBanner = _SubcategoryBannerData(
+  brandName: 'Free Cards',
+  headline: 'ZERO ANNUAL FEE CREDIT CARDS',
+  subText: 'Get Lifetime Free Card + Free ₹1,500 Amazon Gift Voucher',
+  offerTag: 'FREE ₹1,500 VOUCHER',
+  buttonText: 'Apply Card',
+  themeColor: Color(0xFFD97706),
+  lightColor: Color(0xFFFDE68A),
+  logoIcon: Icons.credit_card_rounded,
+);
+
+const _electronicsBanner = _SubcategoryBannerData(
+  brandName: 'Tech Zone',
+  headline: 'MEGA GADGET & TECH SALE',
+  subText: 'Up to 60% OFF + Flat ₹3,000 Extra Cashback on Laptops & Phones',
+  offerTag: 'UP TO 60% OFF',
+  buttonText: 'Shop Electronics',
+  themeColor: Color(0xFF0D9488),
+  lightColor: Color(0xFF99F6E4),
+  logoIcon: Icons.devices_rounded,
+);
+
+const _shoppingCardsBanner = _SubcategoryBannerData(
+  brandName: 'Shopping Cards',
+  headline: '5% UNLIMITED SHOPPING CASHBACK',
+  subText: 'Earn Unlimited Cashback on Amazon, Flipkart, Zomato & More',
+  offerTag: '5% UNLIMITED',
+  buttonText: 'Get Card',
+  themeColor: Color(0xFFEA580C),
+  lightColor: Color(0xFFFED7AA),
+  logoIcon: Icons.shopping_bag_rounded,
+);
+
+const _medicineBanner = _SubcategoryBannerData(
+  brandName: 'Health Care',
+  headline: 'HEALTH & WELLNESS SAVINGS',
+  subText: 'Flat 25% OFF Medicines + Extra 10% Cashback & Free Delivery',
+  offerTag: 'FLAT 25% OFF',
+  buttonText: 'Order Medicines',
+  themeColor: Color(0xFF059669),
+  lightColor: Color(0xFFA7F3D0),
+  logoIcon: Icons.medical_services_rounded,
+);
+
+const _cardsLoansBanner = _SubcategoryBannerData(
+  brandName: 'Credit & Loans',
+  headline: 'QUICK APPROVAL LOANS & CARDS',
+  subText: 'Low Interest Rates + Flat ₹2,000 Gift Voucher on Approval',
+  offerTag: 'INSTANT APPROVAL',
+  buttonText: 'Check Loan',
+  themeColor: Color(0xFF4F46E5),
+  lightColor: Color(0xFFC7D2FE),
+  logoIcon: Icons.account_balance_rounded,
+);
+
+const _hotelBookingBanner = _SubcategoryBannerData(
+  brandName: 'Travel Deals',
+  headline: 'WANDERLUST HOTEL DEALS',
+  subText: 'Up to 50% OFF Hotel Stays + Extra ₹1,000 Cashback on Bookings',
+  offerTag: 'UP TO 50% OFF',
+  buttonText: 'Book Hotels',
+  themeColor: Color(0xFF2563EB),
+  lightColor: Color(0xFFBAE6FD),
+  logoIcon: Icons.hotel_rounded,
+);
+
+const _personalLoansBanner = _SubcategoryBannerData(
+  brandName: 'Personal Loans',
+  headline: 'FLEXIBLE PERSONAL LOANS',
+  subText: 'Paperless Approval in 5 Mins + Flat ₹1,500 Real Cash Reward',
+  offerTag: 'PAPERLESS 5 MINS',
+  buttonText: 'Apply Loan',
+  themeColor: Color(0xFF65A30D),
+  lightColor: Color(0xFFD9F99D),
+  logoIcon: Icons.request_quote_rounded,
+);
+
+const _amazonDealsBanner = _SubcategoryBannerData(
+  brandName: 'Amazon Deals',
+  headline: 'AMAZON SUPER CASHBACK DEALS',
+  subText: 'Extra Cashback on Daily Essentials, Electronics & Appliances',
+  offerTag: 'SUPER CASHBACK',
+  buttonText: 'Shop Amazon',
+  themeColor: Color(0xFFD97706),
+  lightColor: Color(0xFFFED7AA),
+  logoIcon: Icons.shopping_cart_rounded,
+);
+
+const _flipkartBanner = _SubcategoryBannerData(
+  brandName: 'Flipkart Sale',
+  headline: 'FLIPKART FREEDOM MEGA SAVINGS',
+  subText: 'Up to 80% OFF on Top Brands + Extra 10% Instant Real Cashback',
+  offerTag: 'EXTRA 10% CASHBACK',
+  buttonText: 'Shop Flipkart',
+  themeColor: Color(0xFF2874F0),
+  lightColor: Color(0xFFDBEAFE),
+  logoIcon: Icons.shopping_bag_rounded,
+);
+
+const _meeshoBanner = _SubcategoryBannerData(
+  brandName: 'Meesho Deals',
+  headline: 'BUDGET DEALS STARTING AT ₹99',
+  subText: 'Lowest Prices Guaranteed + Flat ₹150 Extra Reward on First Orders',
+  offerTag: 'FLAT ₹150 REWARD',
+  buttonText: 'Explore Meesho',
+  themeColor: Color(0xFFD946EF),
+  lightColor: Color(0xFFFAE8FF),
+  logoIcon: Icons.local_offer_rounded,
+);
+
+const _bestOfLoansBanner = _SubcategoryBannerData(
+  brandName: 'Best Loans',
+  headline: 'LOWEST INTEREST LOAN OFFERS',
+  subText: 'Instant Approval with Zero Processing Fee + ₹2,500 Gift Voucher',
+  offerTag: 'ZERO PROCESSING FEE',
+  buttonText: 'Check Loan Offers',
+  themeColor: Color(0xFF0F766E),
+  lightColor: Color(0xFFCCFBF1),
+  logoIcon: Icons.account_balance_rounded,
+);
+
+class _SubcategoryPromotionalBannerWidget extends StatelessWidget {
+  final _SubcategoryBannerData bannerData;
+  final bool isDark;
+
+  const _SubcategoryPromotionalBannerWidget({
+    required this.bannerData,
+    required this.isDark,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    final topColor = isDark ? const Color(0xFF1C1C20) : Colors.white;
+    final bottomColor = isDark
+        ? Color.alphaBlend(bannerData.themeColor.withValues(alpha: 0.28), const Color(0xFF101014))
+        : bannerData.lightColor;
+
+    return Container(
+      width: double.infinity,
+      margin: const EdgeInsets.symmetric(vertical: 12),
+      decoration: BoxDecoration(
+        gradient: LinearGradient(
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+          colors: [topColor, bottomColor],
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // TOP SECTION (WHITE BG AREA)
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // LEFT: Brand Badge, Offer Tag & Headline
+              Expanded(
+                flex: 70,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    // BRAND & OFFER TAG ROW
+                    Wrap(
+                      spacing: 8,
+                      runSpacing: 4,
+                      crossAxisAlignment: WrapCrossAlignment.center,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: bannerData.themeColor.withValues(alpha: 0.1),
+                            borderRadius: BorderRadius.circular(6),
+                            border: Border.all(
+                              color: bannerData.themeColor.withValues(alpha: 0.3),
+                              width: 1,
+                            ),
+                          ),
+                          child: Text(
+                            bannerData.brandName.toUpperCase(),
+                            style: TextStyle(
+                              color: isDark ? Colors.white : bannerData.themeColor,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.8,
+                            ),
+                          ),
+                        ),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
+                          decoration: BoxDecoration(
+                            color: bannerData.themeColor,
+                            borderRadius: BorderRadius.circular(6),
+                          ),
+                          child: Text(
+                            bannerData.offerTag,
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 10,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // PROMOTIONAL HEADLINE
+                    Text(
+                      bannerData.headline,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: TextStyle(
+                        color: isDark ? Colors.white : const Color(0xFF0F172A),
+                        fontSize: 15.5,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: 0.2,
+                        height: 1.25,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(width: 8),
+
+              // RIGHT: CIRCULAR BRAND/CATEGORY ICON BADGE
+              Expanded(
+                flex: 30,
+                child: Center(
+                  child: Container(
+                    width: 64,
+                    height: 64,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      color: bannerData.themeColor.withValues(alpha: 0.1),
+                      border: Border.all(
+                        color: bannerData.themeColor.withValues(alpha: 0.25),
+                        width: 1.5,
+                      ),
+                    ),
+                    child: Center(
+                      child: Icon(
+                        bannerData.logoIcon,
+                        size: 32,
+                        color: isDark ? Colors.white : bannerData.themeColor,
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 14),
+
+          // BOTTOM SECTION (LIGHT COLOR AREA)
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              // SUPPORTING OFFER DETAILS (LEFT)
+              Expanded(
+                child: Text(
+                  bannerData.subText,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                  style: TextStyle(
+                    color: isDark ? Colors.grey.shade300 : const Color(0xFF334155),
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w600,
+                    height: 1.3,
+                  ),
+                ),
+              ),
+
+              const SizedBox(width: 12),
+
+              // NON-CLICKABLE CTA PROMO BADGE (RIGHT)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                decoration: BoxDecoration(
+                  color: bannerData.themeColor,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: [
+                    BoxShadow(
+                      color: bannerData.themeColor.withValues(alpha: 0.3),
+                      blurRadius: 4,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      bannerData.buttonText,
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 11,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(
+                      Icons.arrow_forward_rounded,
+                      size: 12,
+                      color: Colors.white,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+

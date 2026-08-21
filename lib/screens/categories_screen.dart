@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/category_provider.dart';
 import '../widgets/network_image_with_skeleton.dart';
+import 'product_detail_screen.dart';
 
 class CategoriesScreen extends StatefulWidget {
   static const String routeName = '/categories';
@@ -306,16 +307,33 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       },
       child: ListView.separated(
         itemCount: provider.products.length,
-        separatorBuilder: (context, index) =>
-            const SizedBox(height: 14),
+        separatorBuilder: (context, index) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 4.0),
+          child: Divider(
+            height: 1,
+            thickness: 1,
+            color: Theme.of(context).brightness == Brightness.dark
+                ? const Color(0xFF28282A)
+                : const Color(0xFFE5E5EA),
+          ),
+        ),
         itemBuilder: (context, index) {
           final product = provider.products[index];
+          final isDark = Theme.of(context).brightness == Brightness.dark;
 
           return Card(
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(16),
-              ),
+            elevation: 2,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(16),
+            ),
+            child: InkWell(
+              borderRadius: BorderRadius.circular(16),
+              onTap: () {
+                Navigator.of(context).pushNamed(
+                  ProductDetailScreen.routeName,
+                  arguments: product,
+                );
+              },
               child: Padding(
                 padding: const EdgeInsets.all(12),
                 child: Row(
@@ -333,7 +351,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           return Container(
                             width: 100,
                             height: 100,
-                            color: Theme.of(context).brightness == Brightness.dark
+                            color: isDark
                                 ? const Color(0xFF242426)
                                 : Colors.grey.shade200,
                             child: const Icon(
@@ -350,8 +368,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
                     Expanded(
                       child: Column(
-                        crossAxisAlignment:
-                            CrossAxisAlignment.start,
+                        crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
                             product.title,
@@ -363,7 +380,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 ),
                           ),
 
-                          const SizedBox(height: 8),
+                          const SizedBox(height: 6),
 
                           Text(
                             product.description,
@@ -373,46 +390,74 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 .textTheme
                                 .bodyMedium
                                 ?.copyWith(
-                                  color: Theme.of(context).brightness == Brightness.dark
+                                  color: isDark
                                       ? Colors.grey[400]
                                       : Colors.grey[700],
                                 ),
                           ),
 
-                          const SizedBox(height: 12),
+                          const SizedBox(height: 10),
 
-                          Row(
+                          // PRICE BREAKDOWN: ACTUAL PRICE -> DISCOUNT -> FINAL PRICE
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              Text(
-                                '\$${product.price}',
-                                style: Theme.of(context)
-                                    .textTheme
-                                    .bodyLarge
-                                    ?.copyWith(
-                                      fontWeight: FontWeight.bold,
+                              if (product.discountPercentage > 0)
+                                Row(
+                                  children: [
+                                    Text(
+                                      'Actual: \$${product.originalPrice.toStringAsFixed(2)}',
+                                      style: TextStyle(
+                                        fontSize: 12,
+                                        decoration: TextDecoration.lineThrough,
+                                        color: isDark
+                                            ? Colors.grey.shade500
+                                            : Colors.grey.shade600,
+                                      ),
                                     ),
-                              ),
-
-                              const Spacer(),
-
-                              Container(
-                                padding:
-                                    const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
+                                    const SizedBox(width: 8),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: Colors.green.shade50,
+                                        borderRadius: BorderRadius.circular(8),
+                                      ),
+                                      child: Text(
+                                        '${product.discountPercentage.toStringAsFixed(0)}% OFF',
+                                        style: TextStyle(
+                                          fontSize: 11,
+                                          color: Colors.green.shade800,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
                                 ),
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade50,
-                                  borderRadius:
-                                      BorderRadius.circular(12),
-                                ),
-                                child: Text(
-                                  '-${product.discountPercentage.toStringAsFixed(0)}%',
-                                  style: TextStyle(
-                                    color: Colors.green.shade800,
-                                    fontWeight: FontWeight.w600,
+
+                              const SizedBox(height: 4),
+
+                              Row(
+                                children: [
+                                  Text(
+                                    'Final: \$${product.finalPrice.toStringAsFixed(2)}',
+                                    style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w800,
+                                      color: isDark
+                                          ? Colors.green.shade400
+                                          : Colors.green.shade700,
+                                    ),
                                   ),
-                                ),
+                                  const Spacer(),
+                                  const Icon(
+                                    Icons.chevron_right,
+                                    size: 20,
+                                    color: Colors.grey,
+                                  ),
+                                ],
                               ),
                             ],
                           ),
@@ -422,7 +467,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   ],
                 ),
               ),
-            );
+            ),
+          );
         },
       ),
     );

@@ -70,6 +70,7 @@ class _SplashScreenState extends State<SplashScreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
 
+  // ignore: unused_field
   late Animation<double> _logoAnimation;
   late Animation<double> _textFadeAnimation;
   late Animation<Offset> _textSlideAnimation;
@@ -233,33 +234,33 @@ class _SplashScreenState extends State<SplashScreen>
               // CLEAN SHARP LOGO (NO GLOW)
               // =========================
 
-              ScaleTransition(
-                scale: _logoAnimation,
+              // ScaleTransition(
+              //   scale: _logoAnimation,
 
-                child: Container(
-                  width: 130,
-                  height: 130,
+              //   child: Container(
+              //     width: 130,
+              //     height: 130,
 
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
+              //     decoration: BoxDecoration(
+              //       shape: BoxShape.circle,
 
-                    color: isDark ? const Color(0xFF151D2A) : Colors.white,
+              //       color: isDark ? const Color(0xFF151D2A) : Colors.white,
 
-                    border: Border.all(
-                      color: const Color(0xFF1E90FF),
-                      width: 2,
-                    ),
-                  ),
+              //       border: Border.all(
+              //         color: const Color(0xFF1E90FF),
+              //         width: 2,
+              //       ),
+              //     ),
 
-                  child: const Center(
-                    child: Icon(
-                      Icons.card_giftcard,
-                      size: 70,
-                      color: Color(0xFF1E90FF),
-                    ),
-                  ),
-                ),
-              ),
+              //     child: const Center(
+              //       child: Icon(
+              //         Icons.card_giftcard,
+              //         size: 70,
+              //         color: Color(0xFF1E90FF),
+              //       ),
+              //     ),
+              //   ),
+              // ),
 
               const SizedBox(height: 35),
 

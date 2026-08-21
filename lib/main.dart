@@ -17,6 +17,7 @@ import 'screens/my_earnings_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/onboarding_screen.dart';
 import 'screens/privacy_policy_screen.dart';
+import 'screens/product_detail_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/refer_earn_screen.dart';
 import 'screens/search_screen.dart';
@@ -87,6 +88,7 @@ class CashbackRewardApp extends StatelessWidget {
               MyEarningsScreen.routeName: (_) => const MyEarningsScreen(),
               MissingTicketsScreen.routeName: (_) => const MissingTicketsScreen(),
               NotificationsScreen.routeName: (_) => const NotificationsScreen(),
+              ProductDetailScreen.routeName: (_) => const ProductDetailScreen(),
             },
           );
         },
