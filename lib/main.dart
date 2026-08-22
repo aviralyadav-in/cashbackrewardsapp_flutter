@@ -8,6 +8,7 @@ import 'providers/search_provider.dart';
 import 'providers/theme_provider.dart';
 import 'providers/user_provider.dart';
 import 'screens/account_settings_screen.dart';
+import 'screens/all_categories_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/get_help_screen.dart';
 import 'screens/home_screen.dart';
@@ -78,6 +79,7 @@ class CashbackRewardApp extends StatelessWidget {
             routes: {
               HomeScreen.routeName: (_) => const HomeScreen(),
               CategoriesScreen.routeName: (_) => const CategoriesScreen(),
+              AllCategoriesScreen.routeName: (_) => const AllCategoriesScreen(),
               ProfileScreen.routeName: (_) => const ProfileScreen(),
               AccountSettingsScreen.routeName: (_) => const AccountSettingsScreen(),
               GetHelpScreen.routeName: (_) => const GetHelpScreen(),

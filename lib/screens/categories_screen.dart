@@ -303,26 +303,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
         }
       },
       child: ListView.separated(
+        padding: const EdgeInsets.only(bottom: 16),
+        physics: const BouncingScrollPhysics(),
         itemCount: provider.products.length,
-        separatorBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(vertical: 4.0),
-          child: Divider(
-            height: 1,
-            thickness: 1,
-            color: Theme.of(context).brightness == Brightness.dark
-                ? const Color(0xFF28282A)
-                : const Color(0xFFE5E5EA),
-          ),
-        ),
+        separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final product = provider.products[index];
           final isDark = Theme.of(context).brightness == Brightness.dark;
 
-          return Card(
-            elevation: 2,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(16),
-            ),
+          return Material(
+            color: Colors.transparent,
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
               onTap: () {
@@ -331,130 +321,153 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   arguments: product,
                 );
               },
-              child: Padding(
+              child: Container(
                 padding: const EdgeInsets.all(12),
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF161618) : Colors.white,
+                  borderRadius: BorderRadius.circular(16),
+                  border: Border.all(
+                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    width: 1,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+                      blurRadius: 8,
+                      offset: const Offset(0, 2),
+                    ),
+                  ],
+                ),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    // Product Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
-                      child: NetworkImageWithSkeleton(
-                        imageUrl: product.thumbnail,
-                        width: 100,
-                        height: 100,
-                        fit: BoxFit.cover,
-                        borderRadius: BorderRadius.circular(12),
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            width: 100,
-                            height: 100,
-                            color: isDark
-                                ? const Color(0xFF242426)
-                                : Colors.grey.shade200,
-                            child: const Icon(
-                              Icons.broken_image,
-                              size: 40,
-                              color: Colors.grey,
-                            ),
-                          );
-                        },
+                      child: Container(
+                        width: 96,
+                        height: 96,
+                        color: isDark ? const Color(0xFF242426) : const Color(0xFFF5F5F7),
+                        child: NetworkImageWithSkeleton(
+                          imageUrl: product.thumbnail,
+                          width: 96,
+                          height: 96,
+                          fit: BoxFit.cover,
+                          borderRadius: BorderRadius.circular(12),
+                          errorBuilder: (context, error, stackTrace) {
+                            return Container(
+                              width: 96,
+                              height: 96,
+                              color: isDark ? const Color(0xFF242426) : Colors.grey.shade200,
+                              child: const Icon(
+                                Icons.broken_image_outlined,
+                                size: 32,
+                                color: Colors.grey,
+                              ),
+                            );
+                          },
+                        ),
                       ),
                     ),
 
                     const SizedBox(width: 12),
 
+                    // Product Details
                     Expanded(
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
+                          // Product Name
                           Text(
                             product.title,
-                            style: Theme.of(context)
-                                .textTheme
-                                .titleMedium
-                                ?.copyWith(
-                                  fontWeight: FontWeight.w600,
-                                ),
+                            maxLines: 2,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                              color: isDark ? Colors.white : Colors.black87,
+                            ),
                           ),
 
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 4),
 
+                          // Product Description
                           Text(
                             product.description,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: Theme.of(context)
-                                .textTheme
-                                .bodyMedium
-                                ?.copyWith(
-                                  color: isDark
-                                      ? Colors.grey[400]
-                                      : Colors.grey[700],
-                                ),
+                            style: TextStyle(
+                              fontSize: 12,
+                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                              height: 1.3,
+                            ),
                           ),
 
-                          const SizedBox(height: 10),
+                          const SizedBox(height: 8),
 
-                          // PRICE BREAKDOWN: ACTUAL PRICE -> DISCOUNT -> FINAL PRICE
-                          Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: [
-                              if (product.discountPercentage > 0)
-                                Row(
-                                  children: [
-                                    Text(
-                                      'Actual: \$${product.originalPrice.toStringAsFixed(2)}',
-                                      style: TextStyle(
-                                        fontSize: 12,
-                                        decoration: TextDecoration.lineThrough,
-                                        color: isDark
-                                            ? Colors.grey.shade500
-                                            : Colors.grey.shade600,
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Container(
-                                      padding: const EdgeInsets.symmetric(
-                                        horizontal: 6,
-                                        vertical: 2,
-                                      ),
-                                      decoration: BoxDecoration(
-                                        color: Colors.green.shade50,
-                                        borderRadius: BorderRadius.circular(8),
-                                      ),
-                                      child: Text(
-                                        '${product.discountPercentage.toStringAsFixed(0)}% OFF',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: Colors.green.shade800,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                    ),
-                                  ],
+                          // Pricing Section
+                          if (product.discountPercentage > 0)
+                            Row(
+                              children: [
+                                Text(
+                                  'Actual: \$${product.originalPrice.toStringAsFixed(2)}',
+                                  style: TextStyle(
+                                    fontSize: 11.5,
+                                    decoration: TextDecoration.lineThrough,
+                                    color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+                                  ),
                                 ),
-
-                              const SizedBox(height: 4),
-
-                              Row(
-                                children: [
-                                  Text(
-                                    'Final: \$${product.finalPrice.toStringAsFixed(2)}',
+                                const SizedBox(width: 8),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 6,
+                                    vertical: 2,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: Colors.green.shade700.withValues(alpha: isDark ? 0.25 : 0.12),
+                                    borderRadius: BorderRadius.circular(6),
+                                  ),
+                                  child: Text(
+                                    '${product.discountPercentage.toStringAsFixed(0)}% OFF',
                                     style: TextStyle(
-                                      fontSize: 16,
+                                      fontSize: 10.5,
+                                      color: isDark ? Colors.green.shade400 : Colors.green.shade800,
                                       fontWeight: FontWeight.w800,
-                                      color: isDark
-                                          ? Colors.green.shade400
-                                          : Colors.green.shade700,
                                     ),
                                   ),
-                                  const Spacer(),
-                                  const Icon(
-                                    Icons.chevron_right,
-                                    size: 20,
-                                    color: Colors.grey,
+                                ),
+                              ],
+                            ),
+
+                          const SizedBox(height: 4),
+
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Text(
+                                'Final: \$${product.finalPrice.toStringAsFixed(2)}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w900,
+                                  color: const Color(0xFF1E90FF),
+                                ),
+                              ),
+                              Container(
+                                width: 28,
+                                height: 28,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.08),
+                                ),
+                                child: const Center(
+                                  child: Icon(
+                                    Icons.arrow_forward_ios_rounded,
+                                    size: 12,
+                                    color: Color(0xFF1E90FF),
                                   ),
-                                ],
+                                ),
                               ),
                             ],
                           ),

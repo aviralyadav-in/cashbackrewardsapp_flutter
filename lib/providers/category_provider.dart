@@ -21,13 +21,23 @@ class CategoryProvider extends ChangeNotifier {
   void _moveSelectedCategoryToFirst(String category) {
     if (categories.isEmpty) return;
 
-    final lowerQuery = category.trim().toLowerCase().replaceAll(' ', '-');
-    final index = categories.indexWhere(
-      (cat) =>
-          cat.toLowerCase().replaceAll(' ', '-') == lowerQuery ||
-          cat.toLowerCase().contains(lowerQuery) ||
-          lowerQuery.contains(cat.toLowerCase().replaceAll(' ', '-')),
+    final cleanTarget = category.trim().toLowerCase().replaceAll(RegExp(r"[\s\-_']+"), '');
+    int index = categories.indexWhere(
+      (cat) => cat.toLowerCase().replaceAll(RegExp(r"[\s\-_']+"), '') == cleanTarget,
     );
+
+    if (index == -1) {
+      final lowerQuery = category.trim().toLowerCase().replaceAll(' ', '-');
+      index = categories.indexWhere(
+        (cat) => cat.toLowerCase().replaceAll(' ', '-') == lowerQuery,
+      );
+    }
+
+    if (index == -1) {
+      index = categories.indexWhere(
+        (cat) => cat.toLowerCase().replaceAll(RegExp(r"[\s\-_']+"), '').contains(cleanTarget),
+      );
+    }
 
     if (index > 0) {
       final selectedItem = categories.removeAt(index);
