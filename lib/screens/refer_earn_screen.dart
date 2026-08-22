@@ -36,7 +36,7 @@ class _ReferEarnScreenState extends State<ReferEarnScreen> {
           'Refer & Earn',
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 19,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),

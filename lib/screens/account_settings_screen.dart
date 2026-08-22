@@ -98,10 +98,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
-          'Account Settings',
+          'Edit Profile',
           style: TextStyle(
             color: textColor,
-            fontSize: 19,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),

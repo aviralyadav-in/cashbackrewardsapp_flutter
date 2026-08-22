@@ -122,7 +122,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // LEFT CATEGORIES DRAWER
       // =========================
       drawer: Drawer(
-        width: MediaQuery.of(context).size.width * 0.75,
+        width: MediaQuery.of(context).size.width * 0.5,
         backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
         child: SafeArea(
           child: Column(
@@ -130,7 +130,7 @@ class _HomeScreenState extends State<HomeScreen> {
             children: [
               // COMPACT HEADER: CASHKARO BRANDING
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 18),
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
                 decoration: const BoxDecoration(
                   gradient: LinearGradient(
                     colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
@@ -140,15 +140,15 @@ class _HomeScreenState extends State<HomeScreen> {
                     bottomRight: Radius.circular(24),
                   ),
                 ),
-                child: Text(
+                child: const Text(
                   'CashKaro',
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     fontFamily: 'HandwrittenItalic',
                     color: Colors.white,
-                    fontSize: 30,
+                    fontSize: 24,
                     fontWeight: FontWeight.w900,
-                    letterSpacing: 3.0,
+                    letterSpacing: 2.0,
                   ),
                 ),
               ),
@@ -174,6 +174,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     crossAxisAlignment: CrossAxisAlignment.stretch,
                                     children: [
                                       // 1. SHOP & EARN
+                                        // const SizedBox(height:16),
                                       const _DrawerSectionHeader(title: 'Shop & Earn'),
                                       _DrawerCategoryItem(
                                         title: 'Highest Cashback Stores',
@@ -2496,7 +2497,7 @@ class _DrawerCategoryItem extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
           child: Row(
             children: [
               Expanded(
@@ -2505,8 +2506,8 @@ class _DrawerCategoryItem extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.normal,
+                    fontSize: 13,
+                    fontWeight: FontWeight.w400,
                     color: isHighlight
                         ? const Color(0xFF1E90FF)
                         : (isDark ? Colors.white : const Color(0xFF1F1F21)),
@@ -2516,7 +2517,7 @@ class _DrawerCategoryItem extends StatelessWidget {
               if (showChevron)
                 Icon(
                   Icons.chevron_right,
-                  size: 18,
+                  size: 16,
                   color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
                 ),
             ],

@@ -137,7 +137,7 @@ class ProfileScreen extends StatelessWidget {
           'Profile',
           style: TextStyle(
             color: isDark ? Colors.white : Colors.black87,
-            fontSize: 19,
+            fontSize: 20,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -188,67 +188,98 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          'Hello,',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w500,
-                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                          ),
-                        ),
-                        const SizedBox(height: 2),
-                        Text(
-                          userName,
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
-                        ),
-                        if (userEmail.isNotEmpty || userPhone.isNotEmpty) ...[
-                          const SizedBox(height: 8),
-                          if (userEmail.isNotEmpty)
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.email_outlined,
-                                  size: 14,
-                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                                ),
-                                const SizedBox(width: 6),
-                                Expanded(
-                                  child: Text(
-                                    userEmail,
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Hello,',
                                     style: TextStyle(
                                       fontSize: 13,
-                                      color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                      fontWeight: FontWeight.w500,
+                                      color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                                     ),
-                                    overflow: TextOverflow.ellipsis,
                                   ),
-                                ),
-                              ],
+                                  const SizedBox(height: 2),
+                                  Text(
+                                    userName,
+                                    style: TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                      color: isDark ? Colors.white : Colors.black87,
+                                    ),
+                                  ),
+                                  if (userEmail.isNotEmpty || userPhone.isNotEmpty) ...[
+                                    const SizedBox(height: 8),
+                                    if (userEmail.isNotEmpty)
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.email_outlined,
+                                            size: 14,
+                                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Expanded(
+                                            child: Text(
+                                              userEmail,
+                                              style: TextStyle(
+                                                fontSize: 13,
+                                                color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                              ),
+                                              overflow: TextOverflow.ellipsis,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    if (userPhone.isNotEmpty) ...[
+                                      const SizedBox(height: 4),
+                                      Row(
+                                        children: [
+                                          Icon(
+                                            Icons.phone_outlined,
+                                            size: 14,
+                                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                          ),
+                                          const SizedBox(width: 6),
+                                          Text(
+                                            userPhone,
+                                            style: TextStyle(
+                                              fontSize: 13,
+                                              color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ],
+                                ],
+                              ),
                             ),
-                          if (userPhone.isNotEmpty) ...[
-                            const SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(
-                                  Icons.phone_outlined,
-                                  size: 14,
-                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                            IconButton(
+                              onPressed: () => Navigator.of(context).pushNamed(AccountSettingsScreen.routeName),
+                              icon: Container(
+                                padding: const EdgeInsets.all(8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.2 : 0.1),
+                                  shape: BoxShape.circle,
                                 ),
-                                const SizedBox(width: 6),
-                                Text(
-                                  userPhone,
-                                  style: TextStyle(
-                                    fontSize: 13,
-                                    color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-                                  ),
+                                child: const Icon(
+                                  Icons.edit,
+                                  size: 18,
+                                  color: Color(0xFF1E90FF),
                                 ),
-                              ],
+                              ),
+                              tooltip: 'Edit Profile',
+                              splashRadius: 24,
+                              constraints: const BoxConstraints(),
+                              padding: EdgeInsets.zero,
                             ),
                           ],
-                        ],
+                        ),
                         const SizedBox(height: 16),
 
                         // Two Summary Cards: Total Cashback & Total Rewards
@@ -352,12 +383,12 @@ class ProfileScreen extends StatelessWidget {
                   const SizedBox(height: 14),
 
                   // 3. ACCOUNT SETTINGS
-                  _ProfileOptionTile(
-                    icon: Icons.settings_outlined,
-                    title: 'Account Settings',
-                    isDark: isDark,
-                    onTap: () => Navigator.of(context).pushNamed(AccountSettingsScreen.routeName),
-                  ),
+                  // _ProfileOptionTile(
+                  //   icon: Icons.settings_outlined,
+                  //   title: 'Account Settings',
+                  //   isDark: isDark,
+                  //   onTap: () => Navigator.of(context).pushNamed(AccountSettingsScreen.routeName),
+                  // ),
 
               // 4. CASHBACK & REWARDS SECTION
               _ProfileSectionHeader(title: 'Cashback & Rewards', isDark: isDark),

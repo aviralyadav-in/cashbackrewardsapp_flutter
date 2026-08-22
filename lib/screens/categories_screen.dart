@@ -89,9 +89,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Categories'),
-        centerTitle: true,
-      ),
+  title: Text(
+    'Categories',
+    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
+  ),
+  centerTitle: true,
+),
       body: Consumer<CategoryProvider>(
         builder: (context, provider, child) {
           if (provider.categoriesStatus == CategoryStatus.loading &&
@@ -155,12 +158,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Categories',
-                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
-                        fontWeight: FontWeight.bold,
-                      ),
-                ),
 
                 const SizedBox(height: 12),
 

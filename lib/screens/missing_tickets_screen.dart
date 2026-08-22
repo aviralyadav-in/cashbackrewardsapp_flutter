@@ -9,9 +9,15 @@ class MissingTicketsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Missing Cashback'),
-        centerTitle: true,
-      ),
+  title: const Text(
+    'Missing Cashback',
+    style: TextStyle(
+      fontSize: 20,
+      fontWeight: FontWeight.bold,
+    ),
+  ),
+  centerTitle: true,
+),
       // body: Center(
       //   child: Padding(
       //     padding: const EdgeInsets.all(24.0),
