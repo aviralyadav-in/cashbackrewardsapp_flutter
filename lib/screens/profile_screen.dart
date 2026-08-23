@@ -6,55 +6,23 @@ import '../providers/theme_provider.dart';
 import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import 'account_settings_screen.dart';
+import 'call_us_screen.dart';
 import 'get_help_screen.dart';
 import 'login_screen.dart';
 import 'missing_tickets_screen.dart';
 import 'my_earnings_screen.dart';
+import 'my_referrals_screen.dart';
+import 'payments_history_screen.dart';
+import 'payments_screen.dart';
 import 'privacy_policy_screen.dart';
 import 'refer_earn_screen.dart';
+import 'review_us_screen.dart';
+import 'your_queries_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
 
   const ProfileScreen({super.key});
-
-  void _showInfoModal(BuildContext context, String title, String content) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        title: Text(
-          title,
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontWeight: FontWeight.bold,
-          ),
-        ),
-        content: Text(
-          content,
-          style: TextStyle(
-            color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-            fontSize: 14,
-          ),
-        ),
-        actions: [
-          TextButton(
-            onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Color(0xFF1E90FF),
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
 
   void _confirmLogout(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -393,94 +361,70 @@ class ProfileScreen extends StatelessWidget {
               // 4. CASHBACK & REWARDS SECTION
               _ProfileSectionHeader(title: 'Cashback & Rewards', isDark: isDark),
               _ProfileOptionTile(
-                icon: Icons.account_balance_wallet_outlined,
-                title: 'My Earnings',
-                isDark: isDark,
-                onTap: () => Navigator.of(context).pushNamed(MyEarningsScreen.routeName),
+                 icon: Icons.account_balance_wallet_outlined,
+                 title: 'My Earnings',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(MyEarningsScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.payment_outlined,
-                title: 'Payments',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Payments',
-                  'Withdraw your confirmed earnings directly to your bank account or Amazon Pay wallet.',
-                ),
+                 icon: Icons.payment_outlined,
+                 title: 'Payments',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(PaymentsScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.history_rounded,
-                title: 'Payments History',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Payments History',
-                  'No payout history available yet.',
-                ),
+                 icon: Icons.history_rounded,
+                 title: 'Payments History',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(PaymentsHistoryScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.confirmation_number_outlined,
-                title: 'Missing Cashback',
-                isDark: isDark,
-                onTap: () => Navigator.of(context).pushNamed(MissingTicketsScreen.routeName),
+                 icon: Icons.confirmation_number_outlined,
+                 title: 'Missing Cashback',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(MissingTicketsScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.question_answer_outlined,
-                title: 'Your Queries',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Your Queries',
-                  'No support queries active right now.',
-                ),
+                 icon: Icons.question_answer_outlined,
+                 title: 'Your Queries',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(YourQueriesScreen.routeName),
               ),
 
               // 5. REFERRALS SECTION
               _ProfileSectionHeader(title: 'Referrals', isDark: isDark),
               _ProfileOptionTile(
-                icon: Icons.card_giftcard_rounded,
-                title: 'Refer & Earn',
-                isDark: isDark,
-                onTap: () => Navigator.of(context).pushNamed(ReferEarnScreen.routeName),
+                 icon: Icons.card_giftcard_rounded,
+                 title: 'Refer & Earn',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(ReferEarnScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.people_outline_rounded,
-                title: 'My Referrals',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'My Referrals',
-                  'Total Referred Friends: 0\nReferral Bonus Earned: ₹0.0',
-                ),
+                 icon: Icons.people_outline_rounded,
+                 title: 'My Referrals',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(MyReferralsScreen.routeName),
               ),
 
               // 6. SUPPORT & FEEDBACK SECTION
               _ProfileSectionHeader(title: 'Support & Feedback', isDark: isDark),
               _ProfileOptionTile(
-                icon: Icons.help_outline_rounded,
-                title: 'Get Help',
-                isDark: isDark,
-                onTap: () => Navigator.of(context).pushNamed(GetHelpScreen.routeName),
+                 icon: Icons.help_outline_rounded,
+                 title: 'Get Help',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(GetHelpScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.call_outlined,
-                title: 'Call Us',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Call Support',
-                  'Customer Support Helpline:\n1800-CASHKARO (1800-227-4527)\nAvailable Mon-Sat: 10 AM - 7 PM.',
-                ),
+                 icon: Icons.call_outlined,
+                 title: 'Call Us',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(CallUsScreen.routeName),
               ),
               _ProfileOptionTile(
-                icon: Icons.star_border_rounded,
-                title: 'Review Us',
-                isDark: isDark,
-                onTap: () => _showInfoModal(
-                  context,
-                  'Review Us',
-                  'Thank you for using CashKaro! Please rate us 5 stars on Play Store.',
-                ),
+                 icon: Icons.star_border_rounded,
+                 title: 'Review Us',
+                 isDark: isDark,
+                 onTap: () => Navigator.of(context).pushNamed(ReviewUsScreen.routeName),
               ),
 
               // 7. PRIVACY POLICY

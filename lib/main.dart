@@ -9,20 +9,26 @@ import 'providers/theme_provider.dart';
 import 'providers/user_provider.dart';
 import 'screens/account_settings_screen.dart';
 import 'screens/all_categories_screen.dart';
+import 'screens/call_us_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/get_help_screen.dart';
 import 'screens/home_screen.dart';
 // import 'screens/login_screen.dart';
 import 'screens/missing_tickets_screen.dart';
 import 'screens/my_earnings_screen.dart';
+import 'screens/my_referrals_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/onboarding_screen.dart';
+import 'screens/payments_history_screen.dart';
+import 'screens/payments_screen.dart';
 import 'screens/privacy_policy_screen.dart';
 import 'screens/product_detail_screen.dart';
 import 'screens/profile_screen.dart';
 import 'screens/refer_earn_screen.dart';
+import 'screens/review_us_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/your_queries_screen.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
 // import 'firebase_options.dart';
@@ -89,6 +95,12 @@ class CashbackRewardApp extends StatelessWidget {
               ReferEarnScreen.routeName: (_) => const ReferEarnScreen(),
               MyEarningsScreen.routeName: (_) => const MyEarningsScreen(),
               MissingTicketsScreen.routeName: (_) => const MissingTicketsScreen(),
+              PaymentsScreen.routeName: (_) => const PaymentsScreen(),
+              PaymentsHistoryScreen.routeName: (_) => const PaymentsHistoryScreen(),
+              YourQueriesScreen.routeName: (_) => const YourQueriesScreen(),
+              MyReferralsScreen.routeName: (_) => const MyReferralsScreen(),
+              CallUsScreen.routeName: (_) => const CallUsScreen(),
+              ReviewUsScreen.routeName: (_) => const ReviewUsScreen(),
               NotificationsScreen.routeName: (_) => const NotificationsScreen(),
               ProductDetailScreen.routeName: (_) => const ProductDetailScreen(),
             },
