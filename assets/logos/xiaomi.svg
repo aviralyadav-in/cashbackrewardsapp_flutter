@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <!-- Orange rounded square icon with mi -->
+    <rect x="0" y="0" width="52" height="52" rx="16" fill="#FF6900"/>
+    <text x="26" y="36" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">mi</text>
+  </g>
+  <text x="72" y="44" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" fill="#1C1C1E" letter-spacing="-0.5">Xiaomi / <tspan fill="#FF6900">Redmi</tspan></text>
+</svg>

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../screens/offer_section_screen.dart';
+import '../../screens/product_detail_screen.dart';
 import '../network_image_with_skeleton.dart';
 
 class OfferSectionCarouselWidget extends StatelessWidget {
@@ -102,7 +103,14 @@ class OfferSectionCarouselWidget extends StatelessWidget {
                     return Padding(
                       padding: const EdgeInsets.only(right: 12.0),
                       child: GestureDetector(
-                        onTap: onViewAllTap,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) =>
+                                  ProductDetailScreen.fromOfferItem(item),
+                            ),
+                          );
+                        },
                         child: Container(
                           width: 155,
                           decoration: BoxDecoration(

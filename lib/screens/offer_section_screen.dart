@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'product_detail_screen.dart';
 import '../widgets/network_image_with_skeleton.dart';
 
 class OfferSectionItem {
@@ -58,7 +59,15 @@ class OfferSectionScreen extends StatelessWidget {
               itemBuilder: (context, index) {
                 final item = items[index];
 
-                return Container(
+                return GestureDetector(
+                  onTap: () {
+                    Navigator.of(context).push(
+                      MaterialPageRoute(
+                        builder: (_) => ProductDetailScreen.fromOfferItem(item),
+                      ),
+                    );
+                  },
+                  child: Container(
                   decoration: BoxDecoration(
                     color: isDark ? const Color(0xFF161618) : Colors.white,
                     borderRadius: BorderRadius.circular(16),
@@ -194,8 +203,9 @@ class OfferSectionScreen extends StatelessWidget {
                       ],
                     ),
                   ),
-                );
-              },
+                ),
+              );
+            },
             ),
     );
   }

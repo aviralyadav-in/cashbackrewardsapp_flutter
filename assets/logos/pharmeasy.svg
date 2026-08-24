@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <circle cx="26" cy="26" r="24" fill="#10847E"/>
+    <!-- Medical Cross -->
+    <path d="M22 14 L30 14 L30 22 L38 22 L38 30 L30 30 L30 38 L22 38 L22 30 L14 30 L14 22 L22 22 Z" fill="#FFFFFF"/>
+  </g>
+  <text x="68" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="30" fill="#10847E" letter-spacing="-0.5">Pharm<tspan fill="#F39C12">Easy</tspan></text>
+</svg>

@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
+  <defs>
+    <linearGradient id="fkYellow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#FFE11B"/>
+      <stop offset="100%" stop-color="#FFD200"/>
+    </linearGradient>
+  </defs>
+  <!-- Shopping Bag Icon -->
+  <g transform="translate(10, 10)">
+    <!-- Bag handles -->
+    <path d="M22,18 C22,9 36,9 36,18" fill="none" stroke="#2874F0" stroke-width="4" stroke-linecap="round"/>
+    <!-- Bag body -->
+    <rect x="10" y="16" width="38" height="44" rx="6" fill="url(#fkYellow)"/>
+    <!-- Speed lines on bag -->
+    <path d="M4 26 L12 26 M2 34 L12 34 M6 42 L12 42" stroke="#2874F0" stroke-width="3.5" stroke-linecap="round"/>
+    <!-- 'f' letter -->
+    <text x="29" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="34" fill="#2874F0" text-anchor="middle">f</text>
+  </g>
+  <!-- Flipkart text -->
+  <text x="68" y="52" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="38" fill="#2874F0" letter-spacing="-0.5">Flipkart</text>
+  <text x="214" y="38" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-style="italic" font-size="16" fill="#FFD200">✦</text>
+</svg>

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <!-- Red/Black mmt circle badge -->
+    <rect x="0" y="4" width="46" height="46" rx="23" fill="#E41E26"/>
+    <text x="23" y="34" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="20" fill="#FFFFFF" text-anchor="middle">mmt</text>
+  </g>
+  <text x="66" y="42" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#E41E26" letter-spacing="-0.5">make<tspan fill="#000000">my</tspan><tspan fill="#E41E26">trip</tspan></text>
+  <text x="68" y="58" font-family="'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="10" fill="#71717A" letter-spacing="1">HOTELS & FLIGHTS</text>
+</svg>

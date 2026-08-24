@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <rect x="0" y="2" width="48" height="48" rx="8" fill="#E41E26"/>
+    <text x="24" y="34" font-family="'Brush Script MT', 'Segoe Script', cursive, sans-serif" font-weight="900" font-style="italic" font-size="22" fill="#FFFFFF" text-anchor="middle">RB</text>
+  </g>
+  <text x="68" y="48" font-family="'Impact', 'Arial Black', sans-serif" font-style="italic" font-weight="900" font-size="34" fill="#E41E26" letter-spacing="-1">Ray-Ban</text>
+</svg>

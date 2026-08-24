@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <!-- Realme signature yellow box icon -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="2" width="48" height="48" rx="10" fill="#FFC800"/>
+    <text x="24" y="36" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="32" fill="#000000" text-anchor="middle">r</text>
+  </g>
+  <text x="68" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="34" fill="#000000" letter-spacing="-0.5">realme</text>
+</svg>

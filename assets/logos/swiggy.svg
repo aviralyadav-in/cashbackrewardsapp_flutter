@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <!-- Swiggy Orange Map Pin/Location Icon -->
+  <g transform="translate(10, 10)">
+    <rect x="0" y="2" width="48" height="50" rx="14" fill="#FC8019"/>
+    <!-- Swiggy S Curve inside Pin -->
+    <path d="M24 12 C18 12 14 16 14 21 C14 28 24 30 24 35 C24 38 21 40 18 40 C14 40 12 37 12 37 L10 41 C10 41 13 44 18 44 C24 44 28 40 28 35 C28 27 18 25 18 21 C18 18 20 16 24 16 C27 16 29 18 29 18 L31 14 C31 14 28 12 24 12 Z" fill="#FFFFFF"/>
+  </g>
+  <!-- SWIGGY Text -->
+  <text x="68" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#FC8019" letter-spacing="1">SWIGGY</text>
+</svg>

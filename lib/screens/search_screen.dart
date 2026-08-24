@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/search_provider.dart';
 import '../widgets/network_image_with_skeleton.dart';
+import 'product_detail_screen.dart';
 
 class SearchScreen extends StatefulWidget {
   static const String routeName = '/search';
@@ -111,7 +112,16 @@ class _SearchScreenState extends State<SearchScreen> {
                         itemBuilder: (context, index) {
                           final product = provider.searchResults[index];
 
-                          return Card(
+                          return GestureDetector(
+                            onTap: () {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductDetailScreen(product: product),
+                                ),
+                              );
+                            },
+                            child: Card(
                               elevation: 2,
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(16),
@@ -226,7 +236,8 @@ class _SearchScreenState extends State<SearchScreen> {
                                   ],
                                 ),
                               ),
-                            );
+                            ),
+                          );
                         },
                       );
                     case SearchStatus.initial:

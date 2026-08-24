@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <rect x="0" y="2" width="48" height="48" rx="12" fill="#E8B004"/>
+    <text x="24" y="34" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="24" fill="#000000" text-anchor="middle">KB</text>
+  </g>
+  <text x="68" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#1C1C1E">Kredit<tspan fill="#E8B004">Bee</tspan></text>
+</svg>

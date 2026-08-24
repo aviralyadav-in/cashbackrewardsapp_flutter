@@ -67,6 +67,7 @@ flutter:
 
   assets:
     - assets/data/brands.json
+    - assets/logos/
 
   fonts:
     - family: Algerian

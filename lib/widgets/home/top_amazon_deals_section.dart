@@ -2,8 +2,9 @@ import 'package:flutter/material.dart';
 import '../../data/home_mock_data.dart';
 import '../../models/amazon_deal_model.dart';
 import '../../models/brand_model.dart';
+import '../../screens/product_detail_screen.dart';
+import '../../screens/top_category_brands_screen.dart';
 import '../network_image_with_skeleton.dart';
-import 'brand_confirmation_dialog.dart';
 import 'dashed_line_painter.dart';
 
 class TopAmazonDealsSection extends StatefulWidget {
@@ -19,8 +20,6 @@ class TopAmazonDealsSection extends StatefulWidget {
 }
 
 class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
-  bool _showAllAmazonDeals = false;
-
   String _formatCurrency(num amount) {
     final str = amount.round().toString();
     final reg = RegExp(r'(\d+?)(?=(\d{3})+(?!\d))');
@@ -66,33 +65,54 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
               ),
               InkWell(
                 onTap: () {
-                  setState(() {
-                    _showAllAmazonDeals = !_showAllAmazonDeals;
-                  });
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TopCategoryBrandsScreen(
+                        categoryTitle: 'Top Amazon Deals',
+                        brands: deals
+                            .map(
+                              (deal) => BrandModel(
+                                name: '${deal.brandName} - ${deal.productName}',
+                                logoUrl:
+                                    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+                                bannerUrl: deal.imageUrl,
+                                cashbackPercentage:
+                                    'Flat ${deal.rewardPercentage.toInt()}% Reward',
+                                category: 'Amazon Deals',
+                                offerText:
+                                    'After Rewards: ₹${_formatCurrency(deal.finalPrice)} (Actual: ₹${_formatCurrency(deal.actualPrice.round())})',
+                                websiteUrl: deal.productUrl,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  );
                 },
                 borderRadius: BorderRadius.circular(16),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
                     color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: Row(
+                  child: const Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
-                        _showAllAmazonDeals ? 'Show Less' : 'View All',
-                        style: const TextStyle(
+                        'View All',
+                        style: TextStyle(
                           fontSize: 12,
                           fontWeight: FontWeight.bold,
                           color: Color(0xFF1E90FF),
                         ),
                       ),
-                      const SizedBox(width: 2),
+                      SizedBox(width: 2),
                       Icon(
-                        _showAllAmazonDeals ? Icons.keyboard_arrow_up : Icons.arrow_forward_ios,
+                        Icons.arrow_forward_ios,
                         size: 10,
-                        color: const Color(0xFF1E90FF),
+                        color: Color(0xFF1E90FF),
                       ),
                     ],
                   ),
@@ -102,40 +122,23 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
           ),
           const SizedBox(height: 14),
 
-          // Horizontal Slider OR Grid View based on _showAllAmazonDeals
-          if (!_showAllAmazonDeals)
-            SizedBox(
-              height: 275,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                physics: const BouncingScrollPhysics(),
-                itemCount: deals.length,
-                itemBuilder: (context, index) {
-                  final deal = deals[index];
-                  return Container(
-                    width: 175,
-                    margin: const EdgeInsets.only(right: 12),
-                    child: _buildAmazonProductCard(context, deal, isDark),
-                  );
-                },
-              ),
-            )
-          else
-            GridView.builder(
-              shrinkWrap: true,
-              physics: const NeverScrollableScrollPhysics(),
+          // Horizontal Slider
+          SizedBox(
+            height: 275,
+            child: ListView.builder(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
               itemCount: deals.length,
-              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                crossAxisCount: 2,
-                childAspectRatio: 0.64,
-                crossAxisSpacing: 10,
-                mainAxisSpacing: 12,
-              ),
               itemBuilder: (context, index) {
                 final deal = deals[index];
-                return _buildAmazonProductCard(context, deal, isDark);
+                return Container(
+                  width: 175,
+                  margin: const EdgeInsets.only(right: 12),
+                  child: _buildAmazonProductCard(context, deal, isDark),
+                );
               },
             ),
+          ),
         ],
       ),
     );
@@ -146,18 +149,14 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
     AmazonDealItemData deal,
     bool isDark,
   ) {
-    final brandModel = BrandModel(
-      name: '${deal.brandName} - ${deal.productName}',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-      bannerUrl: deal.imageUrl,
-      cashbackPercentage: 'Flat ${deal.rewardPercentage.toInt()}% Reward',
-      category: 'Amazon Deals',
-      offerText: 'After Rewards: ₹${_formatCurrency(deal.finalPrice)}',
-      websiteUrl: deal.productUrl,
-    );
-
     return GestureDetector(
-      onTap: () => showBrandConfirmationDialog(context, brandModel),
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ProductDetailScreen.fromAmazonDeal(deal),
+          ),
+        );
+      },
       child: Container(
         decoration: BoxDecoration(
           color: isDark ? const Color(0xFF161618) : Colors.white,

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <!-- MK Circle Icon -->
+  <g transform="translate(10, 10)">
+    <circle cx="26" cy="26" r="24" fill="#D4AF37"/>
+    <text x="26" y="34" font-family="'Times New Roman', serif" font-weight="900" font-size="22" fill="#000000" text-anchor="middle">MK</text>
+  </g>
+  <text x="68" y="38" font-family="'Times New Roman', Georgia, serif" font-weight="900" font-size="22" fill="#000000" letter-spacing="2">MICHAEL</text>
+  <text x="68" y="58" font-family="'Times New Roman', Georgia, serif" font-weight="900" font-size="22" fill="#000000" letter-spacing="3">KORS</text>
+</svg>

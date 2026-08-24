@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <g transform="translate(10, 10)">
+    <circle cx="26" cy="26" r="24" fill="#001428"/>
+    <!-- Motorola M Wing Icon -->
+    <path d="M12 36 L20 18 L26 28 L32 18 L40 36 L34 36 L29 24 L26 30 L23 24 L18 36 Z" fill="#FFFFFF"/>
+  </g>
+  <text x="68" y="46" font-family="'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="28" fill="#001428" letter-spacing="-0.5">motorola</text>
+</svg>

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import '../models/brand_model.dart';
 import '../services/url_launcher_service.dart';
 import '../widgets/network_image_with_skeleton.dart';
+import 'product_detail_screen.dart';
 
 class TopCategoryBrandsScreen extends StatelessWidget {
   static const String routeName = '/top-category-brands';
@@ -327,7 +328,15 @@ class TopCategoryBrandsScreen extends StatelessWidget {
   }
 
   Widget _buildWebsiteBrandCard(BuildContext context, BrandModel brand, bool isDark) {
-    return Container(
+    return GestureDetector(
+      onTap: () {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => ProductDetailScreen.fromBrand(brand),
+          ),
+        );
+      },
+      child: Container(
       margin: const EdgeInsets.only(bottom: 18),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF161618) : Colors.white,
@@ -410,27 +419,38 @@ class TopCategoryBrandsScreen extends StatelessWidget {
               padding: const EdgeInsets.all(16),
               child: Row(
                 children: [
-                  // Logo
+                  // Large Brand Logo
                   Container(
-                    width: 46,
-                    height: 46,
+                    width: 54,
+                    height: 54,
                     padding: const EdgeInsets.all(6),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
-                      shape: BoxShape.circle,
+                      color: isDark ? const Color(0xFF242426) : Colors.grey.shade50,
+                      borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
-                        width: 1,
+                        color: const Color(0xFF1E90FF).withValues(alpha: 0.35),
+                        width: 1.2,
                       ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
                     ),
-                    child: ClipOval(
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(10),
                       child: NetworkImageWithSkeleton(
-                        imageUrl: brand.logoUrl,
+                        imageUrl: brand.logoUrl.isNotEmpty
+                            ? brand.logoUrl
+                            : brand.bannerUrl,
                         fit: BoxFit.contain,
                         errorBuilder: (context, error, stackTrace) => Center(
                           child: Text(
                             brand.name.substring(0, 1),
                             style: const TextStyle(
+                              fontSize: 20,
                               fontWeight: FontWeight.bold,
                               color: Color(0xFF1E90FF),
                             ),
@@ -503,6 +523,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

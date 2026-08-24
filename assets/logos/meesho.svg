@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
+  <defs>
+    <linearGradient id="meeshoGrad" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0%" stop-color="#88005B"/>
+      <stop offset="100%" stop-color="#DE0082"/>
+    </linearGradient>
+  </defs>
+  <!-- meesho M icon -->
+  <g transform="translate(10, 10)">
+    <circle cx="28" cy="28" r="24" fill="url(#meeshoGrad)"/>
+    <text x="28" y="39" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">m</text>
+  </g>
+  <!-- meesho text -->
+  <text x="70" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="36" fill="url(#meeshoGrad)" letter-spacing="-0.5">meesho</text>
+</svg>

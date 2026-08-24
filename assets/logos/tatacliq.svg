@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" width="260" height="70">
+  <text x="12" y="24" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="16" fill="#1C3F94" letter-spacing="4">TATA</text>
+  <text x="12" y="58" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="38" fill="#121212" letter-spacing="1">CLi</text>
+  <!-- Distinctive Q with Red Dot/Tail -->
+  <text x="96" y="58" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="38" fill="#121212">Q</text>
+  <circle cx="120" cy="56" r="4.5" fill="#E31837"/>
+  <rect x="150" y="32" width="90" height="24" rx="6" fill="#E31837"/>
+  <text x="195" y="48" font-family="'Segoe UI', Roboto, sans-serif" font-weight="800" font-size="11" fill="#FFFFFF" text-anchor="middle" letter-spacing="1">LUXURY</text>
+</svg>

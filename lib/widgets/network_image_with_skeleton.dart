@@ -121,6 +121,24 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
 
   @override
   Widget build(BuildContext context) {
+    final raw = widget.imageUrl.trim();
+    if (raw.startsWith('assets/')) {
+      if (_isSvgUrl(raw)) {
+        return SvgPicture.asset(
+          raw,
+          width: widget.width,
+          height: widget.height,
+          fit: widget.fit,
+        );
+      }
+      return Image.asset(
+        raw,
+        width: widget.width,
+        height: widget.height,
+        fit: widget.fit,
+      );
+    }
+
     final sanitized = _sanitizeUrl(widget.imageUrl);
 
     if (sanitized.isEmpty) {

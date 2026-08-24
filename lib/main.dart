@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
+import 'models/product.dart';
 import 'providers/category_provider.dart';
 import 'providers/product_provider.dart';
 import 'providers/search_provider.dart';
@@ -13,9 +14,11 @@ import 'screens/call_us_screen.dart';
 import 'screens/categories_screen.dart';
 import 'screens/get_help_screen.dart';
 import 'screens/home_screen.dart';
+import 'screens/know_why_screen.dart';
 // import 'screens/login_screen.dart';
 import 'screens/missing_tickets_screen.dart';
 import 'screens/my_earnings_screen.dart';
+import 'screens/my_order_details_screen.dart';
 import 'screens/my_referrals_screen.dart';
 import 'screens/notifications_screen.dart';
 import 'screens/onboarding_screen.dart';
@@ -28,6 +31,7 @@ import 'screens/refer_earn_screen.dart';
 import 'screens/review_us_screen.dart';
 import 'screens/search_screen.dart';
 import 'screens/splash_screen.dart';
+import 'screens/withdraw_screen.dart';
 import 'screens/your_queries_screen.dart';
 
 // import 'package:firebase_core/firebase_core.dart';
@@ -94,6 +98,9 @@ class CashbackRewardApp extends StatelessWidget {
               OnboardingScreen.routeName: (_) => const OnboardingScreen(),
               ReferEarnScreen.routeName: (_) => const ReferEarnScreen(),
               MyEarningsScreen.routeName: (_) => const MyEarningsScreen(),
+              WithdrawScreen.routeName: (_) => const WithdrawScreen(),
+              KnowWhyScreen.routeName: (_) => const KnowWhyScreen(),
+              MyOrderDetailsScreen.routeName: (_) => const MyOrderDetailsScreen(),
               MissingTicketsScreen.routeName: (_) => const MissingTicketsScreen(),
               PaymentsScreen.routeName: (_) => const PaymentsScreen(),
               PaymentsHistoryScreen.routeName: (_) => const PaymentsHistoryScreen(),
@@ -102,7 +109,22 @@ class CashbackRewardApp extends StatelessWidget {
               CallUsScreen.routeName: (_) => const CallUsScreen(),
               ReviewUsScreen.routeName: (_) => const ReviewUsScreen(),
               NotificationsScreen.routeName: (_) => const NotificationsScreen(),
-              ProductDetailScreen.routeName: (_) => const ProductDetailScreen(),
+            },
+            onGenerateRoute: (settings) {
+              if (settings.name == ProductDetailScreen.routeName) {
+                final args = settings.arguments;
+                if (args is Product) {
+                  return MaterialPageRoute(
+                    builder: (_) => ProductDetailScreen(product: args),
+                    settings: settings,
+                  );
+                }
+                return MaterialPageRoute(
+                  builder: (_) => const ProductDetailScreen(),
+                  settings: settings,
+                );
+              }
+              return null;
             },
           );
         },

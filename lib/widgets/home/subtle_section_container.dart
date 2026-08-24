@@ -133,7 +133,7 @@ class HorizontalBrandCarousel extends StatelessWidget {
         itemBuilder: (context, index) {
           final brand = brands[index];
           return SizedBox(
-            width: 122,
+            width: 124,
             child: GridBrandCard(
               brand: brand,
               isDark: isDark,

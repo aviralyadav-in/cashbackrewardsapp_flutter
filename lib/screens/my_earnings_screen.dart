@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'get_help_screen.dart';
+import 'know_why_screen.dart';
+import 'my_order_details_screen.dart';
+import 'withdraw_screen.dart';
 
 class MyEarningsScreen extends StatelessWidget {
   static const String routeName = '/my-earnings';
@@ -94,18 +98,7 @@ class MyEarningsScreen extends StatelessWidget {
               _ConfirmedEarningsCard(
                 isDark: isDark,
                 onWithdrawTap: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text(
-                        'Minimum confirmed balance of ₹250 required to withdraw.',
-                        style: TextStyle(fontWeight: FontWeight.bold),
-                      ),
-                      backgroundColor: const Color(0xFF1E90FF),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed(WithdrawScreen.routeName);
                 },
               ),
 
@@ -114,11 +107,9 @@ class MyEarningsScreen extends StatelessWidget {
               // 3. PENDING EARNINGS CARD
               _PendingEarningsCard(
                 isDark: isDark,
-                onKnowWhyTap: () => _showInfoDialog(
-                  context,
-                  'Pending Earnings',
-                  'Pending earnings are tracked orders waiting for retailer confirmation. It usually takes 30-60 days to get confirmed.',
-                ),
+                onKnowWhyTap: () {
+                  Navigator.of(context).pushNamed(KnowWhyScreen.routeName);
+                },
               ),
 
               const SizedBox(height: 20),
@@ -127,20 +118,11 @@ class MyEarningsScreen extends StatelessWidget {
               _AdditionalOptionsCard(
                 isDark: isDark,
                 onOrderDetailsTap: () {
-                  ScaffoldMessenger.of(context).hideCurrentSnackBar();
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    SnackBar(
-                      content: const Text('No orders tracked yet.'),
-                      behavior: SnackBarBehavior.floating,
-                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    ),
-                  );
+                  Navigator.of(context).pushNamed(MyOrderDetailsScreen.routeName);
                 },
-                onGetHelpTap: () => _showInfoDialog(
-                  context,
-                  'Get Help',
-                  'For any earnings or missing cashback queries, please visit the Missing Tickets section or contact Support.',
-                ),
+                onGetHelpTap: () {
+                  Navigator.of(context).pushNamed(GetHelpScreen.routeName);
+                },
               ),
 
               const SizedBox(height: 24),
@@ -218,7 +200,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
             child: Text(
-              '₹0.0',
+              '₹2,216.30',
               style: TextStyle(
                 color: isDark ? Colors.white : Colors.black87,
                 fontSize: 34,
@@ -241,7 +223,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Expanded(
                   child: _buildBreakdownItem(
                     title: 'Cashback',
-                    amount: '₹0.0',
+                    amount: '₹1,350.00',
                     icon: Icons.account_balance_wallet_outlined,
                   ),
                 ),
@@ -253,7 +235,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Expanded(
                   child: _buildBreakdownItem(
                     title: 'Rewards',
-                    amount: '₹0.0',
+                    amount: '₹366.30',
                     icon: Icons.card_giftcard_outlined,
                   ),
                 ),
@@ -265,7 +247,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Expanded(
                   child: _buildBreakdownItem(
                     title: 'Referral',
-                    amount: '₹0.0',
+                    amount: '₹500.00',
                     icon: Icons.people_outline_rounded,
                   ),
                 ),
@@ -399,7 +381,7 @@ class _ConfirmedEarningsCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '₹0.0',
+                  '₹1,850.00',
                   style: TextStyle(
                     color: isDark ? Colors.white : Colors.black87,
                     fontSize: 20,
@@ -500,7 +482,7 @@ class _PendingEarningsCard extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
                 Text(
-                  '₹0.0',
+                  '₹366.30',
                   style: TextStyle(
                     color: isDark ? Colors.white : Colors.black87,
                     fontSize: 20,

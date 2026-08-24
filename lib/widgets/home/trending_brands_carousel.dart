@@ -124,27 +124,32 @@ class _TrendingBrandsCarouselWidgetState
                             Row(
                               children: [
                                 Container(
-                                  width: 22,
-                                  height: 22,
+                                  width: 34,
+                                  height: 34,
+                                  padding: const EdgeInsets.all(3),
                                   decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
+                                    borderRadius: BorderRadius.circular(8),
                                     color: widget.isDark
                                         ? const Color(0xFF242426)
                                         : Colors.grey.shade100,
                                     border: Border.all(
                                       color: const Color(0xFF1E90FF)
-                                          .withValues(alpha: 0.3),
+                                          .withValues(alpha: 0.35),
+                                      width: 1,
                                     ),
                                   ),
-                                  child: ClipOval(
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(6),
                                     child: NetworkImageWithSkeleton(
-                                      imageUrl: item.brand.logoUrl,
+                                      imageUrl: item.brand.logoUrl.isNotEmpty
+                                          ? item.brand.logoUrl
+                                          : item.brand.bannerUrl,
                                       fit: BoxFit.contain,
                                       errorBuilder: (ctx, err, stack) => Center(
                                         child: Text(
                                           item.brand.name.substring(0, 1),
                                           style: const TextStyle(
-                                            fontSize: 10,
+                                            fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: Color(0xFF1E90FF),
                                           ),
@@ -153,14 +158,14 @@ class _TrendingBrandsCarouselWidgetState
                                     ),
                                   ),
                                 ),
-                                const SizedBox(width: 6),
+                                const SizedBox(width: 8),
                                 Expanded(
                                   child: Text(
                                     item.brand.name,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: TextStyle(
-                                      fontSize: 13,
+                                      fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: widget.isDark
                                           ? Colors.white

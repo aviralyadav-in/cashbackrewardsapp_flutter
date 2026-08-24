@@ -316,9 +316,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             child: InkWell(
               borderRadius: BorderRadius.circular(16),
               onTap: () {
-                Navigator.of(context).pushNamed(
-                  ProductDetailScreen.routeName,
-                  arguments: product,
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (_) => ProductDetailScreen(product: product),
+                    settings: RouteSettings(
+                      name: ProductDetailScreen.routeName,
+                      arguments: product,
+                    ),
+                  ),
                 );
               },
               child: Container(

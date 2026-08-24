@@ -6,7 +6,6 @@ import '../models/discovery_section_model.dart';
 import '../providers/category_provider.dart';
 import '../providers/product_provider.dart';
 import '../widgets/cashback_banner_carousel.dart';
-import '../widgets/home/brand_confirmation_dialog.dart';
 import '../widgets/home/grid_brand_card.dart';
 import '../widgets/home/home_drawer.dart';
 import '../widgets/home/offer_section_carousel.dart';
@@ -19,10 +18,12 @@ import 'missing_tickets_screen.dart';
 import 'my_earnings_screen.dart';
 import 'notifications_screen.dart';
 import 'offer_section_screen.dart';
+import 'product_detail_screen.dart';
 import 'profile_screen.dart';
 import 'refer_earn_screen.dart';
 import 'search_screen.dart';
 import 'ticket_screen.dart';
+import 'top_category_brands_screen.dart';
 
 class HomeScreen extends StatefulWidget {
   static const String routeName = '/home';
@@ -36,18 +37,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   int _selectedIndex = 0;
-
-  final Set<String> _expandedSectionIds = {};
-
-  void _toggleSection(String sectionId) {
-    setState(() {
-      if (_expandedSectionIds.contains(sectionId)) {
-        _expandedSectionIds.remove(sectionId);
-      } else {
-        _expandedSectionIds.add(sectionId);
-      }
-    });
-  }
 
   @override
   void initState() {
@@ -95,8 +84,6 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 
   Widget _buildDiscoverySection(DiscoverySectionModel section, bool isDark) {
-    final isExpanded = _expandedSectionIds.contains(section.id);
-
     return Column(
       children: [
         SubtleSectionContainer(
@@ -104,11 +91,20 @@ class _HomeScreenState extends State<HomeScreen> {
           isDark: isDark,
           lightGradientColors: section.lightGradientColors,
           darkGradientColors: section.darkGradientColors,
-          onViewAllTap: () => _toggleSection(section.id),
+          onViewAllTap: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => TopCategoryBrandsScreen(
+                  categoryTitle: section.title,
+                  brands: section.brands,
+                ),
+              ),
+            );
+          },
           child: GridCardsSection(
             brands: section.brands,
             isDark: isDark,
-            isExpanded: isExpanded,
+            isExpanded: false,
             initialCount: section.initialCount,
           ),
         ),
@@ -255,6 +251,16 @@ class _HomeScreenState extends State<HomeScreen> {
                           isDark: isDark,
                           lightGradientColors: const [Color(0xFFEFF6FF), Colors.white],
                           darkGradientColors: const [Color(0xFF0F172A), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const TopCategoryBrandsScreen(
+                                  categoryTitle: 'Most Popular',
+                                  brands: HomeMockData.popularBrandsCatalog,
+                                ),
+                              ),
+                            );
+                          },
                           child: HorizontalBrandCarousel(
                             brands: HomeMockData.popularBrandsCatalog,
                             isDark: isDark,
@@ -274,10 +280,27 @@ class _HomeScreenState extends State<HomeScreen> {
                           isDark: isDark,
                           lightGradientColors: const [Color(0xFFF5F0FF), Colors.white],
                           darkGradientColors: const [Color(0xFF161022), Color(0xFF0D0D0D)],
+                          onViewAllTap: () {
+                            Navigator.of(context).push(
+                              MaterialPageRoute(
+                                builder: (_) => const TopCategoryBrandsScreen(
+                                  categoryTitle: 'Trending Brands',
+                                  brands: HomeMockData.popularBrandsCatalog,
+                                ),
+                              ),
+                            );
+                          },
                           child: TrendingBrandsCarouselWidget(
                             items: HomeMockData.trendingBannerCatalog,
                             isDark: isDark,
-                            onBrandTap: (brand) => showBrandConfirmationDialog(context, brand),
+                            onBrandTap: (brand) {
+                              Navigator.of(context).push(
+                                MaterialPageRoute(
+                                  builder: (_) =>
+                                      ProductDetailScreen.fromBrand(brand),
+                                ),
+                              );
+                            },
                           ),
                         ),
                         SubcategoryPromotionalBannerWidget(
@@ -285,16 +308,9 @@ class _HomeScreenState extends State<HomeScreen> {
                           isDark: isDark,
                         ),
 
-                        // 4 TO 11: DISCOVERY SECTIONS (Beauty, Cards, Electronics, Shopping, Medicines, Loans, Hotels, Personal Loans)
+                        // 4 TO 12: DISCOVERY SECTIONS (Beauty, Cards, Electronics, Shopping, Medicines, Loans, Hotels, Personal Loans, Luxury)
                         ...otherDiscoverySections.map(
                           (section) => _buildDiscoverySection(section, isDark),
-                        ),
-
-                        // 12. TOP AMAZON DEALS
-                        TopAmazonDealsSection(isDark: isDark),
-                        SubcategoryPromotionalBannerWidget(
-                          bannerData: HomeMockData.amazonDealsBanner,
-                          isDark: isDark,
                         ),
 
                         // FLIPKART – FREEDOM SALE
@@ -339,111 +355,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         const SizedBox(height: 24),
 
-                        // BEST OF LOANS
-                        OfferSectionCarouselWidget(
-                          title: 'Best of Loans',
-                          items: HomeMockData.loanOffers,
-                          onViewAllTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const OfferSectionScreen(
-                                  title: 'Best of Loans',
-                                  items: HomeMockData.loanOffers,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SubcategoryPromotionalBannerWidget(
-                          bannerData: HomeMockData.bestOfLoansBanner,
-                          isDark: isDark,
-                        ),
+                        // TOP AMAZON DEALS (AT THE BOTTOM, WITHOUT PROMOTIONAL BANNER)
+                        TopAmazonDealsSection(isDark: isDark),
                         const SizedBox(height: 24),
-
-                        // EXCLUSIVE CASHBACK DEALS (API SECTION)
-                        if (provider.status == ProductStatus.loading ||
-                            provider.status == ProductStatus.initial)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 40.0),
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  CircularProgressIndicator(),
-                                  SizedBox(height: 16),
-                                  Text('Loading best cashback deals...'),
-                                ],
-                              ),
-                            ),
-                          )
-                        else if (provider.status == ProductStatus.error)
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 30.0),
-                            child: Center(
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  const Icon(
-                                    Icons.error_outline,
-                                    size: 48,
-                                    color: Color(0xFF1E90FF),
-                                  ),
-                                  const SizedBox(height: 12),
-                                  Text(
-                                    provider.errorMessage,
-                                    textAlign: TextAlign.center,
-                                    style: Theme.of(context).textTheme.bodyLarge,
-                                  ),
-                                  const SizedBox(height: 16),
-                                  ElevatedButton(
-                                    onPressed: provider.fetchProducts,
-                                    child: const Text('Retry'),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          )
-                        else if (provider.products.isEmpty)
-                          const Padding(
-                            padding: EdgeInsets.symmetric(vertical: 40.0),
-                            child: Center(
-                              child: Text('No offers available right now.'),
-                            ),
-                          )
-                        else
-                          Builder(
-                            builder: (context) {
-                              final apiOffers = provider.products
-                                  .map(
-                                    (p) => OfferSectionItem(
-                                      id: p.id,
-                                      title: p.title,
-                                      description: p.description,
-                                      priceOrRate: '\$${p.price.toStringAsFixed(2)}',
-                                      cashbackTag:
-                                          'FLAT ${p.discountPercentage.toStringAsFixed(0)}% CASHBACK',
-                                      imageUrl: p.thumbnail,
-                                      storeName: 'Exclusive',
-                                    ),
-                                  )
-                                  .toList();
-
-                              return OfferSectionCarouselWidget(
-                                title: 'Exclusive Cashback Deals',
-                                items: apiOffers,
-                                onViewAllTap: () {
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (_) => OfferSectionScreen(
-                                        title: 'Exclusive Cashback Deals',
-                                        items: apiOffers,
-                                      ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
                       ],
                     );
                   },
