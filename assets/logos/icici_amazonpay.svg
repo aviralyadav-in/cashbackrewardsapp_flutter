@@ -1,15 +1,15 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
   <!-- ICICI Bank Emblem -->
-  <g transform="translate(8, 7)">
+  <g transform="translate(24, 7)">
     <circle cx="23" cy="23" r="23" fill="#B83227"/>
     <path d="M15 12 L28 12 C33 12 36 15 36 19 C36 22 34 24 31 25 L37 34 L31 34 L26 26 L20 26 L20 34 L15 34 Z" fill="#FFFFFF"/>
     <circle cx="23" cy="18" r="3" fill="#B83227"/>
   </g>
   
   <!-- ICICI Bank Header -->
-  <text x="62" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="16" fill="#B83227" letter-spacing="0.8">ICICI Bank</text>
+  <text x="78" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="16" fill="#B83227" letter-spacing="0.8">ICICI Bank</text>
   
   <!-- Amazon Pay -->
-  <text x="62" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="21" fill="#131921">amazon</text>
-  <text x="148" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="21" fill="#FF9900">pay</text>
+  <text x="78" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="21" fill="#131921">amazon</text>
+  <text x="164" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="21" fill="#FF9900">pay</text>
 </svg>

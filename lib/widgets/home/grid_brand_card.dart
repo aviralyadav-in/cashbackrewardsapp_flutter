@@ -32,47 +32,73 @@ class GridBrandCard extends StatelessWidget {
             );
           },
       child: Container(
-        height: 148,
+        height: 156,
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF161618) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? const Color(0xFF18181B) : Colors.white,
+          borderRadius: BorderRadius.circular(14),
           border: Border.all(
             color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
             width: 1,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.05),
-              blurRadius: 8,
-              offset: const Offset(0, 3),
+              color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.05),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
-          child: Stack(
+          borderRadius: BorderRadius.circular(14),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
-              // 1. HERO LARGE BRAND LOGO AS MAIN BACKGROUND BRANDING
-              Positioned.fill(
-                child: Container(
-                  color: isDark ? const Color(0xFF18181B) : const Color(0xFFFAFAFA),
-                  child: Center(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
-                      child: NetworkImageWithSkeleton(
-                        imageUrl: logoUrl,
-                        fit: BoxFit.contain,
-                        errorBuilder: (context, error, stackTrace) => Center(
-                          child: Text(
-                            brand.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w900,
-                              color: isDark ? Colors.white70 : const Color(0xFF1E90FF),
-                            ),
+              // 1. FULL-WIDTH TOP OFFER STRIP
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 5),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF242428)
+                      : const Color(0xFFF3F4F6),
+                  border: Border(
+                    bottom: BorderSide(
+                      color: isDark ? const Color(0xFF2E2E32) : const Color(0xFFEBEBEF),
+                      width: 0.8,
+                    ),
+                  ),
+                ),
+                child: Text(
+                  brand.offerText,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? const Color(0xFFE4E4E7) : const Color(0xFF374151),
+                  ),
+                ),
+              ),
+
+              // 2. LARGE LOGO SECTION (Occupies largest area of the card)
+              Expanded(
+                child: Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+                    child: NetworkImageWithSkeleton(
+                      imageUrl: logoUrl,
+                      fit: BoxFit.contain,
+                      errorBuilder: (context, error, stackTrace) => Center(
+                        child: Text(
+                          brand.name,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 15,
+                            fontWeight: FontWeight.w900,
+                            color: isDark ? Colors.white70 : const Color(0xFF1E90FF),
                           ),
                         ),
                       ),
@@ -81,97 +107,32 @@ class GridBrandCard extends StatelessWidget {
                 ),
               ),
 
-              // 2. SUBTLE OVERLAY FOR CRISP FOREGROUND CONTRAST & LEGIBILITY
-              Positioned.fill(
-                child: Container(
-                  decoration: BoxDecoration(
-                    gradient: LinearGradient(
-                      colors: isDark
-                          ? [
-                              const Color(0xFF161618).withValues(alpha: 0.82),
-                              const Color(0xFF161618).withValues(alpha: 0.12),
-                              const Color(0xFF161618).withValues(alpha: 0.85),
-                            ]
-                          : [
-                              Colors.white.withValues(alpha: 0.88),
-                              Colors.white.withValues(alpha: 0.10),
-                              Colors.white.withValues(alpha: 0.90),
-                            ],
-                      begin: Alignment.topCenter,
-                      end: Alignment.bottomCenter,
-                      stops: const [0.0, 0.5, 1.0],
-                    ),
-                  ),
-                ),
-              ),
-
-              // 3. FOREGROUND CONTENT: OFFER TAG AT TOP & CASHBACK BADGE AT BOTTOM
-              Padding(
-                padding: const EdgeInsets.all(8),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  crossAxisAlignment: CrossAxisAlignment.stretch,
-                  children: [
-                    // Top: Offer / Discount % Tag
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF222225).withValues(alpha: 0.95)
-                            : Colors.white.withValues(alpha: 0.95),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: isDark
-                              ? const Color(0xFF333336)
-                              : const Color(0xFFE5E5EA),
-                          width: 0.8,
-                        ),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
-                            blurRadius: 4,
-                            offset: const Offset(0, 1),
-                          ),
-                        ],
-                      ),
-                      child: Text(
-                        brand.offerText,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 9.5,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
-                      ),
-                    ),
-
-                    // Bottom: Cashback / Reward % Badge
-                    Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1E90FF)
-                            .withValues(alpha: isDark ? 0.24 : 0.12),
-                        borderRadius: BorderRadius.circular(6),
-                        border: Border.all(
-                          color: const Color(0xFF1E90FF).withValues(alpha: 0.35),
-                          width: 0.8,
-                        ),
-                      ),
-                      child: Text(
-                        brand.cashbackPercentage,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: const TextStyle(
-                          fontSize: 9.5,
-                          fontWeight: FontWeight.w900,
-                          color: Color(0xFF1E90FF),
-                        ),
-                      ),
+              // 3. PROMINENT BLUE REWARD BUTTON
+              Container(
+                margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6.5),
+                decoration: BoxDecoration(
+                  color: const Color(0xFF1E90FF),
+                  borderRadius: BorderRadius.circular(8),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color(0xFF1E90FF).withValues(alpha: 0.28),
+                      blurRadius: 4,
+                      offset: const Offset(0, 1.5),
                     ),
                   ],
+                ),
+                child: Text(
+                  brand.cashbackPercentage,
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 10.5,
+                    fontWeight: FontWeight.w800,
+                    color: Colors.white,
+                    letterSpacing: 0.1,
+                  ),
                 ),
               ),
             ],

@@ -1,8 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 80" width="280" height="80">
   <!-- amazon text -->
-  <text x="12" y="46" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="42" fill="#111111" letter-spacing="-1">amazon</text>
-  <text x="182" y="46" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#FF9900">.in</text>
+  <text x="42" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-size="42" fill="#111111" letter-spacing="-1">amazon</text>
+  <text x="202" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-size="22" fill="#FF9900">.in</text>
   <!-- Amazon Smile Arrow -->
-  <path d="M24 56 C70 76 130 76 168 56" fill="none" stroke="#FF9900" stroke-width="4.5" stroke-linecap="round"/>
-  <path d="M162 50 L176 56 L164 64 Z" fill="#FF9900"/>
+  <path d="M54 58 C96 78 152 78 186 58" fill="none" stroke="#FF9900" stroke-width="4.5" stroke-linecap="round"/>
+  <path d="M180 52 L194 58 L182 66 Z" fill="#FF9900"/>
 </svg>

@@ -124,7 +124,7 @@ class HorizontalBrandCarousel extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 152,
+      height: 156,
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         physics: const BouncingScrollPhysics(),
@@ -133,7 +133,7 @@ class HorizontalBrandCarousel extends StatelessWidget {
         itemBuilder: (context, index) {
           final brand = brands[index];
           return SizedBox(
-            width: 124,
+            width: 126,
             child: GridBrandCard(
               brand: brand,
               isDark: isDark,

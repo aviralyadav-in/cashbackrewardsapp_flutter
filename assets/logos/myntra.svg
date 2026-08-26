@@ -10,10 +10,10 @@
     </linearGradient>
   </defs>
   <!-- Myntra Iconic Overlapping M -->
-  <g transform="translate(14, 12)">
+  <g transform="translate(48, 12)">
     <path d="M6 38 C6 20 18 10 24 22 C30 10 42 20 42 38" fill="none" stroke="url(#myntraPink)" stroke-width="8" stroke-linecap="round"/>
     <path d="M15 38 C15 24 24 16 28 26 C32 16 41 24 41 38" fill="none" stroke="url(#myntraOrange)" stroke-width="7" stroke-linecap="round"/>
   </g>
   <!-- Myntra text -->
-  <text x="74" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#282C3F" letter-spacing="0.5">Myntra</text>
+  <text x="108" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#282C3F" letter-spacing="0.5">Myntra</text>
 </svg>

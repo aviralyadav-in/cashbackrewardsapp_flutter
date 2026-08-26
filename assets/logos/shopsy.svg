@@ -6,13 +6,13 @@
     </linearGradient>
   </defs>
   <!-- Shopping Bag/Tag Icon -->
-  <g transform="translate(10, 10)">
+  <g transform="translate(50, 10)">
     <circle cx="28" cy="28" r="24" fill="url(#shopsyGrad)"/>
     <path d="M22 18 C22 14 34 14 34 18 L34 22 L22 22 Z" fill="none" stroke="#FFFFFF" stroke-width="2.5"/>
     <rect x="18" y="22" width="20" height="22" rx="3" fill="#FFFFFF"/>
     <path d="M24 28 L28 32 L34 26" fill="none" stroke="#FF385C" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
   <!-- shopsy text -->
-  <text x="68" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="34" fill="url(#shopsyGrad)" letter-spacing="-0.5">shopsy</text>
-  <text x="70" y="62" font-family="'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="9" fill="#2874F0" letter-spacing="1">BY FLIPKART</text>
+  <text x="108" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="34" fill="url(#shopsyGrad)" letter-spacing="-0.5">shopsy</text>
+  <text x="110" y="62" font-family="'Segoe UI', Roboto, sans-serif" font-weight="700" font-size="9" fill="#2874F0" letter-spacing="1">BY FLIPKART</text>
 </svg>

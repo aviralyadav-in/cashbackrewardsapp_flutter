@@ -1,7 +1,8 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
-  <g transform="translate(10, 10)">
+  <g transform="translate(54, 11)">
     <rect x="0" y="2" width="48" height="48" rx="8" fill="#008060"/>
     <text x="24" y="36" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="30" fill="#FFFFFF" text-anchor="middle">D</text>
   </g>
-  <text x="68" y="46" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#008060">D<tspan fill="#E41E26">Mart</tspan></text>
+  <text x="112" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#008060">D</text>
+  <text x="138" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="34" fill="#E41E26">Mart</text>
 </svg>

@@ -243,7 +243,16 @@ class HomeDrawer extends StatelessWidget {
                                 cardBorder: cardBorderColor,
                               ),
                               const SizedBox(width: 8),
-                             
+                              _buildQuickCard(
+                                context: context,
+                                provider: categoryProvider,
+                                title: 'Fashion',
+                                icon: Icons.checkroom_rounded,
+                                accentColor: const Color(0xFFEC4899),
+                                query: 'mens-shirts',
+                                cardBg: cardBgColor,
+                                cardBorder: cardBorderColor,
+                              ),
                               const SizedBox(width: 8),
                               _buildQuickCard(
                                 context: context,

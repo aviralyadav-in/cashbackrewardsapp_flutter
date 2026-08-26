@@ -6,7 +6,7 @@
     </linearGradient>
   </defs>
   <!-- Shopping Bag Icon -->
-  <g transform="translate(10, 10)">
+  <g transform="translate(42, 10)">
     <!-- Bag handles -->
     <path d="M22,18 C22,9 36,9 36,18" fill="none" stroke="#2874F0" stroke-width="4" stroke-linecap="round"/>
     <!-- Bag body -->
@@ -17,6 +17,5 @@
     <text x="29" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="34" fill="#2874F0" text-anchor="middle">f</text>
   </g>
   <!-- Flipkart text -->
-  <text x="68" y="52" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="38" fill="#2874F0" letter-spacing="-0.5">Flipkart</text>
-  <text x="214" y="38" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="700" font-style="italic" font-size="16" fill="#FFD200">✦</text>
+  <text x="100" y="52" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="38" fill="#2874F0" letter-spacing="-0.5">Flipkart</text>
 </svg>

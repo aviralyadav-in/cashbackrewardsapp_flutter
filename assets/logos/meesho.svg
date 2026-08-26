@@ -6,10 +6,10 @@
     </linearGradient>
   </defs>
   <!-- meesho M icon -->
-  <g transform="translate(10, 10)">
+  <g transform="translate(42, 10)">
     <circle cx="28" cy="28" r="24" fill="url(#meeshoGrad)"/>
     <text x="28" y="39" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#FFFFFF" text-anchor="middle">m</text>
   </g>
   <!-- meesho text -->
-  <text x="70" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="36" fill="url(#meeshoGrad)" letter-spacing="-0.5">meesho</text>
+  <text x="102" y="48" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="36" fill="url(#meeshoGrad)" letter-spacing="-0.5">meesho</text>
 </svg>
