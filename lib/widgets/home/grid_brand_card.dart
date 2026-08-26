@@ -58,7 +58,7 @@ class GridBrandCard extends StatelessWidget {
                   color: isDark ? const Color(0xFF18181B) : const Color(0xFFFAFAFA),
                   child: Center(
                     child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 26),
+                      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 18),
                       child: NetworkImageWithSkeleton(
                         imageUrl: logoUrl,
                         fit: BoxFit.contain,

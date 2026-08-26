@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- Axis Bank Emblem -->
+  <g transform="translate(10, 7)">
+    <polygon points="22,0 44,44 33,44 22,22 11,44 0,44" fill="#861F41"/>
+    <polygon points="22,14 31,33 13,33" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- Axis Bank & Flipkart Typography -->
+  <text x="64" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="16" fill="#861F41" letter-spacing="0.8">AXIS BANK</text>
+  <text x="64" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="23" fill="#2874F0" letter-spacing="0.5">Flipkart</text>
+</svg>

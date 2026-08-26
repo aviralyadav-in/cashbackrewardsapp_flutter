@@ -6,9 +6,9 @@
     </linearGradient>
   </defs>
   <!-- Airplane Orbit Icon -->
-  <g transform="translate(10, 10)">
+  <g transform="translate(46, 12)">
     <circle cx="26" cy="26" r="22" fill="#00355F"/>
     <path d="M16 28 L28 16 L34 22 L24 28 L28 34 L22 36 L18 30 Z" fill="url(#expGrad)"/>
   </g>
-  <text x="66" y="48" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="32" fill="#00355F">Expedia</text>
+  <text x="104" y="49" font-family="'Segoe UI', Roboto, Helvetica, Arial, sans-serif" font-weight="900" font-style="italic" font-size="32" fill="#00355F">Expedia</text>
 </svg>

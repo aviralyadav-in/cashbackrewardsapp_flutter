@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import '../models/product.dart';
 import '../providers/category_provider.dart';
 import '../widgets/network_image_with_skeleton.dart';
 import 'product_detail_screen.dart';
@@ -17,6 +18,42 @@ class CategoriesScreen extends StatefulWidget {
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final ScrollController _categoryScrollController = ScrollController();
   String? _lastScrolledCategory;
+
+  // Sorting state
+  String _selectedSort = 'Popular';
+
+  // Filter states (multi-select for all 8 categories)
+  final Set<String> _selectedPrices = {};
+  final Set<String> _selectedBrands = {};
+  final Set<String> _selectedFeatures = {};
+  final Set<String> _selectedColors = {};
+  final Set<String> _selectedTypes = {};
+  final Set<String> _selectedSizes = {};
+  final Set<String> _selectedPower = {};
+  final Set<String> _selectedGenders = {};
+
+  int get _activeFiltersCount =>
+      _selectedPrices.length +
+      _selectedBrands.length +
+      _selectedFeatures.length +
+      _selectedColors.length +
+      _selectedTypes.length +
+      _selectedSizes.length +
+      _selectedPower.length +
+      _selectedGenders.length;
+
+  void _clearAllFilters() {
+    setState(() {
+      _selectedPrices.clear();
+      _selectedBrands.clear();
+      _selectedFeatures.clear();
+      _selectedColors.clear();
+      _selectedTypes.clear();
+      _selectedSizes.clear();
+      _selectedPower.clear();
+      _selectedGenders.clear();
+    });
+  }
 
   @override
   void initState() {
@@ -60,7 +97,6 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           ),
           textDirection: TextDirection.ltr,
         )..layout();
-        // Item padding horizontal (18*2 = 36) + separator (10)
         targetOffset += tp.width + 36.0 + 10.0;
       }
 
@@ -85,157 +121,1039 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-  title: Text(
-    'Categories',
-    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold,),
-  ),
-  centerTitle: true,
-),
-      body: Consumer<CategoryProvider>(
-        builder: (context, provider, child) {
-          if (provider.categoriesStatus == CategoryStatus.loading &&
-              provider.categories.isEmpty) {
-            return const Center(
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  CircularProgressIndicator(),
-                  SizedBox(height: 12),
-                  Text('Loading categories...'),
-                ],
-              ),
-            );
-          }
+  List<Product> _getFilteredAndSortedProducts(List<Product> rawProducts) {
+    List<Product> filtered = rawProducts.where((product) {
+      // 1. Price Filter
+      if (_selectedPrices.isNotEmpty) {
+        final p = product.finalPrice;
+        bool priceMatch = false;
+        for (final range in _selectedPrices) {
+          if (range == 'Under \$25' && p < 25) priceMatch = true;
+          if (range == '\$25 - \$50' && p >= 25 && p <= 50) priceMatch = true;
+          if (range == '\$50 - \$100' && p >= 50 && p <= 100) priceMatch = true;
+          if (range == '\$100 - \$300' && p >= 100 && p <= 300) priceMatch = true;
+          if (range == '\$300 - \$700' && p >= 300 && p <= 700) priceMatch = true;
+          if (range == 'Above \$700' && p > 700) priceMatch = true;
+        }
+        if (!priceMatch) return false;
+      }
 
-          if (provider.categoriesStatus == CategoryStatus.error) {
-            return Center(
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24.0),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
+      // 2. Brand Filter
+      if (_selectedBrands.isNotEmpty) {
+        final brand = (product.brand ?? '').toLowerCase();
+        final title = product.title.toLowerCase();
+        bool brandMatch = _selectedBrands.any((b) {
+          final lb = b.toLowerCase();
+          return (brand.isNotEmpty && brand.contains(lb)) || title.contains(lb);
+        });
+        if (!brandMatch) return false;
+      }
+
+      // 3. Variant Features Filter
+      if (_selectedFeatures.isNotEmpty) {
+        for (final feat in _selectedFeatures) {
+          if (feat == '4★ & Above' && (product.rating == null || product.rating! < 4.0)) return false;
+          if (feat == 'Top Rated (4.5★+)' && (product.rating == null || product.rating! < 4.5)) return false;
+          if (feat == 'In Stock' && (product.stock != null && product.stock! <= 0)) return false;
+          if (feat == 'High Discount (15%+ OFF)' && product.discountPercentage < 15) return false;
+          if (feat == 'Wireless / Bluetooth') {
+            final text = '${product.title} ${product.description}'.toLowerCase();
+            if (!text.contains('wireless') && !text.contains('bluetooth')) return false;
+          }
+          if (feat == 'Premium Quality') {
+            final text = '${product.title} ${product.description}'.toLowerCase();
+            if (!text.contains('premium') && (product.rating == null || product.rating! < 4.2)) return false;
+          }
+        }
+      }
+
+      // 4. Color Filter
+      if (_selectedColors.isNotEmpty) {
+        final text = '${product.title} ${product.description}'.toLowerCase();
+        bool colorMatch = _selectedColors.any((c) {
+          final lc = c.toLowerCase().split(' ').first;
+          return text.contains(lc);
+        });
+        if (!colorMatch) return false;
+      }
+
+      // 5. Type Filter
+      if (_selectedTypes.isNotEmpty) {
+        final text = '${product.title} ${product.description} ${product.category ?? ''}'.toLowerCase();
+        bool typeMatch = _selectedTypes.any((t) {
+          final lt = t.toLowerCase().split(' ').first;
+          return text.contains(lt);
+        });
+        if (!typeMatch) return false;
+      }
+
+      // 6. Size Filter
+      if (_selectedSizes.isNotEmpty) {
+        final text = '${product.title} ${product.description}'.toLowerCase();
+        bool sizeMatch = _selectedSizes.any((s) {
+          final ls = s.toLowerCase();
+          return text.contains(ls);
+        });
+        if (!sizeMatch) return false;
+      }
+
+      // 7. Power Consumption Filter
+      if (_selectedPower.isNotEmpty) {
+        final text = '${product.title} ${product.description}'.toLowerCase();
+        bool powerMatch = _selectedPower.any((pw) {
+          final lpw = pw.toLowerCase();
+          if (lpw.contains('battery') && text.contains('battery')) return true;
+          if (lpw.contains('eco') && (text.contains('eco') || text.contains('energy'))) return true;
+          if (lpw.contains('low') && (text.contains('low') || text.contains('efficient'))) return true;
+          if (lpw.contains('high') && (text.contains('pro') || text.contains('high') || text.contains('gaming'))) return true;
+          return text.contains(lpw);
+        });
+        if (!powerMatch) return false;
+      }
+
+      // 8. Gender Filter
+      if (_selectedGenders.isNotEmpty) {
+        final text = '${product.title} ${product.description} ${product.category ?? ''}'.toLowerCase();
+        bool genderMatch = _selectedGenders.any((g) {
+          final lg = g.toLowerCase();
+          if (lg == 'men' && (text.contains('men') || text.contains('male') || text.contains('man'))) return true;
+          if (lg == 'women' && (text.contains('women') || text.contains('female') || text.contains('lady'))) return true;
+          if (lg == 'unisex' && (text.contains('unisex') || (!text.contains('men') && !text.contains('women')))) return true;
+          if (lg == 'kids' && (text.contains('kid') || text.contains('child') || text.contains('baby') || text.contains('boy') || text.contains('girl'))) return true;
+          return text.contains(lg);
+        });
+        if (!genderMatch) return false;
+      }
+
+      return true;
+    }).toList();
+
+    // Apply Sorting
+    switch (_selectedSort) {
+      case 'Discount':
+        filtered.sort((a, b) => b.discountPercentage.compareTo(a.discountPercentage));
+        break;
+      case 'High Price':
+        filtered.sort((a, b) => b.finalPrice.compareTo(a.finalPrice));
+        break;
+      case 'Low Price':
+        filtered.sort((a, b) => a.finalPrice.compareTo(b.finalPrice));
+        break;
+      case 'Popular':
+      default:
+        filtered.sort((a, b) => (b.rating ?? 0).compareTo(a.rating ?? 0));
+        break;
+    }
+
+    return filtered;
+  }
+
+  void _showSortBottomSheet(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final sortOptions = [
+      'Popular',
+      'Discount',
+      'High Price',
+      'Low Price',
+    ];
+
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: isDark ? const Color(0xFF18181B) : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return SafeArea(
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // Top drag pill
+              Container(
+                margin: const EdgeInsets.only(top: 12, bottom: 8),
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  borderRadius: BorderRadius.circular(2),
+                ),
+              ),
+
+              // Title
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    const Icon(
-                      Icons.error_outline,
-                      size: 48,
-                      color: Color(0xFF1E90FF),
-                    ),
-                    const SizedBox(height: 12),
                     Text(
-                      provider.errorMessage,
-                      textAlign: TextAlign.center,
-                      style: Theme.of(context).textTheme.bodyLarge,
+                      'Sort by',
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.bold,
+                        color: isDark ? Colors.white : Colors.black87,
+                      ),
                     ),
-                    const SizedBox(height: 16),
-                    ElevatedButton(
-                      onPressed: provider.fetchCategories,
-                      child: const Text('Retry'),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded, size: 20),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                      onPressed: () => Navigator.of(ctx).pop(),
                     ),
                   ],
                 ),
               ),
-            );
-          }
 
-          if (provider.categories.isEmpty) {
-            return const Center(
-              child: Text('No categories available.'),
-            );
-          }
+              Divider(
+                height: 1,
+                thickness: 1,
+                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+              ),
 
-          // Trigger auto-scroll whenever selectedCategory updates
-          if (provider.selectedCategory != null &&
-              _lastScrolledCategory != provider.selectedCategory) {
-            _lastScrolledCategory = provider.selectedCategory;
-            _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
-          }
+              // Centered & properly spaced sort options separated by lines
+              ...sortOptions.map((option) {
+                final isSelected = _selectedSort == option;
 
-          return Padding(
-            padding: const EdgeInsets.all(16),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-
-                const SizedBox(height: 12),
-
-                // ALL CATEGORIES HORIZONTAL SCROLLABLE LIST WITH AUTO-SCROLL
-                SizedBox(
-                  height: 55,
-                  child: ListView.separated(
-                    controller: _categoryScrollController,
-                    scrollDirection: Axis.horizontal,
-                    itemCount: provider.categories.length,
-                    separatorBuilder: (context, index) =>
-                        const SizedBox(width: 10),
-                    itemBuilder: (context, index) {
-                      final category = provider.categories[index];
-
-                      final isSelected =
-                          provider.selectedCategory == category;
-
-                      return GestureDetector(
-                        onTap: () {
-                          provider.fetchProductsByCategory(category);
-                          _scrollToSelectedCategory(category, provider.categories);
-                        },
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 18,
-                            vertical: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isSelected
-                                ? const Color(0xFF1E90FF)
-                                : Theme.of(context).cardTheme.color,
-                            border: Border.all(
-                              color: isSelected
-                                  ? const Color(0xFF1E90FF)
-                                  : (Theme.of(context).brightness == Brightness.dark
-                                      ? const Color(0xFF1E293B)
-                                      : const Color(0xFFE5E5EA)),
+                return Column(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    InkWell(
+                      onTap: () {
+                        setState(() {
+                          _selectedSort = option;
+                        });
+                        Navigator.of(ctx).pop();
+                      },
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                option,
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                                  color: isSelected
+                                      ? const Color(0xFF1E90FF)
+                                      : (isDark ? Colors.white70 : Colors.black87),
+                                ),
+                              ),
                             ),
-                            borderRadius: BorderRadius.circular(25),
-                          ),
-                          child: Center(
-                            child: Text(
-                              category,
+                            if (isSelected)
+                              const Icon(
+                                Icons.check_circle_rounded,
+                                color: Color(0xFF1E90FF),
+                                size: 22,
+                              )
+                            else
+                              Icon(
+                                Icons.radio_button_unchecked_rounded,
+                                color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                                size: 22,
+                              ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Divider(
+                      height: 1,
+                      thickness: 1,
+                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFF0F0F2),
+                    ),
+                  ],
+                );
+              }),
+
+              const SizedBox(height: 8),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showFilterBottomSheet(BuildContext context, List<Product> products) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    final tempPrices = Set<String>.from(_selectedPrices);
+    final tempBrands = Set<String>.from(_selectedBrands);
+    final tempFeatures = Set<String>.from(_selectedFeatures);
+    final tempColors = Set<String>.from(_selectedColors);
+    final tempTypes = Set<String>.from(_selectedTypes);
+    final tempSizes = Set<String>.from(_selectedSizes);
+    final tempPower = Set<String>.from(_selectedPower);
+    final tempGenders = Set<String>.from(_selectedGenders);
+
+    final dynamicBrands = products
+        .map((p) => p.brand?.trim())
+        .where((b) => b != null && b.isNotEmpty)
+        .cast<String>()
+        .toSet()
+        .toList();
+    dynamicBrands.sort();
+
+    final filterCategories = [
+      'Price',
+      'Brand',
+      'Variant Features',
+      'Color',
+      'Type',
+      'Size',
+      'Power Consumption',
+      'Gender',
+    ];
+
+    final priceOptions = [
+      'Under \$25',
+      '\$25 - \$50',
+      '\$50 - \$100',
+      '\$100 - \$300',
+      '\$300 - \$700',
+      'Above \$700',
+    ];
+
+    final brandOptions = dynamicBrands.isNotEmpty
+        ? dynamicBrands
+        : ['Apple', 'Samsung', 'Dell', 'HP', 'Lenovo', 'Asus', 'Sony', 'Nike', 'Adidas', 'Zara'];
+
+    final featureOptions = [
+      '4★ & Above',
+      'Top Rated (4.5★+)',
+      'In Stock',
+      'High Discount (15%+ OFF)',
+      'Wireless / Bluetooth',
+      'Premium Quality',
+    ];
+
+    final colorOptions = [
+      'Black',
+      'White',
+      'Silver',
+      'Grey',
+      'Blue',
+      'Red',
+      'Gold',
+      'Green',
+      'Pink',
+    ];
+
+    final typeOptions = [
+      'Standard',
+      'Professional',
+      'Casual',
+      'Gaming',
+      'Compact',
+      'Organic',
+    ];
+
+    final sizeOptions = [
+      'Small',
+      'Medium',
+      'Large',
+      'Extra Large (XL)',
+      '13" - 14"',
+      '15" - 16"',
+      '128GB / 256GB',
+      '512GB / 1TB',
+    ];
+
+    final powerOptions = [
+      'Low Power (< 30W)',
+      'Standard (30W - 65W)',
+      'High Performance (65W+)',
+      'Energy Star / Eco',
+      'Battery Operated',
+    ];
+
+    final genderOptions = [
+      'Men',
+      'Women',
+      'Unisex',
+      'Kids',
+    ];
+
+    int selectedCategoryIndex = 0;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: isDark ? const Color(0xFF18181B) : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      ),
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (context, setModalState) {
+            int getCategorySelectionCount(String cat) {
+              switch (cat) {
+                case 'Price':
+                  return tempPrices.length;
+                case 'Brand':
+                  return tempBrands.length;
+                case 'Variant Features':
+                  return tempFeatures.length;
+                case 'Color':
+                  return tempColors.length;
+                case 'Type':
+                  return tempTypes.length;
+                case 'Size':
+                  return tempSizes.length;
+                case 'Power Consumption':
+                  return tempPower.length;
+                case 'Gender':
+                  return tempGenders.length;
+                default:
+                  return 0;
+              }
+            }
+
+            List<String> currentOptions = [];
+            Set<String> targetSet = tempPrices;
+
+            switch (filterCategories[selectedCategoryIndex]) {
+              case 'Price':
+                currentOptions = priceOptions;
+                targetSet = tempPrices;
+                break;
+              case 'Brand':
+                currentOptions = brandOptions;
+                targetSet = tempBrands;
+                break;
+              case 'Variant Features':
+                currentOptions = featureOptions;
+                targetSet = tempFeatures;
+                break;
+              case 'Color':
+                currentOptions = colorOptions;
+                targetSet = tempColors;
+                break;
+              case 'Type':
+                currentOptions = typeOptions;
+                targetSet = tempTypes;
+                break;
+              case 'Size':
+                currentOptions = sizeOptions;
+                targetSet = tempSizes;
+                break;
+              case 'Power Consumption':
+                currentOptions = powerOptions;
+                targetSet = tempPower;
+                break;
+              case 'Gender':
+                currentOptions = genderOptions;
+                targetSet = tempGenders;
+                break;
+            }
+
+            final totalTempCount = tempPrices.length +
+                tempBrands.length +
+                tempFeatures.length +
+                tempColors.length +
+                tempTypes.length +
+                tempSizes.length +
+                tempPower.length +
+                tempGenders.length;
+
+            return Container(
+              height: MediaQuery.of(context).size.height * 0.78,
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF18181B) : Colors.white,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+              ),
+              child: Column(
+                children: [
+                  // Top Drag Handle
+                  Container(
+                    margin: const EdgeInsets.only(top: 10, bottom: 4),
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+
+                  // Header with Title and Clear Filter Button
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            Text(
+                              'Filters',
                               style: TextStyle(
-                                color: isSelected
-                                    ? Colors.white
-                                    : Theme.of(context).colorScheme.onSurface,
-                                fontWeight: FontWeight.w600,
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: isDark ? Colors.white : Colors.black87,
+                              ),
+                            ),
+                            if (totalTempCount > 0) ...[
+                              const SizedBox(width: 8),
+                              Container(
+                                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFF1E90FF),
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                child: Text(
+                                  '$totalTempCount',
+                                  style: const TextStyle(
+                                    fontSize: 11,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ],
+                        ),
+                        TextButton(
+                          onPressed: () {
+                            setModalState(() {
+                              tempPrices.clear();
+                              tempBrands.clear();
+                              tempFeatures.clear();
+                              tempColors.clear();
+                              tempTypes.clear();
+                              tempSizes.clear();
+                              tempPower.clear();
+                              tempGenders.clear();
+                            });
+                          },
+                          style: TextButton.styleFrom(
+                            foregroundColor: const Color(0xFF1E90FF),
+                            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
+                          ),
+                          child: const Text(
+                            'Clear Filter',
+                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  ),
+
+                  // Two-Pane Content: Left Categories, Right Values
+                  Expanded(
+                    child: Row(
+                      children: [
+                        // Left Column: Filter Categories
+                        Container(
+                          width: 140,
+                          decoration: BoxDecoration(
+                            color: isDark ? const Color(0xFF131315) : const Color(0xFFF6F6F9),
+                            border: Border(
+                              right: BorderSide(
+                                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                                width: 1,
                               ),
                             ),
                           ),
+                          child: ListView.builder(
+                            itemCount: filterCategories.length,
+                            itemBuilder: (context, index) {
+                              final cat = filterCategories[index];
+                              final isSelected = selectedCategoryIndex == index;
+                              final count = getCategorySelectionCount(cat);
+
+                              return InkWell(
+                                onTap: () {
+                                  setModalState(() {
+                                    selectedCategoryIndex = index;
+                                  });
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
+                                  decoration: BoxDecoration(
+                                    color: isSelected
+                                        ? (isDark ? const Color(0xFF18181B) : Colors.white)
+                                        : Colors.transparent,
+                                    border: isSelected
+                                        ? const Border(
+                                            left: BorderSide(
+                                              color: Color(0xFF1E90FF),
+                                              width: 3.5,
+                                            ),
+                                          )
+                                        : null,
+                                  ),
+                                  child: Row(
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          cat,
+                                          style: TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                                            color: isSelected
+                                                ? const Color(0xFF1E90FF)
+                                                : (isDark ? Colors.grey.shade400 : Colors.grey.shade700),
+                                          ),
+                                        ),
+                                      ),
+                                      if (count > 0)
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
+                                          decoration: BoxDecoration(
+                                            color: const Color(0xFF1E90FF).withValues(alpha: 0.18),
+                                            borderRadius: BorderRadius.circular(10),
+                                          ),
+                                          child: Text(
+                                            '$count',
+                                            style: const TextStyle(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.bold,
+                                              color: Color(0xFF1E90FF),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                          ),
                         ),
-                      );
-                    },
-                  ),
-                ),
 
-                const SizedBox(height: 20),
+                        // Right Column: Multi-select Options for selected category
+                        Expanded(
+                          child: ListView.separated(
+                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+                            itemCount: currentOptions.length,
+                            separatorBuilder: (context, index) => Divider(
+                              height: 1,
+                              thickness: 1,
+                              color: isDark ? const Color(0xFF222225) : const Color(0xFFF2F2F5),
+                            ),
+                            itemBuilder: (context, index) {
+                              final option = currentOptions[index];
+                              final isChecked = targetSet.contains(option);
 
-                // PRODUCTS
-                Expanded(
-                  child: _buildCategoryProducts(
-                    context,
-                    provider,
+                              return CheckboxListTile(
+                                value: isChecked,
+                                activeColor: const Color(0xFF1E90FF),
+                                checkColor: Colors.white,
+                                contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
+                                dense: true,
+                                controlAffinity: ListTileControlAffinity.leading,
+                                title: Text(
+                                  option,
+                                  style: TextStyle(
+                                    fontSize: 14,
+                                    fontWeight: isChecked ? FontWeight.w600 : FontWeight.w400,
+                                    color: isDark ? Colors.white : Colors.black87,
+                                  ),
+                                ),
+                                onChanged: (bool? val) {
+                                  setModalState(() {
+                                    if (val == true) {
+                                      targetSet.add(option);
+                                    } else {
+                                      targetSet.remove(option);
+                                    }
+                                  });
+                                },
+                              );
+                            },
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          );
-        },
+
+                  Divider(
+                    height: 1,
+                    thickness: 1,
+                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  ),
+
+                  // Bottom Action Buttons: Close and Apply Filter
+                  SafeArea(
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      child: Row(
+                        children: [
+                          // Close Button
+                          Expanded(
+                            child: OutlinedButton(
+                              onPressed: () {
+                                Navigator.of(ctx).pop();
+                              },
+                              style: OutlinedButton.styleFrom(
+                                side: BorderSide(
+                                  color: isDark ? const Color(0xFF3F3F46) : const Color(0xFFD1D5DB),
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 13),
+                              ),
+                              child: Text(
+                                'Close',
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.w600,
+                                  color: isDark ? Colors.white70 : Colors.black87,
+                                ),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(width: 12),
+
+                          // Apply Filter Button
+                          Expanded(
+                            child: ElevatedButton(
+                              onPressed: () {
+                                setState(() {
+                                  _selectedPrices.clear();
+                                  _selectedPrices.addAll(tempPrices);
+
+                                  _selectedBrands.clear();
+                                  _selectedBrands.addAll(tempBrands);
+
+                                  _selectedFeatures.clear();
+                                  _selectedFeatures.addAll(tempFeatures);
+
+                                  _selectedColors.clear();
+                                  _selectedColors.addAll(tempColors);
+
+                                  _selectedTypes.clear();
+                                  _selectedTypes.addAll(tempTypes);
+
+                                  _selectedSizes.clear();
+                                  _selectedSizes.addAll(tempSizes);
+
+                                  _selectedPower.clear();
+                                  _selectedPower.addAll(tempPower);
+
+                                  _selectedGenders.clear();
+                                  _selectedGenders.addAll(tempGenders);
+                                });
+                                Navigator.of(ctx).pop();
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: const Color(0xFF1E90FF),
+                                foregroundColor: Colors.white,
+                                elevation: 0,
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                padding: const EdgeInsets.symmetric(vertical: 13),
+                              ),
+                              child: Text(
+                                totalTempCount > 0 ? 'Apply ($totalTempCount)' : 'Apply Filter',
+                                style: const TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildBottomSortFilterBar(BuildContext context, List<Product> products) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF161618) : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+            width: 1,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, -2),
+          ),
+        ],
       ),
+      child: SafeArea(
+        child: SizedBox(
+          height: 52,
+          child: Row(
+            children: [
+              // SORT BUTTON
+              Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => _showSortBottomSheet(context),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.swap_vert_rounded,
+                            size: 20,
+                            color: Color(0xFF1E90FF),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            _selectedSort == 'Popular' ? 'Sort' : 'Sort: $_selectedSort',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? Colors.white : const Color(0xFF1E90FF),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
+              // Vertical divider line
+              Container(
+                width: 1,
+                height: 28,
+                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+              ),
+
+              // FILTER BUTTON
+              Expanded(
+                child: Material(
+                  color: Colors.transparent,
+                  child: InkWell(
+                    onTap: () => _showFilterBottomSheet(context, products),
+                    child: Center(
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          const Icon(
+                            Icons.filter_list_rounded,
+                            size: 20,
+                            color: Color(0xFF1E90FF),
+                          ),
+                          const SizedBox(width: 6),
+                          Text(
+                            'Filter',
+                            style: TextStyle(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? Colors.white : const Color(0xFF1E90FF),
+                            ),
+                          ),
+                          if (_activeFiltersCount > 0) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFF1E90FF),
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                '$_activeFiltersCount',
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 11,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Consumer<CategoryProvider>(
+      builder: (context, provider, child) {
+        final rawProducts = provider.products;
+        final displayedProducts = _getFilteredAndSortedProducts(rawProducts);
+
+        final shouldShowBottomBar = provider.categoriesStatus == CategoryStatus.loaded &&
+            provider.productsStatus != CategoryStatus.loading &&
+            rawProducts.isNotEmpty;
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text(
+              'Categories',
+              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            centerTitle: true,
+          ),
+          bottomNavigationBar: shouldShowBottomBar
+              ? _buildBottomSortFilterBar(context, rawProducts)
+              : null,
+          body: SafeArea(
+            child: () {
+              if (provider.categoriesStatus == CategoryStatus.loading &&
+                  provider.categories.isEmpty) {
+                return const Center(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      CircularProgressIndicator(),
+                      SizedBox(height: 12),
+                      Text('Loading categories...'),
+                    ],
+                  ),
+                );
+              }
+
+              if (provider.categoriesStatus == CategoryStatus.error) {
+                return Center(
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 24.0),
+                    child: Column(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        const Icon(
+                          Icons.error_outline,
+                          size: 48,
+                          color: Color(0xFF1E90FF),
+                        ),
+                        const SizedBox(height: 12),
+                        Text(
+                          provider.errorMessage,
+                          textAlign: TextAlign.center,
+                          style: Theme.of(context).textTheme.bodyLarge,
+                        ),
+                        const SizedBox(height: 16),
+                        ElevatedButton(
+                          onPressed: provider.fetchCategories,
+                          child: const Text('Retry'),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }
+
+              if (provider.categories.isEmpty) {
+                return const Center(
+                  child: Text('No categories available.'),
+                );
+              }
+
+              // Trigger auto-scroll whenever selectedCategory updates
+              if (provider.selectedCategory != null &&
+                  _lastScrolledCategory != provider.selectedCategory) {
+                _lastScrolledCategory = provider.selectedCategory;
+                _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
+              }
+
+              return Padding(
+                padding: const EdgeInsets.all(16),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const SizedBox(height: 12),
+
+                    // ALL CATEGORIES HORIZONTAL SCROLLABLE LIST WITH AUTO-SCROLL
+                    SizedBox(
+                      height: 55,
+                      child: ListView.separated(
+                        controller: _categoryScrollController,
+                        scrollDirection: Axis.horizontal,
+                        itemCount: provider.categories.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        itemBuilder: (context, index) {
+                          final category = provider.categories[index];
+                          final isSelected = provider.selectedCategory == category;
+
+                          return GestureDetector(
+                            onTap: () {
+                              _clearAllFilters();
+                              provider.fetchProductsByCategory(category);
+                              _scrollToSelectedCategory(category, provider.categories);
+                            },
+                            child: Container(
+                              padding: const EdgeInsets.symmetric(
+                                horizontal: 18,
+                                vertical: 12,
+                              ),
+                              decoration: BoxDecoration(
+                                color: isSelected
+                                    ? const Color(0xFF1E90FF)
+                                    : Theme.of(context).cardTheme.color,
+                                border: Border.all(
+                                  color: isSelected
+                                      ? const Color(0xFF1E90FF)
+                                      : (Theme.of(context).brightness == Brightness.dark
+                                          ? const Color(0xFF1E293B)
+                                          : const Color(0xFFE5E5EA)),
+                                ),
+                                borderRadius: BorderRadius.circular(25),
+                              ),
+                              child: Center(
+                                child: Text(
+                                  category,
+                                  style: TextStyle(
+                                    color: isSelected
+                                        ? Colors.white
+                                        : Theme.of(context).colorScheme.onSurface,
+                                    fontWeight: FontWeight.w600,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 20),
+
+                    // PRODUCTS
+                    Expanded(
+                      child: _buildCategoryProducts(
+                        context,
+                        provider,
+                        displayedProducts,
+                      ),
+                    ),
+                  ],
+                ),
+              );
+            }(),
+          ),
+        );
+      },
     );
   }
 
   Widget _buildCategoryProducts(
     BuildContext context,
     CategoryProvider provider,
+    List<Product> displayedProducts,
   ) {
     if (provider.selectedCategory == null &&
         provider.productsStatus == CategoryStatus.initial) {
@@ -294,6 +1212,42 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       );
     }
 
+    if (displayedProducts.isEmpty) {
+      return Center(
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.filter_alt_off_rounded,
+              size: 48,
+              color: Colors.grey.shade400,
+            ),
+            const SizedBox(height: 12),
+            const Text(
+              'No products match your selected filters.',
+              textAlign: TextAlign.center,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w600,
+              ),
+            ),
+            const SizedBox(height: 12),
+            OutlinedButton(
+              onPressed: _clearAllFilters,
+              style: OutlinedButton.styleFrom(
+                foregroundColor: const Color(0xFF1E90FF),
+                side: const BorderSide(color: Color(0xFF1E90FF)),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+              ),
+              child: const Text('Clear Filters'),
+            ),
+          ],
+        ),
+      );
+    }
+
     return RefreshIndicator(
       onRefresh: () async {
         if (provider.selectedCategory != null) {
@@ -305,10 +1259,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       child: ListView.separated(
         padding: const EdgeInsets.only(bottom: 16),
         physics: const BouncingScrollPhysics(),
-        itemCount: provider.products.length,
+        itemCount: displayedProducts.length,
         separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
-          final product = provider.products[index];
+          final product = displayedProducts[index];
           final isDark = Theme.of(context).brightness == Brightness.dark;
 
           return Material(
@@ -453,10 +1407,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             children: [
                               Text(
                                 'Final: \$${product.finalPrice.toStringAsFixed(2)}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w900,
-                                  color: const Color(0xFF1E90FF),
+                                  color: Color(0xFF1E90FF),
                                 ),
                               ),
                               Container(

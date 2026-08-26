@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- Metallic Dark Emblem with 1 -->
+  <g transform="translate(24, 8)">
+    <rect x="0" y="0" width="44" height="44" rx="10" fill="#1A1A24"/>
+    <text x="22" y="32" text-anchor="middle" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" fill="#00D2FF">1</text>
+  </g>
+  <!-- onecard Typography -->
+  <text x="80" y="40" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#1A1A24" letter-spacing="-0.5">one</text>
+  <text x="136" y="40" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="28" fill="#0072CE" letter-spacing="-0.5">card</text>
+</svg>

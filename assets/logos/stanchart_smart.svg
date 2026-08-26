@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- Standard Chartered Ribbon Emblem -->
+  <g transform="translate(8, 7)">
+    <path d="M6 34 C2 28 4 18 12 12 C18 6 28 6 34 12 C30 16 24 16 18 20 C14 24 12 30 16 36 Z" fill="#00A859"/>
+    <path d="M40 12 C44 18 42 28 34 34 C28 40 18 40 12 34 C16 30 22 30 28 26 C32 22 34 16 30 10 Z" fill="#0091D5"/>
+  </g>
+  
+  <!-- Large Legible Typography -->
+  <text x="58" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="15" fill="#003B64" letter-spacing="0.2">Standard Chartered</text>
+  <text x="58" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="23" fill="#00A859" letter-spacing="1">SMART</text>
+</svg>

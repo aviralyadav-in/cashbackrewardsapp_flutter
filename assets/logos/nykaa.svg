@@ -1,8 +1,5 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 260 70" width="260" height="70">
-  <g transform="translate(10, 48)">
-    <text x="0" y="0" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#FC2779" letter-spacing="3">NYKAA</text>
-  </g>
-  <!-- Decorative Sparkle -->
-  <path d="M228 16 Q234 16 234 10 Q234 16 240 16 Q234 16 234 22 Q234 16 228 16 Z" fill="#FC2779"/>
-  <circle cx="242" cy="28" r="2.5" fill="#FC2779"/>
+  <text x="120" y="50" text-anchor="middle" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#FC2779" letter-spacing="3">NYKAA</text>
+  <path d="M218 16 Q224 16 224 10 Q224 16 230 16 Q224 16 224 22 Q224 16 218 16 Z" fill="#FC2779"/>
+  <circle cx="232" cy="28" r="2.5" fill="#FC2779"/>
 </svg>

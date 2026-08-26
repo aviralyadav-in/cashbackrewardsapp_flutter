@@ -49,39 +49,54 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final dividerColor = isDark ? const Color(0xFF28282A) : const Color(0xFFEEEEEE);
+
     return Drawer(
-      width: MediaQuery.of(context).size.width * 0.5,
+      width: MediaQuery.of(context).size.width * 0.72,
       backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // COMPACT HEADER: CASHKARO BRANDING
+            // COMPACT WHITE HEADER: "Category" ON LEFT, CLOSE (X) ICON ON RIGHT
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 14),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
-                ),
-                borderRadius: BorderRadius.only(
-                  topRight: Radius.circular(24),
-                  bottomRight: Radius.circular(24),
-                ),
-              ),
-              child: const Text(
-                'CashKaro',
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  fontFamily: 'HandwrittenItalic',
-                  color: Colors.white,
-                  fontSize: 24,
-                  fontWeight: FontWeight.w900,
-                  letterSpacing: 2.0,
-                ),
+              color: isDark ? const Color(0xFF161618) : Colors.white,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Category',
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? Colors.white : const Color(0xFF1A1A1A),
+                    ),
+                  ),
+                  InkWell(
+                    borderRadius: BorderRadius.circular(20),
+                    onTap: () => Navigator.of(context).pop(),
+                    child: Padding(
+                      padding: const EdgeInsets.all(4),
+                      child: Icon(
+                        Icons.close_rounded,
+                        size: 20,
+                        color: isDark ? Colors.white70 : const Color(0xFF333333),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
 
-            // SCROLLABLE SECTIONED CATEGORIES LIST FILLING FULL SCREEN HEIGHT
+            // THIN LIGHT-GRAY DIVIDER BELOW HEADER
+            Divider(
+              height: 1,
+              thickness: 1,
+              color: dividerColor,
+            ),
+
+            // SCROLLABLE CATEGORY LIST
             Expanded(
               child: Consumer<CategoryProvider>(
                 builder: (context, categoryProvider, child) {
@@ -101,113 +116,134 @@ class HomeDrawer extends StatelessWidget {
                                 Column(
                                   crossAxisAlignment: CrossAxisAlignment.stretch,
                                   children: [
-                                    // 1. SHOP & EARN
-                                    const _DrawerSectionHeader(title: 'Shop & Earn'),
+                                    const SizedBox(height: 4),
+
+                                    // GROUP 1: SHOP & EARN
                                     _DrawerCategoryItem(
                                       title: 'Highest Cashback Stores',
+                                      icon: Icons.storefront_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'laptops'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Retailers By Category',
+                                      icon: Icons.category_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'groceries'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Top Product Deals',
+                                      icon: Icons.local_offer_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'beauty'),
                                     ),
 
-                                    const SizedBox(height: 6),
-                                    Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                    // DIVIDER
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      child: Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: dividerColor,
+                                      ),
                                     ),
 
-                                    // 2. SHOP BY DEVICES
-                                    const _DrawerSectionHeader(title: 'Shop by Devices'),
+                                    // GROUP 2: SHOP BY DEVICES
                                     _DrawerCategoryItem(
                                       title: 'Laptop',
+                                      icon: Icons.laptop_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'laptops'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Smartphones',
+                                      icon: Icons.smartphone_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'smartphones'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Tablets',
+                                      icon: Icons.tablet_android_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'tablets'),
                                     ),
 
-                                    const SizedBox(height: 6),
-                                    Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                    // DIVIDER
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      child: Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: dividerColor,
+                                      ),
                                     ),
 
-                                    // 3. FASHION & LIFESTYLES
-                                    const _DrawerSectionHeader(title: 'Fashion & Lifestyles'),
+                                    // GROUP 3: FASHION & LIFESTYLES
                                     _DrawerCategoryItem(
                                       title: 'Men Shirts',
+                                      icon: Icons.checkroom_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'mens-shirts'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Women Dresses',
+                                      icon: Icons.style_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'womens-dresses'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Men Shoes',
+                                      icon: Icons.directions_walk_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'mens-shoes'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Women Shoes',
+                                      icon: Icons.diamond_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'womens-shoes'),
                                     ),
 
-                                    const SizedBox(height: 6),
-                                    Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                    // DIVIDER
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      child: Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: dividerColor,
+                                      ),
                                     ),
 
-                                    // 4. MORE CATEGORIES
-                                    const _DrawerSectionHeader(title: 'More Categories'),
+                                    // GROUP 4: MORE CATEGORIES
                                     _DrawerCategoryItem(
                                       title: 'Beauty',
+                                      icon: Icons.face_retouching_natural_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'beauty'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Grocery',
+                                      icon: Icons.shopping_cart_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'groceries'),
                                     ),
                                     _DrawerCategoryItem(
                                       title: 'Kitchen Accessories',
+                                      icon: Icons.kitchen_outlined,
                                       onTap: () => _onCategoryTap(context, categoryProvider, 'kitchen-accessories'),
                                     ),
                                   ],
                                 ),
 
-                                // BOTTOM: SEE ALL CATEGORIES
+                                // BOTTOM SECTION: SEE ALL CATEGORIES
                                 Column(
                                   children: [
-                                    const SizedBox(height: 10),
-                                    Divider(
-                                      height: 1,
-                                      thickness: 1,
-                                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFEFEFF4),
+                                    Padding(
+                                      padding: const EdgeInsets.symmetric(vertical: 4),
+                                      child: Divider(
+                                        height: 1,
+                                        thickness: 1,
+                                        color: dividerColor,
+                                      ),
                                     ),
-                                    const SizedBox(height: 6),
                                     _DrawerCategoryItem(
                                       title: 'See All Categories',
-                                      isHighlight: true,
+                                      icon: Icons.grid_view_outlined,
                                       showChevron: true,
                                       onTap: () {
                                         Navigator.of(context).pop();
                                         Navigator.of(context).pushNamed(AllCategoriesScreen.routeName);
                                       },
                                     ),
-                                    const SizedBox(height: 16),
+                                    const SizedBox(height: 8),
                                   ],
                                 ),
                               ],
@@ -227,41 +263,17 @@ class HomeDrawer extends StatelessWidget {
   }
 }
 
-class _DrawerSectionHeader extends StatelessWidget {
-  final String title;
-
-  const _DrawerSectionHeader({required this.title});
-
-  @override
-  Widget build(BuildContext context) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-
-    return Padding(
-      padding: const EdgeInsets.only(left: 14, right: 14, top: 14, bottom: 6),
-      child: Text(
-        title.toUpperCase(),
-        style: TextStyle(
-          fontSize: 11,
-          fontWeight: FontWeight.w800,
-          letterSpacing: 1.0,
-          color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1E90FF),
-        ),
-      ),
-    );
-  }
-}
-
 class _DrawerCategoryItem extends StatelessWidget {
   final String title;
+  final IconData icon;
   final VoidCallback onTap;
   final bool showChevron;
-  final bool isHighlight;
 
   const _DrawerCategoryItem({
     required this.title,
+    required this.icon,
     required this.onTap,
     this.showChevron = true,
-    this.isHighlight = false,
   });
 
   @override
@@ -273,27 +285,36 @@ class _DrawerCategoryItem extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           child: Row(
             children: [
+              // BLACK/DARK OUTLINE ICON
+              Icon(
+                icon,
+                size: 19,
+                color: isDark ? Colors.white70 : const Color(0xFF333333),
+              ),
+              const SizedBox(width: 12),
+
+              // CATEGORY TITLE IN CLEAN COMPACT REGULAR/MEDIUM FONT
               Expanded(
                 child: Text(
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   style: TextStyle(
-                    fontSize: 13,
-                    fontWeight: FontWeight.w700,
-                    color: isHighlight
-                        ? const Color(0xFF1E90FF)
-                        : (isDark ? Colors.white : const Color(0xFF1F1F21)),
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w500,
+                    color: isDark ? Colors.white : const Color(0xFF222222),
                   ),
                 ),
               ),
+
+              // RIGHT-SIDE CHEVRON ARROW
               if (showChevron)
                 Icon(
-                  Icons.chevron_right,
-                  size: 16,
+                  Icons.chevron_right_rounded,
+                  size: 18,
                   color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
                 ),
             ],

@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- Diamond Emblem -->
+  <g transform="translate(18, 10)">
+    <polygon points="20,2 34,2 40,16 20,36 0,16 6,2" fill="#E91E63"/>
+    <polygon points="20,6 30,6 34,16 20,30 6,16 10,6" fill="#FFFFFF"/>
+  </g>
+  <!-- SUGAR Typography -->
+  <text x="74" y="40" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="30" fill="#1A1A1A" letter-spacing="3">SUGAR</text>
+</svg>

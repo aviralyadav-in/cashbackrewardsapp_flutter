@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- Leaf Emblem -->
+  <g transform="translate(18, 12)">
+    <path d="M12 28 C12 14 26 6 32 4 C32 16 26 28 12 28 Z" fill="#1B8B3E"/>
+    <path d="M14 26 Q20 18 28 8" stroke="#FFFFFF" stroke-width="2" fill="none"/>
+  </g>
+  <!-- mamaearth Typography -->
+  <text x="60" y="40" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" fill="#1B8B3E" letter-spacing="-0.5">mama</text>
+  <text x="144" y="40" font-family="'Segoe UI', Roboto, sans-serif" font-weight="900" font-size="28" fill="#333333" letter-spacing="-0.5">earth</text>
+</svg>

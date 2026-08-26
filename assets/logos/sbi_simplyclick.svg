@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- SBI Iconic Keyhole Emblem -->
+  <g transform="translate(8, 7)">
+    <circle cx="23" cy="23" r="23" fill="#0091D5"/>
+    <circle cx="23" cy="23" r="7.5" fill="#FFFFFF"/>
+    <rect x="20" y="23" width="6" height="17" fill="#FFFFFF"/>
+  </g>
+  
+  <!-- SBI Card Header -->
+  <text x="62" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="16" fill="#002D62" letter-spacing="0.8">SBI Card</text>
+  
+  <!-- Simply in Blue -->
+  <text x="62" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="22" fill="#0091D5">Simply</text>
+  
+  <!-- CLICK in Red -->
+  <text x="140" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="22" fill="#E41E26" letter-spacing="0.5">CLICK</text>
+</svg>

@@ -6,6 +6,7 @@ class NetworkImageWithSkeleton extends StatefulWidget {
   final double? width;
   final double? height;
   final BoxFit fit;
+  final AlignmentGeometry alignment;
   final BorderRadiusGeometry? borderRadius;
   final BoxShape shape;
   final Widget Function(BuildContext, Object, StackTrace?)? errorBuilder;
@@ -16,6 +17,7 @@ class NetworkImageWithSkeleton extends StatefulWidget {
     this.width,
     this.height,
     this.fit = BoxFit.cover,
+    this.alignment = Alignment.center,
     this.borderRadius,
     this.shape = BoxShape.rectangle,
     this.errorBuilder,
@@ -129,6 +131,7 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
           width: widget.width,
           height: widget.height,
           fit: widget.fit,
+          alignment: widget.alignment,
         );
       }
       return Image.asset(
@@ -136,6 +139,7 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
         width: widget.width,
         height: widget.height,
         fit: widget.fit,
+        alignment: widget.alignment,
       );
     }
 
@@ -157,6 +161,7 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
         width: widget.width,
         height: widget.height,
         fit: widget.fit,
+        alignment: widget.alignment,
         headers: _networkHeaders,
         placeholderBuilder: (context) => _ShimmerSkeletonBox(
           controller: _shimmerController,
@@ -194,6 +199,7 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
       width: widget.width,
       height: widget.height,
       fit: widget.fit,
+      alignment: widget.alignment,
       headers: _networkHeaders,
       frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
         if (wasSynchronouslyLoaded || frame != null) {

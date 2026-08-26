@@ -1,5 +1,3 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 280 75" width="280" height="75">
-  <g transform="translate(10, 48)">
-    <text x="0" y="0" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-style="italic" font-size="44" fill="#FFC700" letter-spacing="1">iQOO</text>
-  </g>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <text x="120" y="50" text-anchor="middle" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="44" fill="#FFC107" letter-spacing="2">iQOO</text>
 </svg>

@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 60" width="240" height="60">
+  <!-- IDFC FIRST Bank Maroon Emblem -->
+  <g transform="translate(8, 7)">
+    <rect x="0" y="0" width="46" height="46" rx="6" fill="#9B1B1E"/>
+    <rect x="9" y="10" width="12" height="11" rx="2" fill="#FFFFFF"/>
+    <rect x="25" y="10" width="12" height="11" rx="2" fill="#FFFFFF"/>
+    <rect x="9" y="25" width="12" height="11" rx="2" fill="#FFFFFF"/>
+    <rect x="25" y="25" width="12" height="11" rx="2" fill="#FFA500"/>
+  </g>
+  
+  <!-- IDFC FIRST & Millennia Typography -->
+  <text x="62" y="26" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="15" fill="#9B1B1E" letter-spacing="0.5">IDFC FIRST Bank</text>
+  <text x="62" y="50" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="22" fill="#1C1C1E" letter-spacing="1">MILLENNIA</text>
+</svg>
