@@ -1,9 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/search_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 import 'product_detail_screen.dart';
 
@@ -29,30 +31,71 @@ class _SearchScreenState extends State<SearchScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Scaffold(
-      appBar: AppBar(title: const Text('Search'), centerTitle: true),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
+      appBar: AppBar(
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        elevation: 0,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            size: 20,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          'Search',
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          ),
+        ),
+        centerTitle: true,
+      ),
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            TextField(
-              controller: _searchController,
-              decoration: const InputDecoration(
-                hintText: 'Search products or offers',
-                border: OutlineInputBorder(),
-                prefixIcon: Icon(Icons.search),
+            Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                border: Border.all(
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
+                ),
               ),
-              onChanged: (value) {
-                if (_debounce?.isActive ?? false) {
-                  _debounce!.cancel();
-                }
-
-                _debounce = Timer(const Duration(milliseconds: 400), () {
-                  if (mounted) {
-                    context.read<SearchProvider>().search(value);
+              child: TextField(
+                controller: _searchController,
+                style: AppTextStyles.input(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                ),
+                decoration: InputDecoration(
+                  hintText: 'Search products or offers...',
+                  hintStyle: AppTextStyles.hint(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                  ),
+                  border: InputBorder.none,
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                  prefixIcon: Icon(
+                    Icons.search_rounded,
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
+                  ),
+                ),
+                onChanged: (value) {
+                  if (_debounce?.isActive ?? false) {
+                    _debounce!.cancel();
                   }
-                });
-              },
+
+                  _debounce = Timer(const Duration(milliseconds: 400), () {
+                    if (mounted) {
+                      context.read<SearchProvider>().search(value);
+                    }
+                  });
+                },
+              ),
             ),
             const SizedBox(height: 16),
             Expanded(
@@ -60,13 +103,20 @@ class _SearchScreenState extends State<SearchScreen> {
                 builder: (context, provider, child) {
                   switch (provider.status) {
                     case SearchStatus.loading:
-                      return const Center(
+                      return Center(
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            CircularProgressIndicator(color: Color(0xFF1E90FF)),
-                            SizedBox(height: 12),
-                            Text('Searching...'),
+                            CircularProgressIndicator(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                            ),
+                            const SizedBox(height: 12),
+                            Text(
+                              'Searching...',
+                              style: AppTextStyles.body(
+                                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                              ),
+                            ),
                           ],
                         ),
                       );
@@ -80,19 +130,25 @@ class _SearchScreenState extends State<SearchScreen> {
                               const Icon(
                                 Icons.error_outline,
                                 size: 48,
-                                color: Color(0xFF1E90FF),
+                                color: AppColors.error,
                               ),
                               const SizedBox(height: 12),
                               Text(
                                 provider.errorMessage,
                                 textAlign: TextAlign.center,
-                                style: Theme.of(context).textTheme.bodyLarge,
+                                style: AppTextStyles.body(
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                                ),
                               ),
                               const SizedBox(height: 16),
                               ElevatedButton(
                                 onPressed: () =>
                                     provider.search(provider.query),
-                                child: const Text('Retry'),
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: AppColors.primaryBrown,
+                                  foregroundColor: AppColors.cardBackground,
+                                ),
+                                child: Text('Retry', style: AppTextStyles.buttonText(color: AppColors.cardBackground)),
                               ),
                             ],
                           ),
@@ -100,15 +156,20 @@ class _SearchScreenState extends State<SearchScreen> {
                       );
                     case SearchStatus.loaded:
                       if (provider.searchResults.isEmpty) {
-                        return const Center(
-                          child: Text('No matching products found.'),
+                        return Center(
+                          child: Text(
+                            'No matching products found.',
+                            style: AppTextStyles.body(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                            ),
+                          ),
                         );
                       }
 
                       return ListView.separated(
                         itemCount: provider.searchResults.length,
                         separatorBuilder: (context, index) =>
-                            const SizedBox(height: 14),
+                            const SizedBox(height: 12),
                         itemBuilder: (context, index) {
                           final product = provider.searchResults[index];
 
@@ -121,128 +182,120 @@ class _SearchScreenState extends State<SearchScreen> {
                                 ),
                               );
                             },
-                            child: Card(
-                              elevation: 2,
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
-                              ),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12),
-                                child: Row(
-                                  crossAxisAlignment:
-                                      CrossAxisAlignment.start,
-                                  children: [
-                                     ClipRRect(
-                                       borderRadius: BorderRadius.circular(
-                                         12,
-                                       ),
-                                       child: NetworkImageWithSkeleton(
-                                         imageUrl: product.thumbnail,
-                                         width: 100,
-                                         height: 100,
-                                         fit: BoxFit.cover,
-                                         borderRadius: BorderRadius.circular(12),
-                                         errorBuilder:
-                                             (context, error, stackTrace) {
-                                               return Container(
-                                                 width: 100,
-                                                 height: 100,
-                                                 color: Theme.of(context).brightness == Brightness.dark
-                                                     ? const Color(0xFF242426)
-                                                     : Colors.grey.shade200,
-                                                 child: const Icon(
-                                                   Icons.broken_image,
-                                                   size: 40,
-                                                   color: Colors.grey,
-                                                 ),
-                                               );
-                                             },
-                                       ),
-                                     ),
-                                    const SizedBox(width: 12),
-                                    Expanded(
-                                      child: Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            product.title,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .titleMedium
-                                                ?.copyWith(
-                                                  fontWeight:
-                                                      FontWeight.w600,
-                                                ),
-                                          ),
-                                          const SizedBox(height: 8),
-                                          Text(
-                                            product.description,
-                                            maxLines: 2,
-                                            overflow: TextOverflow.ellipsis,
-                                            style: Theme.of(context)
-                                                .textTheme
-                                                .bodyMedium
-                                                ?.copyWith(
-                                                  color: Theme.of(context).brightness == Brightness.dark
-                                                      ? Colors.grey[400]
-                                                      : Colors.grey[700],
-                                                ),
-                                          ),
-                                          const SizedBox(height: 12),
-                                          Row(
-                                            children: [
-                                              Text(
-                                                '\$${product.price}',
-                                                style: Theme.of(context)
-                                                    .textTheme
-                                                    .bodyLarge
-                                                    ?.copyWith(
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                    ),
-                                              ),
-                                              const Spacer(),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.symmetric(
-                                                      horizontal: 8,
-                                                      vertical: 4,
-                                                    ),
-                                                decoration: BoxDecoration(
-                                                  color:
-                                                      Colors.green.shade50,
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                        12,
-                                                      ),
-                                                ),
-                                                child: Text(
-                                                  '-${product.discountPercentage.toStringAsFixed(0)}%',
-                                                  style: TextStyle(
-                                                    color: Colors
-                                                        .green
-                                                        .shade800,
-                                                    fontWeight:
-                                                        FontWeight.w600,
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ],
-                                      ),
-                                    ),
-                                  ],
+                            child: Container(
+                              padding: const EdgeInsets.all(12),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                                border: Border.all(
+                                  color: isDark ? AppColors.darkBorder : AppColors.border,
                                 ),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+                                    blurRadius: 6,
+                                    offset: const Offset(0, 2),
+                                  ),
+                                ],
+                              ),
+                              child: Row(
+                                crossAxisAlignment:
+                                    CrossAxisAlignment.start,
+                                children: [
+                                  ClipRRect(
+                                    borderRadius: BorderRadius.circular(12),
+                                    child: NetworkImageWithSkeleton(
+                                      imageUrl: product.thumbnail,
+                                      width: 90,
+                                      height: 90,
+                                      fit: BoxFit.cover,
+                                      borderRadius: BorderRadius.circular(12),
+                                      errorBuilder:
+                                          (context, error, stackTrace) {
+                                        return Container(
+                                          width: 90,
+                                          height: 90,
+                                          color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                                          child: const Icon(
+                                            Icons.broken_image,
+                                            size: 36,
+                                            color: Colors.grey,
+                                          ),
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  const SizedBox(width: 12),
+                                  Expanded(
+                                    child: Column(
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.start,
+                                      children: [
+                                        Text(
+                                          product.title,
+                                          style: AppTextStyles.cardTitle(
+                                            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                                          ),
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
+                                        const SizedBox(height: 4),
+                                        Text(
+                                          product.description,
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: AppTextStyles.caption(
+                                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                                          ),
+                                        ),
+                                        const SizedBox(height: 8),
+                                        Row(
+                                          children: [
+                                            Text(
+                                              '\$${product.price}',
+                                              style: GoogleFonts.fraunces(
+                                                fontSize: 16,
+                                                fontWeight: FontWeight.w700,
+                                                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                              ),
+                                            ),
+                                            const Spacer(),
+                                            Container(
+                                              padding:
+                                                  const EdgeInsets.symmetric(
+                                                    horizontal: 8,
+                                                    vertical: 3,
+                                                  ),
+                                              decoration: BoxDecoration(
+                                                color: AppColors.successBackground,
+                                                borderRadius: BorderRadius.circular(6),
+                                              ),
+                                              child: Text(
+                                                '-${product.discountPercentage.toStringAsFixed(0)}%',
+                                                style: AppTextStyles.smallLabel(
+                                                  color: AppColors.success,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
                         },
                       );
                     case SearchStatus.initial:
-                      return const Center(
-                        child: Text('Search products by name or keyword.'),
+                      return Center(
+                        child: Text(
+                          'Search products by name or keyword.',
+                          style: AppTextStyles.body(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                          ),
+                        ),
                       );
                   }
                 },

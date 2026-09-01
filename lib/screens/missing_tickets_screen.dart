@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 
 class MissingTicketsScreen extends StatefulWidget {
   static const String routeName = '/missing-tickets';
@@ -22,7 +25,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
       'expectedCashback': '₹262.50',
       'status': 'Under Investigation',
       'filterCategory': 'Active',
-      'statusColor': Colors.orange,
+      'statusColor': AppColors.pending,
       'statusIcon': Icons.manage_search_rounded,
       'lastUpdate': 'Yesterday at 04:30 PM',
       'note':
@@ -37,7 +40,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
       'expectedCashback': '₹348.00',
       'status': 'Retailer Query',
       'filterCategory': 'Active',
-      'statusColor': const Color(0xFF1E90FF),
+      'statusColor': AppColors.primaryBrown,
       'statusIcon': Icons.sync_rounded,
       'lastUpdate': '14 Aug 2026',
       'note':
@@ -52,7 +55,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
       'expectedCashback': '₹104.00',
       'status': 'Resolved & Credited',
       'filterCategory': 'Resolved',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
       'statusIcon': Icons.check_circle_rounded,
       'lastUpdate': '02 Aug 2026',
       'note':
@@ -75,7 +78,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
     showModalBottomSheet(
       context: context,
       isScrollControlled: true,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -95,7 +98,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -103,18 +106,15 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
             const SizedBox(height: 16),
             Text(
               'Add Missing Cashback Ticket',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: AppTextStyles.cardTitle(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ).copyWith(fontSize: 18),
             ),
             const SizedBox(height: 6),
             Text(
               'Fill in your shopping details within 10 days of purchase.',
-              style: TextStyle(
-                fontSize: 12.5,
-                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+              style: AppTextStyles.caption(
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
               ),
             ),
             const SizedBox(height: 16),
@@ -124,7 +124,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 labelText: 'Store Name (e.g. Amazon, Flipkart)',
                 filled: true,
                 fillColor:
-                    isDark ? const Color(0xFF202024) : const Color(0xFFF7F8FA),
+                    isDark ? AppColors.darkSurface : AppColors.beigeSurface,
               ),
             ),
             const SizedBox(height: 12),
@@ -134,7 +134,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 labelText: 'Order / Transaction ID',
                 filled: true,
                 fillColor:
-                    isDark ? const Color(0xFF202024) : const Color(0xFFF7F8FA),
+                    isDark ? AppColors.darkSurface : AppColors.beigeSurface,
               ),
             ),
             const SizedBox(height: 12),
@@ -145,7 +145,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 labelText: 'Order Amount (₹)',
                 filled: true,
                 fillColor:
-                    isDark ? const Color(0xFF202024) : const Color(0xFFF7F8FA),
+                    isDark ? AppColors.darkSurface : AppColors.beigeSurface,
               ),
             ),
             const SizedBox(height: 20),
@@ -158,7 +158,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                     SnackBar(
                       content: const Text(
                           'Ticket submitted successfully! We will track your order within 48 hours.'),
-                      backgroundColor: Colors.green,
+                      backgroundColor: AppColors.success,
                       behavior: SnackBarBehavior.floating,
                       shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10)),
@@ -166,16 +166,16 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                   );
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Submit Ticket',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 15),
                 ),
               ),
             ),
@@ -189,7 +189,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
       BuildContext context, Map<String, dynamic> ticket, bool isDark) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -204,7 +204,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -218,20 +218,19 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                   children: [
                     Text(
                       ticket['store'] as String,
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                       ),
                     ),
                     const SizedBox(height: 2),
                     Text(
                       'Ticket: ${ticket['ticketId']}',
-                      style: TextStyle(
-                        fontSize: 13,
+                      style: AppTextStyles.caption(
                         color: isDark
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
+                            ? AppColors.darkTextSecondary
+                            : AppColors.textMuted,
                       ),
                     ),
                   ],
@@ -241,14 +240,12 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                   decoration: BoxDecoration(
                     color: (ticket['statusColor'] as Color)
-                        .withValues(alpha: isDark ? 0.2 : 0.1),
+                        .withValues(alpha: isDark ? 0.2 : 0.12),
                     borderRadius: BorderRadius.circular(8),
                   ),
                   child: Text(
                     ticket['status'] as String,
-                    style: TextStyle(
-                      fontSize: 12,
-                      fontWeight: FontWeight.bold,
+                    style: AppTextStyles.smallLabel(
                       color: ticket['statusColor'] as Color,
                     ),
                   ),
@@ -257,7 +254,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
             ),
             const SizedBox(height: 16),
             Divider(
-              color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+              color: isDark ? AppColors.darkBorder : AppColors.border,
             ),
             const SizedBox(height: 10),
             _buildDetailLine('Order ID', ticket['orderId'] as String, isDark),
@@ -279,17 +276,15 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                 color: isDark
-                    ? const Color(0xFF202024)
-                    : const Color(0xFFF7F8FA),
+                    ? AppColors.darkSurface
+                    : AppColors.beigeSurface,
                 borderRadius: BorderRadius.circular(12),
               ),
               child: Text(
                 ticket['note'] as String,
-                style: TextStyle(
-                  fontSize: 12.5,
-                  color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-                  height: 1.35,
-                ),
+                style: AppTextStyles.body(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                ).copyWith(fontSize: 12.5),
               ),
             ),
             const SizedBox(height: 20),
@@ -298,15 +293,15 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
               child: ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                 ),
-                child: const Text('Close',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Close',
+                    style: AppTextStyles.buttonText(color: AppColors.cardBackground)),
               ),
             ),
           ],
@@ -322,20 +317,21 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.5,
-            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+          style: AppTextStyles.caption(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
           ),
         ),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: isHighlight ? FontWeight.bold : FontWeight.w600,
-            color: isHighlight
-                ? const Color(0xFF1E90FF)
-                : (isDark ? Colors.white : Colors.black87),
-          ),
+          style: isHighlight
+              ? GoogleFonts.fraunces(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w700,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                )
+              : AppTextStyles.cardTitle(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                ).copyWith(fontSize: 13),
         ),
       ],
     );
@@ -347,25 +343,23 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Missing Cashback',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -381,12 +375,12 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -402,14 +396,12 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
+                        color: AppColors.primaryBrown
+                            .withValues(alpha: isDark ? 0.18 : 0.10),
                         shape: BoxShape.circle,
-                        color: Colors.orange.withValues(alpha: isDark ? 0.2 : 0.1),
                       ),
-                      child: const Icon(
-                        Icons.receipt_long_rounded,
-                        color: Colors.orange,
-                        size: 26,
-                      ),
+                      child: const Icon(Icons.help_outline_rounded,
+                          color: AppColors.primaryBrown, size: 24),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -417,22 +409,18 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            'Missing Cashback Help',
-                            style: TextStyle(
-                              fontSize: 15,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black87,
+                            'Missing Cashback?',
+                            style: AppTextStyles.cardTitle(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 3),
                           Text(
-                            'Did not receive cashback for your order? Submit a ticket within 10 days of purchase and we will trace it.',
-                            style: TextStyle(
-                              fontSize: 12,
+                            'Raise a ticket within 10 days if your cashback did not track.',
+                            style: AppTextStyles.caption(
                               color: isDark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600,
-                              height: 1.3,
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -444,30 +432,41 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
 
               const SizedBox(height: 18),
 
-              // Filter Tabs & Ticket Count
+              // Filter Chips Row
               Row(
                 children: [
-                  _buildFilterTab('All', isDark),
+                  _buildFilterChip('All'),
                   const SizedBox(width: 8),
-                  _buildFilterTab('Active', isDark),
+                  _buildFilterChip('Active'),
                   const SizedBox(width: 8),
-                  _buildFilterTab('Resolved', isDark),
+                  _buildFilterChip('Resolved'),
                 ],
               ),
 
-              const SizedBox(height: 16),
+              const SizedBox(height: 18),
 
-              // Ticket Records List
+              // List of Tickets
               if (_filteredTickets.isEmpty)
                 Container(
-                  padding: const EdgeInsets.all(32),
-                  alignment: Alignment.center,
-                  child: Text(
-                    'No $_selectedFilter tickets found.',
-                    style: TextStyle(
-                      color: isDark
-                          ? Colors.grey.shade400
-                          : Colors.grey.shade600,
+                  padding: const EdgeInsets.symmetric(vertical: 40),
+                  child: Center(
+                    child: Column(
+                      children: [
+                        Icon(Icons.inbox_rounded,
+                            size: 48,
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.textMuted),
+                        const SizedBox(height: 12),
+                        Text(
+                          'No tickets found in this section',
+                          style: AppTextStyles.cardSubtitle(
+                            color: isDark
+                                ? AppColors.darkTextSecondary
+                                : AppColors.textSecondary,
+                          ),
+                        ),
+                      ],
                     ),
                   ),
                 )
@@ -476,17 +475,17 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF161618) : Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                       border: Border.all(
                         color: isDark
-                            ? const Color(0xFF28282A)
-                            : const Color(0xFFE5E5EA),
+                            ? AppColors.darkBorder
+                            : AppColors.border,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black
-                              .withValues(alpha: isDark ? 0.25 : 0.03),
+                          color:
+                              Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
                           blurRadius: 6,
                           offset: const Offset(0, 2),
                         ),
@@ -495,191 +494,82 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                     child: Material(
                       color: Colors.transparent,
                       child: InkWell(
-                        onTap: () =>
-                            _showTicketDetails(context, ticket, isDark),
-                        borderRadius: BorderRadius.circular(16),
+                        onTap: () => _showTicketDetails(context, ticket, isDark),
+                        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                         child: Padding(
-                          padding: const EdgeInsets.all(16.0),
+                          padding: const EdgeInsets.all(16),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              // Top Header: Store, Ticket ID & Status Badge
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Row(
-                                    children: [
-                                      Container(
-                                        padding: const EdgeInsets.all(8),
-                                        decoration: BoxDecoration(
-                                          color: (ticket['statusColor'] as Color)
-                                              .withValues(
-                                                  alpha: isDark ? 0.16 : 0.1),
-                                          borderRadius:
-                                              BorderRadius.circular(10),
-                                        ),
-                                        child: Icon(
-                                          ticket['statusIcon'] as IconData,
-                                          size: 18,
-                                          color: ticket['statusColor'] as Color,
-                                        ),
-                                      ),
-                                      const SizedBox(width: 10),
-                                      Column(
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            ticket['store'] as String,
-                                            style: TextStyle(
-                                              fontSize: 15,
-                                              fontWeight: FontWeight.bold,
-                                              color: isDark
-                                                  ? Colors.white
-                                                  : Colors.black87,
-                                            ),
-                                          ),
-                                          const SizedBox(height: 2),
-                                          Text(
-                                            'Ticket: ${ticket['ticketId']}',
-                                            style: TextStyle(
-                                              fontSize: 11.5,
-                                              color: isDark
-                                                  ? Colors.grey.shade400
-                                                  : Colors.grey.shade600,
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
+                                  Text(
+                                    ticket['store'] as String,
+                                    style: GoogleFonts.fraunces(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                    ),
                                   ),
                                   Container(
                                     padding: const EdgeInsets.symmetric(
-                                        horizontal: 8, vertical: 4),
+                                        horizontal: 8, vertical: 3),
                                     decoration: BoxDecoration(
                                       color: (ticket['statusColor'] as Color)
                                           .withValues(
-                                              alpha: isDark ? 0.2 : 0.1),
-                                      borderRadius: BorderRadius.circular(8),
+                                              alpha: isDark ? 0.2 : 0.12),
+                                      borderRadius: BorderRadius.circular(6),
                                     ),
                                     child: Text(
                                       ticket['status'] as String,
-                                      style: TextStyle(
-                                        fontSize: 10.5,
-                                        fontWeight: FontWeight.bold,
+                                      style: AppTextStyles.smallLabel(
                                         color: ticket['statusColor'] as Color,
-                                      ),
+                                      ).copyWith(fontSize: 11),
                                     ),
                                   ),
                                 ],
                               ),
-
-                              const SizedBox(height: 12),
-                              Divider(
-                                height: 1,
-                                thickness: 1,
-                                color: isDark
-                                    ? const Color(0xFF242426)
-                                    : const Color(0xFFF0F0F3),
+                              const SizedBox(height: 6),
+                              Text(
+                                '${ticket['ticketId']} • Order on ${ticket['orderDate']}',
+                                style: AppTextStyles.caption(
+                                  color: isDark
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.textMuted,
+                                ),
                               ),
                               const SizedBox(height: 12),
-
-                              // Middle Row: Order Info
                               Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    children: [
-                                      Text(
-                                        'Order ID: ${ticket['orderId']}',
-                                        style: TextStyle(
-                                          fontSize: 12,
-                                          fontWeight: FontWeight.w600,
-                                          color: isDark
-                                              ? Colors.white70
-                                              : Colors.grey.shade800,
-                                        ),
-                                      ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        'Purchased on ${ticket['orderDate']}',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600,
-                                        ),
-                                      ),
-                                    ],
+                                  Text(
+                                    'Expected: ${ticket['expectedCashback']}',
+                                    style: GoogleFonts.fraunces(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                                    ),
                                   ),
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.end,
+                                  Row(
                                     children: [
                                       Text(
-                                        'Expected Cashback',
-                                        style: TextStyle(
-                                          fontSize: 11,
-                                          color: isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600,
+                                        'View Details',
+                                        style: AppTextStyles.smallLabel(
+                                          color: AppColors.primaryBrown,
                                         ),
                                       ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        ticket['expectedCashback'] as String,
-                                        style: const TextStyle(
-                                          fontSize: 14.5,
-                                          fontWeight: FontWeight.w900,
-                                          color: Color(0xFF1E90FF),
-                                        ),
+                                      const SizedBox(width: 4),
+                                      const Icon(
+                                        Icons.arrow_forward_ios_rounded,
+                                        size: 11,
+                                        color: AppColors.primaryBrown,
                                       ),
                                     ],
                                   ),
                                 ],
-                              ),
-
-                              const SizedBox(height: 10),
-
-                              // Bottom Note Preview
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 10, vertical: 6),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? const Color(0xFF202024)
-                                      : const Color(0xFFF7F8FA),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  children: [
-                                    Icon(
-                                      Icons.info_outline_rounded,
-                                      size: 13,
-                                      color: isDark
-                                          ? Colors.grey.shade400
-                                          : Colors.grey.shade600,
-                                    ),
-                                    const SizedBox(width: 6),
-                                    Expanded(
-                                      child: Text(
-                                        ticket['note'] as String,
-                                        style: TextStyle(
-                                          fontSize: 11.5,
-                                          color: isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600,
-                                        ),
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
                               ),
                             ],
                           ),
@@ -691,26 +581,24 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
 
               const SizedBox(height: 16),
 
-              // Add Missing Cashback Ticket Button
-              SizedBox(
-                width: double.infinity,
-                child: ElevatedButton.icon(
-                  onPressed: () => _showAddTicketModal(context, isDark),
-                  icon: const Icon(Icons.add_comment_outlined, size: 18),
-                  label: const Text('Add Missing Cashback Ticket'),
-                  style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E90FF),
-                    foregroundColor: Colors.white,
-                    padding: const EdgeInsets.symmetric(vertical: 14),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(14),
-                    ),
-                    elevation: 3,
+              // Add Ticket Button
+              ElevatedButton.icon(
+                onPressed: () => _showAddTicketModal(context, isDark),
+                icon: const Icon(Icons.add_circle_outline_rounded, size: 18),
+                label: const Text('Add New Missing Ticket'),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
+                  padding: const EdgeInsets.symmetric(vertical: 14),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
+                  elevation: 2,
+                  textStyle: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14),
                 ),
               ),
 
-              const SizedBox(height: 20),
+              const SizedBox(height: 24),
             ],
           ),
         ),
@@ -718,44 +606,39 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
     );
   }
 
-  Widget _buildFilterTab(String label, bool isDark) {
-    final isSelected = _selectedFilter == label;
+  Widget _buildFilterChip(String filterName) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isSelected = _selectedFilter == filterName;
 
-    return Expanded(
-      child: InkWell(
-        onTap: () {
-          setState(() {
-            _selectedFilter = label;
-          });
-        },
-        borderRadius: BorderRadius.circular(10),
-        child: Container(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          decoration: BoxDecoration(
+    return InkWell(
+      onTap: () {
+        setState(() {
+          _selectedFilter = filterName;
+        });
+      },
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+        decoration: BoxDecoration(
+          color: isSelected
+              ? AppColors.primaryBrown
+              : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
             color: isSelected
-                ? const Color(0xFF1E90FF)
-                : (isDark ? const Color(0xFF161618) : Colors.white),
-            borderRadius: BorderRadius.circular(10),
-            border: Border.all(
-              color: isSelected
-                  ? const Color(0xFF1E90FF)
-                  : (isDark
-                      ? const Color(0xFF28282A)
-                      : const Color(0xFFE5E5EA)),
-            ),
+                ? AppColors.primaryBrown
+                : (isDark
+                    ? AppColors.darkBorder
+                    : AppColors.border),
           ),
-          child: Center(
-            child: Text(
-              label,
-              style: TextStyle(
-                fontSize: 12,
-                fontWeight: FontWeight.bold,
-                color: isSelected
-                    ? Colors.white
-                    : (isDark ? Colors.grey.shade300 : Colors.grey.shade700),
-              ),
-            ),
-          ),
+        ),
+        child: Text(
+          filterName,
+          style: AppTextStyles.buttonText(
+            color: isSelected
+                ? AppColors.cardBackground
+                : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+          ).copyWith(fontSize: 12.5),
         ),
       ),
     );

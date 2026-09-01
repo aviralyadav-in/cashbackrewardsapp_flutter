@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../data/home_mock_data.dart';
 import '../../models/amazon_deal_model.dart';
 import '../../models/brand_model.dart';
 import '../../screens/product_detail_screen.dart';
 import '../../screens/top_category_brands_screen.dart';
+import '../../theme/app_theme.dart';
 import '../network_image_with_skeleton.dart';
 import 'dashed_line_painter.dart';
 
@@ -47,18 +50,15 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                     width: 4,
                     height: 18,
                     decoration: BoxDecoration(
-                      color: const Color(0xFF1E90FF),
+                      color: AppColors.primaryBrown,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
                   const SizedBox(width: 8),
                   Text(
                     'Top Amazon Deals',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
-                      letterSpacing: 0.2,
+                    style: AppTextStyles.sectionHeading(
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                     ),
                   ),
                 ],
@@ -94,25 +94,25 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                   padding:
                       const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
+                    color: isDark
+                        ? AppColors.primaryBrown.withValues(alpha: 0.2)
+                        : AppColors.beigeSurface,
                     borderRadius: BorderRadius.circular(16),
                   ),
-                  child: const Row(
+                  child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       Text(
                         'View All',
-                        style: TextStyle(
-                          fontSize: 12,
-                          fontWeight: FontWeight.bold,
-                          color: Color(0xFF1E90FF),
+                        style: AppTextStyles.smallLabel(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                         ),
                       ),
-                      SizedBox(width: 2),
+                      const SizedBox(width: 2),
                       Icon(
                         Icons.arrow_forward_ios,
                         size: 10,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                       ),
                     ],
                   ),
@@ -159,10 +159,10 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF161618) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           border: Border.all(
-            color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+            color: isDark ? AppColors.darkBorder : AppColors.border,
             width: 1,
           ),
           boxShadow: [
@@ -174,7 +174,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
           ],
         ),
         child: ClipRRect(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -204,11 +204,11 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                         deal.brandName.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.5,
-                          color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                         ),
                       ),
                       const SizedBox(height: 2),
@@ -218,12 +218,9 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                         deal.productName,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          fontSize: 12.5,
-                          fontWeight: FontWeight.bold,
-                          height: 1.2,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
+                        style: AppTextStyles.cardTitle(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                        ).copyWith(fontSize: 12.5, height: 1.2),
                       ),
                       const SizedBox(height: 4),
 
@@ -232,9 +229,8 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                         children: [
                           Text(
                             'Actual Price: ',
-                            style: TextStyle(
-                              fontSize: 10.5,
-                              color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
+                            style: AppTextStyles.caption(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                             ),
                           ),
                           Text(
@@ -243,7 +239,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                               fontSize: 11.5,
                               fontWeight: FontWeight.w600,
                               decoration: TextDecoration.lineThrough,
-                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                             ),
                           ),
                         ],
@@ -257,7 +253,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
               CustomPaint(
                 size: const Size(double.infinity, 1),
                 painter: DashedLinePainter(
-                  color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   dashWidth: 5,
                   dashSpace: 4,
                 ),
@@ -268,17 +264,17 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                 width: double.infinity,
                 padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
                 color: isDark
-                    ? const Color(0xFF1E90FF).withValues(alpha: 0.08)
-                    : const Color(0xFF1E90FF).withValues(alpha: 0.04),
+                    ? AppColors.darkSurface
+                    : AppColors.beigeSurface,
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       'After Rewards of ${deal.rewardPercentage.toStringAsFixed(deal.rewardPercentage % 1 == 0 ? 0 : 1)}%',
-                      style: const TextStyle(
+                      style: GoogleFonts.inter(
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
                       ),
                     ),
                     const SizedBox(height: 2),
@@ -286,18 +282,16 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                       children: [
                         Text(
                           'Final Price: ',
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
-                          ),
+                          style: AppTextStyles.caption(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                          ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         Text(
                           '₹${_formatCurrency(deal.finalPrice)}',
-                          style: TextStyle(
+                          style: GoogleFonts.fraunces(
                             fontSize: 13.5,
-                            fontWeight: FontWeight.w900,
-                            color: isDark ? Colors.white : Colors.black87,
+                            fontWeight: FontWeight.w700,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                           ),
                         ),
                       ],

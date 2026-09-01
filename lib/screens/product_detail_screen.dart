@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../models/amazon_deal_model.dart';
 import '../models/brand_model.dart';
 import '../models/product.dart';
 import '../screens/offer_section_screen.dart';
 import '../services/url_launcher_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 
 class ProductDetailScreen extends StatefulWidget {
@@ -94,7 +96,7 @@ class ProductDetailScreen extends StatefulWidget {
       customCashbackTag: rewardTag,
       customFinalPrice: finalPriceStr,
       customDescription:
-          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.',
+          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashVault wallet after delivery.',
       customImageUrl: deal.imageUrl,
       customWebsiteUrl: deal.productUrl.isNotEmpty
           ? deal.productUrl
@@ -102,30 +104,22 @@ class ProductDetailScreen extends StatefulWidget {
     );
   }
 
-  /// Factory for BrandModel (Popular Brands, Fashion, Beauty, Electronics, etc.)
+  /// Factory for BrandModel
   factory ProductDetailScreen.fromBrand(
     BrandModel brand, {
     Key? key,
   }) {
-    final imgUrl = brand.bannerUrl.isNotEmpty
-        ? brand.bannerUrl
-        : (brand.logoUrl.isNotEmpty ? brand.logoUrl : '');
-
     return ProductDetailScreen(
       key: key,
       brand: brand,
-      customTitle: brand.name,
+      customTitle: '${brand.name} Cashback & Offers',
       customBrandName: brand.name,
-      customCategory: brand.category.isNotEmpty ? brand.category : 'Featured Partner',
+      customCategory: brand.category,
       customDiscountTag: brand.offerText,
       customCashbackTag: brand.cashbackPercentage,
       customDescription:
-          'Shop online at ${brand.name} through CashKaro to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.',
-      customImageUrl: imgUrl,
-      customImages: [
-        if (brand.bannerUrl.isNotEmpty) brand.bannerUrl,
-        if (brand.logoUrl.isNotEmpty && brand.logoUrl != brand.bannerUrl) brand.logoUrl,
-      ],
+          'Shop online at ${brand.name} to earn up to ${brand.cashbackPercentage} cashback on your purchase. All transactions are securely tracked.',
+      customImageUrl: brand.bannerUrl.isNotEmpty ? brand.bannerUrl : brand.logoUrl,
       customWebsiteUrl: brand.websiteUrl.isNotEmpty
           ? brand.websiteUrl
           : _resolveStoreUrl(brand.name),
@@ -175,7 +169,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Could not open $storeName website. Please try again.'),
-          backgroundColor: const Color(0xFF1E90FF),
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -229,11 +223,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final description = widget.customDescription ??
         product?.description ??
         (brand != null
-            ? 'Shop online at ${brand.name} through CashKaro to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
+            ? 'Shop online at ${brand.name} through CashVault to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
             : (amazonDeal != null
-                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.'
+                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashVault wallet after delivery.'
                 : (offerItem?.description ??
-                    'Shop this deal via CashKaro to earn guaranteed cashback rewards credited to your account.')));
+                    'Shop this deal via CashVault to earn guaranteed cashback rewards credited to your account.')));
 
     // Image list resolution
     List<String> imageList = [];
@@ -289,14 +283,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     ? 'Flat ${amazonDeal.rewardPercentage.toInt()}% Reward'
                     : (offerItem?.cashbackTag ?? 'EARN EXTRA CASHBACK'))));
 
-    final finalPrice = widget.customFinalPrice ?? discountedPrice;
+    final finalPrice = widget.customFinalPrice ??
+        (product != null
+            ? '₹${ProductDetailScreen._formatCurrency((product.finalPrice * 83 * 0.9).round())}'
+            : (amazonDeal != null
+                ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.finalPrice * (1 - (amazonDeal.rewardPercentage / 100)))}'
+                : null));
 
-    // Target Website URL resolution
     final websiteUrl = widget.customWebsiteUrl ??
-        (brand?.websiteUrl.isNotEmpty == true
-            ? brand!.websiteUrl
-            : (amazonDeal?.productUrl.isNotEmpty == true
-                ? amazonDeal!.productUrl
+        (brand != null && brand.websiteUrl.isNotEmpty
+            ? brand.websiteUrl
+            : (amazonDeal != null && amazonDeal.productUrl.isNotEmpty
+                ? amazonDeal.productUrl
                 : ProductDetailScreen._resolveStoreUrl(
                     brandName.isNotEmpty ? brandName : (category.isNotEmpty ? category : title))));
 
@@ -305,24 +303,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         : (category.isNotEmpty ? category : 'Store');
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF6F7F9),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         title: Text(
           title,
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          ).copyWith(fontSize: 18),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         centerTitle: true,
       ),
@@ -338,15 +338,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     width: double.infinity,
                     height: 280,
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
+                    color: isDark ? AppColors.darkCard : AppColors.cardBackground,
                     child: imageList.isEmpty
                         ? Container(
-                            color: isDark ? const Color(0xFF242426) : Colors.grey.shade100,
+                            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                             child: const Center(
                               child: Icon(
                                 Icons.storefront_rounded,
                                 size: 80,
-                                color: Color(0xFF1E90FF),
+                                color: AppColors.primaryBrown,
                               ),
                             ),
                           )
@@ -371,8 +371,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                           errorBuilder: (context, error, stackTrace) {
                                             return Container(
                                               color: isDark
-                                                  ? const Color(0xFF242426)
-                                                  : Colors.grey.shade200,
+                                                  ? AppColors.darkSurface
+                                                  : AppColors.beigeSurface,
                                               child: const Center(
                                                 child: Icon(
                                                   Icons.image_not_supported_outlined,
@@ -404,8 +404,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                         height: 7,
                                         decoration: BoxDecoration(
                                           color: _currentImageIndex == index
-                                              ? const Color(0xFF1E90FF)
-                                              : (isDark ? Colors.white38 : Colors.black26),
+                                              ? (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown)
+                                              : (isDark ? AppColors.darkBorder : AppColors.border),
                                           borderRadius: BorderRadius.circular(4),
                                         ),
                                       ),
@@ -422,7 +422,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      border: Border.all(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -436,15 +441,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                                  color: isDark
+                                      ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                                      : AppColors.beigeSurface,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
                                   brandName.toUpperCase(),
-                                  style: const TextStyle(
-                                    color: Color(0xFF1E90FF),
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.inter(
+                                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w700,
                                     letterSpacing: 0.5,
                                   ),
                                 ),
@@ -459,18 +466,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 decoration: BoxDecoration(
                                   color: isDark
-                                      ? const Color(0xFF28282A)
-                                      : const Color(0xFFF0F2F5),
+                                      ? AppColors.darkSurface
+                                      : AppColors.beigeSurface.withValues(alpha: 0.5),
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Text(
                                   category,
-                                  style: TextStyle(
+                                  style: AppTextStyles.caption(
                                     color: isDark
-                                        ? Colors.grey.shade300
-                                        : Colors.grey.shade700,
-                                    fontSize: 12,
-                                    fontWeight: FontWeight.w500,
+                                        ? AppColors.darkTextSecondary
+                                        : AppColors.textSecondary,
                                   ),
                                 ),
                               ),
@@ -482,7 +487,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.amber.shade700,
+                                  color: AppColors.pending,
                                   borderRadius: BorderRadius.circular(8),
                                 ),
                                 child: Row(
@@ -510,14 +515,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                         const SizedBox(height: 12),
 
-                        // PRODUCT TITLE
+                        // PRODUCT TITLE (Fraunces Typography)
                         Text(
                           title,
-                          style: TextStyle(
+                          style: GoogleFonts.fraunces(
                             fontSize: 20,
-                            fontWeight: FontWeight.bold,
+                            fontWeight: FontWeight.w700,
                             height: 1.3,
-                            color: isDark ? Colors.white : Colors.black87,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                           ),
                         ),
                       ],
@@ -530,17 +535,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      border: Border.all(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Pricing & Offer Details',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                          ),
+                          style: AppTextStyles.sectionHeading(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          ).copyWith(fontSize: 14),
                         ),
                         const SizedBox(height: 12),
                         Row(
@@ -552,22 +560,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 children: [
                                   Text(
                                     'Deal Price',
-                                    style: TextStyle(
-                                      fontSize: 12,
+                                    style: AppTextStyles.caption(
                                       color: isDark
-                                          ? Colors.grey.shade400
-                                          : Colors.grey.shade600,
+                                          ? AppColors.darkTextSecondary
+                                          : AppColors.textSecondary,
                                     ),
                                   ),
                                   const SizedBox(height: 2),
                                   Text(
                                     discountedPrice,
-                                    style: TextStyle(
+                                    style: GoogleFonts.fraunces(
                                       fontSize: 26,
-                                      fontWeight: FontWeight.w900,
+                                      fontWeight: FontWeight.w700,
                                       color: isDark
-                                          ? const Color(0xFF1E90FF)
-                                          : const Color(0xFF0066CC),
+                                          ? AppColors.darkTextPrimary
+                                          : AppColors.deepBrown,
                                     ),
                                   ),
                                 ],
@@ -579,11 +586,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 children: [
                                   Text(
                                     'Original Price',
-                                    style: TextStyle(
-                                      fontSize: 12,
+                                    style: AppTextStyles.caption(
                                       color: isDark
-                                          ? Colors.grey.shade500
-                                          : Colors.grey.shade600,
+                                          ? AppColors.darkTextSecondary
+                                          : AppColors.textMuted,
                                     ),
                                   ),
                                   const SizedBox(height: 2),
@@ -593,8 +599,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                       fontSize: 16,
                                       decoration: TextDecoration.lineThrough,
                                       color: isDark
-                                          ? Colors.grey.shade500
-                                          : Colors.grey.shade600,
+                                          ? AppColors.darkTextSecondary
+                                          : AppColors.textMuted,
                                     ),
                                   ),
                                 ],
@@ -608,17 +614,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   vertical: 6,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.green.shade50,
+                                  color: AppColors.successBackground,
                                   borderRadius: BorderRadius.circular(10),
-                                  border: Border.all(color: Colors.green.shade300),
+                                  border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
                                 ),
                                 child: Text(
                                   discountTag,
-                                  style: TextStyle(
-                                    color: Colors.green.shade800,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 13,
-                                  ),
+                                  style: AppTextStyles.smallLabel(
+                                    color: AppColors.success,
+                                  ).copyWith(fontSize: 12),
                                 ),
                               ),
                           ],
@@ -633,24 +637,14 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             vertical: 12,
                           ),
                           decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              colors: isDark
-                                  ? [
-                                      const Color(0xFF0D3E24),
-                                      const Color(0xFF161618),
-                                    ]
-                                  : [
-                                      const Color(0xFFE8F5E9),
-                                      const Color(0xFFF1F8E9),
-                                    ],
-                              begin: Alignment.centerLeft,
-                              end: Alignment.centerRight,
-                            ),
+                            color: isDark
+                                ? AppColors.primaryBrown.withValues(alpha: 0.2)
+                                : AppColors.beigeSurface,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
                               color: isDark
-                                  ? Colors.green.shade800
-                                  : Colors.green.shade300,
+                                  ? AppColors.darkBorder
+                                  : AppColors.border,
                             ),
                           ),
                           child: Row(
@@ -658,8 +652,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               Container(
                                 width: 36,
                                 height: 36,
-                                decoration: BoxDecoration(
-                                  color: Colors.green.shade700,
+                                decoration: const BoxDecoration(
+                                  color: AppColors.primaryBrown,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const Icon(
@@ -675,22 +669,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   children: [
                                     Text(
                                       cashbackTag,
-                                      style: TextStyle(
+                                      style: GoogleFonts.fraunces(
                                         color: isDark
-                                            ? Colors.green.shade300
-                                            : Colors.green.shade900,
-                                        fontWeight: FontWeight.w900,
+                                            ? AppColors.darkTextPrimary
+                                            : AppColors.deepBrown,
+                                        fontWeight: FontWeight.w700,
                                         fontSize: 14,
                                       ),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       'Cashback tracks automatically on ${displayStoreName.toUpperCase()}',
-                                      style: TextStyle(
+                                      style: AppTextStyles.caption(
                                         color: isDark
-                                            ? Colors.grey.shade400
-                                            : Colors.grey.shade700,
-                                        fontSize: 11.5,
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textSecondary,
                                       ),
                                     ),
                                   ],
@@ -706,20 +699,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             children: [
                               Text(
                                 'Effective Price after Cashback: ',
-                                style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.w600,
+                                style: AppTextStyles.caption(
                                   color: isDark
-                                      ? Colors.grey.shade300
-                                      : Colors.grey.shade700,
-                                ),
+                                      ? AppColors.darkTextSecondary
+                                      : AppColors.textSecondary,
+                                ).copyWith(fontWeight: FontWeight.w600),
                               ),
                               Text(
                                 finalPrice,
-                                style: const TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF1E90FF),
+                                style: GoogleFonts.fraunces(
+                                  fontSize: 14.5,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                 ),
                               ),
                             ],
@@ -735,25 +726,26 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                   Container(
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      border: Border.all(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                      ),
+                    ),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
                           'Product Overview & Details',
-                          style: TextStyle(
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: AppTextStyles.sectionHeading(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          ).copyWith(fontSize: 14),
                         ),
                         const SizedBox(height: 8),
                         Text(
                           description,
-                          style: TextStyle(
-                            height: 1.5,
-                            fontSize: 13.5,
-                            color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
+                          style: AppTextStyles.body(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                           ),
                         ),
                         if (stock != null) ...[
@@ -763,14 +755,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               Icon(
                                 Icons.inventory_2_outlined,
                                 size: 16,
-                                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                               ),
                               const SizedBox(width: 6),
                               Text(
                                 'Availability: ',
-                                style: TextStyle(
-                                  fontSize: 12.5,
-                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                style: AppTextStyles.caption(
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                                 ),
                               ),
                               Text(
@@ -779,25 +770,23 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   fontSize: 12.5,
                                   fontWeight: FontWeight.bold,
                                   color: stock < 10
-                                      ? Colors.orange
-                                      : (isDark ? Colors.white : Colors.black87),
+                                      ? AppColors.pending
+                                      : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
                                 ),
                               ),
                             ],
                           ),
                         ],
                         const SizedBox(height: 16),
-                        const Divider(),
+                        Divider(color: isDark ? AppColors.darkBorder : AppColors.border),
                         const SizedBox(height: 10),
 
                         // How Cashback Works 3 Steps
                         Text(
                           'How to Earn Cashback:',
-                          style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: AppTextStyles.sectionHeading(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          ).copyWith(fontSize: 13.5),
                         ),
                         const SizedBox(height: 8),
                         _buildCashbackStep(
@@ -831,16 +820,16 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF161618) : Colors.white,
+              color: isDark ? AppColors.darkCard : AppColors.cardBackground,
               border: Border(
                 top: BorderSide(
-                  color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   width: 1,
                 ),
               ),
               boxShadow: [
                 BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.08),
+                  color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.05),
                   blurRadius: 10,
                   offset: const Offset(0, -4),
                 ),
@@ -850,11 +839,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
               child: ElevatedButton(
                 onPressed: () => _handleShopNow(websiteUrl, displayStoreName),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
-                  minimumSize: const Size(double.infinity, 52),
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
+                  minimumSize: const Size(double.infinity, 50),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                   elevation: 2,
                 ),
@@ -865,11 +854,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     const SizedBox(width: 8),
                     Text(
                       'Shop Now on ${displayStoreName.toUpperCase()}',
-                      style: const TextStyle(
-                        fontSize: 15.5,
-                        fontWeight: FontWeight.bold,
-                        letterSpacing: 0.3,
-                      ),
+                      style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14.5),
                     ),
                     const SizedBox(width: 6),
                     const Icon(Icons.arrow_forward_rounded, size: 18),
@@ -891,7 +876,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
           width: 18,
           height: 18,
           decoration: const BoxDecoration(
-            color: Color(0xFF1E90FF),
+            color: AppColors.primaryBrown,
             shape: BoxShape.circle,
           ),
           child: Center(
@@ -909,9 +894,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 12,
-              color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+            style: AppTextStyles.caption(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
             ),
           ),
         ),

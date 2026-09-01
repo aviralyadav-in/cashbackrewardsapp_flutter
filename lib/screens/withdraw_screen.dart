@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 
 class WithdrawScreen extends StatefulWidget {
   static const String routeName = '/withdraw';
@@ -21,7 +24,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       'amount': '₹850.00',
       'method': 'UPI (deepak@okhdfcbank)',
       'status': 'Completed',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
     },
     {
       'id': 'WTH-773129',
@@ -29,7 +32,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       'amount': '₹1,250.00',
       'method': 'HDFC Bank (A/C **4129)',
       'status': 'Completed',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
     },
     {
       'id': 'WTH-661092',
@@ -37,7 +40,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       'amount': '₹750.00',
       'method': 'Amazon Pay Gift Card',
       'status': 'Completed',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
     },
   ];
 
@@ -53,7 +56,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Minimum withdrawal amount is ₹250.'),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -65,7 +68,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: const Text('Amount exceeds your available balance of ₹1,850.00.'),
-          backgroundColor: Colors.redAccent,
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
         ),
@@ -77,7 +80,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -90,37 +93,33 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               width: 40,
               height: 4,
               decoration: BoxDecoration(
-                color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                color: isDark ? AppColors.darkBorder : AppColors.border,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(height: 20),
             Container(
               padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
-                color: Colors.green.withValues(alpha: 0.15),
+                color: AppColors.successBackground,
               ),
               child: const Icon(Icons.check_circle_rounded,
-                  color: Colors.green, size: 48),
+                  color: AppColors.success, size: 48),
             ),
             const SizedBox(height: 16),
             Text(
               'Withdrawal Request Placed!',
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
-              ),
+              style: AppTextStyles.cardTitle(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ).copyWith(fontSize: 18),
             ),
             const SizedBox(height: 8),
             Text(
               '₹${amount.toStringAsFixed(2)} will be credited to your selected payment method within 24-48 business hours.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 13.5,
-                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                height: 1.4,
+              style: AppTextStyles.body(
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
               ),
             ),
             const SizedBox(height: 24),
@@ -131,16 +130,16 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   Navigator.of(ctx).pop();
                 },
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Done',
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 15),
+                  style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 15),
                 ),
               ),
             ),
@@ -156,25 +155,23 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Withdraw Earnings',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -191,14 +188,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
                   gradient: const LinearGradient(
-                    colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
+                    colors: [AppColors.primaryBrown, AppColors.deepBrown],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                      color: AppColors.primaryBrown.withValues(alpha: 0.3),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -210,9 +207,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Available for Withdrawal',
-                          style: TextStyle(
+                          style: GoogleFonts.inter(
                             color: Colors.white70,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -244,18 +241,18 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Text(
+                    Text(
                       '₹1,850.00',
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         color: Colors.white,
                         fontSize: 32,
-                        fontWeight: FontWeight.w900,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'Confirmed Cashback: ₹1,350.00 • Referral Bonus: ₹500.00',
-                      style: TextStyle(
+                      style: GoogleFonts.inter(
                         color: Colors.white70,
                         fontSize: 12,
                         height: 1.3,
@@ -270,12 +267,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               // 2. Withdrawal Amount Section
               Text(
                 'ENTER WITHDRAWAL AMOUNT',
-                style: TextStyle(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                ),
+                style: AppTextStyles.smallLabel(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                ).copyWith(letterSpacing: 0.8),
               ),
 
               const SizedBox(height: 10),
@@ -283,12 +277,12 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                 ),
                 child: Column(
@@ -296,35 +290,35 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     TextField(
                       controller: _amountController,
                       keyboardType: TextInputType.number,
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         fontSize: 22,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                       ),
                       decoration: InputDecoration(
-                        prefixIcon: const Padding(
-                          padding: EdgeInsets.only(left: 14, right: 8),
+                        prefixIcon: Padding(
+                          padding: const EdgeInsets.only(left: 14, right: 8),
                           child: Text(
                             '₹',
-                            style: TextStyle(
+                            style: GoogleFonts.fraunces(
                               fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFF1E90FF),
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.primaryBrown,
                             ),
                           ),
                         ),
                         prefixIconConstraints:
                             const BoxConstraints(minWidth: 0, minHeight: 0),
                         hintText: '250',
-                        hintStyle: TextStyle(
+                        hintStyle: AppTextStyles.smallDescription(
                           color: isDark
-                              ? Colors.grey.shade600
-                              : Colors.grey.shade400,
+                              ? AppColors.darkTextSecondary
+                              : AppColors.textMuted,
                         ),
                         filled: true,
                         fillColor: isDark
-                            ? const Color(0xFF202024)
-                            : const Color(0xFFF7F8FA),
+                            ? AppColors.darkSurface
+                            : AppColors.beigeSurface,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -355,12 +349,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               // 3. Payment Method Section
               Text(
                 'SELECT PAYOUT METHOD',
-                style: TextStyle(
-                  fontSize: 11.5,
-                  fontWeight: FontWeight.w800,
-                  letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                ),
+                style: AppTextStyles.smallLabel(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                ).copyWith(letterSpacing: 0.8),
               ),
 
               const SizedBox(height: 10),
@@ -404,14 +395,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 icon: const Icon(Icons.arrow_forward_rounded, size: 18),
                 label: const Text('Proceed to Withdraw'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
-                  elevation: 4,
-                  shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
+                  elevation: 2,
+                  textStyle: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14),
                 ),
               ),
 
@@ -423,20 +414,14 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 children: [
                   Text(
                     'RECENT WITHDRAWALS',
-                    style: TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w800,
-                      letterSpacing: 0.8,
-                      color:
-                          isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                    ),
+                    style: AppTextStyles.smallLabel(
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                    ).copyWith(letterSpacing: 0.8),
                   ),
                   Text(
                     '${_recentWithdrawals.length} Records',
-                    style: const TextStyle(
-                      fontSize: 11.5,
-                      fontWeight: FontWeight.w600,
-                      color: Color(0xFF1E90FF),
+                    style: AppTextStyles.smallLabel(
+                      color: AppColors.primaryBrown,
                     ),
                   ),
                 ],
@@ -450,24 +435,24 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   margin: const EdgeInsets.only(bottom: 10),
                   padding: const EdgeInsets.all(14),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
-                    borderRadius: BorderRadius.circular(14),
+                    color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF28282A)
-                          : const Color(0xFFE5E5EA),
+                          ? AppColors.darkBorder
+                          : AppColors.border,
                     ),
                   ),
                   child: Row(
                     children: [
                       Container(
                         padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           shape: BoxShape.circle,
-                          color: Colors.green.withValues(alpha: 0.12),
+                          color: AppColors.successBackground,
                         ),
                         child: const Icon(Icons.check_rounded,
-                            color: Colors.green, size: 20),
+                            color: AppColors.success, size: 20),
                       ),
                       const SizedBox(width: 12),
                       Expanded(
@@ -476,20 +461,17 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                           children: [
                             Text(
                               item['method'] as String,
-                              style: TextStyle(
-                                fontSize: 13.5,
-                                fontWeight: FontWeight.bold,
-                                color: isDark ? Colors.white : Colors.black87,
-                              ),
+                              style: AppTextStyles.cardTitle(
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                              ).copyWith(fontSize: 13.5),
                             ),
                             const SizedBox(height: 2),
                             Text(
                               '${item['id']} • ${item['date']}',
-                              style: TextStyle(
-                                fontSize: 11.5,
+                              style: AppTextStyles.caption(
                                 color: isDark
-                                    ? Colors.grey.shade400
-                                    : Colors.grey.shade600,
+                                    ? AppColors.darkTextSecondary
+                                    : AppColors.textMuted,
                               ),
                             ),
                           ],
@@ -500,18 +482,16 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         children: [
                           Text(
                             item['amount'] as String,
-                            style: TextStyle(
+                            style: GoogleFonts.fraunces(
                               fontSize: 14.5,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black87,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                             ),
                           ),
                           const SizedBox(height: 2),
                           Text(
                             item['status'] as String,
-                            style: TextStyle(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w600,
+                            style: AppTextStyles.smallLabel(
                               color: item['statusColor'] as Color,
                             ),
                           ),
@@ -546,27 +526,25 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFF1E90FF)
-                : (isDark ? const Color(0xFF202024) : const Color(0xFFF2F4F7)),
+                ? AppColors.primaryBrown
+                : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF1E90FF)
+                  ? AppColors.primaryBrown
                   : (isDark
-                      ? const Color(0xFF333336)
-                      : const Color(0xFFE5E5EA)),
+                      ? AppColors.darkBorder
+                      : AppColors.border),
             ),
           ),
           child: Center(
             child: Text(
               label,
-              style: TextStyle(
-                fontSize: 11.5,
-                fontWeight: FontWeight.bold,
+              style: AppTextStyles.buttonText(
                 color: isSelected
-                    ? Colors.white
-                    : (isDark ? Colors.grey.shade300 : Colors.grey.shade800),
-              ),
+                    ? AppColors.cardBackground
+                    : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+              ).copyWith(fontSize: 11.5),
             ),
           ),
         ),
@@ -590,24 +568,24 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           _selectedMethod = value;
         });
       },
-      borderRadius: BorderRadius.circular(16),
+      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
       child: Container(
         padding: const EdgeInsets.all(14),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF161618) : Colors.white,
-          borderRadius: BorderRadius.circular(16),
+          color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF1E90FF)
+                ? AppColors.primaryBrown
                 : (isDark
-                    ? const Color(0xFF28282A)
-                    : const Color(0xFFE5E5EA)),
+                    ? AppColors.darkBorder
+                    : AppColors.border),
             width: isSelected ? 1.8 : 1.0,
           ),
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? const Color(0xFF1E90FF).withValues(alpha: 0.15)
+                  ? AppColors.primaryBrown.withValues(alpha: 0.15)
                   : Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
               blurRadius: 6,
               offset: const Offset(0, 2),
@@ -619,11 +597,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: const Color(0xFF1E90FF)
-                    .withValues(alpha: isDark ? 0.16 : 0.08),
+                color: AppColors.primaryBrown
+                    .withValues(alpha: isDark ? 0.18 : 0.10),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 22, color: const Color(0xFF1E90FF)),
+              child: Icon(icon, size: 22, color: AppColors.primaryBrown),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -635,29 +613,22 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
+                        style: AppTextStyles.cardTitle(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                        ).copyWith(fontSize: 13.5),
                       ),
                       Container(
                         padding: const EdgeInsets.symmetric(
                             horizontal: 6, vertical: 2),
                         decoration: BoxDecoration(
-                          color: Colors.green.shade500
-                              .withValues(alpha: isDark ? 0.2 : 0.1),
+                          color: AppColors.successBackground,
                           borderRadius: BorderRadius.circular(6),
                         ),
                         child: Text(
                           badgeText,
-                          style: TextStyle(
-                            fontSize: 9.5,
-                            fontWeight: FontWeight.bold,
-                            color: isDark
-                                ? Colors.green.shade400
-                                : Colors.green.shade800,
-                          ),
+                          style: AppTextStyles.smallLabel(
+                            color: AppColors.success,
+                          ).copyWith(fontSize: 9.5),
                         ),
                       ),
                     ],
@@ -665,10 +636,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   const SizedBox(height: 3),
                   Text(
                     subtitle,
-                    style: TextStyle(
-                      fontSize: 11.5,
+                    style: AppTextStyles.caption(
                       color:
-                          isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                     ),
                   ),
                 ],
@@ -680,8 +650,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ? Icons.radio_button_checked_rounded
                   : Icons.radio_button_off_rounded,
               color: isSelected
-                  ? const Color(0xFF1E90FF)
-                  : (isDark ? Colors.grey.shade600 : Colors.grey.shade400),
+                  ? AppColors.primaryBrown
+                  : (isDark ? AppColors.darkTextSecondary : AppColors.textMuted),
               size: 20,
             ),
           ],

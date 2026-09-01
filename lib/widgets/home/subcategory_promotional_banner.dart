@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/subcategory_banner_data.dart';
+import '../../theme/app_theme.dart';
 
 class SubcategoryPromotionalBannerWidget extends StatelessWidget {
   final SubcategoryBannerData bannerData;
@@ -13,10 +15,10 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final topColor = isDark ? const Color(0xFF1C1C20) : Colors.white;
+    final topColor = isDark ? AppColors.darkCard : AppColors.cardBackground;
     final bottomColor = isDark
-        ? Color.alphaBlend(bannerData.themeColor.withValues(alpha: 0.28), const Color(0xFF101014))
-        : bannerData.lightColor;
+        ? Color.alphaBlend(bannerData.themeColor.withValues(alpha: 0.22), AppColors.darkBackground)
+        : AppColors.beigeSurface;
 
     return Container(
       width: double.infinity,
@@ -27,9 +29,14 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: [topColor, bottomColor],
         ),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+          width: 0.8,
+        ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
+            color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.04),
             blurRadius: 6,
             offset: const Offset(0, 3),
           ),
@@ -37,33 +44,13 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
       ),
       child: Stack(
         children: [
-          // SUBTLE BOTTOM DARKER GRADIENT OVERLAY FOR VISUAL DEPTH
-          Positioned.fill(
-            child: IgnorePointer(
-              child: DecoratedBox(
-                decoration: BoxDecoration(
-                  gradient: LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    stops: const [0.35, 1.0],
-                    colors: [
-                      Colors.transparent,
-                      isDark
-                          ? Colors.black.withValues(alpha: 0.25)
-                          : Colors.black.withValues(alpha: 0.06),
-                    ],
-                  ),
-                ),
-              ),
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               mainAxisSize: MainAxisSize.min,
               children: [
-                // TOP SECTION (WHITE BG AREA)
+                // TOP SECTION
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
@@ -83,19 +70,19 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: bannerData.themeColor.withValues(alpha: 0.1),
+                                  color: AppColors.primaryBrown.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(6),
                                   border: Border.all(
-                                    color: bannerData.themeColor.withValues(alpha: 0.3),
+                                    color: AppColors.primaryBrown.withValues(alpha: 0.25),
                                     width: 1,
                                   ),
                                 ),
                                 child: Text(
                                   bannerData.brandName.toUpperCase(),
-                                  style: TextStyle(
-                                    color: isDark ? Colors.white : bannerData.themeColor,
+                                  style: GoogleFonts.inter(
+                                    color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                     fontSize: 10,
-                                    fontWeight: FontWeight.w800,
+                                    fontWeight: FontWeight.w700,
                                     letterSpacing: 0.8,
                                   ),
                                 ),
@@ -103,15 +90,15 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                                 decoration: BoxDecoration(
-                                  color: bannerData.themeColor,
+                                  color: isDark ? AppColors.deepBrown : AppColors.primaryBrown,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
                                   bannerData.offerTag,
-                                  style: const TextStyle(
-                                    color: Colors.white,
+                                  style: GoogleFonts.inter(
+                                    color: AppColors.cardBackground,
                                     fontSize: 10,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w800,
                                   ),
                                 ),
                               ),
@@ -120,16 +107,15 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
 
                           const SizedBox(height: 8),
 
-                          // PROMOTIONAL HEADLINE
+                          // PROMOTIONAL HEADLINE (Fraunces Display Typography)
                           Text(
                             bannerData.headline,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              color: isDark ? Colors.white : const Color(0xFF0F172A),
-                              fontSize: 15.5,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: 0.2,
+                            style: GoogleFonts.fraunces(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w700,
                               height: 1.25,
                             ),
                           ),
@@ -144,21 +130,21 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                       flex: 30,
                       child: Center(
                         child: Container(
-                          width: 64,
-                          height: 64,
+                          width: 60,
+                          height: 60,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: bannerData.themeColor.withValues(alpha: 0.1),
+                            color: AppColors.primaryBrown.withValues(alpha: 0.1),
                             border: Border.all(
-                              color: bannerData.themeColor.withValues(alpha: 0.25),
+                              color: AppColors.primaryBrown.withValues(alpha: 0.25),
                               width: 1.5,
                             ),
                           ),
                           child: Center(
                             child: Icon(
                               bannerData.logoIcon,
-                              size: 32,
-                              color: isDark ? Colors.white : bannerData.themeColor,
+                              size: 28,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                             ),
                           ),
                         ),
@@ -167,9 +153,9 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                   ],
                 ),
 
-                const SizedBox(height: 14),
+                const SizedBox(height: 12),
 
-                // BOTTOM SECTION (LIGHT COLOR AREA)
+                // BOTTOM SECTION
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   crossAxisAlignment: CrossAxisAlignment.center,
@@ -180,26 +166,23 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                         bannerData.subText,
                         maxLines: 2,
                         overflow: TextOverflow.ellipsis,
-                        style: TextStyle(
-                          color: isDark ? Colors.grey.shade300 : const Color(0xFF334155),
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w600,
-                          height: 1.3,
-                        ),
+                        style: AppTextStyles.body(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        ).copyWith(fontSize: 12),
                       ),
                     ),
 
                     const SizedBox(width: 12),
 
-                    // NON-CLICKABLE CTA PROMO BADGE (RIGHT)
+                    // BUTTON (RIGHT)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
+                      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6.5),
                       decoration: BoxDecoration(
-                        color: bannerData.themeColor,
+                        color: isDark ? AppColors.deepBrown : AppColors.primaryBrown,
                         borderRadius: BorderRadius.circular(20),
                         boxShadow: [
                           BoxShadow(
-                            color: bannerData.themeColor.withValues(alpha: 0.3),
+                            color: AppColors.primaryBrown.withValues(alpha: 0.25),
                             blurRadius: 4,
                             offset: const Offset(0, 2),
                           ),
@@ -210,17 +193,15 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                         children: [
                           Text(
                             bannerData.buttonText,
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 11,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            style: AppTextStyles.buttonText(
+                              color: AppColors.cardBackground,
+                            ).copyWith(fontSize: 11),
                           ),
                           const SizedBox(width: 4),
                           const Icon(
                             Icons.arrow_forward_rounded,
                             size: 12,
-                            color: Colors.white,
+                            color: AppColors.cardBackground,
                           ),
                         ],
                       ),

@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 
 class ReferEarnScreen extends StatefulWidget {
   static const String routeName = '/refer-earn';
@@ -12,32 +15,30 @@ class ReferEarnScreen extends StatefulWidget {
 }
 
 class _ReferEarnScreenState extends State<ReferEarnScreen> {
-  static const String _referralLink = 'https://cashkaro.com/refer/CK89421';
+  static const String _referralLink = 'https://cashvault.app/refer/CK89421';
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Refer & Earn',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -160,25 +161,25 @@ class _PromotionalCarouselWidgetState
     return Container(
       height: carouselHeight,
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         gradient: const LinearGradient(
           colors: [
-            Color(0xFF1E90FF),
-            Color(0xFF0F172A),
+            AppColors.primaryBrown,
+            AppColors.deepBrown,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         boxShadow: [
           BoxShadow(
-            color: Color(0xFF1E90FF).withValues(alpha: 0.35),
+            color: AppColors.primaryBrown.withValues(alpha: 0.35),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         child: GestureDetector(
           onTap: _onSlideTap,
           child: Stack(
@@ -212,30 +213,30 @@ class _PromotionalCarouselWidgetState
                                   vertical: 4,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: Colors.white,
+                                  color: AppColors.beigeSurface,
                                   borderRadius: BorderRadius.circular(6),
                                 ),
                                 child: Text(
                                   slide.tag,
-                                  style: const TextStyle(
-                                    color: Color(0xFF1E90FF),
+                                  style: GoogleFonts.inter(
+                                    color: AppColors.deepBrown,
                                     fontSize: 9.5,
-                                    fontWeight: FontWeight.w900,
+                                    fontWeight: FontWeight.w800,
                                     letterSpacing: 0.4,
                                   ),
                                 ),
                               ),
                               const SizedBox(height: 8),
 
-                              // White Title
+                              // White Title (Fraunces Display Typography)
                               Text(
                                 slide.title,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
+                                style: GoogleFonts.fraunces(
                                   color: Colors.white,
                                   fontSize: 18,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w700,
                                   height: 1.2,
                                 ),
                               ),
@@ -246,7 +247,7 @@ class _PromotionalCarouselWidgetState
                                 slide.subtitle,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
+                                style: GoogleFonts.inter(
                                   color: Colors.white.withValues(alpha: 0.9),
                                   fontSize: 12,
                                   height: 1.25,
@@ -259,8 +260,8 @@ class _PromotionalCarouselWidgetState
 
                         // Right Illustration Icon Container
                         Container(
-                          width: 68,
-                          height: 68,
+                          width: 64,
+                          height: 64,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
                             color: Colors.white.withValues(alpha: 0.18),
@@ -271,7 +272,7 @@ class _PromotionalCarouselWidgetState
                           ),
                           child: Icon(
                             slide.icon,
-                            size: 36,
+                            size: 32,
                             color: Colors.white,
                           ),
                         ),
@@ -297,8 +298,8 @@ class _PromotionalCarouselWidgetState
                       height: 7,
                       decoration: BoxDecoration(
                         color: _currentPage == index
-                            ? Colors.white
-                            : Colors.white.withValues(alpha: 0.4),
+                            ? AppColors.beigeSurface
+                            : Colors.white.withValues(alpha: 0.35),
                         borderRadius: BorderRadius.circular(4),
                       ),
                     ),
@@ -354,7 +355,7 @@ class _ReferralLinkSection extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF1E90FF),
+        backgroundColor: AppColors.primaryBrown,
         duration: const Duration(seconds: 2),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -375,17 +376,15 @@ class _ReferralLinkSection extends StatelessWidget {
               width: 4,
               height: 18,
               decoration: BoxDecoration(
-                color: const Color(0xFF1E90FF),
+                color: AppColors.primaryBrown,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(width: 8),
             Text(
               'Your Referral Link',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
+              style: AppTextStyles.sectionHeading(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
               ),
             ),
           ],
@@ -396,10 +395,10 @@ class _ReferralLinkSection extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: isDark ? const Color(0xFF161618) : Colors.white,
-            borderRadius: BorderRadius.circular(16),
+            color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
             border: Border.all(
-              color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+              color: isDark ? AppColors.darkBorder : AppColors.border,
             ),
             boxShadow: [
               BoxShadow(
@@ -413,7 +412,7 @@ class _ReferralLinkSection extends StatelessWidget {
             children: [
               const Icon(
                 Icons.link_rounded,
-                color: Color(0xFF1E90FF),
+                color: AppColors.primaryBrown,
                 size: 22,
               ),
               const SizedBox(width: 10),
@@ -422,10 +421,10 @@ class _ReferralLinkSection extends StatelessWidget {
                   referralLink,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 14,
+                  style: GoogleFonts.inter(
+                    fontSize: 13.5,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.grey.shade300 : Colors.black87,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                   ),
                 ),
               ),
@@ -433,29 +432,29 @@ class _ReferralLinkSection extends StatelessWidget {
 
               // Copy Button
               Material(
-                color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.12 : 0.1),
+                color: isDark
+                    ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                    : AppColors.beigeSurface,
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
                   onTap: () => _copyToClipboard(context),
                   borderRadius: BorderRadius.circular(10),
-                  child: const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                  child: Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        Icon(
+                        const Icon(
                           Icons.copy_rounded,
                           size: 16,
-                          color: Color(0xFF1E90FF),
+                          color: AppColors.primaryBrown,
                         ),
-                        SizedBox(width: 4),
+                        const SizedBox(width: 4),
                         Text(
                           'Copy',
-                          style: TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.bold,
-                            color: Color(0xFF1E90FF),
-                          ),
+                          style: AppTextStyles.buttonText(
+                            color: AppColors.deepBrown,
+                          ).copyWith(fontSize: 12),
                         ),
                       ],
                     ),
@@ -471,7 +470,7 @@ class _ReferralLinkSection extends StatelessWidget {
 }
 
 // ==========================================
-// 3. INVITE FRIENDS BUTTON (RED ACCENT THEMED)
+// 3. INVITE FRIENDS BUTTON
 // ==========================================
 class _InviteFriendsButton extends StatelessWidget {
   final String referralLink;
@@ -480,7 +479,7 @@ class _InviteFriendsButton extends StatelessWidget {
 
   void _shareViaWhatsApp(BuildContext context) {
     final shareText =
-        'Hey! Join CashKaro using my referral link and earn real cashback on all your online shopping: $referralLink';
+        'Hey! Join CashVault using my referral link and earn real cashback on all your online shopping: $referralLink';
     Clipboard.setData(ClipboardData(text: shareText));
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -498,7 +497,7 @@ class _InviteFriendsButton extends StatelessWidget {
             ),
           ],
         ),
-        backgroundColor: const Color(0xFF1E90FF),
+        backgroundColor: AppColors.primaryBrown,
         duration: const Duration(seconds: 3),
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(
@@ -511,34 +510,32 @@ class _InviteFriendsButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 52,
+      height: 50,
       child: ElevatedButton(
         onPressed: () => _shareViaWhatsApp(context),
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF1E90FF),
-          foregroundColor: Colors.white,
-          elevation: 4,
-          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+          backgroundColor: AppColors.primaryBrown,
+          foregroundColor: AppColors.cardBackground,
+          elevation: 2,
+          shadowColor: AppColors.primaryBrown.withValues(alpha: 0.3),
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           ),
         ),
-        child: const Row(
+        child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(
+            const Icon(
               Icons.chat_bubble_outline_rounded,
-              size: 22,
-              color: Colors.white,
+              size: 20,
+              color: AppColors.cardBackground,
             ),
-            SizedBox(width: 10),
+            const SizedBox(width: 10),
             Text(
               'Invite Friends via WhatsApp',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                letterSpacing: 0.3,
-              ),
+              style: AppTextStyles.buttonText(
+                color: AppColors.cardBackground,
+              ).copyWith(fontSize: 14),
             ),
           ],
         ),
@@ -566,17 +563,15 @@ class _HowItWorksSection extends StatelessWidget {
               width: 4,
               height: 18,
               decoration: BoxDecoration(
-                color: const Color(0xFF1E90FF),
+                color: AppColors.primaryBrown,
                 borderRadius: BorderRadius.circular(2),
               ),
             ),
             const SizedBox(width: 8),
             Text(
               'How Refer & Earn Works',
-              style: TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-                color: isDark ? Colors.white : Colors.black87,
+              style: AppTextStyles.sectionHeading(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
               ),
             ),
           ],
@@ -592,7 +587,7 @@ class _HowItWorksSection extends StatelessWidget {
         _buildStepCard(
           stepNumber: '2',
           title: 'Friends shop online',
-          description: 'Your friends shop via CashKaro at 1500+ top retailers.',
+          description: 'Your friends shop via CashVault at 1500+ top retailers.',
         ),
         const SizedBox(height: 10),
         _buildStepCard(
@@ -612,10 +607,10 @@ class _HowItWorksSection extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: Row(
@@ -624,16 +619,18 @@ class _HowItWorksSection extends StatelessWidget {
             width: 38,
             height: 38,
             decoration: BoxDecoration(
-              color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.12 : 0.1),
+              color: isDark
+                  ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                  : AppColors.beigeSurface,
               shape: BoxShape.circle,
             ),
             child: Center(
               child: Text(
                 stepNumber,
-                style: const TextStyle(
-                  color: Color(0xFF1E90FF),
+                style: GoogleFonts.fraunces(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                   fontSize: 16,
-                  fontWeight: FontWeight.bold,
+                  fontWeight: FontWeight.w700,
                 ),
               ),
             ),
@@ -645,20 +642,16 @@ class _HowItWorksSection extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black87,
+                  style: AppTextStyles.cardTitle(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 2),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 12,
-                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                    height: 1.25,
-                  ),
+                  style: AppTextStyles.body(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                  ).copyWith(fontSize: 12),
                 ),
               ],
             ),

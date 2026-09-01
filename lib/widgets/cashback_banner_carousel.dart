@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../models/brand_model.dart';
 import '../screens/shopping_confirmation_screen.dart';
 import '../services/brand_service.dart';
+import '../theme/app_theme.dart';
 import 'network_image_with_skeleton.dart';
 
 class CashbackBannerCarousel extends StatefulWidget {
@@ -23,9 +26,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
   @override
   void initState() {
     super.initState();
-    // viewportFraction: 0.85 creates the next-banner peek effect on the right edge.
-    // initialPage: 10000 allows infinite circular swiping in both left and right directions without boundaries.
-    _pageController = PageController(viewportFraction: 0.85, initialPage: _kInitialPage);
+    _pageController = PageController(viewportFraction: 0.86, initialPage: _kInitialPage);
     _fetchBrands();
   }
 
@@ -58,11 +59,11 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     if (_isLoading) {
-      return const SizedBox(
+      return SizedBox(
         height: 180,
         child: Center(
           child: CircularProgressIndicator(
-            color: Color(0xFF1E90FF),
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
           ),
         ),
       );
@@ -76,7 +77,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
 
     return Column(
       children: [
-        // HORIZONTAL SWIPEABLE CAROUSEL WITH PEEK EFFECT & INFINITE CIRCULAR LOOP
+        // HORIZONTAL SWIPEABLE CAROUSEL
         SizedBox(
           height: 180,
           child: PageView.builder(
@@ -91,41 +92,40 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
               final brand = _brands[actualIndex];
 
               return Padding(
-                // Margin creates visible horizontal spacing between cards
                 padding: const EdgeInsets.only(right: 12.0, left: 2.0),
                 child: GestureDetector(
                   onTap: () => _onBannerTap(brand),
                   child: Container(
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF151D2A) : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.06),
-                          blurRadius: 10,
-                          offset: const Offset(0, 4),
+                          color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.05),
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
                     child: ClipRRect(
-                      borderRadius: BorderRadius.circular(20),
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                       child: Stack(
                         children: [
-                          // BACKGROUND BANNER IMAGE WITH GRADIENT OVERLAY
+                          // BACKGROUND BANNER IMAGE
                           Positioned.fill(
                             child: NetworkImageWithSkeleton(
                               imageUrl: brand.bannerUrl,
                               fit: BoxFit.cover,
                               errorBuilder: (context, error, stackTrace) {
                                 return Container(
-                                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFF0F2F5),
+                                  color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                                   child: Icon(
                                     Icons.shopping_cart_outlined,
                                     size: 60,
-                                    color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
+                                    color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                                   ),
                                 );
                               },
@@ -140,9 +140,9 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                   begin: Alignment.centerLeft,
                                   end: Alignment.centerRight,
                                   colors: [
-                                    Colors.black.withValues(alpha: 0.85),
-                                    Colors.black.withValues(alpha: 0.55),
-                                    Colors.black.withValues(alpha: 0.15),
+                                    AppColors.deepBrown.withValues(alpha: 0.90),
+                                    AppColors.deepBrown.withValues(alpha: 0.60),
+                                    AppColors.deepBrown.withValues(alpha: 0.20),
                                   ],
                                 ),
                               ),
@@ -177,9 +177,9 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                           errorBuilder: (context, error, stackTrace) {
                                             return Center(
                                               child: Text(
-                                                brand.name.substring(0, 1).toUpperCase(),
-                                                style: const TextStyle(
-                                                  color: Color(0xFF1E90FF),
+                                                brand.name.isNotEmpty ? brand.name.substring(0, 1).toUpperCase() : '',
+                                                style: GoogleFonts.inter(
+                                                  color: AppColors.primaryBrown,
                                                   fontWeight: FontWeight.bold,
                                                 ),
                                               ),
@@ -195,10 +195,10 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                         children: [
                                           Text(
                                             brand.name,
-                                            style: const TextStyle(
+                                            style: GoogleFonts.fraunces(
                                               color: Colors.white,
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.bold,
+                                              fontSize: 17,
+                                              fontWeight: FontWeight.w700,
                                             ),
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
@@ -206,9 +206,10 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                           if (brand.category.isNotEmpty)
                                             Text(
                                               brand.category,
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Colors.white.withValues(alpha: 0.8),
                                                 fontSize: 11,
+                                                fontWeight: FontWeight.w500,
                                               ),
                                               maxLines: 1,
                                               overflow: TextOverflow.ellipsis,
@@ -235,23 +236,19 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                               vertical: 5,
                                             ),
                                             decoration: BoxDecoration(
-                                              gradient: const LinearGradient(
-                                                colors: [Color(0xFF1E90FF), Color(0xFF0066CC)],
-                                              ),
+                                              color: AppColors.beigeSurface,
                                               borderRadius: BorderRadius.circular(8),
-                                              boxShadow: [
-                                                BoxShadow(
-                                                  color: const Color(0xFF1E90FF).withValues(alpha: 0.4),
-                                                  blurRadius: 6,
-                                                ),
-                                              ],
+                                              border: Border.all(
+                                                color: AppColors.border,
+                                                width: 0.8,
+                                              ),
                                             ),
                                             child: Text(
                                               brand.cashbackPercentage,
-                                              style: const TextStyle(
-                                                color: Colors.white,
+                                              style: GoogleFonts.fraunces(
+                                                color: AppColors.deepBrown,
                                                 fontSize: 13,
-                                                fontWeight: FontWeight.bold,
+                                                fontWeight: FontWeight.w700,
                                               ),
                                             ),
                                           ),
@@ -259,9 +256,9 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                             const SizedBox(height: 6),
                                             Text(
                                               brand.offerText,
-                                              style: TextStyle(
+                                              style: GoogleFonts.inter(
                                                 color: Colors.white.withValues(alpha: 0.9),
-                                                fontSize: 11,
+                                                fontSize: 11.5,
                                                 fontWeight: FontWeight.w500,
                                               ),
                                               maxLines: 1,
@@ -314,8 +311,8 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: isActive
-                    ? const Color(0xFF1E90FF)
-                    : (isDark ? Colors.grey.shade800 : Colors.grey.shade300),
+                    ? (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown)
+                    : (isDark ? AppColors.darkBorder : AppColors.border),
               ),
             );
           }),

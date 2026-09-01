@@ -1,23 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../data/home_mock_data.dart';
+import '../models/brand_model.dart';
 import '../models/discovery_section_model.dart';
 import '../providers/category_provider.dart';
 import '../providers/product_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/cashback_banner_carousel.dart';
 import '../widgets/home/grid_brand_card.dart';
 import '../widgets/home/home_drawer.dart';
-import '../widgets/home/offer_section_carousel.dart';
 import '../widgets/home/subcategory_promotional_banner.dart';
 import '../widgets/home/subtle_section_container.dart';
 import '../widgets/home/top_amazon_deals_section.dart';
 import '../widgets/home/top_categories_section.dart';
-import '../widgets/home/trending_brands_carousel.dart';
 import 'missing_tickets_screen.dart';
 import 'my_earnings_screen.dart';
 import 'notifications_screen.dart';
-import 'offer_section_screen.dart';
 import 'product_detail_screen.dart';
 import 'profile_screen.dart';
 import 'refer_earn_screen.dart';
@@ -58,6 +58,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
     switch (index) {
       case 0:
+        // Already on home
         break;
       case 1:
         Navigator.of(context).pushNamed(ReferEarnScreen.routeName).then((_) {
@@ -103,7 +104,6 @@ class _HomeScreenState extends State<HomeScreen> {
           child: GridCardsSection(
             brands: section.brands,
             isDark: isDark,
-            isExpanded: false,
             initialCount: section.initialCount,
           ),
         ),
@@ -119,13 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    // Split discovery sections around Trending Brands (fashion is [0], beauty..personal loans is [1..])
-    final fashionSection = HomeMockData.discoverySections.firstWhere((s) => s.id == 'fashion');
-    final otherDiscoverySections = HomeMockData.discoverySections.where((s) => s.id != 'fashion').toList();
-
     return Scaffold(
       key: _scaffoldKey,
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF6F7F9),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
 
       // LEFT CATEGORIES DRAWER
       drawer: HomeDrawer(isDark: isDark),
@@ -136,42 +132,45 @@ class _HomeScreenState extends State<HomeScreen> {
           children: [
             // TOP HEADER
             Container(
-              color: isDark ? const Color(0xFF161618) : Colors.white,
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
                   // Hamburger Menu Icon
                   IconButton(
-                    icon: const Icon(Icons.menu, size: 26),
+                    icon: Icon(
+                      Icons.menu_rounded,
+                      size: 26,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                    ),
                     onPressed: () {
                       _scaffoldKey.currentState?.openDrawer();
                     },
                     tooltip: 'Categories',
                   ),
 
-                  // App Logo & Title
-                  const Expanded(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        SizedBox(width: 8),
-                        Text(
-                          'CashKaro',
-                          style: TextStyle(
-                            fontFamily: 'HandwrittenItalic',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF1E90FF),
-                            letterSpacing: 3.0,
-                          ),
+                  // App Logo & Title (Fraunces Display Typography)
+                  Expanded(
+                    child: Center(
+                      child: Text(
+                        'CashVault',
+                        style: GoogleFonts.fraunces(
+                          fontSize: 24,
+                          fontWeight: FontWeight.w700,
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          letterSpacing: -0.5,
                         ),
-                      ],
+                      ),
                     ),
                   ),
 
                   // Notification Bell Icon
                   IconButton(
-                    icon: const Icon(Icons.notifications_none_outlined, size: 26),
+                    icon: Icon(
+                      Icons.notifications_outlined,
+                      size: 26,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                    ),
                     onPressed: () {
                       Navigator.of(context).pushNamed(NotificationsScreen.routeName);
                     },
@@ -183,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
             // SEARCH BAR
             Container(
-              color: isDark ? const Color(0xFF161618) : Colors.white,
+              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
               padding: const EdgeInsets.only(left: 16, right: 16, bottom: 12),
               child: GestureDetector(
                 onTap: () {
@@ -193,25 +192,25 @@ class _HomeScreenState extends State<HomeScreen> {
                   height: 46,
                   padding: const EdgeInsets.symmetric(horizontal: 16),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF242426) : const Color(0xFFF0F2F5),
+                    color: isDark ? AppColors.darkCard : AppColors.cardBackground,
                     borderRadius: BorderRadius.circular(23),
                     border: Border.all(
-                      color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE2E4E8),
+                      color: isDark ? AppColors.darkBorder : AppColors.border,
+                      width: 1,
                     ),
                   ),
                   child: Row(
                     children: [
                       Icon(
                         Icons.search,
-                        color: Colors.grey.shade500,
-                        size: 22,
+                        color: AppColors.textMuted,
+                        size: 20,
                       ),
                       const SizedBox(width: 10),
                       Text(
-                        'Search for products',
-                        style: TextStyle(
-                          color: Colors.grey.shade500,
-                          fontSize: 15,
+                        'Search stores, products & cashback',
+                        style: AppTextStyles.body(
+                          color: AppColors.textMuted,
                         ),
                       ),
                     ],
@@ -245,8 +244,8 @@ class _HomeScreenState extends State<HomeScreen> {
                         SubtleSectionContainer(
                           title: 'Cashback on Most Popular Brands',
                           isDark: isDark,
-                          lightGradientColors: const [Color(0xFFEFF6FF), Colors.white],
-                          darkGradientColors: const [Color(0xFF0F172A), Color(0xFF0D0D0D)],
+                          lightGradientColors: const [AppColors.beigeSurface, AppColors.cardBackground],
+                          darkGradientColors: const [AppColors.darkSurface, AppColors.darkCard],
                           onViewAllTap: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -257,9 +256,10 @@ class _HomeScreenState extends State<HomeScreen> {
                               ),
                             );
                           },
-                          child: HorizontalBrandCarousel(
+                          child: GridCardsSection(
                             brands: HomeMockData.popularBrandsCatalog,
                             isDark: isDark,
+                            initialCount: 6,
                           ),
                         ),
                         SubcategoryPromotionalBannerWidget(
@@ -267,92 +267,81 @@ class _HomeScreenState extends State<HomeScreen> {
                           isDark: isDark,
                         ),
 
-                        // 2. GET CASHBACK ON FASHION BUYS
-                        _buildDiscoverySection(fashionSection, isDark),
+                        // 2. DISCOVERY SECTIONS
+                        ...HomeMockData.discoverySections.map((s) => _buildDiscoverySection(s, isDark)),
 
-                        // 3. TRENDING BRANDS
-                        SubtleSectionContainer(
-                          title: 'Trending Brands',
-                          isDark: isDark,
-                          lightGradientColors: const [Color(0xFFF5F0FF), Colors.white],
-                          darkGradientColors: const [Color(0xFF161022), Color(0xFF0D0D0D)],
-                          onViewAllTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const TopCategoryBrandsScreen(
-                                  categoryTitle: 'Trending Brands',
-                                  brands: HomeMockData.popularBrandsCatalog,
-                                ),
+                        // 3. TOP AMAZON DEALS SECTION
+                        TopAmazonDealsSection(isDark: isDark),
+
+                        const SizedBox(height: 16),
+
+                        // 4. TRENDING PRODUCTS GRID (2-column layout)
+                        if (provider.products.isNotEmpty) ...[
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            children: [
+                              Row(
+                                children: [
+                                  Container(
+                                    width: 4,
+                                    height: 18,
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryBrown,
+                                      borderRadius: BorderRadius.circular(2),
+                                    ),
+                                  ),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    'Trending Products',
+                                    style: AppTextStyles.sectionHeading(
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                    ),
+                                  ),
+                                ],
                               ),
-                            );
-                          },
-                          child: TrendingBrandsCarouselWidget(
-                            items: HomeMockData.trendingBannerCatalog,
-                            isDark: isDark,
-                            onBrandTap: (brand) {
-                              Navigator.of(context).push(
-                                MaterialPageRoute(
-                                  builder: (_) =>
-                                      ProductDetailScreen.fromBrand(brand),
-                                ),
+                            ],
+                          ),
+                          const SizedBox(height: 12),
+                          GridView.builder(
+                            shrinkWrap: true,
+                            physics: const NeverScrollableScrollPhysics(),
+                            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 0.72,
+                              crossAxisSpacing: 12,
+                              mainAxisSpacing: 12,
+                            ),
+                            itemCount: provider.products.take(6).length,
+                            itemBuilder: (context, index) {
+                              final product = provider.products[index];
+                              final brandModel = BrandModel(
+                                name: product.title,
+                                logoUrl: product.thumbnail,
+                                bannerUrl: product.thumbnail,
+                                cashbackPercentage: 'Flat ${product.discountPercentage.toStringAsFixed(0)}% Off',
+                                category: product.category ?? '',
+                                offerText: '\$${product.price.toStringAsFixed(2)}',
+                                websiteUrl: '',
+                              );
+                              return GridBrandCard(
+                                brand: brandModel,
+                                isDark: isDark,
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (_) => ProductDetailScreen(product: product),
+                                      settings: RouteSettings(
+                                        name: ProductDetailScreen.routeName,
+                                        arguments: product,
+                                      ),
+                                    ),
+                                  );
+                                },
                               );
                             },
                           ),
-                        ),
-                        SubcategoryPromotionalBannerWidget(
-                          bannerData: HomeMockData.trendingBanner,
-                          isDark: isDark,
-                        ),
+                        ],
 
-                        // 4 TO 12: DISCOVERY SECTIONS (Beauty, Cards, Electronics, Shopping, Medicines, Loans, Hotels, Personal Loans, Luxury)
-                        ...otherDiscoverySections.map(
-                          (section) => _buildDiscoverySection(section, isDark),
-                        ),
-
-                        // FLIPKART – FREEDOM SALE
-                        OfferSectionCarouselWidget(
-                          title: 'Flipkart – Freedom Sale',
-                          items: HomeMockData.flipkartOffers,
-                          onViewAllTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const OfferSectionScreen(
-                                  title: 'Flipkart – Freedom Sale',
-                                  items: HomeMockData.flipkartOffers,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SubcategoryPromotionalBannerWidget(
-                          bannerData: HomeMockData.flipkartBanner,
-                          isDark: isDark,
-                        ),
-                        const SizedBox(height: 24),
-
-                        // MEESHO – TOP DEALS
-                        OfferSectionCarouselWidget(
-                          title: 'Meesho – Top Deals',
-                          items: HomeMockData.meeshoOffers,
-                          onViewAllTap: () {
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (_) => const OfferSectionScreen(
-                                  title: 'Meesho – Top Deals',
-                                  items: HomeMockData.meeshoOffers,
-                                ),
-                              ),
-                            );
-                          },
-                        ),
-                        SubcategoryPromotionalBannerWidget(
-                          bannerData: HomeMockData.meeshoBanner,
-                          isDark: isDark,
-                        ),
-                        const SizedBox(height: 24),
-
-                        // TOP AMAZON DEALS (AT THE BOTTOM, WITHOUT PROMOTIONAL BANNER)
-                        TopAmazonDealsSection(isDark: isDark),
                         const SizedBox(height: 24),
                       ],
                     );
@@ -365,43 +354,58 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
 
       // 5-ITEM FIXED BOTTOM NAVIGATION
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: _selectedIndex,
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: const Color(0xFF1E90FF),
-        unselectedItemColor: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        selectedFontSize: 11,
-        unselectedFontSize: 11,
-        elevation: 10,
-        onTap: _onBottomNavigationTap,
-        items: const [
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home_outlined),
-            activeIcon: Icon(Icons.home),
-            label: 'Home',
+      bottomNavigationBar: Container(
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+          border: Border(
+            top: BorderSide(
+              color: isDark ? AppColors.darkBorder : AppColors.border,
+              width: 0.8,
+            ),
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.card_giftcard_outlined),
-            activeIcon: Icon(Icons.card_giftcard),
-            label: 'Refer & Earn',
+        ),
+        child: BottomNavigationBar(
+          currentIndex: _selectedIndex,
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          unselectedItemColor: AppColors.textMuted,
+          backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
+          selectedLabelStyle: AppTextStyles.navLabel(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_balance_wallet_outlined),
-            activeIcon: Icon(Icons.account_balance_wallet),
-            label: 'My Earnings',
+          unselectedLabelStyle: AppTextStyles.navLabel(
+            color: AppColors.textMuted,
           ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.receipt_long_outlined),
-            activeIcon: Icon(Icons.receipt_long),
-            label: 'Missing',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.person_outline),
-            activeIcon: Icon(Icons.person),
-            label: 'Profile',
-          ),
-        ],
+          elevation: 0,
+          onTap: _onBottomNavigationTap,
+          items: const [
+            BottomNavigationBarItem(
+              icon: Icon(Icons.home_outlined),
+              activeIcon: Icon(Icons.home_rounded),
+              label: 'Home',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.card_giftcard_outlined),
+              activeIcon: Icon(Icons.card_giftcard_rounded),
+              label: 'Refer & Earn',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.account_balance_wallet_outlined),
+              activeIcon: Icon(Icons.account_balance_wallet_rounded),
+              label: 'My Earnings',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.receipt_long_outlined),
+              activeIcon: Icon(Icons.receipt_long_rounded),
+              label: 'Missing',
+            ),
+            BottomNavigationBarItem(
+              icon: Icon(Icons.person_outline_rounded),
+              activeIcon: Icon(Icons.person_rounded),
+              label: 'Profile',
+            ),
+          ],
+        ),
       ),
     );
   }
