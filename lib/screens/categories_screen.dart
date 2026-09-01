@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../models/product.dart';
 import '../providers/category_provider.dart';
+import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 import 'product_detail_screen.dart';
 
@@ -259,7 +261,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF18181B) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
       ),
@@ -274,7 +276,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -287,14 +289,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   children: [
                     Text(
                       'Sort by',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.screenHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 18),
                     ),
                     IconButton(
-                      icon: const Icon(Icons.close_rounded, size: 20),
+                      icon: Icon(
+                        Icons.close_rounded,
+                        size: 20,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                      ),
                       padding: EdgeInsets.zero,
                       constraints: const BoxConstraints(),
                       onPressed: () => Navigator.of(ctx).pop(),
@@ -306,7 +310,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               Divider(
                 height: 1,
                 thickness: 1,
-                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                color: isDark ? AppColors.darkBorder : AppColors.border,
               ),
 
               // Centered & properly spaced sort options separated by lines
@@ -330,25 +334,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             Expanded(
                               child: Text(
                                 option,
-                                style: TextStyle(
+                                style: AppTextStyles.cardTitle(
+                                  color: isSelected
+                                      ? (isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown)
+                                      : (isDark ? AppColors.darkTextSecondary : AppColors.textPrimary),
+                                ).copyWith(
                                   fontSize: 15,
                                   fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                                  color: isSelected
-                                      ? const Color(0xFF1E90FF)
-                                      : (isDark ? Colors.white70 : Colors.black87),
                                 ),
                               ),
                             ),
                             if (isSelected)
-                              const Icon(
+                              Icon(
                                 Icons.check_circle_rounded,
-                                color: Color(0xFF1E90FF),
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                 size: 22,
                               )
                             else
                               Icon(
                                 Icons.radio_button_unchecked_rounded,
-                                color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                                color: isDark ? AppColors.darkBorder : AppColors.border,
                                 size: 22,
                               ),
                           ],
@@ -358,7 +363,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     Divider(
                       height: 1,
                       thickness: 1,
-                      color: isDark ? const Color(0xFF28282A) : const Color(0xFFF0F0F2),
+                      color: isDark ? AppColors.darkBorder : AppColors.border,
                     ),
                   ],
                 );
@@ -557,7 +562,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             return Container(
               height: MediaQuery.of(context).size.height * 0.78,
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF18181B) : Colors.white,
+                color: isDark ? AppColors.darkCard : AppColors.cardBackground,
                 borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
@@ -568,7 +573,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     width: 40,
                     height: 4,
                     decoration: BoxDecoration(
-                      color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                      color: isDark ? AppColors.darkBorder : AppColors.border,
                       borderRadius: BorderRadius.circular(2),
                     ),
                   ),
@@ -583,26 +588,24 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                           children: [
                             Text(
                               'Filters',
-                              style: TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: isDark ? Colors.white : Colors.black87,
-                              ),
+                              style: AppTextStyles.screenHeading(
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                              ).copyWith(fontSize: 18),
                             ),
                             if (totalTempCount > 0) ...[
                               const SizedBox(width: 8),
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1E90FF),
+                                  color: AppColors.primaryBrown,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
                                   '$totalTempCount',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.fraunces(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
-                                    color: Colors.white,
+                                    color: AppColors.cardBackground,
                                   ),
                                 ),
                               ),
@@ -623,12 +626,14 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             });
                           },
                           style: TextButton.styleFrom(
-                            foregroundColor: const Color(0xFF1E90FF),
+                            foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                           ),
-                          child: const Text(
+                          child: Text(
                             'Clear Filter',
-                            style: TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
+                            style: AppTextStyles.buttonText(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                            ).copyWith(fontSize: 13),
                           ),
                         ),
                       ],
@@ -638,7 +643,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   Divider(
                     height: 1,
                     thickness: 1,
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
 
                   // Two-Pane Content: Left Categories, Right Values
@@ -649,10 +654,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         Container(
                           width: 140,
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF131315) : const Color(0xFFF6F6F9),
+                            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface.withValues(alpha: 0.45),
                             border: Border(
                               right: BorderSide(
-                                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                                color: isDark ? AppColors.darkBorder : AppColors.border,
                                 width: 1,
                               ),
                             ),
@@ -674,12 +679,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
                                   decoration: BoxDecoration(
                                     color: isSelected
-                                        ? (isDark ? const Color(0xFF18181B) : Colors.white)
+                                        ? (isDark ? AppColors.darkCard : AppColors.cardBackground)
                                         : Colors.transparent,
                                     border: isSelected
                                         ? const Border(
                                             left: BorderSide(
-                                              color: Color(0xFF1E90FF),
+                                              color: AppColors.primaryBrown,
                                               width: 3.5,
                                             ),
                                           )
@@ -690,12 +695,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                       Expanded(
                                         child: Text(
                                           cat,
-                                          style: TextStyle(
+                                          style: AppTextStyles.caption(
+                                            color: isSelected
+                                                ? (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown)
+                                                : (isDark ? AppColors.darkTextSecondary : AppColors.textSecondary),
+                                          ).copyWith(
                                             fontSize: 13,
                                             fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
-                                            color: isSelected
-                                                ? const Color(0xFF1E90FF)
-                                                : (isDark ? Colors.grey.shade400 : Colors.grey.shade700),
                                           ),
                                         ),
                                       ),
@@ -703,15 +709,15 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                           decoration: BoxDecoration(
-                                            color: const Color(0xFF1E90FF).withValues(alpha: 0.18),
+                                            color: AppColors.primaryBrown.withValues(alpha: 0.18),
                                             borderRadius: BorderRadius.circular(10),
                                           ),
                                           child: Text(
                                             '$count',
-                                            style: const TextStyle(
+                                            style: GoogleFonts.fraunces(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
-                                              color: Color(0xFF1E90FF),
+                                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                             ),
                                           ),
                                         ),
@@ -731,7 +737,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             separatorBuilder: (context, index) => Divider(
                               height: 1,
                               thickness: 1,
-                              color: isDark ? const Color(0xFF222225) : const Color(0xFFF2F2F5),
+                              color: isDark ? AppColors.darkBorder : AppColors.border,
                             ),
                             itemBuilder: (context, index) {
                               final option = currentOptions[index];
@@ -739,17 +745,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
                               return CheckboxListTile(
                                 value: isChecked,
-                                activeColor: const Color(0xFF1E90FF),
-                                checkColor: Colors.white,
+                                activeColor: AppColors.primaryBrown,
+                                checkColor: AppColors.cardBackground,
                                 contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 0),
                                 dense: true,
                                 controlAffinity: ListTileControlAffinity.leading,
                                 title: Text(
                                   option,
-                                  style: TextStyle(
-                                    fontSize: 14,
+                                  style: AppTextStyles.body(
+                                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                                  ).copyWith(
+                                    fontSize: 13.5,
                                     fontWeight: isChecked ? FontWeight.w600 : FontWeight.w400,
-                                    color: isDark ? Colors.white : Colors.black87,
                                   ),
                                 ),
                                 onChanged: (bool? val) {
@@ -772,7 +779,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                   Divider(
                     height: 1,
                     thickness: 1,
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
 
                   // Bottom Action Buttons: Close and Apply Filter
@@ -789,20 +796,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               },
                               style: OutlinedButton.styleFrom(
                                 side: BorderSide(
-                                  color: isDark ? const Color(0xFF3F3F46) : const Color(0xFFD1D5DB),
+                                  color: isDark ? AppColors.darkBorder : AppColors.border,
                                 ),
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                                 ),
                                 padding: const EdgeInsets.symmetric(vertical: 13),
                               ),
                               child: Text(
                                 'Close',
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark ? Colors.white70 : Colors.black87,
-                                ),
+                                style: AppTextStyles.buttonText(
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                                ).copyWith(fontSize: 14),
                               ),
                             ),
                           ),
@@ -840,20 +845,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 Navigator.of(ctx).pop();
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: const Color(0xFF1E90FF),
-                                foregroundColor: Colors.white,
+                                backgroundColor: AppColors.primaryBrown,
+                                foregroundColor: AppColors.cardBackground,
                                 elevation: 0,
                                 shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(12),
+                                  borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                                 ),
                                 padding: const EdgeInsets.symmetric(vertical: 13),
                               ),
                               child: Text(
                                 totalTempCount > 0 ? 'Apply ($totalTempCount)' : 'Apply Filter',
-                                style: const TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: AppTextStyles.buttonText(
+                                  color: AppColors.cardBackground,
+                                ).copyWith(fontSize: 14),
                               ),
                             ),
                           ),
@@ -875,10 +879,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
         border: Border(
           top: BorderSide(
-            color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+            color: isDark ? AppColors.darkBorder : AppColors.border,
             width: 1,
           ),
         ),
@@ -905,21 +909,19 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.swap_vert_rounded,
                             size: 20,
-                            color: Color(0xFF1E90FF),
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             _selectedSort == 'Popular' ? 'Sort' : 'Sort: $_selectedSort',
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: isDark ? Colors.white : const Color(0xFF1E90FF),
-                            ),
+                            style: AppTextStyles.buttonText(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                            ).copyWith(fontSize: 14),
                           ),
                         ],
                       ),
@@ -932,7 +934,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               Container(
                 width: 1,
                 height: 28,
-                color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                color: isDark ? AppColors.darkBorder : AppColors.border,
               ),
 
               // FILTER BUTTON
@@ -945,32 +947,30 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.filter_list_rounded,
                             size: 20,
-                            color: Color(0xFF1E90FF),
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                           ),
                           const SizedBox(width: 6),
                           Text(
                             'Filter',
-                            style: TextStyle(
-                              fontSize: 14,
-                              fontWeight: FontWeight.w700,
-                              color: isDark ? Colors.white : const Color(0xFF1E90FF),
-                            ),
+                            style: AppTextStyles.buttonText(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                            ).copyWith(fontSize: 14),
                           ),
                           if (_activeFiltersCount > 0) ...[
                             const SizedBox(width: 6),
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1E90FF),
+                                color: AppColors.primaryBrown,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
                                 '$_activeFiltersCount',
-                                style: const TextStyle(
-                                  color: Colors.white,
+                                style: GoogleFonts.fraunces(
+                                  color: AppColors.cardBackground,
                                   fontSize: 11,
                                   fontWeight: FontWeight.w900,
                                 ),
@@ -992,6 +992,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     return Consumer<CategoryProvider>(
       builder: (context, provider, child) {
         final rawProducts = provider.products;
@@ -1002,10 +1004,24 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             rawProducts.isNotEmpty;
 
         return Scaffold(
+          backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
           appBar: AppBar(
-            title: const Text(
+            backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+            foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+            elevation: 0,
+            leading: IconButton(
+              icon: Icon(
+                Icons.arrow_back_ios_new_rounded,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                size: 20,
+              ),
+              onPressed: () => Navigator.of(context).pop(),
+            ),
+            title: Text(
               'Categories',
-              style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+              style: AppTextStyles.screenHeading(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ),
             ),
             centerTitle: true,
           ),
@@ -1016,13 +1032,18 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             child: () {
               if (provider.categoriesStatus == CategoryStatus.loading &&
                   provider.categories.isEmpty) {
-                return const Center(
+                return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      CircularProgressIndicator(),
-                      SizedBox(height: 12),
-                      Text('Loading categories...'),
+                      const CircularProgressIndicator(color: AppColors.primaryBrown),
+                      const SizedBox(height: 12),
+                      Text(
+                        'Loading categories...',
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        ),
+                      ),
                     ],
                   ),
                 );
@@ -1035,20 +1056,26 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.error_outline,
                           size: 48,
-                          color: Color(0xFF1E90FF),
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         ),
                         const SizedBox(height: 12),
                         Text(
                           provider.errorMessage,
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.bodyLarge,
+                          style: AppTextStyles.body(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                          ),
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
                           onPressed: provider.fetchCategories,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryBrown,
+                            foregroundColor: AppColors.cardBackground,
+                          ),
                           child: const Text('Retry'),
                         ),
                       ],
@@ -1058,8 +1085,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               }
 
               if (provider.categories.isEmpty) {
-                return const Center(
-                  child: Text('No categories available.'),
+                return Center(
+                  child: Text(
+                    'No categories available.',
+                    style: AppTextStyles.body(
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                    ),
+                  ),
                 );
               }
 
@@ -1075,11 +1107,11 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 12),
+                    const SizedBox(height: 4),
 
                     // ALL CATEGORIES HORIZONTAL SCROLLABLE LIST WITH AUTO-SCROLL
                     SizedBox(
-                      height: 55,
+                      height: 46,
                       child: ListView.separated(
                         controller: _categoryScrollController,
                         scrollDirection: Axis.horizontal,
@@ -1097,30 +1129,29 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             },
                             child: Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 18,
-                                vertical: 12,
+                                horizontal: 16,
+                                vertical: 10,
                               ),
                               decoration: BoxDecoration(
                                 color: isSelected
-                                    ? const Color(0xFF1E90FF)
-                                    : Theme.of(context).cardTheme.color,
+                                    ? AppColors.primaryBrown
+                                    : (isDark ? AppColors.darkCard : AppColors.cardBackground),
                                 border: Border.all(
                                   color: isSelected
-                                      ? const Color(0xFF1E90FF)
-                                      : (Theme.of(context).brightness == Brightness.dark
-                                          ? const Color(0xFF1E293B)
-                                          : const Color(0xFFE5E5EA)),
+                                      ? AppColors.primaryBrown
+                                      : (isDark ? AppColors.darkBorder : AppColors.border),
                                 ),
                                 borderRadius: BorderRadius.circular(25),
                               ),
                               child: Center(
                                 child: Text(
                                   category,
-                                  style: TextStyle(
+                                  style: AppTextStyles.caption(
                                     color: isSelected
-                                        ? Colors.white
-                                        : Theme.of(context).colorScheme.onSurface,
-                                    fontWeight: FontWeight.w600,
+                                        ? AppColors.cardBackground
+                                        : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+                                  ).copyWith(
+                                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                                   ),
                                 ),
                               ),
@@ -1130,7 +1161,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 16),
 
                     // PRODUCTS
                     Expanded(
@@ -1155,21 +1186,33 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     CategoryProvider provider,
     List<Product> displayedProducts,
   ) {
+    final isDark = Theme.of(context).brightness == Brightness.dark;
+
     if (provider.selectedCategory == null &&
         provider.productsStatus == CategoryStatus.initial) {
-      return const Center(
-        child: Text('Choose a category to view products.'),
+      return Center(
+        child: Text(
+          'Choose a category to view products.',
+          style: AppTextStyles.body(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+          ),
+        ),
       );
     }
 
     if (provider.productsStatus == CategoryStatus.loading) {
-      return const Center(
+      return Center(
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            CircularProgressIndicator(color: Color(0xFF1E90FF)),
-            SizedBox(height: 12),
-            Text('Loading products...'),
+            const CircularProgressIndicator(color: AppColors.primaryBrown),
+            const SizedBox(height: 12),
+            Text(
+              'Loading products...',
+              style: AppTextStyles.caption(
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              ),
+            ),
           ],
         ),
       );
@@ -1182,21 +1225,27 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           child: Column(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(
+              Icon(
                 Icons.error_outline,
                 size: 48,
-                color: Color(0xFF1E90FF),
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
               ),
               const SizedBox(height: 12),
               Text(
                 provider.errorMessage,
                 textAlign: TextAlign.center,
-                style: Theme.of(context).textTheme.bodyLarge,
+                style: AppTextStyles.body(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                ),
               ),
               const SizedBox(height: 16),
               ElevatedButton(
                 onPressed: () => provider.fetchProductsByCategory(
                   provider.selectedCategory ?? '',
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                 ),
                 child: const Text('Retry'),
               ),
@@ -1207,8 +1256,13 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     if (provider.products.isEmpty) {
-      return const Center(
-        child: Text('No products found for this category.'),
+      return Center(
+        child: Text(
+          'No products found for this category.',
+          style: AppTextStyles.body(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+          ),
+        ),
       );
     }
 
@@ -1220,23 +1274,24 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
             Icon(
               Icons.filter_alt_off_rounded,
               size: 48,
-              color: Colors.grey.shade400,
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
             ),
             const SizedBox(height: 12),
-            const Text(
+            Text(
               'No products match your selected filters.',
               textAlign: TextAlign.center,
-              style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.w600,
+              style: AppTextStyles.cardTitle(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 12),
             OutlinedButton(
               onPressed: _clearAllFilters,
               style: OutlinedButton.styleFrom(
-                foregroundColor: const Color(0xFF1E90FF),
-                side: const BorderSide(color: Color(0xFF1E90FF)),
+                foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                side: BorderSide(
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
+                ),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
@@ -1249,6 +1304,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     return RefreshIndicator(
+      color: AppColors.primaryBrown,
       onRefresh: () async {
         if (provider.selectedCategory != null) {
           await provider.fetchProductsByCategory(
@@ -1256,19 +1312,23 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           );
         }
       },
-      child: ListView.separated(
+      child: GridView.builder(
         padding: const EdgeInsets.only(bottom: 16),
         physics: const BouncingScrollPhysics(),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2,
+          crossAxisSpacing: 12,
+          mainAxisSpacing: 12,
+          childAspectRatio: 0.66,
+        ),
         itemCount: displayedProducts.length,
-        separatorBuilder: (context, index) => const SizedBox(height: 12),
         itemBuilder: (context, index) {
           final product = displayedProducts[index];
-          final isDark = Theme.of(context).brightness == Brightness.dark;
 
           return Material(
             color: Colors.transparent,
             child: InkWell(
-              borderRadius: BorderRadius.circular(16),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
               onTap: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
@@ -1281,12 +1341,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 );
               },
               child: Container(
-                padding: const EdgeInsets.all(12),
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                     width: 1,
                   ),
                   boxShadow: [
@@ -1297,31 +1357,31 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                     ),
                   ],
                 ),
-                child: Row(
+                child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     // Product Image
                     ClipRRect(
                       borderRadius: BorderRadius.circular(12),
                       child: Container(
-                        width: 96,
-                        height: 96,
-                        color: isDark ? const Color(0xFF242426) : const Color(0xFFF5F5F7),
+                        width: double.infinity,
+                        height: 120,
+                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                         child: NetworkImageWithSkeleton(
                           imageUrl: product.thumbnail,
-                          width: 96,
-                          height: 96,
+                          width: double.infinity,
+                          height: 120,
                           fit: BoxFit.cover,
                           borderRadius: BorderRadius.circular(12),
                           errorBuilder: (context, error, stackTrace) {
                             return Container(
-                              width: 96,
-                              height: 96,
-                              color: isDark ? const Color(0xFF242426) : Colors.grey.shade200,
-                              child: const Icon(
+                              width: double.infinity,
+                              height: 120,
+                              color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                              child: Icon(
                                 Icons.broken_image_outlined,
                                 size: 32,
-                                color: Colors.grey,
+                                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                               ),
                             );
                           },
@@ -1329,109 +1389,98 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                     ),
 
-                    const SizedBox(width: 12),
+                    const SizedBox(height: 8),
 
-                    // Product Details
+                    // Product Name
+                    Text(
+                      product.title,
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 13.5, height: 1.2),
+                    ),
+
+                    const SizedBox(height: 3),
+
+                    // Product Description
                     Expanded(
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
+                      child: Text(
+                        product.description,
+                        maxLines: 2,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        ).copyWith(fontSize: 11, height: 1.2),
+                      ),
+                    ),
+
+                    const SizedBox(height: 6),
+
+                    // Pricing Section
+                    if (product.discountPercentage > 0)
+                      Row(
                         children: [
-                          // Product Name
                           Text(
-                            product.title,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
+                            '\$${product.originalPrice.toStringAsFixed(2)}',
                             style: TextStyle(
-                              fontSize: 14.5,
-                              fontWeight: FontWeight.bold,
-                              height: 1.2,
-                              color: isDark ? Colors.white : Colors.black87,
+                              fontSize: 10.5,
+                              decoration: TextDecoration.lineThrough,
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                             ),
                           ),
-
-                          const SizedBox(height: 4),
-
-                          // Product Description
-                          Text(
-                            product.description,
-                            maxLines: 2,
-                            overflow: TextOverflow.ellipsis,
-                            style: TextStyle(
-                              fontSize: 12,
-                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                              height: 1.3,
+                          const SizedBox(width: 5),
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 5,
+                              vertical: 1.5,
                             ),
-                          ),
-
-                          const SizedBox(height: 8),
-
-                          // Pricing Section
-                          if (product.discountPercentage > 0)
-                            Row(
-                              children: [
-                                Text(
-                                  'Actual: \$${product.originalPrice.toStringAsFixed(2)}',
-                                  style: TextStyle(
-                                    fontSize: 11.5,
-                                    decoration: TextDecoration.lineThrough,
-                                    color: isDark ? Colors.grey.shade500 : Colors.grey.shade600,
-                                  ),
-                                ),
-                                const SizedBox(width: 8),
-                                Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 6,
-                                    vertical: 2,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade700.withValues(alpha: isDark ? 0.25 : 0.12),
-                                    borderRadius: BorderRadius.circular(6),
-                                  ),
-                                  child: Text(
-                                    '${product.discountPercentage.toStringAsFixed(0)}% OFF',
-                                    style: TextStyle(
-                                      fontSize: 10.5,
-                                      color: isDark ? Colors.green.shade400 : Colors.green.shade800,
-                                      fontWeight: FontWeight.w800,
-                                    ),
-                                  ),
-                                ),
-                              ],
+                            decoration: BoxDecoration(
+                              color: AppColors.success.withValues(alpha: isDark ? 0.25 : 0.12),
+                              borderRadius: BorderRadius.circular(5),
                             ),
-
-                          const SizedBox(height: 4),
-
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Final: \$${product.finalPrice.toStringAsFixed(2)}',
-                                style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w900,
-                                  color: Color(0xFF1E90FF),
-                                ),
+                            child: Text(
+                              '${product.discountPercentage.toStringAsFixed(0)}% OFF',
+                              style: TextStyle(
+                                fontSize: 9.5,
+                                color: isDark ? Colors.green.shade400 : AppColors.success,
+                                fontWeight: FontWeight.w800,
                               ),
-                              Container(
-                                width: 28,
-                                height: 28,
-                                decoration: BoxDecoration(
-                                  shape: BoxShape.circle,
-                                  color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.08),
-                                ),
-                                child: const Center(
-                                  child: Icon(
-                                    Icons.arrow_forward_ios_rounded,
-                                    size: 12,
-                                    color: Color(0xFF1E90FF),
-                                  ),
-                                ),
-                              ),
-                            ],
+                            ),
                           ),
                         ],
                       ),
+
+                    const SizedBox(height: 4),
+
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        Text(
+                          '\$${product.finalPrice.toStringAsFixed(2)}',
+                          style: GoogleFonts.fraunces(
+                            fontSize: 14.5,
+                            fontWeight: FontWeight.bold,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                          ),
+                        ),
+                        Container(
+                          width: 24,
+                          height: 24,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                          ),
+                          child: Center(
+                            child: Icon(
+                              Icons.arrow_forward_ios_rounded,
+                              size: 10,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
                   ],
                 ),

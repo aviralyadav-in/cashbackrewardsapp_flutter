@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class GetHelpScreen extends StatelessWidget {
   static const String routeName = '/get-help';
 
@@ -11,20 +13,23 @@ class GetHelpScreen extends StatelessWidget {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+          side: BorderSide(
+            color: isDark ? AppColors.darkBorder : AppColors.border,
+          ),
+        ),
         title: Row(
           children: [
-            const Icon(Icons.help_outline_rounded, color: Color(0xFF1E90FF), size: 24),
+            Icon(Icons.help_outline_rounded, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown, size: 24),
             const SizedBox(width: 10),
             Expanded(
               child: Text(
                 title,
-                style: TextStyle(
-                  color: isDark ? Colors.white : Colors.black87,
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
+                style: AppTextStyles.screenHeading(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                ).copyWith(fontSize: 17),
               ),
             ),
           ],
@@ -32,21 +37,18 @@ class GetHelpScreen extends StatelessWidget {
         content: SingleChildScrollView(
           child: Text(
             content,
-            style: TextStyle(
-              color: isDark ? Colors.grey.shade300 : Colors.grey.shade800,
-              fontSize: 14,
-              height: 1.5,
+            style: AppTextStyles.body(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
             ),
           ),
         ),
         actions: [
           TextButton(
             onPressed: () => Navigator.of(ctx).pop(),
-            child: const Text(
+            child: Text(
               'Got It',
-              style: TextStyle(
-                color: Color(0xFF1E90FF),
-                fontWeight: FontWeight.bold,
+              style: AppTextStyles.buttonText(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
               ),
             ),
           ),
@@ -60,7 +62,7 @@ class GetHelpScreen extends StatelessWidget {
 
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -75,7 +77,7 @@ class GetHelpScreen extends StatelessWidget {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -86,10 +88,10 @@ class GetHelpScreen extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                    color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                     shape: BoxShape.circle,
                   ),
-                  child: const Icon(Icons.headset_mic_rounded, color: Color(0xFF1E90FF), size: 26),
+                  child: Icon(Icons.headset_mic_rounded, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown, size: 26),
                 ),
                 const SizedBox(width: 14),
                 Column(
@@ -97,17 +99,14 @@ class GetHelpScreen extends StatelessWidget {
                   children: [
                     Text(
                       'Contact Support',
-                      style: TextStyle(
-                        fontSize: 18,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.screenHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 18),
                     ),
                     Text(
                       'We usually respond within 24 hours',
-                      style: TextStyle(
-                        fontSize: 12.5,
-                        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                      style: AppTextStyles.caption(
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                       ),
                     ),
                   ],
@@ -118,14 +117,17 @@ class GetHelpScreen extends StatelessWidget {
             _ContactTile(
               icon: Icons.email_outlined,
               title: 'Email Support',
-              subtitle: 'support@cashkaro.com',
+              subtitle: 'support@CashKaro.com',
               isDark: isDark,
               onTap: () {
                 Navigator.of(ctx).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Text('Support request sent to support@cashkaro.com'),
-                    backgroundColor: Colors.green,
+                    content: Text(
+                      'Support request sent to support@CashKaro.com',
+                      style: AppTextStyles.body(color: AppColors.cardBackground),
+                    ),
+                    backgroundColor: AppColors.primaryBrown,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
@@ -136,14 +138,17 @@ class GetHelpScreen extends StatelessWidget {
             _ContactTile(
               icon: Icons.call_outlined,
               title: 'Toll-Free Helpline',
-              subtitle: '1800-CASHKARO (1800-227-4527)',
+              subtitle: '1800-CashKaro (1800-227-4828)',
               isDark: isDark,
               onTap: () {
                 Navigator.of(ctx).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
-                    content: const Text('Helpline: 1800-CASHKARO (Mon-Sat 10AM-7PM)'),
-                    backgroundColor: const Color(0xFF1E90FF),
+                    content: Text(
+                      'Helpline: 1800-CashKaro (Mon-Sat 10AM-7PM)',
+                      style: AppTextStyles.body(color: AppColors.cardBackground),
+                    ),
+                    backgroundColor: AppColors.primaryBrown,
                     behavior: SnackBarBehavior.floating,
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
@@ -160,32 +165,25 @@ class GetHelpScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7);
-    final cardColor = isDark ? const Color(0xFF161618) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black87;
-    final subtextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
-    final borderColor = isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA);
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: cardColor,
-        foregroundColor: textColor,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: textColor,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Get Help',
-          style: TextStyle(
-            color: textColor,
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -201,9 +199,11 @@ class GetHelpScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: borderColor),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                  border: Border.all(
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
@@ -219,11 +219,13 @@ class GetHelpScreen extends StatelessWidget {
                       height: 48,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                        color: isDark
+                            ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                            : AppColors.beigeSurface,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.help_center_rounded,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         size: 26,
                       ),
                     ),
@@ -234,18 +236,15 @@ class GetHelpScreen extends StatelessWidget {
                         children: [
                           Text(
                             'How can we help you?',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
+                            style: AppTextStyles.sectionHeading(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            ).copyWith(fontSize: 15.5),
                           ),
                           const SizedBox(height: 3),
                           Text(
                             'Explore support topics or contact our help team below.',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: subtextColor,
+                            style: AppTextStyles.caption(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -339,14 +338,14 @@ class GetHelpScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.2 : 0.06),
+                      color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
                       blurRadius: 10,
                       offset: const Offset(0, 3),
                     ),
@@ -354,27 +353,24 @@ class GetHelpScreen extends StatelessWidget {
                 ),
                 child: Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.headset_mic_outlined,
-                      color: Color(0xFF1E90FF),
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                       size: 36,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Still Need Help?',
-                      style: TextStyle(
-                        fontSize: 17,
-                        fontWeight: FontWeight.bold,
-                        color: textColor,
-                      ),
+                      style: AppTextStyles.sectionHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 16.5),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Our dedicated support team is available Mon-Sat (10 AM - 7 PM) to assist you.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
-                        color: subtextColor,
+                      style: AppTextStyles.caption(
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 16),
@@ -384,25 +380,23 @@ class GetHelpScreen extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: () => _contactSupport(context),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
-                          elevation: 3,
-                          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
+                          backgroundColor: AppColors.primaryBrown,
+                          foregroundColor: AppColors.cardBackground,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                           ),
                         ),
-                        child: const Row(
+                        child: Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Icon(Icons.call_rounded, size: 18),
-                            SizedBox(width: 8),
+                            const Icon(Icons.call_rounded, size: 18),
+                            const SizedBox(width: 8),
                             Text(
                               'Contact Us',
-                              style: TextStyle(
-                                fontSize: 15,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: AppTextStyles.buttonText(
+                                color: AppColors.cardBackground,
+                              ).copyWith(fontSize: 14.5),
                             ),
                           ],
                         ),
@@ -437,18 +431,16 @@ class _SectionTitle extends StatelessWidget {
             width: 4,
             height: 16,
             decoration: BoxDecoration(
-              color: const Color(0xFF1E90FF),
+              color: AppColors.primaryBrown,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
           const SizedBox(width: 8),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 14,
-              fontWeight: FontWeight.bold,
-              color: isDark ? Colors.white : Colors.black87,
-            ),
+            style: AppTextStyles.sectionHeading(
+              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+            ).copyWith(fontSize: 14),
           ),
         ],
       ),
@@ -476,17 +468,17 @@ class _HelpTopicTile extends StatelessWidget {
     return Container(
       margin: const EdgeInsets.only(bottom: 10),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: Material(
         color: Colors.transparent,
         child: InkWell(
           onTap: onTap,
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           child: Padding(
             padding: const EdgeInsets.all(15),
             child: Row(
@@ -494,13 +486,15 @@ class _HelpTopicTile extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
+                    color: isDark
+                        ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                        : AppColors.beigeSurface,
                     borderRadius: BorderRadius.circular(12),
                   ),
                   child: Icon(
                     icon,
                     size: 22,
-                    color: const Color(0xFF1E90FF),
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                   ),
                 ),
                 const SizedBox(width: 14),
@@ -510,18 +504,15 @@ class _HelpTopicTile extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: TextStyle(
-                          fontSize: 14.5,
-                          fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white : Colors.black87,
-                        ),
+                        style: AppTextStyles.cardTitle(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                        ).copyWith(fontSize: 14),
                       ),
                       const SizedBox(height: 3),
                       Text(
                         description,
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                         ),
                       ),
                     ],
@@ -531,7 +522,7 @@ class _HelpTopicTile extends StatelessWidget {
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 20,
-                  color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ],
             ),
@@ -561,32 +552,29 @@ class _ContactTile extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF222224) : const Color(0xFFF8F9FA),
-        borderRadius: BorderRadius.circular(14),
+        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface.withValues(alpha: 0.5),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
         border: Border.all(
-          color: isDark ? const Color(0xFF2E2E32) : const Color(0xFFEFEFF4),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: ListTile(
         onTap: onTap,
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(14)),
-        leading: Icon(icon, color: const Color(0xFF1E90FF), size: 22),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(AppDimensions.radiusNormal)),
+        leading: Icon(icon, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown, size: 22),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+          style: AppTextStyles.cardTitle(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
-            fontSize: 12.5,
-            color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
+          style: AppTextStyles.caption(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
           ),
         ),
-        trailing: const Icon(Icons.arrow_forward_ios_rounded, size: 14, color: Color(0xFF1E90FF)),
+        trailing: Icon(Icons.arrow_forward_ios_rounded, size: 14, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown),
       ),
     );
   }

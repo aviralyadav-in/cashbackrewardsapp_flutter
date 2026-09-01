@@ -178,7 +178,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                             return Center(
                                               child: Text(
                                                 brand.name.isNotEmpty ? brand.name.substring(0, 1).toUpperCase() : '',
-                                                style: GoogleFonts.inter(
+                                                style: GoogleFonts.fraunces(
                                                   color: AppColors.primaryBrown,
                                                   fontWeight: FontWeight.bold,
                                                 ),
@@ -206,7 +206,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                           if (brand.category.isNotEmpty)
                                             Text(
                                               brand.category,
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.fraunces(
                                                 color: Colors.white.withValues(alpha: 0.8),
                                                 fontSize: 11,
                                                 fontWeight: FontWeight.w500,
@@ -256,7 +256,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                                             const SizedBox(height: 6),
                                             Text(
                                               brand.offerText,
-                                              style: GoogleFonts.inter(
+                                              style: GoogleFonts.fraunces(
                                                 color: Colors.white.withValues(alpha: 0.9),
                                                 fontSize: 11.5,
                                                 fontWeight: FontWeight.w500,

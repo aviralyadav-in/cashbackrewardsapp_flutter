@@ -5,8 +5,9 @@ import '../theme/app_theme.dart';
 
 class MissingTicketsScreen extends StatefulWidget {
   static const String routeName = '/missing-tickets';
+  final VoidCallback? onBack;
 
-  const MissingTicketsScreen({super.key});
+  const MissingTicketsScreen({super.key, this.onBack});
 
   @override
   State<MissingTicketsScreen> createState() => _MissingTicketsScreenState();
@@ -354,7 +355,13 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            if (widget.onBack != null) {
+              widget.onBack!();
+            } else if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          },
         ),
         title: Text(
           'Missing Cashback',

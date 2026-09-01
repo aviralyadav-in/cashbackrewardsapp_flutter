@@ -23,8 +23,9 @@ import 'your_queries_screen.dart';
 
 class ProfileScreen extends StatelessWidget {
   static const String routeName = '/profile';
+  final VoidCallback? onBack;
 
-  const ProfileScreen({super.key});
+  const ProfileScreen({super.key, this.onBack});
 
   void _confirmLogout(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -103,7 +104,13 @@ class ProfileScreen extends StatelessWidget {
             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            if (onBack != null) {
+              onBack!();
+            } else if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          },
         ),
         title: Text(
           'Profile',
@@ -122,7 +129,7 @@ class ProfileScreen extends StatelessWidget {
                 ? userProvider.fullName
                 : (firebaseUser?.displayName?.trim().isNotEmpty == true
                     ? firebaseUser!.displayName!.trim()
-                    : 'CashVault User');
+                    : 'CashKaro User');
 
             final userEmail = userProvider.email.isNotEmpty
                 ? userProvider.email

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../models/brand_model.dart';
 import '../services/url_launcher_service.dart';
+import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 
 class ShoppingConfirmationScreen extends StatelessWidget {
@@ -20,7 +23,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('Could not open ${brand.name} website: ${brand.websiteUrl}'),
-          backgroundColor: const Color(0xFF1E90FF),
+          backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
       );
@@ -32,9 +35,24 @@ class ShoppingConfirmationScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        title: Text(brand.name),
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            size: 20,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          brand.name,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          ),
+        ),
         centerTitle: true,
         elevation: 0,
       ),
@@ -51,10 +69,10 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                 width: double.infinity,
                 padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(24),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -72,10 +90,10 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                       height: 90,
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF242426) : const Color(0xFFF8F9FA),
+                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                         shape: BoxShape.circle,
                         border: Border.all(
-                          color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                          color: isDark ? AppColors.darkBorder : AppColors.border,
                           width: 1.5,
                         ),
                       ),
@@ -90,10 +108,10 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                             return Center(
                               child: Text(
                                 brand.name.substring(0, 1).toUpperCase(),
-                                style: const TextStyle(
+                                style: GoogleFonts.fraunces(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1E90FF),
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                 ),
                               ),
                             );
@@ -108,11 +126,9 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                     Text(
                       brand.name,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 24,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.screenHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 22),
                     ),
 
                     const SizedBox(height: 6),
@@ -122,34 +138,30 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF1E90FF).withValues(alpha: 0.1),
+                          color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                           borderRadius: BorderRadius.circular(12),
                         ),
                         child: Text(
                           brand.category,
-                          style: const TextStyle(
-                            color: Color(0xFF1E90FF),
-                            fontSize: 12,
-                            fontWeight: FontWeight.w600,
+                          style: AppTextStyles.smallLabel(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.deepBrown,
                           ),
                         ),
                       ),
 
                     const SizedBox(height: 20),
-                    const Divider(),
+                    Divider(color: isDark ? AppColors.darkBorder : AppColors.border),
                     const SizedBox(height: 16),
 
                     // Cashback Rate Badge
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       decoration: BoxDecoration(
-                        gradient: const LinearGradient(
-                          colors: [Color(0xFF4CAF50), Color(0xFF2E7D32)],
-                        ),
-                        borderRadius: BorderRadius.circular(16),
+                        color: AppColors.primaryBrown,
+                        borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                         boxShadow: [
                           BoxShadow(
-                            color: Colors.green.withValues(alpha: 0.3),
+                            color: AppColors.primaryBrown.withValues(alpha: 0.3),
                             blurRadius: 10,
                             offset: const Offset(0, 4),
                           ),
@@ -166,7 +178,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             brand.cashbackPercentage,
-                            style: const TextStyle(
+                            style: GoogleFonts.fraunces(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -184,10 +196,8 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                       Text(
                         brand.offerText,
                         textAlign: TextAlign.center,
-                        style: TextStyle(
-                          fontSize: 14,
-                          color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-                          height: 1.4,
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                         ),
                       ),
                   ],
@@ -200,10 +210,10 @@ class ShoppingConfirmationScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                 ),
                 child: Row(
@@ -211,12 +221,12 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.all(10),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.shopping_bag_outlined,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         size: 24,
                       ),
                     ),
@@ -224,10 +234,8 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                     Expanded(
                       child: Text(
                         'You are about to be redirected to ${brand.name}. Shop as normal to earn guaranteed cashback!',
-                        style: TextStyle(
-                          fontSize: 13,
-                          color: isDark ? Colors.grey.shade400 : Colors.grey.shade700,
-                          height: 1.4,
+                        style: AppTextStyles.body(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                         ),
                       ),
                     ),
@@ -240,25 +248,23 @@ class ShoppingConfirmationScreen extends StatelessWidget {
               // SHOP NOW BUTTON
               SizedBox(
                 width: double.infinity,
-                height: 54,
+                height: 52,
                 child: ElevatedButton.icon(
                   onPressed: () => _handleShopNow(context),
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: const Color(0xFF1E90FF),
-                    foregroundColor: Colors.white,
-                    elevation: 4,
-                    shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                    backgroundColor: AppColors.primaryBrown,
+                    foregroundColor: AppColors.cardBackground,
+                    elevation: 0,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(16),
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                     ),
                   ),
                   icon: const Icon(Icons.open_in_new, size: 20),
                   label: Text(
                     'Shop Now at ${brand.name}',
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: AppTextStyles.buttonText(
+                      color: AppColors.cardBackground,
+                    ).copyWith(fontSize: 15),
                   ),
                 ),
               ),

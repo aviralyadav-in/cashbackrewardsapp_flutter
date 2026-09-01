@@ -9,8 +9,9 @@ import 'withdraw_screen.dart';
 
 class MyEarningsScreen extends StatelessWidget {
   static const String routeName = '/my-earnings';
+  final VoidCallback? onBack;
 
-  const MyEarningsScreen({super.key});
+  const MyEarningsScreen({super.key, this.onBack});
 
   void _showInfoDialog(BuildContext context, String title, String content) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -65,7 +66,13 @@ class MyEarningsScreen extends StatelessWidget {
             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            if (onBack != null) {
+              onBack!();
+            } else if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          },
         ),
         title: Text(
           'My Earnings',
@@ -263,7 +270,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
-                    'Earnings will show here within 72 hours of your shopping via CashVault.',
+                    'Earnings will show here within 72 hours of your shopping via CashKaro.',
                     style: AppTextStyles.smallDescription(
                       color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                     ),

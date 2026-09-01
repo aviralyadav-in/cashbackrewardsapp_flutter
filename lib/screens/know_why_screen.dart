@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 import 'get_help_screen.dart';
 
 class KnowWhyScreen extends StatelessWidget {
@@ -12,26 +15,24 @@ class KnowWhyScreen extends StatelessWidget {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Why Is Earnings Pending?',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
-          ),
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          ).copyWith(fontSize: 19),
         ),
         centerTitle: true,
       ),
@@ -46,12 +47,12 @@ class KnowWhyScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -69,12 +70,13 @@ class KnowWhyScreen extends StatelessWidget {
                       height: 52,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF1E90FF)
-                            .withValues(alpha: isDark ? 0.18 : 0.1),
+                        color: isDark
+                            ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                            : AppColors.beigeSurface,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.hourglass_top_rounded,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         size: 28,
                       ),
                     ),
@@ -85,21 +87,17 @@ class KnowWhyScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Understanding Pending Status',
-                            style: TextStyle(
-                              fontSize: 15.5,
-                              fontWeight: FontWeight.bold,
-                              color: isDark ? Colors.white : Colors.black87,
-                            ),
+                            style: AppTextStyles.sectionHeading(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            ).copyWith(fontSize: 15),
                           ),
                           const SizedBox(height: 4),
                           Text(
                             'Your cashback is securely tracked! It simply awaits final confirmation from partner stores.',
-                            style: TextStyle(
-                              fontSize: 12,
+                            style: AppTextStyles.caption(
                               color: isDark
-                                  ? Colors.grey.shade400
-                                  : Colors.grey.shade600,
-                              height: 1.3,
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -114,11 +112,11 @@ class KnowWhyScreen extends StatelessWidget {
               // Step-by-Step Lifecycle Section
               Text(
                 'CASHBACK LIFECYCLE',
-                style: TextStyle(
+                style: GoogleFonts.fraunces(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ),
 
@@ -182,11 +180,11 @@ class KnowWhyScreen extends StatelessWidget {
               // Key Reasons Section
               Text(
                 'TOP REASONS FOR PENDING STATUS',
-                style: TextStyle(
+                style: GoogleFonts.fraunces(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ),
 
@@ -225,11 +223,11 @@ class KnowWhyScreen extends StatelessWidget {
               // Frequently Asked Questions
               Text(
                 'FREQUENTLY ASKED QUESTIONS',
-                style: TextStyle(
+                style: GoogleFonts.fraunces(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ),
 
@@ -266,40 +264,36 @@ class KnowWhyScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                 ),
                 child: Column(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.help_outline_rounded,
-                      color: Color(0xFF1E90FF),
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                       size: 32,
                     ),
                     const SizedBox(height: 10),
                     Text(
                       'Still have questions?',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.sectionHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 15.5),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       'Visit our Help Center for detailed guides and round-the-clock support assistance.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 12.5,
+                      style: AppTextStyles.caption(
                         color: isDark
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
-                        height: 1.3,
+                            ? AppColors.darkTextSecondary
+                            : AppColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 14),
@@ -309,16 +303,18 @@ class KnowWhyScreen extends StatelessWidget {
                         onPressed: () => Navigator.of(context)
                             .pushNamed(GetHelpScreen.routeName),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primaryBrown,
+                          foregroundColor: AppColors.cardBackground,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                           ),
                         ),
-                        child: const Text(
+                        child: Text(
                           'Open Get Help',
-                          style: TextStyle(fontWeight: FontWeight.bold),
+                          style: AppTextStyles.buttonText(
+                            color: AppColors.cardBackground,
+                          ),
                         ),
                       ),
                     ),
@@ -358,11 +354,11 @@ class KnowWhyScreen extends StatelessWidget {
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
                 color: isHighlighted
-                    ? Colors.green
-                    : const Color(0xFF1E90FF),
+                    ? AppColors.success
+                    : AppColors.primaryBrown,
                 boxShadow: [
                   BoxShadow(
-                    color: (isHighlighted ? Colors.green : const Color(0xFF1E90FF))
+                    color: (isHighlighted ? AppColors.success : AppColors.primaryBrown)
                         .withValues(alpha: 0.3),
                     blurRadius: 6,
                     offset: const Offset(0, 2),
@@ -382,8 +378,8 @@ class KnowWhyScreen extends StatelessWidget {
                 width: 2,
                 height: 58,
                 color: isDark
-                    ? const Color(0xFF28282A)
-                    : const Color(0xFFE5E5EA),
+                    ? AppColors.darkBorder
+                    : AppColors.border,
               ),
           ],
         ),
@@ -394,14 +390,14 @@ class KnowWhyScreen extends StatelessWidget {
             margin: EdgeInsets.only(bottom: isLast ? 0 : 14),
             padding: const EdgeInsets.all(14),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF161618) : Colors.white,
-              borderRadius: BorderRadius.circular(14),
+              color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
               border: Border.all(
                 color: isHighlighted
-                    ? Colors.green.withValues(alpha: 0.4)
+                    ? AppColors.success.withValues(alpha: 0.4)
                     : (isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA)),
+                        ? AppColors.darkBorder
+                        : AppColors.border),
               ),
             ),
             child: Column(
@@ -412,20 +408,16 @@ class KnowWhyScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 13.5),
                     ),
                     Text(
                       subtitle,
-                      style: TextStyle(
-                        fontSize: 10.5,
-                        fontWeight: FontWeight.w600,
+                      style: AppTextStyles.smallLabel(
                         color: isHighlighted
-                            ? Colors.green
-                            : const Color(0xFF1E90FF),
+                            ? AppColors.success
+                            : (isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown),
                       ),
                     ),
                   ],
@@ -433,12 +425,10 @@ class KnowWhyScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Text(
                   description,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTextStyles.caption(
                     color: isDark
-                        ? Colors.grey.shade400
-                        : Colors.grey.shade600,
-                    height: 1.35,
+                        ? AppColors.darkTextSecondary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -458,10 +448,10 @@ class KnowWhyScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: Row(
@@ -470,11 +460,12 @@ class KnowWhyScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(8),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E90FF)
-                  .withValues(alpha: isDark ? 0.16 : 0.08),
+              color: isDark
+                  ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                  : AppColors.beigeSurface,
               borderRadius: BorderRadius.circular(10),
             ),
-            child: Icon(icon, size: 20, color: const Color(0xFF1E90FF)),
+            child: Icon(icon, size: 20, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -483,21 +474,17 @@ class KnowWhyScreen extends StatelessWidget {
               children: [
                 Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 13.5,
-                    fontWeight: FontWeight.bold,
-                    color: isDark ? Colors.white : Colors.black87,
-                  ),
+                  style: AppTextStyles.cardTitle(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  ).copyWith(fontSize: 13.5),
                 ),
                 const SizedBox(height: 4),
                 Text(
                   content,
-                  style: TextStyle(
-                    fontSize: 12,
+                  style: AppTextStyles.caption(
                     color: isDark
-                        ? Colors.grey.shade400
-                        : Colors.grey.shade600,
-                    height: 1.35,
+                        ? AppColors.darkTextSecondary
+                        : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -515,25 +502,23 @@ class KnowWhyScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(14),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: Theme(
         data: ThemeData(dividerColor: Colors.transparent),
         child: ExpansionTile(
           collapsedIconColor:
-              isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-          iconColor: const Color(0xFF1E90FF),
+              isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+          iconColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
           title: Text(
             question,
-            style: TextStyle(
-              fontSize: 13.5,
-              fontWeight: FontWeight.w600,
-              color: isDark ? Colors.white : Colors.black87,
-            ),
+            style: AppTextStyles.cardTitle(
+              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+            ).copyWith(fontSize: 13.5, fontWeight: FontWeight.w600),
           ),
           children: [
             Padding(
@@ -541,13 +526,11 @@ class KnowWhyScreen extends StatelessWidget {
                   left: 16, right: 16, bottom: 14, top: 2),
               child: Text(
                 answer,
-                style: TextStyle(
-                  fontSize: 12.5,
+                style: AppTextStyles.body(
                   color: isDark
-                      ? Colors.grey.shade400
-                      : Colors.grey.shade600,
-                  height: 1.4,
-                ),
+                      ? AppColors.darkTextSecondary
+                      : AppColors.textSecondary,
+                ).copyWith(fontSize: 12.5),
               ),
             ),
           ],

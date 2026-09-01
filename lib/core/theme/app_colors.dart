@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 class AppColors {
-  // Global CashVault Palette
+  // Global CashKaro Palette
   static const Color primaryBrown = Color(0xFF4A2C20);
   static const Color deepBrown = Color(0xFF351C15);
   static const Color mediumBrown = Color(0xFF6B4636);

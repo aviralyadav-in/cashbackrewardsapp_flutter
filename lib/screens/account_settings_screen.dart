@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
+import '../theme/app_theme.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   static const String routeName = '/account-settings';
@@ -42,7 +43,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         content: Text(message),
-        backgroundColor: isError ? const Color(0xFFEF4444) : Colors.green,
+        backgroundColor: isError ? AppColors.error : AppColors.success,
         behavior: SnackBarBehavior.floating,
         duration: const Duration(seconds: 3),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -77,32 +78,25 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7);
-    final cardColor = isDark ? const Color(0xFF161618) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black87;
-    final subtextColor = isDark ? Colors.grey.shade400 : Colors.grey.shade600;
-    final borderColor = isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA);
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: cardColor,
-        foregroundColor: textColor,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: textColor,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Edit Profile',
-          style: TextStyle(
-            color: textColor,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -122,9 +116,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     Container(
                       padding: const EdgeInsets.all(18),
                       decoration: BoxDecoration(
-                        color: cardColor,
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(color: borderColor),
+                        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                        border: Border.all(
+                          color: isDark ? AppColors.darkBorder : AppColors.border,
+                        ),
                         boxShadow: [
                           BoxShadow(
                             color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
@@ -140,11 +136,13 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                             height: 50,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                              color: isDark
+                                  ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                                  : AppColors.beigeSurface,
                             ),
-                            child: const Icon(
+                            child: Icon(
                               Icons.manage_accounts_rounded,
-                              color: Color(0xFF1E90FF),
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                               size: 28,
                             ),
                           ),
@@ -155,18 +153,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               children: [
                                 Text(
                                   'Edit Profile Information',
-                                  style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                    color: textColor,
-                                  ),
+                                  style: AppTextStyles.sectionHeading(
+                                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                  ).copyWith(fontSize: 15),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   'Update your personal details below. Changes reflect across your profile.',
-                                  style: TextStyle(
-                                    fontSize: 12.5,
-                                    color: subtextColor,
+                                  style: AppTextStyles.caption(
+                                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                                   ),
                                 ),
                               ],
@@ -181,16 +176,16 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     // Full Name Field
                     Text(
                       'Full Name',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: textColor,
-                      ),
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 13.5),
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _nameController,
-                      style: TextStyle(color: textColor, fontSize: 15),
+                      style: AppTextStyles.input(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ),
                       decoration: _buildInputDecoration(
                         label: 'Enter your full name',
                         icon: Icons.person_outline_rounded,
@@ -212,17 +207,17 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     // Email Address Field
                     Text(
                       'Email Address',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: textColor,
-                      ),
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 13.5),
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _emailController,
                       keyboardType: TextInputType.emailAddress,
-                      style: TextStyle(color: textColor, fontSize: 15),
+                      style: AppTextStyles.input(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ),
                       decoration: _buildInputDecoration(
                         label: 'Enter your email address',
                         icon: Icons.email_outlined,
@@ -245,17 +240,17 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     // Phone Number Field
                     Text(
                       'Phone Number',
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600,
-                        color: textColor,
-                      ),
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 13.5),
                     ),
                     const SizedBox(height: 8),
                     TextFormField(
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
-                      style: TextStyle(color: textColor, fontSize: 15),
+                      style: AppTextStyles.input(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ),
                       decoration: _buildInputDecoration(
                         label: 'Enter your phone number',
                         icon: Icons.phone_outlined,
@@ -277,16 +272,15 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
                     // Save Changes Button
                     SizedBox(
-                      height: 52,
+                      height: 50,
                       child: ElevatedButton(
                         onPressed: userProvider.isLoading ? null : _handleSaveChanges,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
-                          elevation: 4,
-                          shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.35),
+                          backgroundColor: AppColors.primaryBrown,
+                          foregroundColor: AppColors.cardBackground,
+                          elevation: 0,
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                           ),
                         ),
                         child: userProvider.isLoading
@@ -298,12 +292,11 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                                   color: Colors.white,
                                 ),
                               )
-                            : const Text(
+                            : Text(
                                 'Save Changes',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: AppTextStyles.buttonText(
+                                  color: AppColors.cardBackground,
+                                ).copyWith(fontSize: 15),
                               ),
                       ),
                     ),
@@ -324,35 +317,34 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
   }) {
     return InputDecoration(
       hintText: label,
-      hintStyle: TextStyle(
-        color: isDark ? Colors.grey.shade500 : Colors.grey.shade400,
-        fontSize: 14,
+      hintStyle: AppTextStyles.hint(
+        color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
       ),
       filled: true,
-      fillColor: isDark ? const Color(0xFF161618) : Colors.white,
+      fillColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       prefixIcon: Icon(
         icon,
-        color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+        color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
         size: 20,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       border: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         borderSide: BorderSide(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       enabledBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         borderSide: BorderSide(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       focusedBorder: OutlineInputBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         borderSide: const BorderSide(
-          color: Color(0xFF1E90FF),
-          width: 2,
+          color: AppColors.primaryBrown,
+          width: 1.5,
         ),
       ),
     );

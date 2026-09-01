@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../services/url_launcher_service.dart';
+import '../theme/app_theme.dart';
 
 class ReviewUsScreen extends StatefulWidget {
   static const String routeName = '/review-us';
@@ -19,20 +22,20 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
       'id': 'rev_1',
       'name': 'Aarav Sharma',
       'initials': 'AS',
-      'avatarColor': const Color(0xFF1E90FF),
+      'avatarColor': AppColors.primaryBrown,
       'rating': 5,
       'date': '2 days ago',
       'review':
           'I have withdrawn over ₹4,500 directly into my bank account! Tracking is super accurate for Flipkart & Amazon shopping. Highly recommended app for online savings!',
       'likes': 24,
       'dislikes': 1,
-      'userReaction': null, // 'like', 'dislike', or null
+      'userReaction': null,
     },
     {
       'id': 'rev_2',
       'name': 'Priya Patel',
       'initials': 'PP',
-      'avatarColor': Colors.purple,
+      'avatarColor': AppColors.deepBrown,
       'rating': 5,
       'date': '5 days ago',
       'review':
@@ -45,7 +48,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
       'id': 'rev_3',
       'name': 'Rohan Mehta',
       'initials': 'RM',
-      'avatarColor': Colors.teal,
+      'avatarColor': AppColors.mediumBrown,
       'rating': 5,
       'date': '1 week ago',
       'review':
@@ -58,7 +61,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
       'id': 'rev_4',
       'name': 'Sneha Roy',
       'initials': 'SR',
-      'avatarColor': Colors.pinkAccent,
+      'avatarColor': AppColors.primaryBrown,
       'rating': 5,
       'date': '2 weeks ago',
       'review':
@@ -71,7 +74,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
       'id': 'rev_5',
       'name': 'Vikram Singh',
       'initials': 'VS',
-      'avatarColor': Colors.deepOrange,
+      'avatarColor': AppColors.deepBrown,
       'rating': 4,
       'date': '3 weeks ago',
       'review':
@@ -125,16 +128,19 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Row(
+        content: Row(
           children: [
-            Icon(Icons.thumb_up_rounded, color: Colors.white, size: 18),
-            SizedBox(width: 8),
+            const Icon(Icons.thumb_up_rounded, color: Colors.white, size: 18),
+            const SizedBox(width: 8),
             Expanded(
-              child: Text('Thank you! Your feedback has been received.'),
+              child: Text(
+                'Thank you! Your feedback has been received.',
+                style: AppTextStyles.body(color: AppColors.cardBackground),
+              ),
             ),
           ],
         ),
-        backgroundColor: Colors.green,
+        backgroundColor: AppColors.success,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -148,25 +154,23 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Review Us',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -182,12 +186,12 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(20),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -215,23 +219,19 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Loving Cashback & Rewards?',
-                      style: TextStyle(
-                        fontSize: 20,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      'Loving CashKaro?',
+                      style: AppTextStyles.sectionHeading(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ).copyWith(fontSize: 19),
                     ),
                     const SizedBox(height: 6),
                     Text(
                       'Your ratings help us partner with more top brands and bring you even higher cashback rates!',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 13,
+                      style: AppTextStyles.caption(
                         color: isDark
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
-                        height: 1.35,
+                            ? AppColors.darkTextSecondary
+                            : AppColors.textSecondary,
                       ),
                     ),
                     const SizedBox(height: 18),
@@ -254,8 +254,8 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                             color: isFilled
                                 ? const Color(0xFFFFC107)
                                 : (isDark
-                                    ? Colors.grey.shade600
-                                    : Colors.grey.shade400),
+                                    ? AppColors.darkBorder
+                                    : AppColors.border),
                           ),
                           onPressed: () {
                             setState(() {
@@ -278,11 +278,11 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                         icon: const Icon(Icons.open_in_new_rounded, size: 16),
                         label: const Text('Rate on Google Play Store'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primaryBrown,
+                          foregroundColor: AppColors.cardBackground,
                           padding: const EdgeInsets.symmetric(vertical: 14),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(14),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                           ),
                         ),
                       ),
@@ -297,12 +297,12 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                 ),
                 child: Column(
@@ -310,40 +310,53 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                   children: [
                     Text(
                       'SHARE YOUR FEEDBACK',
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
                         color: isDark
-                            ? Colors.grey.shade400
-                            : Colors.grey.shade600,
+                            ? AppColors.darkTextSecondary
+                            : AppColors.textMuted,
                       ),
                     ),
                     const SizedBox(height: 10),
                     TextField(
                       controller: _feedbackController,
                       maxLines: 3,
-                      style: TextStyle(
-                        fontSize: 13.5,
-                        color: isDark ? Colors.white : Colors.black87,
+                      style: AppTextStyles.input(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                       ),
                       decoration: InputDecoration(
                         hintText:
                             'Tell us how we can make your experience even better...',
-                        hintStyle: TextStyle(
-                          fontSize: 13,
+                        hintStyle: AppTextStyles.hint(
                           color: isDark
-                              ? Colors.grey.shade600
-                              : Colors.grey.shade400,
+                              ? AppColors.darkTextSecondary
+                              : AppColors.textMuted,
                         ),
                         filled: true,
                         fillColor: isDark
-                            ? const Color(0xFF242426)
-                            : const Color(0xFFF5F5F7),
+                            ? AppColors.darkSurface
+                            : AppColors.beigeSurface.withValues(alpha: 0.4),
                         contentPadding: const EdgeInsets.all(12),
                         border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide.none,
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                          borderSide: BorderSide(
+                            color: isDark ? AppColors.darkBorder : AppColors.border,
+                          ),
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                          borderSide: BorderSide(
+                            color: isDark ? AppColors.darkBorder : AppColors.border,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                          borderSide: const BorderSide(
+                            color: AppColors.primaryBrown,
+                            width: 1.5,
+                          ),
                         ),
                       ),
                     ),
@@ -355,9 +368,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                         icon: const Icon(Icons.send_rounded, size: 16),
                         label: const Text('Submit Feedback'),
                         style: TextButton.styleFrom(
-                          foregroundColor: const Color(0xFF1E90FF),
-                          textStyle:
-                              const TextStyle(fontWeight: FontWeight.bold),
+                          foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                          textStyle: AppTextStyles.buttonText(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                          ),
                         ),
                       ),
                     ),
@@ -373,13 +387,13 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                 children: [
                   Text(
                     'COMMUNITY REVIEWS',
-                    style: TextStyle(
+                    style: GoogleFonts.fraunces(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.8,
                       color: isDark
-                          ? Colors.grey.shade400
-                          : Colors.grey.shade600,
+                          ? AppColors.darkTextSecondary
+                          : AppColors.textMuted,
                     ),
                   ),
                   Row(
@@ -389,10 +403,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                       const SizedBox(width: 4),
                       Text(
                         '4.9 (48.5K Reviews)',
-                        style: TextStyle(
+                        style: GoogleFonts.fraunces(
                           fontSize: 11.5,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.white70 : Colors.black87,
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                         ),
                       ),
                     ],
@@ -412,12 +426,12 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                   margin: const EdgeInsets.only(bottom: 12),
                   padding: const EdgeInsets.all(16),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
-                    borderRadius: BorderRadius.circular(16),
+                    color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF28282A)
-                          : const Color(0xFFE5E5EA),
+                          ? AppColors.darkBorder
+                          : AppColors.border,
                     ),
                     boxShadow: [
                       BoxShadow(
@@ -439,21 +453,19 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                             height: 40,
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
-                              color: (rev['avatarColor'] as Color)
-                                  .withValues(alpha: 0.2),
+                              color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                               border: Border.all(
-                                color: (rev['avatarColor'] as Color)
-                                    .withValues(alpha: 0.6),
+                                color: isDark ? AppColors.darkBorder : AppColors.border,
                                 width: 1.5,
                               ),
                             ),
                             child: Center(
                               child: Text(
                                 rev['initials'] as String,
-                                style: TextStyle(
-                                  fontSize: 14,
+                                style: GoogleFonts.fraunces(
+                                  fontSize: 13,
                                   fontWeight: FontWeight.bold,
-                                  color: rev['avatarColor'] as Color,
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                                 ),
                               ),
                             ),
@@ -465,11 +477,9 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                               children: [
                                 Text(
                                   rev['name'] as String,
-                                  style: TextStyle(
-                                    fontSize: 14.5,
-                                    fontWeight: FontWeight.bold,
+                                  style: AppTextStyles.cardTitle(
                                     color:
-                                        isDark ? Colors.white : Colors.black87,
+                                        isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                                   ),
                                 ),
                                 const SizedBox(height: 2),
@@ -490,11 +500,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                                     const SizedBox(width: 6),
                                     Text(
                                       '•  ${rev['date']}',
-                                      style: TextStyle(
-                                        fontSize: 11,
+                                      style: AppTextStyles.caption(
                                         color: isDark
-                                            ? Colors.grey.shade400
-                                            : Colors.grey.shade600,
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textMuted,
                                       ),
                                     ),
                                   ],
@@ -510,12 +519,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                       // Review Content
                       Text(
                         rev['review'] as String,
-                        style: TextStyle(
-                          fontSize: 13,
+                        style: AppTextStyles.body(
                           color: isDark
-                              ? Colors.grey.shade300
-                              : Colors.grey.shade800,
-                          height: 1.4,
+                              ? AppColors.darkTextSecondary
+                              : AppColors.textSecondary,
                         ),
                       ),
 
@@ -524,8 +531,8 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                         height: 1,
                         thickness: 1,
                         color: isDark
-                            ? const Color(0xFF242426)
-                            : const Color(0xFFF0F0F3),
+                            ? AppColors.darkBorder
+                            : AppColors.border,
                       ),
                       const SizedBox(height: 10),
 
@@ -535,11 +542,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                         children: [
                           Text(
                             'Was this review helpful?',
-                            style: TextStyle(
-                              fontSize: 11.5,
+                            style: AppTextStyles.caption(
                               color: isDark
-                                  ? Colors.grey.shade500
-                                  : Colors.grey.shade500,
+                                  ? AppColors.darkTextSecondary
+                                  : AppColors.textMuted,
                             ),
                           ),
                           const SizedBox(width: 12),
@@ -558,10 +564,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                                         : Icons.thumb_up_alt_outlined,
                                     size: 16,
                                     color: isLiked
-                                        ? const Color(0xFF1E90FF)
+                                        ? (isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown)
                                         : (isDark
-                                            ? Colors.grey.shade400
-                                            : Colors.grey.shade600),
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textMuted),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
@@ -572,10 +578,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                                           ? FontWeight.bold
                                           : FontWeight.normal,
                                       color: isLiked
-                                          ? const Color(0xFF1E90FF)
+                                          ? (isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown)
                                           : (isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600),
+                                              ? AppColors.darkTextSecondary
+                                              : AppColors.textMuted),
                                     ),
                                   ),
                                 ],
@@ -598,10 +604,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                                         : Icons.thumb_down_alt_outlined,
                                     size: 16,
                                     color: isDisliked
-                                        ? Colors.redAccent
+                                        ? AppColors.error
                                         : (isDark
-                                            ? Colors.grey.shade400
-                                            : Colors.grey.shade600),
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textMuted),
                                   ),
                                   const SizedBox(width: 4),
                                   Text(
@@ -612,10 +618,10 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                                           ? FontWeight.bold
                                           : FontWeight.normal,
                                       color: isDisliked
-                                          ? Colors.redAccent
+                                          ? AppColors.error
                                           : (isDark
-                                              ? Colors.grey.shade400
-                                              : Colors.grey.shade600),
+                                              ? AppColors.darkTextSecondary
+                                              : AppColors.textMuted),
                                     ),
                                   ),
                                 ],

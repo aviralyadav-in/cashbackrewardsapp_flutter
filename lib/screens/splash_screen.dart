@@ -1,60 +1,12 @@
-// import 'dart:async';
-
-// import 'package:flutter/material.dart';
-// import 'login_screen.dart';
-
-
-// class SplashScreen extends StatefulWidget {
-//     const SplashScreen({super.key});
-//   @override
-//   State<SplashScreen> createState() => _SplashScreenState();
-// }
-
-// class _SplashScreenState extends State<SplashScreen> {
-//   @override
-//   void initState() {
-//     super.initState();
-//     Timer(Duration(seconds: 3), () {
-//       Navigator.pushReplacement(
-//         context,
-//         MaterialPageRoute(builder: (context) => LoginScreen()),
-//       );
-//     });
-//   }
-
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       body: Container(
-//         color: Colors.blue,
-//         child: Center(
-//           child: Text(
-//             'Cashback & Rewards',
-//             style: TextStyle(
-//               fontSize: 24,
-//               fontWeight: FontWeight.bold,
-//               color: Colors.white,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
-
-
-
-
-
-
-
-
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
+import '../theme/app_theme.dart';
 import 'home_screen.dart';
 import 'login_screen.dart';
 import 'onboarding_screen.dart';
@@ -85,15 +37,15 @@ class _SplashScreenState extends State<SplashScreen>
       duration: const Duration(milliseconds: 1800),
     );
 
-    // Logo animation
-    _logoAnimation = CurvedAnimation(
-      parent: _controller,
-      curve: const Interval(
-        0.0,
-        0.5,
-        curve: Curves.elasticOut,
-      ),
-    );
+    // // Logo animation
+    // _logoAnimation = CurvedAnimation(
+    //   parent: _controller,
+    //   curve: const Interval(
+    //     0.0,
+    //     0.5,
+    //     curve: Curves.elasticOut,
+    //   ),
+    // );
 
     // Text fade animation
     _textFadeAnimation = CurvedAnimation(
@@ -201,110 +153,69 @@ class _SplashScreenState extends State<SplashScreen>
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFFFFFFF),
-
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       body: Container(
         width: double.infinity,
         height: double.infinity,
-
         decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? const [
-                    Color(0xFF0D0D0D),
-                    Color(0xFF151D2A),
-                    Color(0xFF0D0D0D),
-                  ]
-                : const [
-                    Color(0xFFFFFFFF),
-                    Color(0xFFF0F7FF),
-                    Color(0xFFFFFFFF),
-                  ],
-          ),
+          color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         ),
-
         child: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-
-              // =========================
-              // CLEAN SHARP LOGO (NO GLOW)
-              // =========================
-
-              // ScaleTransition(
-              //   scale: _logoAnimation,
-
-              //   child: Container(
-              //     width: 130,
-              //     height: 130,
-
-              //     decoration: BoxDecoration(
-              //       shape: BoxShape.circle,
-
-              //       color: isDark ? const Color(0xFF151D2A) : Colors.white,
-
-              //       border: Border.all(
-              //         color: const Color(0xFF1E90FF),
-              //         width: 2,
-              //       ),
+              // Logo Icon
+              // Container(
+              //   width: 80,
+              //   height: 80,
+              //   decoration: BoxDecoration(
+              //     color: isDark ? AppColors.primaryBrown.withValues(alpha: 0.3) : AppColors.beigeSurface,
+              //     shape: BoxShape.circle,
+              //     border: Border.all(
+              //       color: isDark ? AppColors.darkBorder : AppColors.border,
+              //       width: 1.5,
               //     ),
-
-              //     child: const Center(
-              //       child: Icon(
-              //         Icons.card_giftcard,
-              //         size: 70,
-              //         color: Color(0xFF1E90FF),
-              //       ),
+              //   ),
+              //   child: Center(
+              //     child: Icon(
+              //       Icons.account_balance_wallet_rounded,
+              //       size: 42,
+              //       color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
               //     ),
               //   ),
               // ),
 
-              const SizedBox(height: 35),
+              const SizedBox(height: 24),
 
-              // =========================
               // APP NAME
-              // =========================
-
               FadeTransition(
                 opacity: _textFadeAnimation,
-
                 child: SlideTransition(
                   position: _textSlideAnimation,
-
                   child: Text(
                     'CashKaro',
-
-                    style: TextStyle( 
-                      fontFamily: 'HandwrittenItalic',
-                      fontSize: 30,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : const Color(0xFF1F2937),
-                      letterSpacing: 3.0,
+                    style: GoogleFonts.fraunces(
+                      fontSize: 34,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      letterSpacing: -0.5,
                     ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 12),
+              const SizedBox(height: 8),
 
-              // =========================
               // SUBTITLE
-              // =========================
-
               FadeTransition(
                 opacity: _subtitleAnimation,
-
-                child: const Text(
-                  'India\'s #1 Cashback App',
-
-                  style: TextStyle(
-                    fontSize: 14,
+                child: Text(
+                  "#1 India's Best Cashback & Rewards App",
+                  style: GoogleFonts.fraunces(
+                    fontSize: 13.5,
                     fontWeight: FontWeight.w500,
-                    color: Color(0xFF1E90FF),
-                    letterSpacing: 2.5,
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                    letterSpacing: 1.2,
                   ),
                 ),
               ),
@@ -315,4 +226,3 @@ class _SplashScreenState extends State<SplashScreen>
     );
   }
 }
-

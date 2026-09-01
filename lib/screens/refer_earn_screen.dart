@@ -7,15 +7,16 @@ import '../theme/app_theme.dart';
 
 class ReferEarnScreen extends StatefulWidget {
   static const String routeName = '/refer-earn';
+  final VoidCallback? onBack;
 
-  const ReferEarnScreen({super.key});
+  const ReferEarnScreen({super.key, this.onBack});
 
   @override
   State<ReferEarnScreen> createState() => _ReferEarnScreenState();
 }
 
 class _ReferEarnScreenState extends State<ReferEarnScreen> {
-  static const String _referralLink = 'https://cashvault.app/refer/CK89421';
+  static const String _referralLink = 'https://CashKaro.app/refer/CK89421';
 
   @override
   Widget build(BuildContext context) {
@@ -33,7 +34,13 @@ class _ReferEarnScreenState extends State<ReferEarnScreen> {
             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
-          onPressed: () => Navigator.of(context).pop(),
+          onPressed: () {
+            if (widget.onBack != null) {
+              widget.onBack!();
+            } else if (Navigator.of(context).canPop()) {
+              Navigator.of(context).pop();
+            }
+          },
         ),
         title: Text(
           'Refer & Earn',
@@ -218,7 +225,7 @@ class _PromotionalCarouselWidgetState
                                 ),
                                 child: Text(
                                   slide.tag,
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.fraunces(
                                     color: AppColors.deepBrown,
                                     fontSize: 9.5,
                                     fontWeight: FontWeight.w800,
@@ -247,7 +254,7 @@ class _PromotionalCarouselWidgetState
                                 slide.subtitle,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.inter(
+                                style: GoogleFonts.fraunces(
                                   color: Colors.white.withValues(alpha: 0.9),
                                   fontSize: 12,
                                   height: 1.25,
@@ -421,7 +428,7 @@ class _ReferralLinkSection extends StatelessWidget {
                   referralLink,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.fraunces(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
@@ -479,7 +486,7 @@ class _InviteFriendsButton extends StatelessWidget {
 
   void _shareViaWhatsApp(BuildContext context) {
     final shareText =
-        'Hey! Join CashVault using my referral link and earn real cashback on all your online shopping: $referralLink';
+        'Hey! Join CashKaro using my referral link and earn real cashback on all your online shopping: $referralLink';
     Clipboard.setData(ClipboardData(text: shareText));
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
@@ -587,7 +594,7 @@ class _HowItWorksSection extends StatelessWidget {
         _buildStepCard(
           stepNumber: '2',
           title: 'Friends shop online',
-          description: 'Your friends shop via CashVault at 1500+ top retailers.',
+          description: 'Your friends shop via CashKaro at 1500+ top retailers.',
         ),
         const SizedBox(height: 10),
         _buildStepCard(

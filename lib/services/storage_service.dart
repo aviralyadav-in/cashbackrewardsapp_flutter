@@ -8,7 +8,7 @@ class AppStorageService {
 
   Future<bool> getThemePreference() async {
     final prefs = await SharedPreferences.getInstance();
-    return prefs.getBool(_themeKey) ?? true;
+    return prefs.getBool(_themeKey) ?? false;
   }
 
   Future<void> saveThemePreference(bool isDarkMode) async {

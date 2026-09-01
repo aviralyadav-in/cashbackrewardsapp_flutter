@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+
 import '../../providers/category_provider.dart';
 import '../../screens/all_categories_screen.dart';
 import '../../screens/categories_screen.dart';
+import '../../theme/app_theme.dart';
 
 class HomeDrawer extends StatelessWidget {
   final bool isDark;
@@ -49,32 +52,49 @@ class HomeDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final dividerColor = isDark ? const Color(0xFF28282A) : const Color(0xFFF0F0F2);
-    final cardBgColor = isDark ? const Color(0xFF1C1C1E) : const Color(0xFFFAFAFC);
-    final cardBorderColor = isDark ? const Color(0xFF2C2C2E) : const Color(0xFFE5E5EA);
+    final dividerColor = isDark ? AppColors.darkBorder : AppColors.border.withValues(alpha: 0.5);
+    final cardBgColor = isDark ? AppColors.darkCard : AppColors.cardBackground;
+    final cardBorderColor = isDark ? AppColors.darkBorder : AppColors.border;
 
     return Drawer(
       width: MediaQuery.of(context).size.width * 0.84,
-      backgroundColor: isDark ? const Color(0xFF121214) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       child: SafeArea(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
             // 1. CLEAN HEADER WITH "Categories" AND CIRCULAR CLOSE (X) BUTTON
             Container(
-              color: isDark ? const Color(0xFF121214) : Colors.white,
+              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
               padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 14),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Categories',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.2,
-                      color: isDark ? Colors.white : const Color(0xFF1A1A1A),
-                    ),
+                  Row(
+                    children: [
+                      Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                        ),
+                        child: Center(
+                          child: Icon(
+                            Icons.category_rounded,
+                            size: 17,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(width: 10),
+                      Text(
+                        'Categories',
+                        style: AppTextStyles.screenHeading(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                        ).copyWith(fontSize: 18),
+                      ),
+                    ],
                   ),
                   InkWell(
                     borderRadius: BorderRadius.circular(20),
@@ -83,12 +103,12 @@ class HomeDrawer extends StatelessWidget {
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: isDark ? const Color(0xFF242428) : const Color(0xFFF2F2F5),
+                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                       ),
                       child: Icon(
                         Icons.close_rounded,
                         size: 18,
-                        color: isDark ? Colors.white70 : const Color(0xFF4A4A4A),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                       ),
                     ),
                   ),
@@ -108,22 +128,24 @@ class HomeDrawer extends StatelessWidget {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.stretch,
                       children: [
-                        const SizedBox(height: 12),
+                        const SizedBox(height: 14),
 
                         // 2. PROMOTIONAL CASHBACK BANNER
                         Container(
                           margin: const EdgeInsets.symmetric(horizontal: 16),
-                          padding: const EdgeInsets.all(14),
+                          padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            gradient: const LinearGradient(
-                              colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
+                            gradient: LinearGradient(
+                              colors: isDark
+                                  ? const [AppColors.darkSurface, AppColors.darkCard]
+                                  : const [AppColors.primaryBrown, AppColors.deepBrown],
                               begin: Alignment.topLeft,
                               end: Alignment.bottomRight,
                             ),
-                            borderRadius: BorderRadius.circular(16),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                             boxShadow: [
                               BoxShadow(
-                                color: const Color(0xFF1E90FF).withValues(alpha: 0.28),
+                                color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
                                 blurRadius: 10,
                                 offset: const Offset(0, 4),
                               ),
@@ -141,9 +163,9 @@ class HomeDrawer extends StatelessWidget {
                                         color: Colors.white.withValues(alpha: 0.18),
                                         borderRadius: BorderRadius.circular(6),
                                       ),
-                                      child: const Text(
+                                      child: Text(
                                         'SPECIAL OFFER',
-                                        style: TextStyle(
+                                        style: GoogleFonts.fraunces(
                                           color: Colors.white,
                                           fontSize: 9.5,
                                           fontWeight: FontWeight.w800,
@@ -151,25 +173,24 @@ class HomeDrawer extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    const SizedBox(height: 6),
-                                    const Text(
+                                    const SizedBox(height: 8),
+                                    Text(
                                       'Flat Cashback on Top Brands',
-                                      style: TextStyle(
+                                      style: GoogleFonts.fraunces(
                                         color: Colors.white,
-                                        fontSize: 13.5,
+                                        fontSize: 14.5,
                                         fontWeight: FontWeight.bold,
                                         height: 1.2,
                                       ),
                                     ),
-                                    const SizedBox(height: 2),
+                                    const SizedBox(height: 3),
                                     Text(
                                       'Up to 15% bonus rewards',
-                                      style: TextStyle(
-                                        color: Colors.white.withValues(alpha: 0.8),
-                                        fontSize: 11,
+                                      style: AppTextStyles.caption(
+                                        color: Colors.white.withValues(alpha: 0.82),
                                       ),
                                     ),
-                                    const SizedBox(height: 10),
+                                    const SizedBox(height: 12),
                                     InkWell(
                                       onTap: () {
                                         Navigator.of(context).pop();
@@ -177,27 +198,27 @@ class HomeDrawer extends StatelessWidget {
                                       },
                                       borderRadius: BorderRadius.circular(20),
                                       child: Container(
-                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+                                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                         decoration: BoxDecoration(
-                                          color: Colors.white,
+                                          color: AppColors.beigeSurface,
                                           borderRadius: BorderRadius.circular(20),
                                         ),
-                                        child: const Row(
+                                        child: Row(
                                           mainAxisSize: MainAxisSize.min,
                                           children: [
                                             Text(
                                               'Explore Now',
-                                              style: TextStyle(
-                                                color: Color(0xFF1E90FF),
-                                                fontSize: 11,
+                                              style: GoogleFonts.fraunces(
+                                                color: AppColors.primaryBrown,
+                                                fontSize: 11.5,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
-                                            SizedBox(width: 4),
-                                            Icon(
+                                            const SizedBox(width: 4),
+                                            const Icon(
                                               Icons.arrow_forward_rounded,
-                                              size: 12,
-                                              color: Color(0xFF1E90FF),
+                                              size: 13,
+                                              color: AppColors.primaryBrown,
                                             ),
                                           ],
                                         ),
@@ -206,9 +227,10 @@ class HomeDrawer extends StatelessWidget {
                                   ],
                                 ),
                               ),
+                              const SizedBox(width: 8),
                               Container(
-                                width: 52,
-                                height: 52,
+                                width: 50,
+                                height: 50,
                                 decoration: BoxDecoration(
                                   shape: BoxShape.circle,
                                   color: Colors.white.withValues(alpha: 0.12),
@@ -216,7 +238,7 @@ class HomeDrawer extends StatelessWidget {
                                 child: const Center(
                                   child: Icon(
                                     Icons.stars_rounded,
-                                    size: 34,
+                                    size: 32,
                                     color: Color(0xFFFFD700),
                                   ),
                                 ),
@@ -225,9 +247,9 @@ class HomeDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(height: 14),
+                        const SizedBox(height: 16),
 
-                        // 3. QUICK CATEGORY OPTIONS: ROW OF 4 SMALL ROUNDED CARDS
+                        // 3. QUICK CATEGORY OPTIONS: ROW OF 3 SMALL ROUNDED CARDS
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 16),
                           child: Row(
@@ -237,19 +259,18 @@ class HomeDrawer extends StatelessWidget {
                                 provider: categoryProvider,
                                 title: 'Laptops',
                                 icon: Icons.laptop_mac_rounded,
-                                accentColor: const Color(0xFF1E90FF),
+                                accentColor: AppColors.primaryBrown,
                                 query: 'laptops',
                                 cardBg: cardBgColor,
                                 cardBorder: cardBorderColor,
                               ),
                               const SizedBox(width: 8),
-                             
                               _buildQuickCard(
                                 context: context,
                                 provider: categoryProvider,
                                 title: 'Beauty',
                                 icon: Icons.face_retouching_natural_rounded,
-                                accentColor: const Color(0xFF8B5CF6),
+                                accentColor: AppColors.primaryBrown,
                                 query: 'beauty',
                                 cardBg: cardBgColor,
                                 cardBorder: cardBorderColor,
@@ -260,7 +281,7 @@ class HomeDrawer extends StatelessWidget {
                                 provider: categoryProvider,
                                 title: 'Grocery',
                                 icon: Icons.shopping_basket_rounded,
-                                accentColor: const Color(0xFF10B981),
+                                accentColor: AppColors.primaryBrown,
                                 query: 'groceries',
                                 cardBg: cardBgColor,
                                 cardBorder: cardBorderColor,
@@ -269,34 +290,43 @@ class HomeDrawer extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(height: 18),
+                        const SizedBox(height: 20),
 
                         // 4. SECTION HEADING: BROWSE CATEGORIES
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 18),
                           child: Row(
                             children: [
+                              Container(
+                                width: 3.5,
+                                height: 14,
+                                decoration: BoxDecoration(
+                                  color: AppColors.primaryBrown,
+                                  borderRadius: BorderRadius.circular(2),
+                                ),
+                              ),
+                              const SizedBox(width: 8),
                               Text(
                                 'BROWSE CATEGORIES',
-                                style: TextStyle(
+                                style: GoogleFonts.fraunces(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.1,
-                                  color: isDark ? const Color(0xFF8E8E93) : const Color(0xFF6E6E73),
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                                 ),
                               ),
                             ],
                           ),
                         ),
 
-                        const SizedBox(height: 6),
+                        const SizedBox(height: 8),
 
                         // 5. CATEGORY ROWS WITH ICON, TITLE, SHORT SUBTITLE & CHEVRON
                         _CategoryRowItem(
                           title: 'Highest Cashback Stores',
                           subtitle: 'Top merchant partners & maximum bonus',
                           icon: Icons.storefront_rounded,
-                          accentColor: const Color(0xFF1E90FF),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'laptops'),
                           dividerColor: dividerColor,
                         ),
@@ -304,7 +334,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Retailers By Category',
                           subtitle: 'Explore stores by department & perks',
                           icon: Icons.category_rounded,
-                          accentColor: const Color(0xFF6366F1),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'groceries'),
                           dividerColor: dividerColor,
                         ),
@@ -312,15 +342,15 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Top Product Deals',
                           subtitle: 'Handpicked daily discounts & offers',
                           icon: Icons.local_offer_rounded,
-                          accentColor: const Color(0xFFF59E0B),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'beauty'),
                           dividerColor: dividerColor,
                         ),
                         _CategoryRowItem(
-                          title: 'Laptop',
+                          title: 'Laptops & PCs',
                           subtitle: 'MacBooks, gaming & thin notebooks',
                           icon: Icons.laptop_mac_rounded,
-                          accentColor: const Color(0xFF0284C7),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'laptops'),
                           dividerColor: dividerColor,
                         ),
@@ -328,7 +358,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Smartphones',
                           subtitle: 'iPhones, Android & flagship phones',
                           icon: Icons.smartphone_rounded,
-                          accentColor: const Color(0xFF0D9488),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'smartphones'),
                           dividerColor: dividerColor,
                         ),
@@ -336,7 +366,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Tablets',
                           subtitle: 'iPads, Android tabs & productivity slates',
                           icon: Icons.tablet_android_rounded,
-                          accentColor: const Color(0xFF3B82F6),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'tablets'),
                           dividerColor: dividerColor,
                         ),
@@ -344,7 +374,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Men Shirts',
                           subtitle: 'Casual, formal, linen & denim shirts',
                           icon: Icons.checkroom_rounded,
-                          accentColor: const Color(0xFF4F46E5),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'mens-shirts'),
                           dividerColor: dividerColor,
                         ),
@@ -352,7 +382,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Women Dresses',
                           subtitle: 'Western, ethnic, party & casual wear',
                           icon: Icons.style_rounded,
-                          accentColor: const Color(0xFFDB2777),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'womens-dresses'),
                           dividerColor: dividerColor,
                         ),
@@ -360,7 +390,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Men Shoes',
                           subtitle: 'Sneakers, sports, loafers & formal',
                           icon: Icons.directions_walk_rounded,
-                          accentColor: const Color(0xFF059669),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'mens-shoes'),
                           dividerColor: dividerColor,
                         ),
@@ -368,7 +398,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Women Shoes',
                           subtitle: 'Heels, flats, boots & active footwear',
                           icon: Icons.diamond_rounded,
-                          accentColor: const Color(0xFFD946EF),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'womens-shoes'),
                           dividerColor: dividerColor,
                         ),
@@ -376,7 +406,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Beauty',
                           subtitle: 'Skincare, haircare, makeup & perfumes',
                           icon: Icons.face_retouching_natural_rounded,
-                          accentColor: const Color(0xFFE11D48),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'beauty'),
                           dividerColor: dividerColor,
                         ),
@@ -384,7 +414,7 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Grocery',
                           subtitle: 'Daily essentials, staples & kitchen food',
                           icon: Icons.shopping_cart_rounded,
-                          accentColor: const Color(0xFF16A34A),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'groceries'),
                           dividerColor: dividerColor,
                         ),
@@ -392,28 +422,35 @@ class HomeDrawer extends StatelessWidget {
                           title: 'Kitchen Accessories',
                           subtitle: 'Cookware, appliances & dining sets',
                           icon: Icons.kitchen_rounded,
-                          accentColor: const Color(0xFFEA580C),
+                          accentColor: AppColors.primaryBrown,
                           onTap: () => _onCategoryTap(context, categoryProvider, 'kitchen-accessories'),
                           dividerColor: dividerColor,
                         ),
 
-                        const SizedBox(height: 8),
+                        const SizedBox(height: 10),
 
                         // 6. SEE ALL CATEGORIES HIGHLIGHTED BOTTOM BANNER
                         Container(
                           margin: const EdgeInsets.fromLTRB(16, 6, 16, 16),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.08),
-                            borderRadius: BorderRadius.circular(14),
+                            color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                             border: Border.all(
-                              color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.35 : 0.22),
+                              color: isDark ? AppColors.darkBorder : AppColors.border,
                               width: 1,
                             ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.04),
+                                blurRadius: 6,
+                                offset: const Offset(0, 2),
+                              ),
+                            ],
                           ),
                           child: Material(
                             color: Colors.transparent,
                             child: InkWell(
-                              borderRadius: BorderRadius.circular(14),
+                              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                               onTap: () {
                                 Navigator.of(context).pop();
                                 Navigator.of(context).pushNamed(AllCategoriesScreen.routeName);
@@ -424,44 +461,41 @@ class HomeDrawer extends StatelessWidget {
                                   children: [
                                     Container(
                                       padding: const EdgeInsets.all(8),
-                                      decoration: const BoxDecoration(
-                                        color: Color(0xFF1E90FF),
+                                      decoration: BoxDecoration(
+                                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: const Icon(
+                                      child: Icon(
                                         Icons.grid_view_rounded,
-                                        size: 16,
-                                        color: Colors.white,
+                                        size: 18,
+                                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                       ),
                                     ),
                                     const SizedBox(width: 12),
-                                    const Expanded(
+                                    Expanded(
                                       child: Column(
                                         crossAxisAlignment: CrossAxisAlignment.start,
                                         children: [
                                           Text(
                                             'See All Categories',
-                                            style: TextStyle(
-                                              fontSize: 13.5,
-                                              fontWeight: FontWeight.bold,
-                                              color: Color(0xFF1E90FF),
-                                            ),
+                                            style: AppTextStyles.cardTitle(
+                                              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                                            ).copyWith(fontSize: 14),
                                           ),
-                                          SizedBox(height: 1),
+                                          const SizedBox(height: 1),
                                           Text(
                                             'Explore 20+ more categories & deals',
-                                            style: TextStyle(
-                                              fontSize: 11,
-                                              color: Color(0xFF1E90FF),
+                                            style: AppTextStyles.caption(
+                                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                                             ),
                                           ),
                                         ],
                                       ),
                                     ),
-                                    const Icon(
+                                    Icon(
                                       Icons.arrow_forward_ios_rounded,
                                       size: 13,
-                                      color: Color(0xFF1E90FF),
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                     ),
                                   ],
                                 ),
@@ -497,13 +531,13 @@ class HomeDrawer extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
           onTap: () => _onCategoryTap(context, provider, query),
           child: Container(
-            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 4),
+            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 4),
             decoration: BoxDecoration(
               color: cardBg,
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
               border: Border.all(color: cardBorder, width: 1),
               boxShadow: [
                 BoxShadow(
@@ -517,17 +551,17 @@ class HomeDrawer extends StatelessWidget {
               mainAxisSize: MainAxisSize.min,
               children: [
                 Container(
-                  width: 34,
-                  height: 34,
+                  width: 36,
+                  height: 36,
                   decoration: BoxDecoration(
-                    color: accentColor.withValues(alpha: isDark ? 0.22 : 0.12),
+                    color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                     shape: BoxShape.circle,
                   ),
                   child: Center(
                     child: Icon(
                       icon,
                       size: 18,
-                      color: accentColor,
+                      color: isDark ? AppColors.darkTextPrimary : accentColor,
                     ),
                   ),
                 ),
@@ -536,10 +570,10 @@ class HomeDrawer extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 11,
+                  style: AppTextStyles.caption(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  ).copyWith(
                     fontWeight: FontWeight.w600,
-                    color: isDark ? Colors.white : const Color(0xFF222222),
                   ),
                 ),
               ],
@@ -579,22 +613,22 @@ class _CategoryRowItem extends StatelessWidget {
           child: InkWell(
             onTap: onTap,
             child: Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 9),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
               child: Row(
                 children: [
-                  // Circular Icon Container with subtle tinted theme background
+                  // Circular Icon Container with subtle beige surface
                   Container(
-                    width: 36,
-                    height: 36,
+                    width: 38,
+                    height: 38,
                     decoration: BoxDecoration(
-                      color: accentColor.withValues(alpha: isDark ? 0.2 : 0.1),
+                      color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                       shape: BoxShape.circle,
                     ),
                     child: Center(
                       child: Icon(
                         icon,
                         size: 18,
-                        color: accentColor,
+                        color: isDark ? AppColors.darkTextPrimary : accentColor,
                       ),
                     ),
                   ),
@@ -609,20 +643,17 @@ class _CategoryRowItem extends StatelessWidget {
                           title,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 13.5,
-                            fontWeight: FontWeight.w600,
-                            color: isDark ? Colors.white : const Color(0xFF1E1E1E),
-                          ),
+                          style: AppTextStyles.cardTitle(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                          ).copyWith(fontSize: 14),
                         ),
-                        const SizedBox(height: 1),
+                        const SizedBox(height: 2),
                         Text(
                           subtitle,
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
-                          style: TextStyle(
-                            fontSize: 11,
-                            color: isDark ? Colors.grey.shade500 : const Color(0xFF757575),
+                          style: AppTextStyles.caption(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                           ),
                         ),
                       ],
@@ -633,7 +664,7 @@ class _CategoryRowItem extends StatelessWidget {
                   Icon(
                     Icons.chevron_right_rounded,
                     size: 18,
-                    color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                 ],
               ),
@@ -641,7 +672,7 @@ class _CategoryRowItem extends StatelessWidget {
           ),
         ),
         Padding(
-          padding: const EdgeInsets.only(left: 64, right: 16),
+          padding: const EdgeInsets.only(left: 66, right: 16),
           child: Divider(height: 1, thickness: 1, color: dividerColor),
         ),
       ],

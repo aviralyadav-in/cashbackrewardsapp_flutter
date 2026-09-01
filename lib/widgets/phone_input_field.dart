@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
 import '../models/country.dart';
+import '../theme/app_theme.dart';
 import 'country_picker_modal.dart';
 
 class PhoneInputWithCountrySelector extends StatelessWidget {
@@ -42,10 +45,10 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
             height: 56,
             padding: const EdgeInsets.symmetric(horizontal: 12),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF1A1A1A) : Colors.white,
-              borderRadius: BorderRadius.circular(16),
+              color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
               border: Border.all(
-                color: isDark ? const Color(0xFF2E2E2E) : const Color(0xFFE5E5EA),
+                color: isDark ? AppColors.darkBorder : AppColors.border,
               ),
             ),
             child: Row(
@@ -59,7 +62,7 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                 Text(
                   selectedCountry.dialCode,
                   style: TextStyle(
-                    color: isDark ? Colors.white : Colors.black87,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                     fontWeight: FontWeight.bold,
                     fontSize: 15,
                   ),
@@ -67,7 +70,7 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                 const SizedBox(width: 4),
                 Icon(
                   Icons.arrow_drop_down,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                   size: 20,
                 ),
               ],
@@ -80,44 +83,50 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
           child: TextFormField(
             key: inputKey,
             controller: controller,
-            keyboardType: TextInputType.phone,
+            keyboardType: TextInputType.number,
             enabled: enabled,
+            maxLength: 10,
+            buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
+            inputFormatters: [
+              FilteringTextInputFormatter.digitsOnly,
+              LengthLimitingTextInputFormatter(10),
+            ],
             style: TextStyle(
-              color: isDark ? Colors.white : Colors.black87,
+              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
               fontSize: 16,
             ),
             decoration: InputDecoration(
               labelText: 'Phone Number',
               hintText: '10-digit phone number',
               labelStyle: TextStyle(
-                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
               ),
               hintStyle: TextStyle(
-                color: isDark ? Colors.grey.shade600 : Colors.grey.shade400,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
               ),
               filled: true,
-              fillColor: isDark ? const Color(0xFF151D2A) : Colors.white,
+              fillColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
               prefixIcon: Icon(
                 Icons.phone_outlined,
-                color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
               ),
               border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
               ),
               enabledBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                 borderSide: BorderSide(
-                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFFE5E5EA),
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
               ),
               focusedBorder: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                 borderSide: const BorderSide(
-                  color: Color(0xFF1E90FF),
-                  width: 2,
+                  color: AppColors.primaryBrown,
+                  width: 1.5,
                 ),
               ),
             ),

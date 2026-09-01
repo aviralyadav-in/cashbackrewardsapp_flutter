@@ -209,7 +209,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       children: [
                         Text(
                           'Available for Withdrawal',
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.fraunces(
                             color: Colors.white70,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -252,7 +252,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     const SizedBox(height: 8),
                     Text(
                       'Confirmed Cashback: ₹1,350.00 • Referral Bonus: ₹500.00',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.fraunces(
                         color: Colors.white70,
                         fontSize: 12,
                         height: 1.3,

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../services/url_launcher_service.dart';
+import '../theme/app_theme.dart';
 
 class CallUsScreen extends StatelessWidget {
   static const String routeName = '/call-us';
@@ -11,25 +14,23 @@ class CallUsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Call Us',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -45,12 +46,21 @@ class CallUsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
+                  gradient: LinearGradient(
+                    colors: isDark
+                        ? const [AppColors.darkSurface, AppColors.darkCard]
+                        : const [AppColors.primaryBrown, AppColors.deepBrown],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
+                      blurRadius: 10,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
                 ),
                 child: Column(
                   children: [
@@ -67,22 +77,20 @@ class CallUsScreen extends StatelessWidget {
                       ),
                     ),
                     const SizedBox(height: 12),
-                    const Text(
+                    Text(
                       'We are here to help!',
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         color: Colors.white,
                         fontSize: 18,
-                        fontWeight: FontWeight.bold,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 6),
-                    const Text(
+                    Text(
                       'Speak directly with our dedicated customer support team regarding your orders, cashback, or rewards.',
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12.5,
-                        height: 1.35,
+                      style: AppTextStyles.caption(
+                        color: Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -95,14 +103,14 @@ class CallUsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.2 : 0.06),
+                      color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.04),
                       blurRadius: 8,
                       offset: const Offset(0, 2),
                     ),
@@ -114,14 +122,14 @@ class CallUsScreen extends StatelessWidget {
                     Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(8),
+                          padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: const Icon(
+                          child: Icon(
                             Icons.call_rounded,
-                            color: Color(0xFF1E90FF),
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                             size: 22,
                           ),
                         ),
@@ -132,26 +140,23 @@ class CallUsScreen extends StatelessWidget {
                             children: [
                               Text(
                                 'Toll-Free Helpline',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w600,
-                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                style: AppTextStyles.smallLabel(
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                                 ),
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                '1800-CASHKARO',
-                                style: TextStyle(
+                                '1800-CashKaro',
+                                style: GoogleFonts.fraunces(
                                   fontSize: 18,
-                                  fontWeight: FontWeight.w900,
-                                  color: isDark ? Colors.white : Colors.black87,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                                 ),
                               ),
                               Text(
-                                '(1800-227-4527)',
-                                style: TextStyle(
-                                  fontSize: 12,
-                                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                                '(1800-227-4828)',
+                                style: AppTextStyles.caption(
+                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                                 ),
                               ),
                             ],
@@ -166,7 +171,7 @@ class CallUsScreen extends StatelessWidget {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF242426) : const Color(0xFFF5F5F7),
+                        color: isDark ? AppColors.darkSurface : AppColors.beigeSurface.withValues(alpha: 0.5),
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Row(
@@ -174,17 +179,15 @@ class CallUsScreen extends StatelessWidget {
                           Icon(
                             Icons.access_time_rounded,
                             size: 14,
-                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                           ),
                           const SizedBox(width: 6),
                           Expanded(
                             child: Text(
                               'Mon – Sat: 10:00 AM – 7:00 PM (IST)',
-                              style: TextStyle(
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w500,
-                                color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-                              ),
+                              style: AppTextStyles.caption(
+                                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                              ).copyWith(fontWeight: FontWeight.w500),
                             ),
                           ),
                         ],
@@ -197,15 +200,18 @@ class CallUsScreen extends StatelessWidget {
                     SizedBox(
                       width: double.infinity,
                       child: ElevatedButton.icon(
-                        onPressed: () => UrlLauncherService.openUrl('tel:18002274527'),
+                        onPressed: () => UrlLauncherService.openUrl('tel:18002274828'),
                         icon: const Icon(Icons.phone, size: 16),
-                        label: const Text('Call Helpline Now'),
+                        label: Text(
+                          'Call Helpline Now',
+                          style: AppTextStyles.buttonText(color: AppColors.cardBackground),
+                        ),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color(0xFF1E90FF),
-                          foregroundColor: Colors.white,
+                          backgroundColor: AppColors.primaryBrown,
+                          foregroundColor: AppColors.cardBackground,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                           ),
                         ),
                       ),
@@ -219,11 +225,11 @@ class CallUsScreen extends StatelessWidget {
               // Alternate Channels
               Text(
                 'OTHER WAYS TO CONNECT',
-                style: TextStyle(
+                style: GoogleFonts.fraunces(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ),
 
@@ -234,8 +240,8 @@ class CallUsScreen extends StatelessWidget {
                 isDark: isDark,
                 icon: Icons.email_outlined,
                 title: 'Email Support',
-                subtitle: 'support@cashkaro.com (24h response time)',
-                onTap: () => UrlLauncherService.openUrl('mailto:support@cashkaro.com'),
+                subtitle: 'support@CashKaro.com (24h response time)',
+                onTap: () => UrlLauncherService.openUrl('mailto:support@CashKaro.com'),
               ),
 
               const SizedBox(height: 10),
@@ -265,10 +271,10 @@ class CallUsScreen extends StatelessWidget {
   }) {
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: ListTile(
@@ -276,30 +282,27 @@ class CallUsScreen extends StatelessWidget {
         leading: Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.08),
+            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: Icon(icon, size: 20, color: const Color(0xFF1E90FF)),
+          child: Icon(icon, size: 20, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown),
         ),
         title: Text(
           title,
-          style: TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.bold,
-            color: isDark ? Colors.white : Colors.black87,
+          style: AppTextStyles.cardTitle(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
           ),
         ),
         subtitle: Text(
           subtitle,
-          style: TextStyle(
-            fontSize: 12,
-            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+          style: AppTextStyles.caption(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
           ),
         ),
-        trailing: const Icon(
+        trailing: Icon(
           Icons.arrow_forward_ios_rounded,
           size: 14,
-          color: Color(0xFF1E90FF),
+          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
         ),
         onTap: onTap,
       ),

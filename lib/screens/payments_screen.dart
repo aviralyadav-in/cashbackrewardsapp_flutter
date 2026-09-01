@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 import 'my_earnings_screen.dart';
 
 class PaymentsScreen extends StatelessWidget {
@@ -11,25 +14,23 @@ class PaymentsScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Payments',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -45,15 +46,17 @@ class PaymentsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF1E90FF), Color(0xFF0F172A)],
+                  gradient: LinearGradient(
+                    colors: isDark
+                        ? const [AppColors.darkSurface, AppColors.darkCard]
+                        : const [AppColors.primaryBrown, AppColors.deepBrown],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   boxShadow: [
                     BoxShadow(
-                      color: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.1),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -65,27 +68,25 @@ class PaymentsScreen extends StatelessWidget {
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const Text(
+                        Text(
                           'Available to Withdraw',
-                          style: TextStyle(
-                            color: Colors.white70,
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                          ),
+                          style: AppTextStyles.caption(
+                            color: Colors.white.withValues(alpha: 0.8),
+                          ).copyWith(fontWeight: FontWeight.w600),
                         ),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
                           decoration: BoxDecoration(
-                            color: Colors.white.withValues(alpha: 0.2),
+                            color: Colors.white.withValues(alpha: 0.15),
                             borderRadius: BorderRadius.circular(8),
                           ),
-                          child: const Row(
+                          child: Row(
                             children: [
-                              Icon(Icons.lock_clock, size: 12, color: Colors.white),
-                              SizedBox(width: 4),
+                              const Icon(Icons.lock_clock, size: 12, color: Colors.white),
+                              const SizedBox(width: 4),
                               Text(
                                 'Threshold: ₹250',
-                                style: TextStyle(
+                                style: GoogleFonts.fraunces(
                                   color: Colors.white,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -97,21 +98,19 @@ class PaymentsScreen extends StatelessWidget {
                       ],
                     ),
                     const SizedBox(height: 10),
-                    const Text(
+                    Text(
                       '₹0.00',
-                      style: TextStyle(
+                      style: GoogleFonts.fraunces(
                         color: Colors.white,
-                        fontSize: 32,
-                        fontWeight: FontWeight.w900,
+                        fontSize: 34,
+                        fontWeight: FontWeight.w700,
                       ),
                     ),
                     const SizedBox(height: 8),
-                    const Text(
+                    Text(
                       'You need a minimum of ₹250 confirmed cashback or rewards to request a payout.',
-                      style: TextStyle(
-                        color: Colors.white70,
-                        fontSize: 12,
-                        height: 1.3,
+                      style: AppTextStyles.caption(
+                        color: Colors.white.withValues(alpha: 0.8),
                       ),
                     ),
                   ],
@@ -123,11 +122,11 @@ class PaymentsScreen extends StatelessWidget {
               // Withdrawal Methods Section
               Text(
                 'PAYOUT METHODS',
-                style: TextStyle(
+                style: GoogleFonts.fraunces(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
-                  color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                 ),
               ),
 
@@ -170,10 +169,10 @@ class PaymentsScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(16),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(16),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                   ),
                 ),
                 child: Column(
@@ -181,19 +180,17 @@ class PaymentsScreen extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.info_outline_rounded,
                           size: 18,
-                          color: Color(0xFF1E90FF),
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         ),
                         const SizedBox(width: 8),
                         Text(
                           'Payment Guidelines',
-                          style: TextStyle(
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                            color: isDark ? Colors.white : Colors.black87,
-                          ),
+                          style: AppTextStyles.sectionHeading(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          ).copyWith(fontSize: 14.5),
                         ),
                       ],
                     ),
@@ -227,11 +224,11 @@ class PaymentsScreen extends StatelessWidget {
                 icon: const Icon(Icons.account_balance_wallet_outlined, size: 18),
                 label: const Text('View Earnings Breakdown'),
                 style: OutlinedButton.styleFrom(
-                  foregroundColor: const Color(0xFF1E90FF),
-                  side: const BorderSide(color: Color(0xFF1E90FF)),
+                  foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                  side: BorderSide(color: isDark ? AppColors.darkBorder : AppColors.primaryBrown),
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                   ),
                 ),
               ),
@@ -253,10 +250,10 @@ class PaymentsScreen extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF161618) : Colors.white,
-        borderRadius: BorderRadius.circular(16),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
         boxShadow: [
           BoxShadow(
@@ -271,10 +268,10 @@ class PaymentsScreen extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(10),
             decoration: BoxDecoration(
-              color: const Color(0xFF1E90FF).withValues(alpha: isDark ? 0.16 : 0.08),
+              color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
               borderRadius: BorderRadius.circular(12),
             ),
-            child: Icon(icon, size: 22, color: const Color(0xFF1E90FF)),
+            child: Icon(icon, size: 22, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -286,24 +283,22 @@ class PaymentsScreen extends StatelessWidget {
                   children: [
                     Text(
                       title,
-                      style: TextStyle(
-                        fontSize: 14,
-                        fontWeight: FontWeight.bold,
-                        color: isDark ? Colors.white : Colors.black87,
-                      ),
+                      style: AppTextStyles.cardTitle(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 14),
                     ),
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
                       decoration: BoxDecoration(
-                        color: Colors.green.shade500.withValues(alpha: isDark ? 0.2 : 0.1),
+                        color: AppColors.success.withValues(alpha: isDark ? 0.2 : 0.1),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
                         badgeText,
-                        style: TextStyle(
+                        style: GoogleFonts.fraunces(
                           fontSize: 9.5,
                           fontWeight: FontWeight.bold,
-                          color: isDark ? Colors.green.shade400 : Colors.green.shade800,
+                          color: AppColors.success,
                         ),
                       ),
                     ),
@@ -312,9 +307,8 @@ class PaymentsScreen extends StatelessWidget {
                 const SizedBox(height: 3),
                 Text(
                   subtitle,
-                  style: TextStyle(
-                    fontSize: 11.5,
-                    color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                  style: AppTextStyles.caption(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                   ),
                 ),
               ],
@@ -334,19 +328,19 @@ class PaymentsScreen extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          width: 16,
-          height: 16,
+          width: 18,
+          height: 18,
           decoration: BoxDecoration(
             shape: BoxShape.circle,
-            color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
+            color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
           ),
           child: Center(
             child: Text(
               number,
-              style: const TextStyle(
+              style: GoogleFonts.fraunces(
                 fontSize: 9.5,
                 fontWeight: FontWeight.bold,
-                color: Color(0xFF1E90FF),
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
               ),
             ),
           ),
@@ -355,11 +349,9 @@ class PaymentsScreen extends StatelessWidget {
         Expanded(
           child: Text(
             text,
-            style: TextStyle(
-              fontSize: 12,
-              color: isDark ? Colors.grey.shade300 : Colors.grey.shade700,
-              height: 1.3,
-            ),
+            style: AppTextStyles.body(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+            ).copyWith(fontSize: 12),
           ),
         ),
       ],

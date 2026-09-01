@@ -1,7 +1,10 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import '../../models/brand_model.dart';
 import '../../models/trending_brand_model.dart';
+import '../../theme/app_theme.dart';
 import '../network_image_with_skeleton.dart';
 
 class TrendingBrandsCarouselWidget extends StatefulWidget {
@@ -69,7 +72,7 @@ class _TrendingBrandsCarouselWidgetState
     if (widget.items.isEmpty) return const SizedBox.shrink();
 
     return SizedBox(
-      height: 135,
+      height: 140,
       child: PageView.builder(
         controller: _pageController,
         physics: const BouncingScrollPhysics(),
@@ -82,12 +85,10 @@ class _TrendingBrandsCarouselWidgetState
             child: Container(
               margin: const EdgeInsets.symmetric(horizontal: 6),
               decoration: BoxDecoration(
-                color: widget.isDark ? const Color(0xFF161618) : Colors.white,
-                borderRadius: BorderRadius.circular(16),
+                color: widget.isDark ? AppColors.darkCard : AppColors.cardBackground,
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                 border: Border.all(
-                  color: widget.isDark
-                      ? const Color(0xFF28282A)
-                      : const Color(0xFFE5E5EA),
+                  color: widget.isDark ? AppColors.darkBorder : AppColors.border,
                   width: 1,
                 ),
                 boxShadow: [
@@ -101,7 +102,7 @@ class _TrendingBrandsCarouselWidgetState
                 ],
               ),
               child: ClipRRect(
-                borderRadius: BorderRadius.circular(16),
+                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                 child: Row(
                   children: [
                     // Left Image Part (38%)
@@ -130,11 +131,12 @@ class _TrendingBrandsCarouselWidgetState
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(8),
                                     color: widget.isDark
-                                        ? const Color(0xFF242426)
-                                        : Colors.grey.shade100,
+                                        ? AppColors.darkSurface
+                                        : AppColors.beigeSurface,
                                     border: Border.all(
-                                      color: const Color(0xFF1E90FF)
-                                          .withValues(alpha: 0.35),
+                                      color: widget.isDark
+                                          ? AppColors.darkBorder
+                                          : AppColors.border,
                                       width: 1,
                                     ),
                                   ),
@@ -148,10 +150,12 @@ class _TrendingBrandsCarouselWidgetState
                                       errorBuilder: (ctx, err, stack) => Center(
                                         child: Text(
                                           item.brand.name.substring(0, 1),
-                                          style: const TextStyle(
+                                          style: GoogleFonts.fraunces(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
-                                            color: Color(0xFF1E90FF),
+                                            color: widget.isDark
+                                                ? AppColors.darkTextPrimary
+                                                : AppColors.primaryBrown,
                                           ),
                                         ),
                                       ),
@@ -164,13 +168,11 @@ class _TrendingBrandsCarouselWidgetState
                                     item.brand.name,
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
+                                    style: AppTextStyles.cardTitle(
                                       color: widget.isDark
-                                          ? Colors.white
-                                          : Colors.black87,
-                                    ),
+                                          ? AppColors.darkTextPrimary
+                                          : AppColors.textPrimary,
+                                    ).copyWith(fontSize: 14),
                                   ),
                                 ),
                               ],
@@ -179,45 +181,48 @@ class _TrendingBrandsCarouselWidgetState
                               item.tagline,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 10.5,
-                                fontWeight: FontWeight.w500,
+                              style: AppTextStyles.caption(
                                 color: widget.isDark
-                                    ? Colors.grey.shade400
-                                    : Colors.grey.shade600,
+                                    ? AppColors.darkTextSecondary
+                                    : AppColors.textSecondary,
                               ),
                             ),
                             Text(
                               item.brand.offerText,
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: TextStyle(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w700,
+                              style: AppTextStyles.caption(
                                 color: widget.isDark
-                                    ? Colors.grey.shade300
-                                    : Colors.grey.shade800,
-                              ),
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.deepBrown,
+                              ).copyWith(fontWeight: FontWeight.w700),
                             ),
                             Container(
                               padding: const EdgeInsets.symmetric(
-                                horizontal: 6,
-                                vertical: 3,
+                                horizontal: 8,
+                                vertical: 5,
                               ),
                               decoration: BoxDecoration(
-                                color: const Color(0xFF1E90FF).withValues(
-                                  alpha: widget.isDark ? 0.16 : 0.1,
-                                ),
+                                color: widget.isDark
+                                    ? AppColors.darkSurface
+                                    : AppColors.beigeSurface,
                                 borderRadius: BorderRadius.circular(6),
+                                border: Border.all(
+                                  color: widget.isDark
+                                      ? AppColors.darkBorder
+                                      : AppColors.border,
+                                ),
                               ),
                               child: Text(
                                 item.brand.cashbackPercentage,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: const TextStyle(
-                                  fontSize: 10,
+                                style: GoogleFonts.fraunces(
+                                  fontSize: 11,
                                   fontWeight: FontWeight.bold,
-                                  color: Color(0xFF1E90FF),
+                                  color: widget.isDark
+                                      ? AppColors.darkTextPrimary
+                                      : AppColors.primaryBrown,
                                 ),
                               ),
                             ),

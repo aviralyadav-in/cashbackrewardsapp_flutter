@@ -96,7 +96,7 @@ class ProductDetailScreen extends StatefulWidget {
       customCashbackTag: rewardTag,
       customFinalPrice: finalPriceStr,
       customDescription:
-          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashVault wallet after delivery.',
+          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.',
       customImageUrl: deal.imageUrl,
       customWebsiteUrl: deal.productUrl.isNotEmpty
           ? deal.productUrl
@@ -223,11 +223,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final description = widget.customDescription ??
         product?.description ??
         (brand != null
-            ? 'Shop online at ${brand.name} through CashVault to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
+            ? 'Shop online at ${brand.name} through CashKaro to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
             : (amazonDeal != null
-                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashVault wallet after delivery.'
+                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.'
                 : (offerItem?.description ??
-                    'Shop this deal via CashVault to earn guaranteed cashback rewards credited to your account.')));
+                    'Shop this deal via CashKaro to earn guaranteed cashback rewards credited to your account.')));
 
     // Image list resolution
     List<String> imageList = [];
@@ -448,7 +448,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 child: Text(
                                   brandName.toUpperCase(),
-                                  style: GoogleFonts.inter(
+                                  style: GoogleFonts.fraunces(
                                     color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                                     fontSize: 11.5,
                                     fontWeight: FontWeight.w700,

@@ -14,7 +14,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.mainBackground,
-      textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
+      textTheme: GoogleFonts.frauncesTextTheme(ThemeData.light().textTheme),
       colorScheme: const ColorScheme.light(
         primary: AppColors.primaryBrown,
         secondary: AppColors.deepBrown,
@@ -83,7 +83,7 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.darkBackground,
-      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
+      textTheme: GoogleFonts.frauncesTextTheme(ThemeData.dark().textTheme),
       colorScheme: const ColorScheme.dark(
         primary: AppColors.primaryBrown,
         secondary: AppColors.deepBrown,

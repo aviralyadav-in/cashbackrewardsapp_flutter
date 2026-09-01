@@ -204,7 +204,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                         deal.brandName.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.fraunces(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.5,
@@ -271,7 +271,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                   children: [
                     Text(
                       'After Rewards of ${deal.rewardPercentage.toStringAsFixed(deal.rewardPercentage % 1 == 0 ? 0 : 1)}%',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.fraunces(
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
                         color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,

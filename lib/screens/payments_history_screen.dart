@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 
 class PaymentsHistoryScreen extends StatefulWidget {
   static const String routeName = '/payments-history';
@@ -24,7 +27,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       'methodCategory': 'UPI',
       'type': 'Cashback Withdrawal',
       'status': 'Successful',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
       'icon': Icons.qr_code_2_rounded,
     },
     {
@@ -38,7 +41,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       'methodCategory': 'Bank',
       'type': 'Referral & Cashback Payout',
       'status': 'Successful',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
       'icon': Icons.account_balance_rounded,
     },
     {
@@ -52,7 +55,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       'methodCategory': 'Amazon Pay',
       'type': 'Rewards Redemption',
       'status': 'Successful',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
       'icon': Icons.card_giftcard_rounded,
     },
     {
@@ -66,7 +69,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       'methodCategory': 'UPI',
       'type': 'Cashback Withdrawal',
       'status': 'Successful',
-      'statusColor': Colors.green,
+      'statusColor': AppColors.success,
       'icon': Icons.qr_code_2_rounded,
     },
   ];
@@ -82,7 +85,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       BuildContext context, Map<String, dynamic> record, bool isDark) {
     showModalBottomSheet(
       context: context,
-      backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
+      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
       shape: const RoundedRectangleBorder(
         borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
       ),
@@ -97,7 +100,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                 width: 40,
                 height: 4,
                 decoration: BoxDecoration(
-                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade300,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(2),
                 ),
               ),
@@ -110,30 +113,28 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
-                      color: Colors.green.withValues(alpha: isDark ? 0.2 : 0.1),
+                      color: AppColors.success.withValues(alpha: isDark ? 0.2 : 0.1),
                     ),
                     child: const Icon(
                       Icons.check_circle_rounded,
-                      color: Colors.green,
+                      color: AppColors.success,
                       size: 36,
                     ),
                   ),
                   const SizedBox(height: 10),
                   Text(
                     'Payout Completed',
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.bold,
-                      color: isDark ? Colors.white : Colors.black87,
-                    ),
+                    style: AppTextStyles.sectionHeading(
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                    ).copyWith(fontSize: 18),
                   ),
                   const SizedBox(height: 4),
                   Text(
                     record['amount'] as String,
-                    style: const TextStyle(
-                      fontSize: 26,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF1E90FF),
+                    style: GoogleFonts.fraunces(
+                      fontSize: 28,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                     ),
                   ),
                 ],
@@ -141,7 +142,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
             ),
             const SizedBox(height: 18),
             Divider(
-              color: isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA),
+              color: isDark ? AppColors.darkBorder : AppColors.border,
             ),
             const SizedBox(height: 10),
             _buildReceiptRow('Transaction ID', record['txnId'] as String, isDark),
@@ -162,15 +163,15 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
               child: ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: const Color(0xFF1E90FF),
-                  foregroundColor: Colors.white,
+                  backgroundColor: AppColors.primaryBrown,
+                  foregroundColor: AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(14),
+                    borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                   ),
                 ),
-                child: const Text('Close Receipt',
-                    style: TextStyle(fontWeight: FontWeight.bold)),
+                child: Text('Close Receipt',
+                    style: AppTextStyles.buttonText(color: AppColors.cardBackground)),
               ),
             ),
           ],
@@ -185,18 +186,15 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 12.5,
-            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+          style: AppTextStyles.caption(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
           ),
         ),
         Text(
           value,
-          style: TextStyle(
-            fontSize: 13,
-            fontWeight: FontWeight.w600,
-            color: isDark ? Colors.white : Colors.black87,
-          ),
+          style: AppTextStyles.cardTitle(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+          ).copyWith(fontSize: 13),
         ),
       ],
     );
@@ -208,25 +206,23 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Payments History',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -242,12 +238,12 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF161618) : Colors.white,
-                  borderRadius: BorderRadius.circular(18),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   border: Border.all(
                     color: isDark
-                        ? const Color(0xFF28282A)
-                        : const Color(0xFFE5E5EA),
+                        ? AppColors.darkBorder
+                        : AppColors.border,
                   ),
                   boxShadow: [
                     BoxShadow(
@@ -265,33 +261,33 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                       isDark: isDark,
                       label: 'Total Paid Out',
                       value: '₹4,250.00',
-                      valueColor: const Color(0xFF1E90FF),
+                      valueColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                     ),
                     Container(
                       height: 36,
                       width: 1,
                       color: isDark
-                          ? const Color(0xFF28282A)
-                          : const Color(0xFFE5E5EA),
+                          ? AppColors.darkBorder
+                          : AppColors.border,
                     ),
                     _buildSummaryItem(
                       isDark: isDark,
                       label: 'Successful',
                       value: '${_paymentRecords.length}',
-                      valueColor: Colors.green,
+                      valueColor: AppColors.success,
                     ),
                     Container(
                       height: 36,
                       width: 1,
                       color: isDark
-                          ? const Color(0xFF28282A)
-                          : const Color(0xFFE5E5EA),
+                          ? AppColors.darkBorder
+                          : AppColors.border,
                     ),
                     _buildSummaryItem(
                       isDark: isDark,
                       label: 'Processing',
                       value: '0',
-                      valueColor: Colors.orange,
+                      valueColor: AppColors.pending,
                     ),
                   ],
                 ),
@@ -321,10 +317,10 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                   alignment: Alignment.center,
                   child: Text(
                     'No $_selectedFilter payouts found.',
-                    style: TextStyle(
+                    style: AppTextStyles.body(
                       color: isDark
-                          ? Colors.grey.shade400
-                          : Colors.grey.shade600,
+                          ? AppColors.darkTextSecondary
+                          : AppColors.textMuted,
                     ),
                   ),
                 )
@@ -333,12 +329,12 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF161618) : Colors.white,
-                      borderRadius: BorderRadius.circular(16),
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                       border: Border.all(
                         color: isDark
-                            ? const Color(0xFF28282A)
-                            : const Color(0xFFE5E5EA),
+                            ? AppColors.darkBorder
+                            : AppColors.border,
                       ),
                       boxShadow: [
                         BoxShadow(
@@ -354,7 +350,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                       child: InkWell(
                         onTap: () =>
                             _showReceiptModal(context, record, isDark),
-                        borderRadius: BorderRadius.circular(16),
+                        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                         child: Padding(
                           padding: const EdgeInsets.all(16.0),
                           child: Row(
@@ -363,13 +359,12 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                               Container(
                                 padding: const EdgeInsets.all(10),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF1E90FF).withValues(
-                                      alpha: isDark ? 0.16 : 0.08),
+                                  color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Icon(
                                   record['icon'] as IconData,
-                                  color: const Color(0xFF1E90FF),
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                   size: 22,
                                 ),
                               ),
@@ -382,22 +377,19 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                   children: [
                                     Text(
                                       record['method'] as String,
-                                      style: TextStyle(
-                                        fontSize: 14.5,
-                                        fontWeight: FontWeight.bold,
+                                      style: AppTextStyles.cardTitle(
                                         color: isDark
-                                            ? Colors.white
-                                            : Colors.black87,
-                                      ),
+                                            ? AppColors.darkTextPrimary
+                                            : AppColors.textPrimary,
+                                      ).copyWith(fontSize: 14),
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
                                       record['methodDetail'] as String,
-                                      style: TextStyle(
-                                        fontSize: 11.5,
+                                      style: AppTextStyles.caption(
                                         color: isDark
-                                            ? Colors.grey.shade400
-                                            : Colors.grey.shade600,
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textSecondary,
                                       ),
                                       maxLines: 1,
                                       overflow: TextOverflow.ellipsis,
@@ -405,11 +397,10 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                     const SizedBox(height: 2),
                                     Text(
                                       '${record['txnId']} • ${record['date']}',
-                                      style: TextStyle(
-                                        fontSize: 11,
+                                      style: AppTextStyles.caption(
                                         color: isDark
-                                            ? Colors.grey.shade500
-                                            : Colors.grey.shade500,
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textMuted,
                                       ),
                                     ),
                                   ],
@@ -421,10 +412,10 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                 children: [
                                   Text(
                                     record['amount'] as String,
-                                    style: const TextStyle(
+                                    style: GoogleFonts.fraunces(
                                       fontSize: 15.5,
-                                      fontWeight: FontWeight.w900,
-                                      color: Color(0xFF1E90FF),
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                     ),
                                   ),
                                   const SizedBox(height: 4),
@@ -439,7 +430,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                     ),
                                     child: Text(
                                       record['status'] as String,
-                                      style: TextStyle(
+                                      style: GoogleFonts.fraunces(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                         color: record['statusColor'] as Color,
@@ -474,17 +465,16 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
       children: [
         Text(
           label,
-          style: TextStyle(
-            fontSize: 11.5,
-            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+          style: AppTextStyles.caption(
+            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
           ),
         ),
         const SizedBox(height: 4),
         Text(
           value,
-          style: TextStyle(
+          style: GoogleFonts.fraunces(
             fontSize: 16,
-            fontWeight: FontWeight.bold,
+            fontWeight: FontWeight.w700,
             color: valueColor,
           ),
         ),
@@ -507,26 +497,26 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
-                ? const Color(0xFF1E90FF)
-                : (isDark ? const Color(0xFF161618) : Colors.white),
+                ? AppColors.primaryBrown
+                : (isDark ? AppColors.darkCard : AppColors.cardBackground),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
-                  ? const Color(0xFF1E90FF)
+                  ? AppColors.primaryBrown
                   : (isDark
-                      ? const Color(0xFF28282A)
-                      : const Color(0xFFE5E5EA)),
+                      ? AppColors.darkBorder
+                      : AppColors.border),
             ),
           ),
           child: Center(
             child: Text(
               label,
-              style: TextStyle(
+              style: GoogleFonts.fraunces(
                 fontSize: 11.5,
                 fontWeight: FontWeight.bold,
                 color: isSelected
-                    ? Colors.white
-                    : (isDark ? Colors.grey.shade300 : Colors.grey.shade700),
+                    ? AppColors.cardBackground
+                    : (isDark ? AppColors.darkTextSecondary : AppColors.textSecondary),
               ),
             ),
           ),

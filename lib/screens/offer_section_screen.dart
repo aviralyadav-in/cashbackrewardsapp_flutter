@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
-import 'product_detail_screen.dart';
+import 'package:google_fonts/google_fonts.dart';
+
+import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
+import 'product_detail_screen.dart';
 
 class OfferSectionItem {
   final int id;
@@ -39,13 +42,35 @@ class OfferSectionScreen extends StatelessWidget {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        title: Text(title),
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        leading: IconButton(
+          icon: Icon(
+            Icons.arrow_back_ios_new_rounded,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            size: 20,
+          ),
+          onPressed: () => Navigator.of(context).pop(),
+        ),
+        title: Text(
+          title,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          ),
+        ),
         centerTitle: true,
+        elevation: 0,
       ),
       body: items.isEmpty
-          ? const Center(
-              child: Text('No offers available at the moment.'),
+          ? Center(
+              child: Text(
+                'No offers available at the moment.',
+                style: AppTextStyles.body(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                ),
+              ),
             )
           : GridView.builder(
               padding: const EdgeInsets.all(16),
@@ -68,144 +93,145 @@ class OfferSectionScreen extends StatelessWidget {
                     );
                   },
                   child: Container(
-                  decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF161618) : Colors.white,
-                    borderRadius: BorderRadius.circular(16),
-                    border: Border.all(
-                      color: isDark
-                          ? const Color(0xFF2E2E2E)
-                          : const Color(0xFFE5E5EA),
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: Colors.black
-                            .withValues(alpha: isDark ? 0.3 : 0.05),
-                        blurRadius: 8,
-                        offset: const Offset(0, 3),
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.darkBorder
+                            : AppColors.border,
                       ),
-                    ],
-                  ),
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(16),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.stretch,
-                      children: [
-                        // Image section with Cashback Badge
-                        Expanded(
-                          child: Stack(
-                            fit: StackFit.expand,
-                            children: [
-                              NetworkImageWithSkeleton(
-                                imageUrl: item.imageUrl,
-                                fit: BoxFit.cover,
-                                errorBuilder: (context, error, stackTrace) {
-                                  return Container(
-                                    color: isDark
-                                        ? const Color(0xFF242426)
-                                        : Colors.grey.shade200,
-                                    child: Icon(
-                                      Icons.image_not_supported_outlined,
-                                      size: 38,
-                                      color: Colors.grey.shade500,
-                                    ),
-                                  );
-                                },
-                              ),
-
-                              // Cashback Tag Badge Overlay
-                              Positioned(
-                                top: 8,
-                                right: 8,
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 7,
-                                    vertical: 4,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: Colors.green.shade700,
-                                    borderRadius: BorderRadius.circular(8),
-                                    boxShadow: const [
-                                      BoxShadow(
-                                        color: Colors.black26,
-                                        blurRadius: 4,
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    item.cashbackTag,
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 9,
-                                      fontWeight: FontWeight.w900,
-                                      letterSpacing: 0.3,
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-
-                        // Card details
-                        Padding(
-                          padding: const EdgeInsets.all(10.0),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                item.title,
-                                maxLines: 1,
-                                overflow: TextOverflow.ellipsis,
-                                style: TextStyle(
-                                  fontSize: 13,
-                                  fontWeight: FontWeight.bold,
-                                  color: isDark ? Colors.white : Colors.black87,
-                                ),
-                              ),
-                              const SizedBox(height: 4),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  Text(
-                                    item.priceOrRate,
-                                    style: const TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.w900,
-                                      color: Color(0xFF1E90FF),
-                                    ),
-                                  ),
-                                  Container(
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 6,
-                                      vertical: 2,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: const Color(0xFF1E90FF)
-                                          .withValues(alpha: 0.1),
-                                      borderRadius: BorderRadius.circular(4),
-                                    ),
-                                    child: Text(
-                                      item.storeName.toUpperCase(),
-                                      style: const TextStyle(
-                                        fontSize: 8,
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFF1E90FF),
-                                      ),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                          ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black
+                              .withValues(alpha: isDark ? 0.3 : 0.04),
+                          blurRadius: 8,
+                          offset: const Offset(0, 3),
                         ),
                       ],
                     ),
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // Image section with Cashback Badge
+                          Expanded(
+                            child: Stack(
+                              fit: StackFit.expand,
+                              children: [
+                                NetworkImageWithSkeleton(
+                                  imageUrl: item.imageUrl,
+                                  fit: BoxFit.cover,
+                                  errorBuilder: (context, error, stackTrace) {
+                                    return Container(
+                                      color: isDark
+                                          ? AppColors.darkSurface
+                                          : AppColors.beigeSurface,
+                                      child: Icon(
+                                        Icons.image_not_supported_outlined,
+                                        size: 38,
+                                        color: isDark
+                                            ? AppColors.darkTextSecondary
+                                            : AppColors.textMuted,
+                                      ),
+                                    );
+                                  },
+                                ),
+
+                                // Cashback Tag Badge Overlay
+                                Positioned(
+                                  top: 8,
+                                  right: 8,
+                                  child: Container(
+                                    padding: const EdgeInsets.symmetric(
+                                      horizontal: 7,
+                                      vertical: 4,
+                                    ),
+                                    decoration: BoxDecoration(
+                                      color: AppColors.primaryBrown,
+                                      borderRadius: BorderRadius.circular(6),
+                                      boxShadow: const [
+                                        BoxShadow(
+                                          color: Colors.black26,
+                                          blurRadius: 4,
+                                        ),
+                                      ],
+                                    ),
+                                    child: Text(
+                                      item.cashbackTag,
+                                      style: GoogleFonts.fraunces(
+                                        color: Colors.white,
+                                        fontSize: 9.5,
+                                        fontWeight: FontWeight.w700,
+                                        letterSpacing: 0.3,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // Card details
+                          Padding(
+                            padding: const EdgeInsets.all(10.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  item.title,
+                                  maxLines: 1,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: AppTextStyles.cardTitle(
+                                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                                  ).copyWith(fontSize: 12.5),
+                                ),
+                                const SizedBox(height: 4),
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      item.priceOrRate,
+                                      style: GoogleFonts.fraunces(
+                                        fontSize: 13.5,
+                                        fontWeight: FontWeight.w700,
+                                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                                      ),
+                                    ),
+                                    Container(
+                                      padding: const EdgeInsets.symmetric(
+                                        horizontal: 6,
+                                        vertical: 2,
+                                      ),
+                                      decoration: BoxDecoration(
+                                        color: isDark
+                                            ? AppColors.darkSurface
+                                            : AppColors.beigeSurface,
+                                        borderRadius: BorderRadius.circular(4),
+                                      ),
+                                      child: Text(
+                                        item.storeName.toUpperCase(),
+                                        style: AppTextStyles.smallLabel(
+                                          color: isDark
+                                              ? AppColors.darkTextSecondary
+                                              : AppColors.deepBrown,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
-                ),
-              );
-            },
+                );
+              },
             ),
     );
   }

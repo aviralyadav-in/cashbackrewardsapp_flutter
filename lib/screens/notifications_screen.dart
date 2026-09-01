@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class NotificationsScreen extends StatefulWidget {
   static const String routeName = '/notifications';
 
@@ -21,7 +23,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': '10 mins ago',
       'category': 'Cashback',
       'icon': Icons.account_balance_wallet_rounded,
-      'color': Colors.green,
+      'color': AppColors.success,
       'isUnread': true,
     },
     {
@@ -32,7 +34,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': '2 hours ago',
       'category': 'Offers',
       'icon': Icons.local_fire_department_rounded,
-      'color': Colors.orange,
+      'color': AppColors.pending,
       'isUnread': true,
     },
     {
@@ -43,7 +45,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': 'Yesterday',
       'category': 'Cashback',
       'icon': Icons.shopping_bag_outlined,
-      'color': const Color(0xFF1E90FF),
+      'color': AppColors.primaryBrown,
       'isUnread': false,
     },
     {
@@ -54,7 +56,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': '18 Aug 2026',
       'category': 'Payouts',
       'icon': Icons.check_circle_rounded,
-      'color': Colors.teal,
+      'color': AppColors.success,
       'isUnread': false,
     },
     {
@@ -65,7 +67,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': '16 Aug 2026',
       'category': 'Referrals',
       'icon': Icons.people_outline_rounded,
-      'color': Colors.deepPurpleAccent,
+      'color': AppColors.deepBrown,
       'isUnread': false,
     },
     {
@@ -76,7 +78,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
       'time': '28 Jul 2026',
       'category': 'Cashback',
       'icon': Icons.local_mall_outlined,
-      'color': const Color(0xFF1E90FF),
+      'color': AppColors.primaryBrown,
       'isUnread': false,
     },
   ];
@@ -96,7 +98,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
     });
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Text('All notifications marked as read.'),
+        content: Text(
+          'All notifications marked as read.',
+          style: AppTextStyles.body(color: AppColors.cardBackground),
+        ),
+        backgroundColor: AppColors.primaryBrown,
         behavior: SnackBarBehavior.floating,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
       ),
@@ -109,25 +115,23 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
 
     return Scaffold(
       backgroundColor:
-          isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7),
+          isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? const Color(0xFF161618) : Colors.white,
-        foregroundColor: isDark ? Colors.white : Colors.black87,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? Colors.white : Colors.black87,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Notifications',
-          style: TextStyle(
-            color: isDark ? Colors.white : Colors.black87,
-            fontSize: 20,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -135,7 +139,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
           IconButton(
             icon: const Icon(Icons.done_all_rounded, size: 22),
             tooltip: 'Mark all as read',
-            color: const Color(0xFF1E90FF),
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             onPressed: _markAllAsRead,
           ),
         ],
@@ -172,10 +176,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                   ? Center(
                       child: Text(
                         'No notifications in $_selectedFilter',
-                        style: TextStyle(
+                        style: AppTextStyles.body(
                           color: isDark
-                              ? Colors.grey.shade400
-                              : Colors.grey.shade600,
+                              ? AppColors.darkTextSecondary
+                              : AppColors.textMuted,
                         ),
                       ),
                     )
@@ -193,19 +197,18 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                           decoration: BoxDecoration(
                             color: isDark
                                 ? (isUnread
-                                    ? const Color(0xFF1B2230)
-                                    : const Color(0xFF161618))
+                                    ? AppColors.darkSurface
+                                    : AppColors.darkCard)
                                 : (isUnread
-                                    ? const Color(0xFFF0F7FF)
-                                    : Colors.white),
-                            borderRadius: BorderRadius.circular(16),
+                                    ? AppColors.beigeSurface.withValues(alpha: 0.45)
+                                    : AppColors.cardBackground),
+                            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                             border: Border.all(
                               color: isUnread
-                                  ? const Color(0xFF1E90FF)
-                                      .withValues(alpha: 0.35)
+                                  ? AppColors.primaryBrown.withValues(alpha: 0.4)
                                   : (isDark
-                                      ? const Color(0xFF28282A)
-                                      : const Color(0xFFE5E5EA)),
+                                      ? AppColors.darkBorder
+                                      : AppColors.border),
                             ),
                             boxShadow: [
                               BoxShadow(
@@ -224,7 +227,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                   notif['isUnread'] = false;
                                 });
                               },
-                              borderRadius: BorderRadius.circular(16),
+                              borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                               child: Padding(
                                 padding: const EdgeInsets.all(14.0),
                                 child: Row(
@@ -235,9 +238,9 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                     Container(
                                       padding: const EdgeInsets.all(10),
                                       decoration: BoxDecoration(
-                                        color: (notif['color'] as Color)
-                                            .withValues(
-                                                alpha: isDark ? 0.2 : 0.1),
+                                        color: isDark
+                                            ? AppColors.darkSurface
+                                            : AppColors.beigeSurface,
                                         shape: BoxShape.circle,
                                       ),
                                       child: Icon(
@@ -260,14 +263,14 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                               Expanded(
                                                 child: Text(
                                                   notif['title'] as String,
-                                                  style: TextStyle(
-                                                    fontSize: 14,
+                                                  style: AppTextStyles.cardTitle(
+                                                    color: isDark
+                                                        ? AppColors.darkTextPrimary
+                                                        : AppColors.textPrimary,
+                                                  ).copyWith(
                                                     fontWeight: isUnread
                                                         ? FontWeight.bold
                                                         : FontWeight.w600,
-                                                    color: isDark
-                                                        ? Colors.white
-                                                        : Colors.black87,
                                                   ),
                                                 ),
                                               ),
@@ -277,7 +280,7 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                   height: 8,
                                                   decoration:
                                                       const BoxDecoration(
-                                                    color: Color(0xFF1E90FF),
+                                                    color: AppColors.primaryBrown,
                                                     shape: BoxShape.circle,
                                                   ),
                                                 ),
@@ -286,13 +289,11 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                           const SizedBox(height: 4),
                                           Text(
                                             notif['message'] as String,
-                                            style: TextStyle(
-                                              fontSize: 12.5,
+                                            style: AppTextStyles.body(
                                               color: isDark
-                                                  ? Colors.grey.shade300
-                                                  : Colors.grey.shade700,
-                                              height: 1.35,
-                                            ),
+                                                  ? AppColors.darkTextSecondary
+                                                  : AppColors.textSecondary,
+                                            ).copyWith(fontSize: 12.5),
                                           ),
                                           const SizedBox(height: 8),
                                           Row(
@@ -301,33 +302,30 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             children: [
                                               Text(
                                                 notif['time'] as String,
-                                                style: TextStyle(
-                                                  fontSize: 11,
+                                                style: AppTextStyles.caption(
                                                   color: isDark
-                                                      ? Colors.grey.shade500
-                                                      : Colors.grey.shade500,
+                                                      ? AppColors.darkTextSecondary
+                                                      : AppColors.textMuted,
                                                 ),
                                               ),
                                               Container(
                                                 padding:
                                                     const EdgeInsets.symmetric(
-                                                        horizontal: 6,
-                                                        vertical: 2),
+                                                        horizontal: 8,
+                                                        vertical: 3),
                                                 decoration: BoxDecoration(
                                                   color: isDark
-                                                      ? const Color(0xFF28282A)
-                                                      : const Color(0xFFEFEFF4),
+                                                      ? AppColors.darkSurface
+                                                      : AppColors.beigeSurface,
                                                   borderRadius:
                                                       BorderRadius.circular(6),
                                                 ),
                                                 child: Text(
                                                   notif['category'] as String,
-                                                  style: TextStyle(
-                                                    fontSize: 10,
-                                                    fontWeight: FontWeight.w600,
+                                                  style: AppTextStyles.smallLabel(
                                                     color: isDark
-                                                        ? Colors.grey.shade400
-                                                        : Colors.grey.shade600,
+                                                        ? AppColors.darkTextSecondary
+                                                        : AppColors.deepBrown,
                                                   ),
                                                 ),
                                               ),
@@ -365,26 +363,24 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
-              ? const Color(0xFF1E90FF)
-              : (isDark ? const Color(0xFF161618) : Colors.white),
+              ? AppColors.primaryBrown
+              : (isDark ? AppColors.darkCard : AppColors.cardBackground),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
-                ? const Color(0xFF1E90FF)
+                ? AppColors.primaryBrown
                 : (isDark
-                    ? const Color(0xFF28282A)
-                    : const Color(0xFFE5E5EA)),
+                    ? AppColors.darkBorder
+                    : AppColors.border),
           ),
         ),
         child: Text(
           label,
-          style: TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.buttonText(
             color: isSelected
-                ? Colors.white
-                : (isDark ? Colors.grey.shade300 : Colors.grey.shade700),
-          ),
+                ? AppColors.cardBackground
+                : (isDark ? AppColors.darkTextSecondary : AppColors.textSecondary),
+          ).copyWith(fontSize: 12),
         ),
       ),
     );

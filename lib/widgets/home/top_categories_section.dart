@@ -191,7 +191,7 @@ class CategorySelectorSection extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       'Top Categories',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.fraunces(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
                         color: isDark ? Colors.white : const Color(0xFF1E1E24),
@@ -208,7 +208,7 @@ class CategorySelectorSection extends StatelessWidget {
                   ),
                   child: Text(
                     activeCategory.title,
-                    style: GoogleFonts.inter(
+                    style: GoogleFonts.fraunces(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
                       color: accentColor,
@@ -334,7 +334,7 @@ class CategorySelectorSection extends StatelessWidget {
                         // Category Name Label
                         AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
-                          style: GoogleFonts.inter(
+                          style: GoogleFonts.fraunces(
                             fontSize: 11,
                             fontWeight: isSelected
                                 ? FontWeight.w800
@@ -435,7 +435,7 @@ class CategoryOffersSection extends StatelessWidget {
                     const SizedBox(width: 8),
                     Text(
                       '${activeCategory.title} Offers',
-                      style: GoogleFonts.inter(
+                      style: GoogleFonts.fraunces(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: isDark ? Colors.white : const Color(0xFF1E1E24),
@@ -445,7 +445,7 @@ class CategoryOffersSection extends StatelessWidget {
                 ),
                 Text(
                   '${brands.length} Stores',
-                  style: GoogleFonts.inter(
+                  style: GoogleFonts.fraunces(
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                     color: accentColor,
@@ -487,7 +487,7 @@ class CategoryOffersSection extends StatelessWidget {
               const SizedBox(height: 6),
               Text(
                 'No stores available for ${activeCategory.title} yet.',
-                style: GoogleFonts.inter(
+                style: GoogleFonts.fraunces(
                   color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
                   fontSize: 12.5,
                   fontWeight: FontWeight.w500,
@@ -593,7 +593,7 @@ class CategoryOffersSection extends StatelessWidget {
                         showAllCategories
                             ? 'Show Less'
                             : 'View All ${brands.length} Stores',
-                        style: GoogleFonts.inter(
+                        style: GoogleFonts.fraunces(
                           fontSize: 12,
                           fontWeight: FontWeight.w700,
                           color: accentColor,

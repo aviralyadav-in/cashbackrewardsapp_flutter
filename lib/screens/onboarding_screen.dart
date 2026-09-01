@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import '../services/storage_service.dart';
+import '../theme/app_theme.dart';
 import 'login_screen.dart';
 
 class OnboardingScreen extends StatefulWidget {
@@ -25,16 +27,16 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
           'Explore exclusive cashback deals, discount coupons, and daily offers across top brands.',
     ),
     _OnboardingPageData(
-      icon: Icons.confirmation_number_outlined,
-      title: 'Track Your Tickets',
+      icon: Icons.receipt_long_outlined,
+      title: 'Track Your Cashback',
       description:
-          'Easily view and track your golden tickets and missing cashback claims in one place.',
+          'Easily track all your orders, missing cashback claims, and transaction status in real-time.',
     ),
     _OnboardingPageData(
-      icon: Icons.monetization_on_outlined,
-      title: 'Earn More Rewards',
+      icon: Icons.account_balance_wallet_outlined,
+      title: 'Earn & Withdraw Real Money',
       description:
-          'Shop through our app to earn real cashback rewards and unlock golden bonus tickets.',
+          'Shop through our app to earn real cashback rewards and transfer directly to your bank.',
     ),
   ];
 
@@ -85,240 +87,219 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
-      backgroundColor: isDark ? const Color(0xFF0D0D0D) : const Color(0xFFFFFFFF),
-      body: Container(
-        decoration: BoxDecoration(
-          gradient: LinearGradient(
-            begin: Alignment.topCenter,
-            end: Alignment.bottomCenter,
-            colors: isDark
-                ? const [
-                    Color(0xFF0D0D0D),
-                    Color(0xFF151D2A),
-                    Color(0xFF0D0D0D),
-                  ]
-                : const [
-                    Color(0xFFFFFFFF),
-                    Color(0xFFF0F7FF),
-                    Color(0xFFFFFFFF),
-                  ],
-          ),
-        ),
-        child: SafeArea(
-          child: Column(
-            children: [
-              // Header / Skip option
-              Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
+      body: SafeArea(
+        child: Column(
+          children: [
+            // Header / Skip option
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Row(
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(6),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                          border: Border.all(
+                            color: isDark ? AppColors.darkBorder : AppColors.border,
+                          ),
+                        ),
+                        child: Icon(
+                          Icons.account_balance_wallet_rounded,
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                          size: 18,
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Text(
+                        'CashKaro',
+                        style: GoogleFonts.fraunces(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                        ),
+                      ),
+                    ],
+                  ),
+                  if (!isLastPage)
+                    TextButton(
+                      onPressed: _completeOnboarding,
+                      child: Text(
+                        'Skip',
+                        style: AppTextStyles.buttonText(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                        ),
+                      ),
+                    )
+                  else
+                    const SizedBox(height: 48),
+                ],
+              ),
+            ),
+
+            // Page View Content
+            Expanded(
+              child: PageView.builder(
+                controller: _pageController,
+                onPageChanged: (index) {
+                  setState(() {
+                    _currentPage = index;
+                  });
+                },
+                itemCount: _pages.length,
+                itemBuilder: (context, index) {
+                  final page = _pages[index];
+                  return Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 32.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(6),
+                          width: 120,
+                          height: 120,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            color: const Color(0xFF1E90FF).withValues(alpha: 0.15),
+                            color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                            border: Border.all(
+                              color: isDark ? AppColors.darkBorder : AppColors.border,
+                              width: 1.5,
+                            ),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.05),
+                                blurRadius: 10,
+                                offset: const Offset(0, 4),
+                              ),
+                            ],
                           ),
-                          child: const Icon(
-                            Icons.card_giftcard,
-                            color: Color(0xFF1E90FF),
-                            size: 20,
+                          child: Icon(
+                            page.icon,
+                            size: 54,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                           ),
                         ),
-                        const SizedBox(width: 8),
+                        const SizedBox(height: 36),
                         Text(
-                          'Cashback & Rewards',
-                          style: TextStyle(
-                            color: isDark ? Colors.white : const Color(0xFF1F2937),
-                            fontSize: 15,
-                            fontWeight: FontWeight.bold,
-                            letterSpacing: 0.5,
+                          page.title,
+                          textAlign: TextAlign.center,
+                          style: GoogleFonts.fraunces(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(height: 14),
+                        Text(
+                          page.description,
+                          textAlign: TextAlign.center,
+                          style: AppTextStyles.body(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                           ),
                         ),
                       ],
                     ),
-                    if (!isLastPage)
-                      TextButton(
-                        onPressed: _completeOnboarding,
-                        child: Text(
-                          'Skip',
-                          style: TextStyle(
-                            color: isDark ? Colors.grey : Colors.grey.shade600,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  );
+                },
+              ),
+            ),
+
+            // Indicators and Navigation Controls
+            Padding(
+              padding: const EdgeInsets.all(24.0),
+              child: Column(
+                children: [
+                  // Dot indicators
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: List.generate(_pages.length, (index) {
+                      final isActive = _currentPage == index;
+                      return AnimatedContainer(
+                        duration: const Duration(milliseconds: 300),
+                        margin: const EdgeInsets.symmetric(horizontal: 4),
+                        width: isActive ? 24 : 8,
+                        height: 8,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          color: isActive
+                              ? (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown)
+                              : (isDark ? AppColors.darkBorder : AppColors.border),
                         ),
-                      )
-                    else
-                      const SizedBox(height: 48),
-                  ],
-                ),
-              ),
+                      );
+                    }),
+                  ),
+                  const SizedBox(height: 28),
 
-              // Page View Content
-              Expanded(
-                child: PageView.builder(
-                  controller: _pageController,
-                  onPageChanged: (index) {
-                    setState(() {
-                      _currentPage = index;
-                    });
-                  },
-                  itemCount: _pages.length,
-                  itemBuilder: (context, index) {
-                    final page = _pages[index];
-                    return Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 32.0),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            width: 130,
-                            height: 130,
-                            decoration: BoxDecoration(
-                              shape: BoxShape.circle,
-                              color: isDark ? const Color(0xFF151D2A) : Colors.white,
-                              border: Border.all(
-                                color: const Color(0xFF1E90FF),
-                                width: 2,
-                              ),
-                            ),
-                            child: Icon(
-                              page.icon,
-                              size: 60,
-                              color: const Color(0xFF1E90FF),
-                            ),
-                          ),
-                          const SizedBox(height: 40),
-                          Text(
-                            page.title,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: isDark ? Colors.white : const Color(0xFF1F2937),
-                              fontSize: 26,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          const SizedBox(height: 16),
-                          Text(
-                            page.description,
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
-                              fontSize: 15,
-                              height: 1.5,
-                            ),
-                          ),
-                        ],
-                      ),
-                    );
-                  },
-                ),
-              ),
-
-              // Indicators and Navigation Controls
-              Padding(
-                padding: const EdgeInsets.all(24.0),
-                child: Column(
-                  children: [
-                    // Dot indicators
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: List.generate(_pages.length, (index) {
-                        final isActive = _currentPage == index;
-                        return AnimatedContainer(
-                          duration: const Duration(milliseconds: 300),
-                          margin: const EdgeInsets.symmetric(horizontal: 4),
-                          width: isActive ? 28 : 8,
-                          height: 8,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(4),
-                            color: isActive
-                                ? const Color(0xFF1E90FF)
-                                : (isDark
-                                    ? Colors.white.withValues(alpha: 0.2)
-                                    : Colors.black.withValues(alpha: 0.15)),
-                          ),
-                        );
-                      }),
-                    ),
-                    const SizedBox(height: 28),
-
-                    // Controls (Back and Next/Get Started)
-                    Row(
-                      children: [
-                        if (_currentPage > 0)
-                          Expanded(
-                            flex: 1,
-                            child: OutlinedButton(
-                              onPressed: _onBack,
-                              style: OutlinedButton.styleFrom(
-                                side: BorderSide(
-                                  color: isDark ? Colors.grey.shade700 : Colors.grey.shade400,
-                                ),
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 16),
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(16),
-                                ),
-                              ),
-                              child: Text(
-                                'Back',
-                                style: TextStyle(
-                                  color: isDark ? Colors.white : const Color(0xFF1F2937),
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                ),
-                              ),
-                            ),
-                          ),
-                        if (_currentPage > 0) const SizedBox(width: 12),
+                  // Controls (Back and Next/Get Started)
+                  Row(
+                    children: [
+                      if (_currentPage > 0)
                         Expanded(
-                          flex: 2,
-                          child: ElevatedButton(
-                            onPressed: _onNext,
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF1E90FF),
-                              foregroundColor: Colors.white,
+                          flex: 1,
+                          child: OutlinedButton(
+                            onPressed: _onBack,
+                            style: OutlinedButton.styleFrom(
+                              side: BorderSide(
+                                color: isDark ? AppColors.darkBorder : AppColors.border,
+                              ),
                               padding:
-                                  const EdgeInsets.symmetric(vertical: 16),
-                              elevation: 4,
-                              shadowColor: const Color(0xFF1E90FF).withValues(alpha: 0.3),
+                                  const EdgeInsets.symmetric(vertical: 14),
                               shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(16),
+                                borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
                               ),
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Text(
-                                  isLastPage ? 'Get Started' : 'Next',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.bold,
-                                  ),
-                                ),
-                                const SizedBox(width: 6),
-                                Icon(
-                                  isLastPage
-                                      ? Icons.check_circle_outline
-                                      : Icons.arrow_forward_rounded,
-                                  size: 20,
-                                ),
-                              ],
+                            child: Text(
+                              'Back',
+                              style: AppTextStyles.buttonText(
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                              ),
                             ),
                           ),
                         ),
-                      ],
-                    ),
-                  ],
-                ),
+                      if (_currentPage > 0) const SizedBox(width: 12),
+                      Expanded(
+                        flex: 2,
+                        child: ElevatedButton(
+                          onPressed: _onNext,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryBrown,
+                            foregroundColor: AppColors.cardBackground,
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                            ),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Text(
+                                isLastPage ? 'Get Started' : 'Next',
+                                style: AppTextStyles.buttonText(
+                                  color: AppColors.cardBackground,
+                                ),
+                              ),
+                              const SizedBox(width: 6),
+                              Icon(
+                                isLastPage
+                                    ? Icons.check_circle_outline
+                                    : Icons.arrow_forward_rounded,
+                                size: 18,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );

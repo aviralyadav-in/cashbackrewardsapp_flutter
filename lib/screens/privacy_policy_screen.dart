@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../theme/app_theme.dart';
+
 class PrivacyPolicyScreen extends StatelessWidget {
   static const String routeName = '/privacy-policy';
 
@@ -8,32 +10,25 @@ class PrivacyPolicyScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final backgroundColor = isDark ? const Color(0xFF0D0D0D) : const Color(0xFFF5F5F7);
-    final cardColor = isDark ? const Color(0xFF161618) : Colors.white;
-    final textColor = isDark ? Colors.white : Colors.black87;
-    final subtextColor = isDark ? Colors.grey.shade300 : Colors.grey.shade800;
-    final borderColor = isDark ? const Color(0xFF28282A) : const Color(0xFFE5E5EA);
 
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: cardColor,
-        foregroundColor: textColor,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: textColor,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
           'Privacy Policy',
-          style: TextStyle(
-            color: textColor,
-            fontSize: 19,
-            fontWeight: FontWeight.bold,
+          style: AppTextStyles.screenHeading(
+            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ),
         ),
         centerTitle: true,
@@ -49,9 +44,11 @@ class PrivacyPolicyScreen extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(18),
                 decoration: BoxDecoration(
-                  color: cardColor,
-                  borderRadius: BorderRadius.circular(18),
-                  border: Border.all(color: borderColor),
+                  color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                  borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                  border: Border.all(
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
+                  ),
                   boxShadow: [
                     BoxShadow(
                       color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
@@ -67,11 +64,13 @@ class PrivacyPolicyScreen extends StatelessWidget {
                       height: 48,
                       decoration: BoxDecoration(
                         shape: BoxShape.circle,
-                        color: const Color(0xFF1E90FF).withValues(alpha: 0.12),
+                        color: isDark
+                            ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                            : AppColors.beigeSurface,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.privacy_tip_rounded,
-                        color: Color(0xFF1E90FF),
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                         size: 26,
                       ),
                     ),
@@ -82,18 +81,15 @@ class PrivacyPolicyScreen extends StatelessWidget {
                         children: [
                           Text(
                             'Your Privacy Matters',
-                            style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              color: textColor,
-                            ),
+                            style: AppTextStyles.sectionHeading(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            ).copyWith(fontSize: 15.5),
                           ),
                           const SizedBox(height: 3),
                           Text(
                             'Last updated: August 2026. Please review our data protection guidelines.',
-                            style: TextStyle(
-                              fontSize: 12.5,
-                              color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                            style: AppTextStyles.caption(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                             ),
                           ),
                         ],
@@ -112,10 +108,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'Welcome to CashKaro. We are committed to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner. This policy outlines how we collect, use, and safeguard your data.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 2. Information We Collect
@@ -129,10 +121,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     '• Cashback tracking links & store exit logs\n'
                     '• Payment withdrawal details (Bank account, UPI, Amazon Pay)',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 3. How We Use Your Information
@@ -146,10 +134,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                     '• Providing customer support and missing ticket resolution\n'
                     '• Sending important account status updates and notifications',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 4. Account & Authentication
@@ -159,10 +143,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'User accounts are authenticated using secure Firebase Authentication services. We store unique Firebase User IDs (UIDs) as primary keys to manage profile state and prevent duplicate account creation.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 5. Cashback & Transactions
@@ -172,10 +152,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'Transaction details are synchronized with partner retailers to verify order confirmation and calculate cashback eligibility. We do not store or process your credit card, debit card, or net banking passwords.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 6. Data Security
@@ -185,10 +161,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'We employ industry-standard SSL encryption and secure cloud infrastructure to protect your personal information against unauthorized access, alteration, disclosure, or destruction.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 7. Third-Party Services
@@ -198,10 +170,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'When you tap on partner store links (e.g. Amazon, Flipkart, Myntra), you are redirected to third-party merchant sites. Merchant sites have independent privacy policies which we recommend reviewing.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 8. Data Retention
@@ -211,10 +179,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'We retain user profile data for as long as your account remains active. You may request account deactivation or data removal by contacting customer support.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 9. Your Rights
@@ -224,10 +188,6 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 content:
                     'You retain full rights to view, edit, or update your registered name, email, and phone number at any time via Account Settings inside the Profile section of the app.',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               // 10. Contact Us
@@ -236,13 +196,9 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 title: '10. Contact Us',
                 content:
                     'If you have any questions or concerns regarding this Privacy Policy, please contact our Data Protection Officer at:\n\n'
-                    'Email: privacy@cashkaro.com\n'
-                    'Helpline: 1800-CASHKARO (1800-227-4527)',
+                    'Email: privacy@CashKaro.com\n'
+                    'Helpline: 1800-CashKaro (1800-227-4828)',
                 isDark: isDark,
-                cardColor: cardColor,
-                textColor: textColor,
-                subtextColor: subtextColor,
-                borderColor: borderColor,
               ),
 
               const SizedBox(height: 24),
@@ -259,20 +215,12 @@ class _PolicySectionCard extends StatelessWidget {
   final String title;
   final String content;
   final bool isDark;
-  final Color cardColor;
-  final Color textColor;
-  final Color subtextColor;
-  final Color borderColor;
 
   const _PolicySectionCard({
     required this.icon,
     required this.title,
     required this.content,
     required this.isDark,
-    required this.cardColor,
-    required this.textColor,
-    required this.subtextColor,
-    required this.borderColor,
   });
 
   @override
@@ -281,25 +229,25 @@ class _PolicySectionCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: cardColor,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: borderColor),
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        border: Border.all(
+          color: isDark ? AppColors.darkBorder : AppColors.border,
+        ),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              Icon(icon, color: const Color(0xFF1E90FF), size: 20),
+              Icon(icon, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown, size: 20),
               const SizedBox(width: 10),
               Expanded(
                 child: Text(
                   title,
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.bold,
-                    color: textColor,
-                  ),
+                  style: AppTextStyles.cardTitle(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  ).copyWith(fontSize: 14.5),
                 ),
               ),
             ],
@@ -307,10 +255,8 @@ class _PolicySectionCard extends StatelessWidget {
           const SizedBox(height: 10),
           Text(
             content,
-            style: TextStyle(
-              fontSize: 13.5,
-              height: 1.5,
-              color: subtextColor,
+            style: AppTextStyles.body(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
             ),
           ),
         ],
