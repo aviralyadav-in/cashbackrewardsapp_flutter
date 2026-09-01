@@ -1847,80 +1847,132 @@ class HomeMockData {
 
   static const List<TopCategoryItemData> topCategories = [
     TopCategoryItemData(
+      id: 'most_popular',
       title: 'Most Popular',
+      imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&auto=format&fit=crop&q=80',
       icon: Icons.local_fire_department_rounded,
       slug: 'smartphones',
+      backgroundColor: Color(0xFFFFF6F0),
+      darkBackgroundColor: Color(0xFF281B15),
+      accentColor: Color(0xFFC65D45),
     ),
     TopCategoryItemData(
-      title: 'Fashion',
-      icon: Icons.checkroom_rounded,
-      slug: 'mens-shirts',
-    ),
-    TopCategoryItemData(
-      title: 'Credit Cards',
-      icon: Icons.credit_card_rounded,
-      slug: 'groceries',
-    ),
-    TopCategoryItemData(
-      title: 'Beauty & Grooming',
-      icon: Icons.face_retouching_natural_rounded,
-      slug: 'beauty',
-    ),
-    TopCategoryItemData(
-      title: 'Home & Kitchen',
-      icon: Icons.home_rounded,
-      slug: 'home-decoration',
-    ),
-    TopCategoryItemData(
+      id: 'electronics',
       title: 'Electronics',
+      imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80',
       icon: Icons.devices_rounded,
       slug: 'laptops',
+      backgroundColor: Color(0xFFEFF6FF),
+      darkBackgroundColor: Color(0xFF14243B),
+      accentColor: Color(0xFF2563EB),
     ),
     TopCategoryItemData(
-      title: 'Food & Grocery',
-      icon: Icons.shopping_bag_rounded,
+      id: 'fashion',
+      title: 'Fashion',
+      imageUrl: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.checkroom_rounded,
+      slug: 'mens-shirts',
+      backgroundColor: Color(0xFFFFF1F2),
+      darkBackgroundColor: Color(0xFF33141E),
+      accentColor: Color(0xFFE11D48),
+    ),
+    TopCategoryItemData(
+      id: 'beauty_grooming',
+      title: 'Beauty & Grooming',
+      imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.face_retouching_natural_rounded,
+      slug: 'beauty',
+      backgroundColor: Color(0xFFFFF7ED),
+      darkBackgroundColor: Color(0xFF331D12),
+      accentColor: Color(0xFFEA580C),
+    ),
+    TopCategoryItemData(
+      id: 'credit_cards',
+      title: 'Credit Cards',
+      imageUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.credit_card_rounded,
       slug: 'groceries',
+      backgroundColor: Color(0xFFF5F3FF),
+      darkBackgroundColor: Color(0xFF211736),
+      accentColor: Color(0xFF7C3AED),
     ),
     TopCategoryItemData(
-      title: 'Mobiles',
-      icon: Icons.smartphone_rounded,
-      slug: 'smartphones',
-    ),
-    TopCategoryItemData(
-      title: 'Pharmacy',
-      icon: Icons.medical_services_rounded,
-      slug: 'skin-care',
-    ),
-    TopCategoryItemData(
-      title: 'Health & Wellness',
-      icon: Icons.health_and_safety_rounded,
-      slug: 'skin-care',
-    ),
-    TopCategoryItemData(
-      title: 'Loans',
-      icon: Icons.account_balance_wallet_rounded,
-      slug: 'groceries',
-    ),
-    TopCategoryItemData(
-      title: 'Departmental',
-      icon: Icons.storefront_rounded,
-      slug: 'groceries',
-    ),
-    TopCategoryItemData(
+      id: 'travel',
       title: 'Flights & Hotels',
+      imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=200&auto=format&fit=crop&q=80',
       icon: Icons.flight_takeoff_rounded,
       slug: 'smartphones',
+      backgroundColor: Color(0xFFF0F9FF),
+      darkBackgroundColor: Color(0xFF122436),
+      accentColor: Color(0xFF0284C7),
     ),
     TopCategoryItemData(
-      title: 'Education',
-      icon: Icons.school_rounded,
-      slug: 'laptops',
+      id: 'food_grocery',
+      title: 'Food & Grocery',
+      imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.shopping_bag_rounded,
+      slug: 'groceries',
+      backgroundColor: Color(0xFFFEFCE8),
+      darkBackgroundColor: Color(0xFF302B12),
+      accentColor: Color(0xFFCA8A04),
+    ),
+    TopCategoryItemData(
+      id: 'mobiles',
+      title: 'Mobiles',
+      imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.smartphone_rounded,
+      slug: 'smartphones',
+      backgroundColor: Color(0xFFECFEFF),
+      darkBackgroundColor: Color(0xFF10282C),
+      accentColor: Color(0xFF0891B2),
+    ),
+    TopCategoryItemData(
+      id: 'health_wellness',
+      title: 'Health & Wellness',
+      imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.health_and_safety_rounded,
+      slug: 'skin-care',
+      backgroundColor: Color(0xFFF0FDF4),
+      darkBackgroundColor: Color(0xFF122E1A),
+      accentColor: Color(0xFF16A34A),
+    ),
+    TopCategoryItemData(
+      id: 'home_kitchen',
+      title: 'Home & Kitchen',
+      imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.home_rounded,
+      slug: 'home-decoration',
+      backgroundColor: Color(0xFFF7F5F0),
+      darkBackgroundColor: Color(0xFF26231E),
+      accentColor: Color(0xFF857263),
+    ),
+    TopCategoryItemData(
+      id: 'pharmacy',
+      title: 'Pharmacy',
+      imageUrl: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.medical_services_rounded,
+      slug: 'skin-care',
+      backgroundColor: Color(0xFFECFDF5),
+      darkBackgroundColor: Color(0xFF102B20),
+      accentColor: Color(0xFF059669),
+    ),
+    TopCategoryItemData(
+      id: 'loans',
+      title: 'Loans',
+      imageUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=200&auto=format&fit=crop&q=80',
+      icon: Icons.account_balance_wallet_rounded,
+      slug: 'groceries',
+      backgroundColor: Color(0xFFF8FAFC),
+      darkBackgroundColor: Color(0xFF1E293B),
+      accentColor: Color(0xFF475569),
     ),
   ];
 
   static List<BrandModel> getBrandsForTopCategory(String title) {
     switch (title) {
       case 'Most Popular':
+      case 'Favourites':
+      case 'Your Favourites':
         return popularBrandsCatalog;
 
       case 'Fashion':
@@ -1930,9 +1982,12 @@ class HomeMockData {
         return lifetimeFreeCardsCatalog;
 
       case 'Beauty & Grooming':
+      case 'Beauty':
         return beautyBrandsCatalog;
 
       case 'Home & Kitchen':
+      case 'Home':
+      case 'Home & Living':
         return const [
           BrandModel(
             name: 'Pepperfry',
@@ -1967,6 +2022,8 @@ class HomeMockData {
         return electronicsBrandsCatalog;
 
       case 'Food & Grocery':
+      case 'Food':
+      case 'Grocery':
         return foodGroceryCatalog;
 
       case 'Mobiles':
@@ -1976,6 +2033,7 @@ class HomeMockData {
         return pharmacyBrandsCatalog;
 
       case 'Health & Wellness':
+      case 'Health':
         return healthWellnessCatalog;
 
       case 'Loans':
@@ -1985,6 +2043,7 @@ class HomeMockData {
         return departmentalCatalog;
 
       case 'Flights & Hotels':
+      case 'Travel':
         return hotelBookingCatalog;
 
       case 'Education':

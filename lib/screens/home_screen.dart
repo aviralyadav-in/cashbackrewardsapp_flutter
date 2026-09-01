@@ -22,7 +22,6 @@ import 'product_detail_screen.dart';
 import 'profile_screen.dart';
 import 'refer_earn_screen.dart';
 import 'search_screen.dart';
-import 'ticket_screen.dart';
 import 'top_category_brands_screen.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -232,9 +231,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     return ListView(
                       padding: const EdgeInsets.all(16),
                       children: [
-                        const GoldenTicketBanner(),
-                        const SizedBox(height: 20),
-
                         // DYNAMIC E-COMMERCE CASHBACK BANNER CAROUSEL
                         const CashbackBannerCarousel(),
                         const SizedBox(height: 24),
