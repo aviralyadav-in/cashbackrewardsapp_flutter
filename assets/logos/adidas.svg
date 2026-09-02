@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <g fill="#111111" transform="translate(42, 10)">
+    <!-- 3 angled stripes -->
+    <path d="M12 42 L24 42 L14 24 L2 24 Z"/>
+    <path d="M28 42 L40 42 L24 14 L12 14 Z"/>
+    <path d="M44 42 L56 42 L34 4 L22 4 Z"/>
+    <!-- adidas text -->
+    <text x="68" y="36" font-family="'Segoe UI', Roboto, 'Arial Black', sans-serif" font-weight="900" font-size="30" fill="#111111" letter-spacing="-0.5">adidas</text>
+  </g>
+</svg>

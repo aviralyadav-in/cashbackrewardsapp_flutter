@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <g transform="translate(15, 6)">
+    <!-- Official Nike Wordmark + Swoosh -->
+    <path d="M18 44 C 58 55 124 48 190 14 C 136 33 90 42 58 36 C 42 33 34 27 36 33 C 37 36 37 40 18 44 Z" fill="#111111"/>
+    <path d="M48 14 L58 14 L73 34 L73 14 L83 14 L83 39 L73 39 L58 19 L58 39 L48 39 Z M90 14 L100 14 L100 39 L90 39 Z M107 14 L117 14 L117 24 L130 14 L143 14 L128 26 L144 39 L131 39 L117 28 L117 39 L107 39 Z M151 14 L180 14 L180 20 L162 20 L162 23 L178 23 L178 29 L162 29 L162 33 L181 33 L181 39 L151 39 Z" fill="#111111"/>
+  </g>
+</svg>

@@ -42,82 +42,26 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
         children: [
           // Section Header Row
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Row(
-                children: [
-                  Container(
-                    width: 4,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: AppColors.primaryBrown,
-                      borderRadius: BorderRadius.circular(2),
-                    ),
-                  ),
-                  const SizedBox(width: 8),
-                  Text(
-                    'Top Amazon Deals',
-                    style: GoogleFonts.fraunces(
-                      fontSize: 18.5,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.2,
-                      color: isDark ? Colors.white : const Color(0xFF1E1E24),
-                    ),
-                  ),
-                ],
+              Container(
+                width: 4,
+                height: 18,
+                decoration: BoxDecoration(
+                  color: AppColors.primaryBrown,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-              InkWell(
-                onTap: () {
-                  Navigator.of(context).push(
-                    MaterialPageRoute(
-                      builder: (_) => TopCategoryBrandsScreen(
-                        categoryTitle: 'Top Amazon Deals',
-                        brands: deals
-                            .map(
-                              (deal) => BrandModel(
-                                name: '${deal.brandName} - ${deal.productName}',
-                                logoUrl:
-                                    'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
-                                bannerUrl: deal.imageUrl,
-                                cashbackPercentage:
-                                    'Flat ${deal.rewardPercentage.toInt()}% Reward',
-                                category: 'Amazon Deals',
-                                offerText:
-                                    'After Rewards: ₹${_formatCurrency(deal.finalPrice)} (Actual: ₹${_formatCurrency(deal.actualPrice.round())})',
-                                websiteUrl: deal.productUrl,
-                              ),
-                            )
-                            .toList(),
-                      ),
-                    ),
-                  );
-                },
-                borderRadius: BorderRadius.circular(16),
-                child: Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                  decoration: BoxDecoration(
-                    color: isDark
-                        ? AppColors.primaryBrown.withValues(alpha: 0.2)
-                        : AppColors.beigeSurface,
-                    borderRadius: BorderRadius.circular(16),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        'View All',
-                        style: AppTextStyles.smallLabel(
-                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                        ),
-                      ),
-                      const SizedBox(width: 2),
-                      Icon(
-                        Icons.arrow_forward_ios,
-                        size: 10,
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                      ),
-                    ],
+              const SizedBox(width: 8),
+              Expanded(
+                child: Text(
+                  'Top Amazon Deals',
+                  maxLines: 2,
+                  softWrap: true,
+                  style: GoogleFonts.fraunces(
+                    fontSize: 18.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                    color: isDark ? Colors.white : const Color(0xFF1E1E24),
                   ),
                 ),
               ),
@@ -142,6 +86,93 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
               },
             ),
           ),
+          const SizedBox(height: 14),
+
+          // Bottom View All Button
+          Center(
+            child: Material(
+              color: Colors.transparent,
+              child: InkWell(
+                onTap: () {
+                  Navigator.of(context).push(
+                    MaterialPageRoute(
+                      builder: (_) => TopCategoryBrandsScreen(
+                        categoryTitle: 'Top Amazon Deals',
+                        brands: deals
+                            .map(
+                              (deal) => BrandModel(
+                                name: '${deal.brandName} - ${deal.productName}',
+                                logoUrl: 'assets/logos/amazon.svg',
+                                bannerUrl: deal.imageUrl,
+                                cashbackPercentage:
+                                    'Flat ${deal.rewardPercentage.toInt()}% Reward',
+                                category: 'Amazon Deals',
+                                offerText:
+                                    'After Rewards: ₹${_formatCurrency(deal.finalPrice)} (Actual: ₹${_formatCurrency(deal.actualPrice.round())})',
+                                websiteUrl: deal.productUrl,
+                              ),
+                            )
+                            .toList(),
+                      ),
+                    ),
+                  );
+                },
+                borderRadius: BorderRadius.circular(20),
+                child: Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 22,
+                    vertical: 9,
+                  ),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF1E1E22)
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: isDark
+                          ? AppColors.darkBorder
+                          : AppColors.primaryBrown.withValues(alpha: 0.35),
+                      width: 1.2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(
+                          alpha: isDark ? 0.25 : 0.06,
+                        ),
+                        blurRadius: 6,
+                        offset: const Offset(0, 2),
+                      ),
+                    ],
+                  ),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        'View All',
+                        style: GoogleFonts.fraunces(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: isDark
+                              ? AppColors.darkTextPrimary
+                              : AppColors.primaryBrown,
+                          letterSpacing: 0.2,
+                        ),
+                      ),
+                      const SizedBox(width: 6),
+                      Icon(
+                        Icons.arrow_forward_ios_rounded,
+                        size: 11,
+                        color: isDark
+                            ? AppColors.darkTextPrimary
+                            : AppColors.primaryBrown,
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            ),
+          ),
+          const SizedBox(height: 2),
         ],
       ),
     );

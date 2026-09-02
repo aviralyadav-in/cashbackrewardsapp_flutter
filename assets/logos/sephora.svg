@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 70" width="240" height="70">
+  <g transform="translate(24, 10)">
+    <!-- S Curve Flame -->
+    <path d="M22 10 C18 16 26 24 20 32 C16 38 10 36 8 42 C6 47 12 50 16 46 C24 38 14 30 22 22 C26 18 28 14 22 10 Z" fill="#111111"/>
+    <!-- SEPHORA text -->
+    <text x="42" y="36" font-family="'Segoe UI', 'Century Gothic', sans-serif" font-weight="700" font-size="26" fill="#111111" letter-spacing="4">SEPHORA</text>
+  </g>
+</svg>

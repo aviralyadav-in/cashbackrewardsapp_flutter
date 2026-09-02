@@ -11,7 +11,6 @@ class SubtleSectionContainer extends StatelessWidget {
   final List<Color> lightGradientColors;
   final List<Color> darkGradientColors;
   final VoidCallback? onViewAllTap;
-  final int maxChars;
 
   const SubtleSectionContainer({
     super.key,
@@ -21,22 +20,11 @@ class SubtleSectionContainer extends StatelessWidget {
     required this.lightGradientColors,
     required this.darkGradientColors,
     this.onViewAllTap,
-    this.maxChars = 20,
   });
-
-  String _getTruncatedTitle(String rawText) {
-    final trimmed = rawText.trim();
-    if (trimmed.isEmpty) return trimmed;
-    if (trimmed.length > maxChars) {
-      return '${trimmed.substring(0, maxChars).trim()}...';
-    }
-    return trimmed;
-  }
 
   @override
   Widget build(BuildContext context) {
     final gradientColors = isDark ? darkGradientColors : lightGradientColors;
-    final displayTitle = _getTruncatedTitle(title);
 
     return Container(
       width: double.infinity,
@@ -61,78 +49,98 @@ class SubtleSectionContainer extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Expanded(
-                  child: Row(
-                    children: [
-                      Container(
-                        width: 4,
-                        height: 18,
-                        decoration: BoxDecoration(
-                          color: AppColors.primaryBrown,
-                          borderRadius: BorderRadius.circular(2),
-                        ),
-                      ),
-                      const SizedBox(width: 8),
-                      Expanded(
-                        child: Text(
-                          displayTitle,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: GoogleFonts.fraunces(
-                            fontSize: 18.5,
-                            fontWeight: FontWeight.w700,
-                            letterSpacing: -0.2,
-                            color: isDark ? Colors.white : const Color(0xFF1E1E24),
-                          ),
-                        ),
-                      ),
-                    ],
+                Container(
+                  width: 4,
+                  height: 18,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBrown,
+                    borderRadius: BorderRadius.circular(2),
                   ),
                 ),
-                if (onViewAllTap != null) ...[
-                  const SizedBox(width: 8),
-                  InkWell(
-                    onTap: onViewAllTap,
-                    borderRadius: BorderRadius.circular(16),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? AppColors.primaryBrown.withValues(alpha: 0.2)
-                            : AppColors.primaryBrown.withValues(alpha: 0.1),
-                        borderRadius: BorderRadius.circular(16),
-                      ),
-                      child: Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            'View All',
-                            style: AppTextStyles.buttonText(
-                              color: isDark
-                                  ? AppColors.darkTextPrimary
-                                  : AppColors.primaryBrown,
-                            ).copyWith(fontSize: 12),
-                          ),
-                          const SizedBox(width: 3),
-                          Icon(
-                            Icons.arrow_forward_ios_rounded,
-                            size: 10,
-                            color: isDark
-                                ? AppColors.darkTextPrimary
-                                : AppColors.primaryBrown,
-                          ),
-                        ],
-                      ),
+                const SizedBox(width: 8),
+                Expanded(
+                  child: Text(
+                    title,
+                    maxLines: 2,
+                    softWrap: true,
+                    style: GoogleFonts.fraunces(
+                      fontSize: 18.5,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.2,
+                      color: isDark ? Colors.white : const Color(0xFF1E1E24),
                     ),
                   ),
-                ],
+                ),
               ],
             ),
           ),
           const SizedBox(height: 12),
           child,
+          if (onViewAllTap != null) ...[
+            const SizedBox(height: 14),
+            Center(
+              child: Material(
+                color: Colors.transparent,
+                child: InkWell(
+                  onTap: onViewAllTap,
+                  borderRadius: BorderRadius.circular(20),
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 22,
+                      vertical: 9,
+                    ),
+                    decoration: BoxDecoration(
+                      color: isDark
+                          ? const Color(0xFF1E1E22)
+                          : Colors.white,
+                      borderRadius: BorderRadius.circular(20),
+                      border: Border.all(
+                        color: isDark
+                            ? AppColors.darkBorder
+                            : AppColors.primaryBrown.withValues(alpha: 0.35),
+                        width: 1.2,
+                      ),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withValues(
+                            alpha: isDark ? 0.25 : 0.06,
+                          ),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        Text(
+                          'View All',
+                          style: GoogleFonts.fraunces(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                            color: isDark
+                                ? AppColors.darkTextPrimary
+                                : AppColors.primaryBrown,
+                            letterSpacing: 0.2,
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.arrow_forward_ios_rounded,
+                          size: 11,
+                          color: isDark
+                              ? AppColors.darkTextPrimary
+                              : AppColors.primaryBrown,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 2),
+          ],
         ],
       ),
     );

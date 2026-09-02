@@ -324,7 +324,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Nike',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+      logoUrl: 'assets/logos/nike.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Fashion',
@@ -333,7 +333,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'H&M',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg',
+      logoUrl: 'assets/logos/hm.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Fashion',
@@ -342,7 +342,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Zara',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg',
+      logoUrl: 'assets/logos/zara.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Fashion',
@@ -351,7 +351,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'ASOS',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+      logoUrl: 'assets/logos/asos.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Fashion',
@@ -371,7 +371,7 @@ class HomeMockData {
         offerText: 'Up to 80% Off',
         websiteUrl: 'https://www.amazon.in',
       ),
-      tagline: 'Great Freedom Festival & Deals',
+      tagline: 'Mega Electronics & Wardrobe Deals',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
@@ -383,7 +383,7 @@ class HomeMockData {
         offerText: 'Up to 75% Off',
         websiteUrl: 'https://www.flipkart.com',
       ),
-      tagline: 'Big Billion Days & Electronics',
+      tagline: 'Big Saving Days Special Offers',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
@@ -391,11 +391,11 @@ class HomeMockData {
         logoUrl: 'assets/logos/myntra.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Flat 7.5% Rewards',
-        category: 'E-Commerce',
-        offerText: 'Up to 70% Off',
+        category: 'Fashion',
+        offerText: 'Up to 60% Off',
         websiteUrl: 'https://www.myntra.com',
       ),
-      tagline: 'End of Reason Sale Deals',
+      tagline: 'Right to Fashion Trendsetters',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
@@ -403,35 +403,35 @@ class HomeMockData {
         logoUrl: 'assets/logos/ajio.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Flat 10% Rewards',
-        category: 'E-Commerce',
+        category: 'Fashion',
         offerText: 'Flat 50% Off',
         websiteUrl: 'https://www.ajio.com',
       ),
-      tagline: 'Trends & International Fashion',
+      tagline: 'All Stars Fashion Sale',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Meesho',
         logoUrl: 'assets/logos/meesho.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
-        cashbackPercentage: 'Up to 6% Rewards',
+        bannerUrl: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&auto=format&fit=crop&q=80',
+        cashbackPercentage: 'Up to 15% Rewards',
         category: 'E-Commerce',
-        offerText: 'Up to 60% Off',
+        offerText: 'Deals from ₹99',
         websiteUrl: 'https://www.meesho.com',
       ),
-      tagline: 'Lowest Price Quality Deals',
+      tagline: 'Lowest Prices Across India',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Tata CLiQ',
         logoUrl: 'assets/logos/tatacliq.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
-        cashbackPercentage: 'Up to 8% Rewards',
-        category: 'E-Commerce',
-        offerText: 'Up to 50% Off',
+        cashbackPercentage: 'Flat 8% Rewards',
+        category: 'Lifestyle',
+        offerText: 'Up to 60% Off',
         websiteUrl: 'https://www.tatacliq.com',
       ),
-      tagline: 'Luxury Fashion & Electronics',
+      tagline: 'Luxury & Lifestyle Delights',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
@@ -443,28 +443,28 @@ class HomeMockData {
         offerText: 'Up to 50% Off',
         websiteUrl: 'https://www.nykaa.com',
       ),
-      tagline: 'Pink Friday Beauty & Cosmetics',
+      tagline: 'Pink Friday Beauty Steals',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Croma',
         logoUrl: 'assets/logos/croma.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Flat 6% Rewards',
         category: 'Electronics',
-        offerText: 'Up to 50% Off',
+        offerText: 'Up to 45% Off',
         websiteUrl: 'https://www.croma.com',
       ),
-      tagline: 'Electronics & Home Appliances',
+      tagline: 'Brighter Gadgets, Better Life',
     ),
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Reliance Digital',
         logoUrl: 'assets/logos/reliancedigital.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Electronics',
-        offerText: 'Up to 45% Off',
+        offerText: 'Up to 40% Off',
         websiteUrl: 'https://www.reliancedigital.in',
       ),
       tagline: 'Digital India Tech Deals',
@@ -484,7 +484,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Nike',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a6/Logo_NIKE.svg',
+        logoUrl: 'assets/logos/nike.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 9% Rewards',
         category: 'Fashion',
@@ -496,7 +496,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Adidas',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/20/Adidas_Logo.svg',
+        logoUrl: 'assets/logos/adidas.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'Fashion',
@@ -508,7 +508,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'H&M',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/5/53/H%26M-Logo.svg',
+        logoUrl: 'assets/logos/hm.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Flat 8% Rewards',
         category: 'Fashion',
@@ -520,7 +520,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Zara',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/fd/Zara_Logo.svg',
+        logoUrl: 'assets/logos/zara.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 6% Rewards',
         category: 'Fashion',
@@ -532,7 +532,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Sephora',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Sephora_logo.svg',
+        logoUrl: 'assets/logos/sephora.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Flat 10% Rewards',
         category: 'Beauty',
@@ -544,7 +544,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Etsy',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+        logoUrl: 'assets/logos/etsy.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
@@ -556,7 +556,7 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'eBay',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/1b/EBay_logo.svg',
+        logoUrl: 'assets/logos/ebay.svg',
         bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
         cashbackPercentage: 'Up to 4% Rewards',
         category: 'Global',
@@ -615,7 +615,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Sephora',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/21/Sephora_logo.svg',
+      logoUrl: 'assets/logos/sephora.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Beauty',
@@ -777,7 +777,7 @@ class HomeMockData {
   static const List<BrandModel> shoppingCardsCatalog = [
     BrandModel(
       name: 'HDFC Millennia',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/2/28/HDFC_Bank_Logo.svg',
+      logoUrl: 'assets/logos/hdfc_cashback.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹1,500 Bonus',
       category: 'Shopping Cards',
@@ -852,7 +852,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Netmeds',
-      logoUrl: 'assets/logos/tata1mg.svg',
+      logoUrl: 'assets/logos/netmeds.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1587854692152-cbe660dbde88?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Medicines',
@@ -870,7 +870,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'HealthKart',
-      logoUrl: 'assets/logos/tata1mg.svg',
+      logoUrl: 'assets/logos/healthkart.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1517838277536-f5f99be501cd?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Medicines',
@@ -909,7 +909,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'KreditBee',
-      logoUrl: 'assets/logos/moneytap.svg',
+      logoUrl: 'assets/logos/kreditbee.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1601597111158-2fceff292cdc?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹800 Cashback',
       category: 'Cards & Loans',
@@ -936,7 +936,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'CASHe Credit',
-      logoUrl: 'assets/logos/navi.svg',
+      logoUrl: 'assets/logos/cashe.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1556742049-0a67dd385203?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹1,000 Cashback',
       category: 'Cards & Loans',
@@ -1032,7 +1032,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Paysense',
-      logoUrl: 'assets/logos/moneytap.svg',
+      logoUrl: 'assets/logos/paysense.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1554224155-8d04cb21cd6c?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹800 Cashback',
       category: 'Personal Loans',
@@ -1041,7 +1041,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'CASHe',
-      logoUrl: 'assets/logos/navi.svg',
+      logoUrl: 'assets/logos/cashe.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1556742049-0a67dd385203?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹700 Cashback',
       category: 'Personal Loans',
@@ -1050,7 +1050,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'mPokket',
-      logoUrl: 'assets/logos/moneytap.svg',
+      logoUrl: 'assets/logos/mpokket.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1523240795612-9a054b0db644?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat ₹500 Cashback',
       category: 'Personal Loans',
@@ -1784,7 +1784,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Zomato',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bd/Zomato_Logo.svg',
+      logoUrl: 'assets/logos/zomato.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Food & Grocery',
@@ -1793,7 +1793,7 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Blinkit',
-      logoUrl: 'https://blinkit.com/images/header/blinkit_logo.png',
+      logoUrl: 'assets/logos/blinkit.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Food & Grocery',

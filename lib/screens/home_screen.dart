@@ -17,7 +17,6 @@ import 'missing_tickets_screen.dart';
 import 'my_earnings_screen.dart';
 import 'notifications_screen.dart';
 import 'profile_screen.dart';
-import 'refer_earn_screen.dart';
 import 'search_screen.dart';
 import 'top_category_brands_screen.dart';
 

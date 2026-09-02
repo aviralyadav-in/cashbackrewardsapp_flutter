@@ -30,7 +30,7 @@ class _TopCategoriesSectionState extends State<TopCategoriesSection> {
   int _selectedCategoryIndex = 0;
   bool _showAllCategories = false;
 
-  static const double _itemWidth = 74.0;
+  static const double _itemWidth = 78.0;
   static const double _itemSpacing = 12.0;
 
   @override
@@ -223,7 +223,7 @@ class CategorySelectorSection extends StatelessWidget {
 
           // Horizontal Category List
           SizedBox(
-            height: 114,
+            height: 120,
             child: ListView.separated(
               controller: scrollController,
               scrollDirection: Axis.horizontal,
@@ -245,9 +245,9 @@ class CategorySelectorSection extends StatelessWidget {
                     : activeTabColor.withValues(alpha: 0.0);
 
                 // Category circular image container background color
-                final Color imageContainerBg = isDark
-                    ? const Color(0xFF1E1E22)
-                    : Colors.white;
+                final Color imageContainerBg = isSelected
+                    ? activeTabColor
+                    : (isDark ? const Color(0xFF1E1E22) : Colors.white);
 
                 return GestureDetector(
                   onTap: () => onCategorySelected(index),
@@ -349,7 +349,7 @@ class CategorySelectorSection extends StatelessWidget {
                         AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
                           style: GoogleFonts.fraunces(
-                            fontSize: 12.5,
+                            fontSize: 11.5,
                             fontWeight: isSelected
                                 ? FontWeight.w800
                                 : FontWeight.w700,
@@ -361,7 +361,7 @@ class CategorySelectorSection extends StatelessWidget {
                                     : const Color(0xFF374151)),
                           ),
                           maxLines: 2,
-                          overflow: TextOverflow.ellipsis,
+                          softWrap: true,
                           textAlign: TextAlign.center,
                           child: Text(cat.title),
                         ),
@@ -407,7 +407,7 @@ class CategoryOffersSection extends StatelessWidget {
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOutCubic,
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
+      padding: const EdgeInsets.fromLTRB(26, 8, 26, 12),
       decoration: BoxDecoration(
         color: backgroundColor, // Dynamic category-specific background color
         borderRadius: BorderRadius.zero,

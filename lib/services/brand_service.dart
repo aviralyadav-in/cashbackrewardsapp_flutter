@@ -22,7 +22,7 @@ class BrandService {
   static final List<BrandModel> _fallbackBrands = [
     const BrandModel(
       name: 'Amazon.in',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/a/a9/Amazon_logo.svg',
+      logoUrl: 'assets/logos/amazon.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Electronics & Shopping',
@@ -31,7 +31,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Myntra',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/b/bc/Myntra_Logo.png',
+      logoUrl: 'assets/logos/myntra.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 7.5% Cashback',
       category: 'Fashion & Lifestyle',
@@ -40,7 +40,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Flipkart',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/7/7a/Flipkart_logo.svg',
+      logoUrl: 'assets/logos/flipkart.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Mobiles & Mega Sale',
@@ -49,7 +49,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'AJIO',
-      logoUrl: 'https://assets.ajio.com/static/img/Ajio-Logo.svg',
+      logoUrl: 'assets/logos/ajio.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Trendy Fashion',
@@ -58,7 +58,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Meesho',
-      logoUrl: 'https://images.meesho.com/images/pow/meeshoLogo.png',
+      logoUrl: 'assets/logos/meesho.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Budget Shopping',
@@ -94,7 +94,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Reliance Digital',
-      logoUrl: 'https://www.reliancedigital.in/build/client/images/rel_stat_svg.svg',
+      logoUrl: 'assets/logos/reliancedigital.svg',
       bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Tech & Appliances',

@@ -140,27 +140,34 @@ class GridBrandCard extends StatelessWidget {
                       horizontal: 8,
                       vertical: 4,
                     ),
-                    child: NetworkImageWithSkeleton(
-                      imageUrl: logoUrl,
-                      fit: BoxFit.contain,
-                      errorBuilder:
-                          (context, error, stackTrace) {
-                        return Center(
-                          child: Text(
-                            brand.name,
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                            textAlign: TextAlign.center,
-                            style: GoogleFonts.fraunces(
-                              fontSize: 13.5,
-                              fontWeight: FontWeight.w700,
-                              color: isDark
-                                  ? AppColors.darkTextPrimary
-                                  : AppColors.textPrimary,
+                    child: ConstrainedBox(
+                      constraints: const BoxConstraints(
+                        maxHeight: 44,
+                        maxWidth: 92,
+                      ),
+                      child: NetworkImageWithSkeleton(
+                        imageUrl: logoUrl,
+                        fit: BoxFit.contain,
+                        alignment: Alignment.center,
+                        errorBuilder:
+                            (context, error, stackTrace) {
+                          return Center(
+                            child: Text(
+                              brand.name,
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              textAlign: TextAlign.center,
+                              style: GoogleFonts.fraunces(
+                                fontSize: 13.0,
+                                fontWeight: FontWeight.w700,
+                                color: isDark
+                                    ? AppColors.darkTextPrimary
+                                    : AppColors.textPrimary,
+                              ),
                             ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     ),
                   ),
                 ),
