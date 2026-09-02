@@ -188,50 +188,68 @@ class _HomeScreenState extends State<HomeScreen> {
               child: Consumer2<ProductProvider, CategoryProvider>(
                 builder: (context, provider, categoryProvider, child) {
                   return ListView(
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.symmetric(vertical: 16),
                     children: [
                       // DYNAMIC E-COMMERCE CASHBACK BANNER CAROUSEL
-                      const CashbackBannerCarousel(),
+                      const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 16),
+                        child: CashbackBannerCarousel(),
+                      ),
                       const SizedBox(height: 24),
 
-                      // TOP CATEGORIES SECTION
+                      // TOP CATEGORIES SECTION (Full screen width)
                       TopCategoriesSection(
                         isDark: isDark,
                       ),
                       const SizedBox(height: 24),
 
                       // 1. CASHBACK ON MOST POPULAR BRANDS
-                      SubtleSectionContainer(
-                        title: 'Cashback on Most Popular Brands',
-                        isDark: isDark,
-                        lightGradientColors: const [AppColors.beigeSurface, AppColors.cardBackground],
-                        darkGradientColors: const [AppColors.darkSurface, AppColors.darkCard],
-                        onViewAllTap: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (_) => const TopCategoryBrandsScreen(
-                                categoryTitle: 'Most Popular',
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: Column(
+                          children: [
+                            SubtleSectionContainer(
+                              title: 'Cashback on Most Popular Brands',
+                              isDark: isDark,
+                              lightGradientColors: const [AppColors.beigeSurface, AppColors.cardBackground],
+                              darkGradientColors: const [AppColors.darkSurface, AppColors.darkCard],
+                              onViewAllTap: () {
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (_) => const TopCategoryBrandsScreen(
+                                      categoryTitle: 'Most Popular',
+                                      brands: HomeMockData.popularBrandsCatalog,
+                                    ),
+                                  ),
+                                );
+                              },
+                              child: GridCardsSection(
                                 brands: HomeMockData.popularBrandsCatalog,
+                                isDark: isDark,
+                                initialCount: 6,
                               ),
                             ),
-                          );
-                        },
-                        child: GridCardsSection(
-                          brands: HomeMockData.popularBrandsCatalog,
-                          isDark: isDark,
-                          initialCount: 6,
+                            SubcategoryPromotionalBannerWidget(
+                              bannerData: HomeMockData.popularBrandsBanner,
+                              isDark: isDark,
+                            ),
+                          ],
                         ),
-                      ),
-                      SubcategoryPromotionalBannerWidget(
-                        bannerData: HomeMockData.popularBrandsBanner,
-                        isDark: isDark,
                       ),
 
                       // 2. DISCOVERY SECTIONS
-                      ...HomeMockData.discoverySections.map((s) => _buildDiscoverySection(s, isDark)),
+                      ...HomeMockData.discoverySections.map(
+                        (s) => Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 16),
+                          child: _buildDiscoverySection(s, isDark),
+                        ),
+                      ),
 
                       // 3. TOP AMAZON DEALS SECTION
-                      TopAmazonDealsSection(isDark: isDark),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 16),
+                        child: TopAmazonDealsSection(isDark: isDark),
+                      ),
 
                       const SizedBox(height: 24),
                     ],
@@ -271,9 +289,9 @@ class _HomeScreenState extends State<HomeScreen> {
           index: _selectedIndex,
           children: [
             _buildHomeContent(context, isDark),
-            ReferEarnScreen(
-              onBack: () => setState(() => _selectedIndex = 0),
-            ),
+            // ReferEarnScreen(
+            //   onBack: () => setState(() => _selectedIndex = 0),
+            // ),
             MyEarningsScreen(
               onBack: () => setState(() => _selectedIndex = 0),
             ),

@@ -166,14 +166,14 @@ class CategorySelectorSection extends StatelessWidget {
     return Container(
       width: double.infinity,
       color: Colors.transparent,
-      padding: const EdgeInsets.fromLTRB(4, 8, 4, 10),
+      padding: const EdgeInsets.fromLTRB(0, 8, 0, 0),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisSize: MainAxisSize.min,
         children: [
           // Section 1 Header
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 2),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
@@ -227,7 +227,7 @@ class CategorySelectorSection extends StatelessWidget {
               controller: scrollController,
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
-              padding: const EdgeInsets.symmetric(horizontal: 2),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
               itemCount: categories.length,
               separatorBuilder: (context, index) =>
                   SizedBox(width: itemSpacing),
@@ -235,20 +235,31 @@ class CategorySelectorSection extends StatelessWidget {
                 final cat = categories[index];
                 final isSelected = selectedIndex == index;
 
-                // ONLY the individual selected category image container background changes dynamically
-                final Color imageContainerBg = isSelected
+                // Dynamic background color when category is selected (replaces yellow)
+                final Color tabBgColor = isSelected
                     ? (isDark
                         ? cat.darkBackgroundColor
                         : cat.backgroundColor)
-                    : (isDark
-                        ? const Color(0xFF1E1E22)
-                        : Colors.white);
+                    : Colors.transparent;
+
+                // Category circular image container background color
+                final Color imageContainerBg = isDark
+                    ? const Color(0xFF1E1E22)
+                    : Colors.white;
 
                 return GestureDetector(
                   onTap: () => onCategorySelected(index),
                   behavior: HitTestBehavior.opaque,
-                  child: SizedBox(
+                  child: AnimatedContainer(
+                    duration: const Duration(milliseconds: 300),
                     width: itemWidth,
+                    padding: const EdgeInsets.only(top: 8),
+                    decoration: BoxDecoration(
+                      color: tabBgColor,
+                      borderRadius: const BorderRadius.vertical(
+                        top: Radius.circular(12),
+                      ),
+                    ),
                     child: Column(
                       mainAxisSize: MainAxisSize.min,
                       children: [
@@ -393,23 +404,10 @@ class CategoryOffersSection extends StatelessWidget {
       duration: const Duration(milliseconds: 400),
       curve: Curves.easeInOutCubic,
       width: double.infinity,
-      padding: const EdgeInsets.all(12),
+      padding: const EdgeInsets.fromLTRB(12, 8, 12, 10),
       decoration: BoxDecoration(
         color: backgroundColor, // Dynamic category-specific background color
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(
-          color: isDark
-              ? accentColor.withValues(alpha: 0.25)
-              : accentColor.withValues(alpha: 0.18),
-          width: 1.2,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: accentColor.withValues(alpha: isDark ? 0.12 : 0.06),
-            blurRadius: 12,
-            offset: const Offset(0, 3),
-          ),
-        ],
+        borderRadius: BorderRadius.zero,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -423,34 +421,34 @@ class CategoryOffersSection extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 350),
-                      width: 4,
-                      height: 16,
-                      decoration: BoxDecoration(
-                        color: accentColor,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
+                    // AnimatedContainer(
+                    //   duration: const Duration(milliseconds: 350),
+                    //   width: 4,
+                    //   height: 16,
+                    //   decoration: BoxDecoration(
+                    //     color: accentColor,
+                    //     borderRadius: BorderRadius.circular(2),
+                    //   ),
+                    // ),
                     const SizedBox(width: 8),
-                    Text(
-                      '${activeCategory.title} Offers',
-                      style: GoogleFonts.fraunces(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: isDark ? Colors.white : const Color(0xFF1E1E24),
-                      ),
-                    ),
+                    // Text(
+                    //   '${activeCategory.title} Offers',
+                    //   style: GoogleFonts.fraunces(
+                    //     fontSize: 15,
+                    //     fontWeight: FontWeight.w700,
+                    //     color: isDark ? Colors.white : const Color(0xFF1E1E24),
+                    //   ),
+                    // ),
                   ],
                 ),
-                Text(
-                  '${brands.length} Stores',
-                  style: GoogleFonts.fraunces(
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    color: accentColor,
-                  ),
-                ),
+                // Text(
+                //   '${brands.length} Stores',
+                //   style: GoogleFonts.fraunces(
+                //     fontSize: 12,
+                //     fontWeight: FontWeight.w600,
+                //     color: accentColor,
+                //   ),
+                // ),
               ],
             ),
           ),
