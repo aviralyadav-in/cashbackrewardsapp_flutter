@@ -182,7 +182,7 @@ class CategorySelectorSection extends StatelessWidget {
                     AnimatedContainer(
                       duration: const Duration(milliseconds: 350),
                       width: 4,
-                      height: 16,
+                      height: 18,
                       decoration: BoxDecoration(
                         color: accentColor,
                         borderRadius: BorderRadius.circular(2),
@@ -192,8 +192,9 @@ class CategorySelectorSection extends StatelessWidget {
                     Text(
                       'Top Categories',
                       style: GoogleFonts.fraunces(
-                        fontSize: 16,
+                        fontSize: 18.5,
                         fontWeight: FontWeight.w700,
+                        letterSpacing: -0.2,
                         color: isDark ? Colors.white : const Color(0xFF1E1E24),
                       ),
                     ),
@@ -222,7 +223,7 @@ class CategorySelectorSection extends StatelessWidget {
 
           // Horizontal Category List
           SizedBox(
-            height: 104,
+            height: 114,
             child: ListView.separated(
               controller: scrollController,
               scrollDirection: Axis.horizontal,
@@ -236,11 +237,12 @@ class CategorySelectorSection extends StatelessWidget {
                 final isSelected = selectedIndex == index;
 
                 // Dynamic background color when category is selected (replaces yellow)
+                final Color activeTabColor = isDark
+                    ? cat.darkBackgroundColor
+                    : cat.backgroundColor;
                 final Color tabBgColor = isSelected
-                    ? (isDark
-                        ? cat.darkBackgroundColor
-                        : cat.backgroundColor)
-                    : Colors.transparent;
+                    ? activeTabColor
+                    : activeTabColor.withValues(alpha: 0.0);
 
                 // Category circular image container background color
                 final Color imageContainerBg = isDark
@@ -251,7 +253,8 @@ class CategorySelectorSection extends StatelessWidget {
                   onTap: () => onCategorySelected(index),
                   behavior: HitTestBehavior.opaque,
                   child: AnimatedContainer(
-                    duration: const Duration(milliseconds: 300),
+                    duration: const Duration(milliseconds: 250),
+                    curve: Curves.easeInOut,
                     width: itemWidth,
                     padding: const EdgeInsets.only(top: 8),
                     decoration: BoxDecoration(
@@ -346,16 +349,16 @@ class CategorySelectorSection extends StatelessWidget {
                         AnimatedDefaultTextStyle(
                           duration: const Duration(milliseconds: 200),
                           style: GoogleFonts.fraunces(
-                            fontSize: 11,
+                            fontSize: 12.5,
                             fontWeight: isSelected
                                 ? FontWeight.w800
-                                : FontWeight.w500,
+                                : FontWeight.w700,
                             height: 1.15,
                             color: isSelected
                                 ? accentColor
                                 : (isDark
-                                    ? Colors.grey.shade400
-                                    : const Color(0xFF4B5563)),
+                                    ? Colors.grey.shade300
+                                    : const Color(0xFF374151)),
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,

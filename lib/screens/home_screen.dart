@@ -343,7 +343,7 @@ class _HomeScreenState extends State<HomeScreen> {
               BottomNavigationBarItem(
                 icon: Icon(Icons.account_balance_wallet_outlined),
                 activeIcon: Icon(Icons.account_balance_wallet_rounded),
-                label: 'My Earnings',
+                label: 'Wallet',
               ),
               BottomNavigationBarItem(
                 icon: Icon(Icons.receipt_long_outlined),

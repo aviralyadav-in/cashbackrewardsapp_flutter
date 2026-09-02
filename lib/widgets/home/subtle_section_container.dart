@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../../models/brand_model.dart';
 import '../../theme/app_theme.dart';
 import 'grid_brand_card.dart';
@@ -10,6 +11,7 @@ class SubtleSectionContainer extends StatelessWidget {
   final List<Color> lightGradientColors;
   final List<Color> darkGradientColors;
   final VoidCallback? onViewAllTap;
+  final int maxChars;
 
   const SubtleSectionContainer({
     super.key,
@@ -19,11 +21,22 @@ class SubtleSectionContainer extends StatelessWidget {
     required this.lightGradientColors,
     required this.darkGradientColors,
     this.onViewAllTap,
+    this.maxChars = 20,
   });
+
+  String _getTruncatedTitle(String rawText) {
+    final trimmed = rawText.trim();
+    if (trimmed.isEmpty) return trimmed;
+    if (trimmed.length > maxChars) {
+      return '${trimmed.substring(0, maxChars).trim()}...';
+    }
+    return trimmed;
+  }
 
   @override
   Widget build(BuildContext context) {
     final gradientColors = isDark ? darkGradientColors : lightGradientColors;
+    final displayTitle = _getTruncatedTitle(title);
 
     return Container(
       width: double.infinity,
@@ -50,26 +63,36 @@ class SubtleSectionContainer extends StatelessWidget {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Row(
-                  children: [
-                    Container(
-                      width: 4,
-                      height: 18,
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryBrown,
-                        borderRadius: BorderRadius.circular(2),
+                Expanded(
+                  child: Row(
+                    children: [
+                      Container(
+                        width: 4,
+                        height: 18,
+                        decoration: BoxDecoration(
+                          color: AppColors.primaryBrown,
+                          borderRadius: BorderRadius.circular(2),
+                        ),
                       ),
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      title,
-                      style: AppTextStyles.sectionHeading(
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      const SizedBox(width: 8),
+                      Expanded(
+                        child: Text(
+                          displayTitle,
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                          style: GoogleFonts.fraunces(
+                            fontSize: 18.5,
+                            fontWeight: FontWeight.w700,
+                            letterSpacing: -0.2,
+                            color: isDark ? Colors.white : const Color(0xFF1E1E24),
+                          ),
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
-                if (onViewAllTap != null)
+                if (onViewAllTap != null) ...[
+                  const SizedBox(width: 8),
                   InkWell(
                     onTap: onViewAllTap,
                     borderRadius: BorderRadius.circular(16),
@@ -104,6 +127,7 @@ class SubtleSectionContainer extends StatelessWidget {
                       ),
                     ),
                   ),
+                ],
               ],
             ),
           ),

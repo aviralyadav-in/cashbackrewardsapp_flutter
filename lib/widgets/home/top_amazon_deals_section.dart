@@ -57,8 +57,11 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                   const SizedBox(width: 8),
                   Text(
                     'Top Amazon Deals',
-                    style: AppTextStyles.sectionHeading(
-                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                    style: GoogleFonts.fraunces(
+                      fontSize: 18.5,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: -0.2,
+                      color: isDark ? Colors.white : const Color(0xFF1E1E24),
                     ),
                   ),
                 ],
