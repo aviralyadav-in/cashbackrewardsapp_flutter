@@ -68,7 +68,10 @@ flutter:
 
   assets:
     - assets/data/brands.json
+    - assets/data/banking_cards.json
+    - assets/data/all_categories_cards.json
     - assets/logos/
+    - assets/cards/
 
   fonts:
     - family: Algerian
