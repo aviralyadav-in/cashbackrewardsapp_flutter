@@ -200,7 +200,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Popular',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/1999?id=',
+      websiteUrl: 'https://www.amazon.in',
     ),
     BrandModel(
       name: 'Flipkart CB Affoy',
@@ -209,7 +209,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6.50% Cashback',
       category: 'Popular',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043241?id=',
+      websiteUrl: 'https://www.flipkart.com',
     ),
     BrandModel(
       name: 'AJIO',
@@ -218,7 +218,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Popular',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/27037?id=',
+      websiteUrl: 'https://www.ajio.com',
     ),
     BrandModel(
       name: 'Nykaa',
@@ -227,7 +227,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Popular',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25123?id=',
+      websiteUrl: 'https://www.nykaa.com',
     ),
     BrandModel(
       name: 'Myntra',
@@ -236,7 +236,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Popular',
       offerText: 'Sale Live Now',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24516?id=',
+      websiteUrl: 'https://www.myntra.com',
     ),
     BrandModel(
       name: 'Foxtale',
@@ -245,7 +245,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 Get 4 Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24387?id=',
+      websiteUrl: 'https://foxtale.in',
     ),
     BrandModel(
       name: 'Emergent',
@@ -254,7 +254,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹150 Cashback',
       category: 'Popular',
       offerText: 'Build App @₹99',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26967?id=',
+      websiteUrl: 'https://emergent.in',
     ),
     BrandModel(
       name: 'The Derma Co',
@@ -263,7 +263,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Popular',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26496?id=',
+      websiteUrl: 'https://thedermaco.com',
     ),
     BrandModel(
       name: 'Dot & Key',
@@ -272,7 +272,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Popular',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26503?id=',
+      websiteUrl: 'https://www.dotandkey.com',
     ),
     BrandModel(
       name: 'Aqualogica',
@@ -281,7 +281,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 @ 699',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26512?id=',
+      websiteUrl: 'https://aqualogica.in',
     ),
     BrandModel(
       name: 'Shopsy',
@@ -290,7 +290,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7.50% Cashback',
       category: 'Popular',
       offerText: 'Upto 90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/21912?id=',
+      websiteUrl: 'https://www.shopsy.in',
     ),
     BrandModel(
       name: 'Times Prime',
@@ -299,7 +299,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹400 Cashback',
       category: 'Popular',
       offerText: 'Flat Rs.699 Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24699?id=',
+      websiteUrl: 'https://www.timesprime.com',
     ),
     BrandModel(
       name: 'Hyugalife',
@@ -308,7 +308,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Popular',
       offerText: 'Upto 60% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26500?id=',
+      websiteUrl: 'https://hyugalife.com',
     ),
     BrandModel(
       name: 'AGEasy',
@@ -317,7 +317,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 28% Cashback',
       category: 'Popular',
       offerText: 'Flat 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26749?id=',
+      websiteUrl: 'https://ageasy.in',
     ),
     BrandModel(
       name: 'Nutslane',
@@ -326,7 +326,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Popular',
       offerText: 'Flat 12% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26764?id=',
+      websiteUrl: 'https://nutslane.com',
     ),
     BrandModel(
       name: 'MuscleBlaze',
@@ -335,7 +335,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Popular',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24442?id=',
+      websiteUrl: 'https://www.muscleblaze.com',
     ),
     BrandModel(
       name: 'Hyphen',
@@ -344,7 +344,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 @ 799',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24391?id=',
+      websiteUrl: 'https://letshyphen.com',
     ),
     BrandModel(
       name: 'Hummel',
@@ -353,7 +353,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Popular',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26808?id=',
+      websiteUrl: 'https://hummel.net.in',
     ),
     BrandModel(
       name: 'realme',
@@ -362,7 +362,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Popular',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25863?id=',
+      websiteUrl: 'https://www.realme.com/in',
     ),
     BrandModel(
       name: 'R for Rabbit',
@@ -371,7 +371,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Popular',
       offerText: 'Upto 30% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26825?id=',
+      websiteUrl: 'https://rforrabbit.com',
     ),
   ];
 
@@ -383,7 +383,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5.20% Cashback',
       category: 'Fashion',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043247?id=',
+      websiteUrl: 'https://www.flipkart.com/clothing-and-accessories',
     ),
     BrandModel(
       name: 'AJIO',
@@ -392,7 +392,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/27037?id=',
+      websiteUrl: 'https://www.ajio.com',
     ),
     BrandModel(
       name: 'Myntra',
@@ -401,7 +401,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Fashion',
       offerText: 'Sale Live Now',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24516?id=',
+      websiteUrl: 'https://www.myntra.com',
     ),
     BrandModel(
       name: 'Amazon Fashion & Clothing',
@@ -410,7 +410,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Fashion',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18861?id=',
+      websiteUrl: 'https://www.amazon.in/fashion',
     ),
     BrandModel(
       name: 'STRCH',
@@ -419,7 +419,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Fashion',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24881?id=',
+      websiteUrl: 'https://strch.in',
     ),
     BrandModel(
       name: 'Hummel',
@@ -428,7 +428,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Fashion',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26808?id=',
+      websiteUrl: 'https://hummel.net.in',
     ),
     BrandModel(
       name: 'Lavie',
@@ -437,7 +437,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26746?id=',
+      websiteUrl: 'https://www.lavieworld.com',
     ),
     BrandModel(
       name: 'House Of Koala',
@@ -446,7 +446,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Fashion',
       offerText: 'Flat 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24567?id=',
+      websiteUrl: 'https://houseofkoala.com',
     ),
     BrandModel(
       name: 'Uniqlo',
@@ -455,7 +455,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22496?id=',
+      websiteUrl: 'https://www.uniqlo.com/in',
     ),
     BrandModel(
       name: 'XYXX Crew',
@@ -464,7 +464,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: 'Buy 5 at Rs.999',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24607?id=',
+      websiteUrl: 'https://xyxxcrew.com',
     ),
     BrandModel(
       name: 'Libas',
@@ -473,7 +473,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: 'Upto 70% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25786?id=',
+      websiteUrl: 'https://www.libas.in',
     ),
     BrandModel(
       name: 'Shyaway',
@@ -482,7 +482,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Perfect Fitting | Discreet Packaging 10th Birthday Bash Sale',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26497?id=',
+      websiteUrl: 'https://www.shyaway.com',
     ),
     BrandModel(
       name: 'Tata CLiQ',
@@ -491,7 +491,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Fashion',
       offerText: 'Upto 60% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24924?id=',
+      websiteUrl: 'https://www.tatacliq.com',
     ),
     BrandModel(
       name: 'Lucira Jewelry',
@@ -500,7 +500,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26973?id=',
+      websiteUrl: 'https://lucirajewelry.com',
     ),
     BrandModel(
       name: 'Zop',
@@ -509,7 +509,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Fashion',
       offerText: 'Zop is an online platform offering a variety of products, in',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25094?id=',
+      websiteUrl: 'https://zopnow.com',
     ),
     BrandModel(
       name: 'Tiaraa',
@@ -518,7 +518,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Fashion',
       offerText: 'Designer Handcraft Jewellery Collection CashKaro Exclusive: ',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24695?id=',
+      websiteUrl: 'https://tiaraa.co.in',
     ),
     BrandModel(
       name: 'Uppercase',
@@ -527,7 +527,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24854?id=',
+      websiteUrl: 'https://uppercase.co.in',
     ),
     BrandModel(
       name: 'Outzidr',
@@ -536,7 +536,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹250 Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/27044?id=',
+      websiteUrl: 'https://outzidr.com',
     ),
     BrandModel(
       name: 'Cahoot',
@@ -545,7 +545,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26740?id=',
+      websiteUrl: 'https://cahootstore.com',
     ),
     BrandModel(
       name: 'The Luxury Closet',
@@ -554,7 +554,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Fashion',
       offerText: 'Where Luxury Meets Lifestyle Upto AED 1800 Off on Orders Ove',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/15001?id=',
+      websiteUrl: 'https://theluxurycloset.com',
     ),
   ];
 
@@ -567,7 +567,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 80% Off',
-        websiteUrl: 'https://www.amazon.in',
+        websiteUrl: 'https://www.google.com/search?q=Amazon.in',
       ),
       tagline: 'Mega Electronics & Wardrobe Deals',
     ),
@@ -579,7 +579,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 7% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 75% Off',
-        websiteUrl: 'https://www.flipkart.com',
+        websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/flipkart-sbi-card.page',
       ),
       tagline: 'Big Saving Days Special Offers',
     ),
@@ -615,7 +615,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 15% Rewards',
         category: 'E-Commerce',
         offerText: 'Deals from ₹99',
-        websiteUrl: 'https://www.meesho.com',
+        websiteUrl: 'https://www.google.com/search?q=Meesho',
       ),
       tagline: 'Lowest Prices Across India',
     ),
@@ -651,7 +651,7 @@ class HomeMockData {
         cashbackPercentage: 'Flat 6% Rewards',
         category: 'Electronics',
         offerText: 'Up to 45% Off',
-        websiteUrl: 'https://www.croma.com',
+        websiteUrl: 'https://www.google.com/search?q=Croma',
       ),
       tagline: 'Brighter Gadgets, Better Life',
     ),
@@ -663,7 +663,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Electronics',
         offerText: 'Up to 40% Off',
-        websiteUrl: 'https://www.reliancedigital.in',
+        websiteUrl: 'https://www.google.com/search?q=Reliance+Digital',
       ),
       tagline: 'Digital India Tech Deals',
     ),
@@ -675,7 +675,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 7% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 65% Off',
-        websiteUrl: 'https://www.snapdeal.com',
+        websiteUrl: 'https://www.google.com/search?q=Snapdeal',
       ),
       tagline: 'Daily Bargains & Essentials',
     ),
@@ -687,7 +687,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 9% Rewards',
         category: 'Fashion',
         offerText: 'Up to 40% Off',
-        websiteUrl: 'https://www.nike.com/in',
+        websiteUrl: 'https://www.google.com/search?q=Nike',
       ),
       tagline: 'Air Jordan & Sportswear Drops',
     ),
@@ -699,7 +699,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'Fashion',
         offerText: 'Up to 45% Off',
-        websiteUrl: 'https://www.adidas.co.in',
+        websiteUrl: 'https://www.google.com/search?q=Adidas',
       ),
       tagline: 'Originals & Running Sneakers',
     ),
@@ -711,7 +711,7 @@ class HomeMockData {
         cashbackPercentage: 'Flat 8% Rewards',
         category: 'Fashion',
         offerText: 'Up to 50% Off',
-        websiteUrl: 'https://www2.hm.com/en_in',
+        websiteUrl: 'https://www.google.com/search?q=H&M',
       ),
       tagline: 'Sustainable High Fashion',
     ),
@@ -723,7 +723,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 6% Rewards',
         category: 'Fashion',
         offerText: 'Up to 30% Off',
-        websiteUrl: 'https://www.zara.com/in',
+        websiteUrl: 'https://www.google.com/search?q=Zara',
       ),
       tagline: 'New Seasonal Outfits & Trends',
     ),
@@ -735,7 +735,7 @@ class HomeMockData {
         cashbackPercentage: 'Flat 10% Rewards',
         category: 'Beauty',
         offerText: 'Up to 40% Off',
-        websiteUrl: 'https://sephora.in',
+        websiteUrl: 'https://www.google.com/search?q=Sephora',
       ),
       tagline: 'Premium Cosmetics & Skincare',
     ),
@@ -747,7 +747,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Up to 30% Off',
-        websiteUrl: 'https://www.etsy.com',
+        websiteUrl: 'https://www.google.com/search?q=Etsy',
       ),
       tagline: 'Handcrafted & Unique Gifts',
     ),
@@ -759,7 +759,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 4% Rewards',
         category: 'Global',
         offerText: 'Global Deals',
-        websiteUrl: 'https://www.ebay.com',
+        websiteUrl: 'https://www.google.com/search?q=eBay',
       ),
       tagline: 'Refurbished Tech & Collectibles',
     ),
@@ -771,7 +771,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Rollback Prices',
-        websiteUrl: 'https://www.walmart.com',
+        websiteUrl: 'https://www.google.com/search?q=Walmart',
       ),
       tagline: 'Everyday Low Prices & Savings',
     ),
@@ -783,7 +783,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 6% Rewards',
         category: 'Global',
         offerText: 'Tech Outlet Sale',
-        websiteUrl: 'https://www.bestbuy.com',
+        websiteUrl: 'https://www.google.com/search?q=Best+Buy',
       ),
       tagline: 'Expert Electronics & Gadgets',
     ),
@@ -795,7 +795,7 @@ class HomeMockData {
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Target Circle Deals',
-        websiteUrl: 'https://www.target.com',
+        websiteUrl: 'https://www.google.com/search?q=Target',
       ),
       tagline: 'Style, Home & Daily Essentials',
     ),
@@ -809,7 +809,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Beauty',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24767?id=',
+      websiteUrl: 'https://www.amazon.in/beauty',
     ),
     BrandModel(
       name: 'Nykaa',
@@ -818,7 +818,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Beauty',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25123?id=',
+      websiteUrl: 'https://www.nykaa.com',
     ),
     BrandModel(
       name: 'Foxtale',
@@ -827,7 +827,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 Get 4 Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24387?id=',
+      websiteUrl: 'https://foxtale.in',
     ),
     BrandModel(
       name: 'mCaffeine',
@@ -836,7 +836,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 Get 3',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22316?id=',
+      websiteUrl: 'https://www.mcaffeine.com',
     ),
     BrandModel(
       name: 'The Derma Co',
@@ -845,7 +845,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26496?id=',
+      websiteUrl: 'https://thedermaco.com',
     ),
     BrandModel(
       name: 'Ounce Organics',
@@ -854,7 +854,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 80% Cashback',
       category: 'Beauty',
       offerText: 'Flat 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/13095?id=',
+      websiteUrl: 'https://ounceorganics.com',
     ),
     BrandModel(
       name: 'Dot & Key',
@@ -863,7 +863,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26503?id=',
+      websiteUrl: 'https://www.dotandkey.com',
     ),
     BrandModel(
       name: 'Kama Ayurveda',
@@ -872,7 +872,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/17454?id=',
+      websiteUrl: 'https://www.kamaayurveda.in',
     ),
     BrandModel(
       name: 'Aqualogica',
@@ -881,7 +881,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ 699',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26512?id=',
+      websiteUrl: 'https://aqualogica.in',
     ),
     BrandModel(
       name: 'JiViSa',
@@ -890,7 +890,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 65% Cashback',
       category: 'Beauty',
       offerText: 'Flat 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26176?id=',
+      websiteUrl: 'https://jivisa.in',
     ),
     BrandModel(
       name: 'Hyphen',
@@ -899,7 +899,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ 799',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24391?id=',
+      websiteUrl: 'https://letshyphen.com',
     ),
     BrandModel(
       name: 'World of Asaya',
@@ -908,7 +908,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Beauty',
       offerText: 'Flat 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26989?id=',
+      websiteUrl: 'https://worldofasaya.com',
     ),
     BrandModel(
       name: 'Dr. Sheth\'s',
@@ -917,7 +917,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Beauty',
       offerText: 'Buy 1 Get 1',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26928?id=',
+      websiteUrl: 'https://www.drsheths.com',
     ),
     BrandModel(
       name: 'TM Perfumes',
@@ -926,7 +926,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Beauty',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26747?id=',
+      websiteUrl: 'https://tmperfumes.com',
     ),
     BrandModel(
       name: 'Nature 4 Nature',
@@ -935,7 +935,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 60% Cashback',
       category: 'Beauty',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25172?id=',
+      websiteUrl: 'https://nature4nature.in',
     ),
     BrandModel(
       name: 'The Man Company',
@@ -944,7 +944,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ Rs.649',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24386?id=',
+      websiteUrl: 'https://www.themancompany.com',
     ),
     BrandModel(
       name: 'Swiss Beauty',
@@ -953,7 +953,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Flat 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24692?id=',
+      websiteUrl: 'https://swissbeauty.in',
     ),
     BrandModel(
       name: 'Forest Essentials India',
@@ -962,7 +962,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26502?id=',
+      websiteUrl: 'https://www.forestessentialsindia.com',
     ),
     BrandModel(
       name: 'WoW',
@@ -971,7 +971,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 16% Cashback',
       category: 'Beauty',
       offerText: 'Buy 8 @ Rs.1000',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24909?id=',
+      websiteUrl: 'https://www.buywow.in',
     ),
     BrandModel(
       name: 'Yaan Man',
@@ -980,7 +980,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Upto 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25228?id=',
+      websiteUrl: 'https://yaanman.com',
     ),
   ];
 
@@ -992,7 +992,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26031?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/cards/credit-card/neo-credit-card',
     ),
     BrandModel(
       name: 'HSBC Platinum Credit Card',
@@ -1001,7 +1001,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24745?id=',
+      websiteUrl: 'https://www.hsbc.co.in/credit-cards/products/platinum/',
     ),
     BrandModel(
       name: 'Uni GoldX Credit Card',
@@ -1010,7 +1010,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26525?id=',
+      websiteUrl: 'https://www.uni.cards/',
     ),
     BrandModel(
       name: 'IDFC First Credit Card',
@@ -1019,7 +1019,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹700 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24715?id=',
+      websiteUrl: 'https://www.idfcfirstbank.com/credit-card',
     ),
     BrandModel(
       name: 'BOBCARD Eterna Credit Card',
@@ -1028,7 +1028,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹540 Rewards',
       category: 'Banking',
       offerText: 'First Year Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25861?id=',
+      websiteUrl: 'https://www.bobcard.co.in/',
     ),
     BrandModel(
       name: 'Yes Bank Pop-Club Credit Card',
@@ -1037,7 +1037,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043151?id=',
+      websiteUrl: 'https://www.yesbank.in/personal-banking/yes-individual/cards/credit-cards',
     ),
     BrandModel(
       name: 'Kotak League Platinum Credit Card',
@@ -1046,7 +1046,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹800 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/19878?id=',
+      websiteUrl: 'https://www.kotak.com/en/personal-banking/cards/credit-cards/league-platinum-card.html',
     ),
     BrandModel(
       name: 'Indusind Tiger Credit Card',
@@ -1055,7 +1055,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹500 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24732?id=',
+      websiteUrl: 'https://www.indusind.com/in/en/personal/cards/credit-cards.html',
     ),
     BrandModel(
       name: 'SalarySe',
@@ -1064,7 +1064,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹900 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26940?id=',
+      websiteUrl: 'https://salaryse.com/',
     ),
     BrandModel(
       name: 'RBL Bank Shoprite Credit Card',
@@ -1073,7 +1073,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹700 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24746?id=',
+      websiteUrl: 'https://www.rblbank.com/personal-banking/cards/credit-cards',
     ),
   ];
 
@@ -1085,7 +1085,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Electronics',
       offerText: 'Upto 65% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22602?id=',
+      websiteUrl: 'https://www.amazon.in/appliances',
     ),
     BrandModel(
       name: 'Flipkart CB Electronics',
@@ -1094,7 +1094,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.95% Cashback',
       category: 'Electronics',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26942?id=',
+      websiteUrl: 'https://www.flipkart.com/electronics',
     ),
     BrandModel(
       name: 'JioMart Electronics',
@@ -1103,7 +1103,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/27045?id=',
+      websiteUrl: 'https://www.jiomart.com/c/electronics/21',
     ),
     BrandModel(
       name: 'realme',
@@ -1112,7 +1112,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Electronics',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25863?id=',
+      websiteUrl: 'https://www.realme.com/in',
     ),
     BrandModel(
       name: 'OPPO',
@@ -1121,7 +1121,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25407?id=',
+      websiteUrl: 'https://www.oppo.com/in',
     ),
     BrandModel(
       name: 'ASUS',
@@ -1130,7 +1130,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Electronics',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25098?id=',
+      websiteUrl: 'https://www.asus.com/in/',
     ),
     BrandModel(
       name: 'Controlz World',
@@ -1139,7 +1139,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24469?id=',
+      websiteUrl: 'https://controlz.world',
     ),
     BrandModel(
       name: 'Daily Objects',
@@ -1148,7 +1148,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹410 Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26791?id=',
+      websiteUrl: 'https://www.dailyobjects.com',
     ),
     BrandModel(
       name: 'Go Noise',
@@ -1157,7 +1157,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Electronics',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24780?id=',
+      websiteUrl: 'https://www.gonoise.com',
     ),
     BrandModel(
       name: 'Havells',
@@ -1166,7 +1166,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24890?id=',
+      websiteUrl: 'https://www.havells.com',
     ),
     BrandModel(
       name: 'Elver',
@@ -1175,7 +1175,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Electronics',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26786?id=',
+      websiteUrl: 'https://elver.in',
     ),
     BrandModel(
       name: 'Mivi',
@@ -1184,7 +1184,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24145?id=',
+      websiteUrl: 'https://www.mivi.in',
     ),
     BrandModel(
       name: 'Moglix',
@@ -1193,7 +1193,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26926?id=',
+      websiteUrl: 'https://www.moglix.com',
     ),
     BrandModel(
       name: 'HP',
@@ -1202,7 +1202,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Electronics',
       offerText: 'Flat 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25754?id=',
+      websiteUrl: 'https://www.hp.com/in-en',
     ),
     BrandModel(
       name: 'boAt',
@@ -1211,7 +1211,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Electronics',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25510?id=',
+      websiteUrl: 'https://www.boat-lifestyle.com',
     ),
     BrandModel(
       name: 'Whirlpool',
@@ -1220,7 +1220,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Cashback',
       category: 'Electronics',
       offerText: 'Flat 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26700?id=',
+      websiteUrl: 'https://www.whirlpoolindia.com',
     ),
     BrandModel(
       name: 'Dell',
@@ -1229,7 +1229,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Electronics',
       offerText: '5% Off Code',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24218?id=',
+      websiteUrl: 'https://www.dell.com/en-in',
     ),
     BrandModel(
       name: 'Lifelong',
@@ -1238,7 +1238,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Electronics',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/27015?id=',
+      websiteUrl: 'https://www.lifelongindiaonline.com',
     ),
     BrandModel(
       name: 'Element 14',
@@ -1247,7 +1247,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18121?id=',
+      websiteUrl: 'https://in.element14.com',
     ),
   ];
 
@@ -1259,7 +1259,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1400 Rewards',
       category: 'Banking',
       offerText: 'Best Cashback Card',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24756?id=',
+      websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/rewards/cashback-sbi-card.page',
     ),
     BrandModel(
       name: 'Scapia Co-Branded Credit Card',
@@ -1268,7 +1268,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹650 Rewards',
       category: 'Banking',
       offerText: 'Best Travel Card',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24742?id=',
+      websiteUrl: 'https://www.scapia.cards/',
     ),
     BrandModel(
       name: 'SBI Flipkart Credit Card',
@@ -1277,7 +1277,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18487?id=',
+      websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/flipkart-sbi-card.page',
     ),
     BrandModel(
       name: 'UPI Credit Card on KIWI',
@@ -1286,7 +1286,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Save on UPI',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043150?id=',
+      websiteUrl: 'https://gokiwi.in/',
     ),
     BrandModel(
       name: 'SBI Simply Click Credit Card',
@@ -1295,7 +1295,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Amazon Sale Saver',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24759?id=',
+      websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/simplyclick-sbi-card.page',
     ),
     BrandModel(
       name: 'Axis Flipkart Credit Card',
@@ -1304,7 +1304,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24654?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/cards/credit-card/flipkart-axis-bank-credit-card',
     ),
     BrandModel(
       name: 'Tata Neu Infinity SBI Credit Card',
@@ -1313,7 +1313,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/19714?id=',
+      websiteUrl: 'https://www.tataneu.com/',
     ),
     BrandModel(
       name: 'Tata Neu Plus SBI Credit Card',
@@ -1322,7 +1322,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/19723?id=',
+      websiteUrl: 'https://www.tataneu.com/',
     ),
     BrandModel(
       name: 'HSBC Live Plus Credit Card',
@@ -1331,7 +1331,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Best for Grocery',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24741?id=',
+      websiteUrl: 'https://www.hsbc.co.in/credit-cards/products/live-plus/',
     ),
     BrandModel(
       name: 'Axis MyZone Rupay Credit Card',
@@ -1340,7 +1340,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1120 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24660?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/cards/credit-card/my-zone-credit-card',
     ),
   ];
 
@@ -1352,7 +1352,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹375 Cashback',
       category: 'Medicine',
       offerText: 'Flat 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26511?id=',
+      websiteUrl: 'https://www.truemeds.in',
     ),
     BrandModel(
       name: 'Netmeds',
@@ -1361,7 +1361,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Medicine',
       offerText: 'Flat 18% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24383?id=',
+      websiteUrl: 'https://www.netmeds.com',
     ),
     BrandModel(
       name: 'HK Vitals',
@@ -1370,7 +1370,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Medicine',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24578?id=',
+      websiteUrl: 'https://hkvitals.com',
     ),
     BrandModel(
       name: 'Medibuddy Labs',
@@ -1379,7 +1379,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Medicine',
       offerText: '15% Off Code',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/23635?id=',
+      websiteUrl: 'https://www.medibuddy.in',
     ),
     BrandModel(
       name: 'PharmEasy Diagnostics',
@@ -1388,7 +1388,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 17% Cashback',
       category: 'Medicine',
       offerText: 'B1G1',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25697?id=',
+      websiteUrl: 'https://pharmeasy.in',
     ),
   ];
 
@@ -1400,7 +1400,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1400 Rewards',
       category: 'Banking',
       offerText: 'Best Cashback Card',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24756?id=',
+      websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/rewards/cashback-sbi-card.page',
     ),
     BrandModel(
       name: 'Axis Neo Rupay Credit Card',
@@ -1409,7 +1409,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26031?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/cards/credit-card/neo-credit-card',
     ),
     BrandModel(
       name: 'HSBC Platinum Credit Card',
@@ -1418,7 +1418,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24745?id=',
+      websiteUrl: 'https://www.hsbc.co.in/credit-cards/products/platinum/',
     ),
     BrandModel(
       name: 'Uni GoldX Credit Card',
@@ -1427,7 +1427,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26525?id=',
+      websiteUrl: 'https://www.uni.cards/',
     ),
     BrandModel(
       name: 'Scapia Co-Branded Credit Card',
@@ -1436,7 +1436,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹650 Rewards',
       category: 'Banking',
       offerText: 'Best Travel Card',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24742?id=',
+      websiteUrl: 'https://www.scapia.cards/',
     ),
     BrandModel(
       name: 'SBI Flipkart Credit Card',
@@ -1445,7 +1445,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18487?id=',
+      websiteUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/flipkart-sbi-card.page',
     ),
     BrandModel(
       name: 'Ram Fincorp Personal Loan',
@@ -1454,7 +1454,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26870?id=',
+      websiteUrl: 'https://ramfincorp.com/',
     ),
     BrandModel(
       name: 'HDFC Bank Personal Loan',
@@ -1463,7 +1463,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24492?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'HDFC Instant Loan',
@@ -1472,7 +1472,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043152?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'Money View Personal Loan',
@@ -1481,7 +1481,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/16626?id=',
+      websiteUrl: 'https://moneyview.in/personal-loan',
     ),
     BrandModel(
       name: 'ZapCash Personal Loan',
@@ -1490,7 +1490,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26867?id=',
+      websiteUrl: 'https://zapcash.in/',
     ),
     BrandModel(
       name: 'Fibe Personal Loan',
@@ -1499,7 +1499,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26271?id=',
+      websiteUrl: 'https://www.fibe.in/personal-loan/',
     ),
   ];
 
@@ -1511,7 +1511,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22551?id=',
+      websiteUrl: 'https://www.ihg.com',
     ),
     BrandModel(
       name: 'Etihad Airways',
@@ -1520,7 +1520,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26739?id=',
+      websiteUrl: 'https://www.etihad.com',
     ),
     BrandModel(
       name: 'Qatar Airways',
@@ -1529,7 +1529,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Cashback',
       category: 'Travel',
       offerText: 'Upto 14% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26270?id=',
+      websiteUrl: 'https://www.qatarairways.com',
     ),
     BrandModel(
       name: 'Air India',
@@ -1538,7 +1538,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26607?id=',
+      websiteUrl: 'https://www.airindia.com',
     ),
     BrandModel(
       name: 'Skyscanner',
@@ -1547,7 +1547,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18603?id=',
+      websiteUrl: 'https://www.skyscanner.co.in',
     ),
     BrandModel(
       name: 'Booking.com',
@@ -1556,7 +1556,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26504?id=',
+      websiteUrl: 'https://www.booking.com',
     ),
     BrandModel(
       name: 'Cleartrip Flights',
@@ -1565,7 +1565,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹45 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26922?id=',
+      websiteUrl: 'https://www.cleartrip.com/flights',
     ),
     BrandModel(
       name: 'Air India Express',
@@ -1574,7 +1574,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹100 Cashback',
       category: 'Travel',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/17629?id=',
+      websiteUrl: 'https://www.airindiaexpress.com',
     ),
     BrandModel(
       name: 'Hotels.com Partnerize',
@@ -1583,7 +1583,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25198?id=',
+      websiteUrl: 'https://in.hotels.com',
     ),
     BrandModel(
       name: 'Goibibo Hotels',
@@ -1592,7 +1592,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹150 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/17144?id=',
+      websiteUrl: 'https://www.goibibo.com/hotels',
     ),
     BrandModel(
       name: 'MakeMyTrip Hotels',
@@ -1601,7 +1601,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹140 Cashback',
       category: 'Travel',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/3071?id=',
+      websiteUrl: 'https://www.makemytrip.com/hotels',
     ),
     BrandModel(
       name: 'Cleartrip Hotels',
@@ -1610,7 +1610,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹180 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26923?id=',
+      websiteUrl: 'https://www.cleartrip.com/hotels',
     ),
     BrandModel(
       name: 'Agoda',
@@ -1619,7 +1619,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Travel',
       offerText: 'Upto 75% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18520?id=',
+      websiteUrl: 'https://www.agoda.com',
     ),
     BrandModel(
       name: 'Expedia Partnerize',
@@ -1628,7 +1628,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24777?id=',
+      websiteUrl: 'https://www.expedia.co.in',
     ),
     BrandModel(
       name: 'Accor Hotels',
@@ -1637,7 +1637,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/21685?id=',
+      websiteUrl: 'https://all.accor.com',
     ),
     BrandModel(
       name: 'GetYourGuide',
@@ -1646,7 +1646,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24258?id=',
+      websiteUrl: 'https://www.getyourguide.com',
     ),
     BrandModel(
       name: 'University Living',
@@ -1655,7 +1655,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹1500 Cashback',
       category: 'Travel',
       offerText: 'Upto 30% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26015?id=',
+      websiteUrl: 'https://www.universityliving.com',
     ),
     BrandModel(
       name: 'Kayak Hotels',
@@ -1664,7 +1664,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22817?id=',
+      websiteUrl: 'https://www.kayak.co.in/hotels',
     ),
     BrandModel(
       name: 'Radisson Hotels',
@@ -1673,7 +1673,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Travel',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25075?id=',
+      websiteUrl: 'https://www.radissonhotels.com',
     ),
     BrandModel(
       name: 'Kayak Flights',
@@ -1682,7 +1682,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.80% Cashback',
       category: 'Travel',
       offerText: 'Upto 17% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/22818?id=',
+      websiteUrl: 'https://www.kayak.co.in/flights',
     ),
   ];
 
@@ -1694,7 +1694,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26870?id=',
+      websiteUrl: 'https://ramfincorp.com/',
     ),
     BrandModel(
       name: 'HDFC Bank Personal Loan',
@@ -1703,7 +1703,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24492?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'HDFC Instant Loan',
@@ -1712,7 +1712,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043152?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'Money View Personal Loan',
@@ -1721,7 +1721,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/16626?id=',
+      websiteUrl: 'https://moneyview.in/personal-loan',
     ),
     BrandModel(
       name: 'ZapCash Personal Loan',
@@ -1730,7 +1730,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26867?id=',
+      websiteUrl: 'https://zapcash.in/',
     ),
     BrandModel(
       name: 'Fibe Personal Loan',
@@ -1739,7 +1739,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26271?id=',
+      websiteUrl: 'https://www.fibe.in/personal-loan/',
     ),
     BrandModel(
       name: 'Poonawalla Fincorp Personal Loan',
@@ -1748,7 +1748,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24834?id=',
+      websiteUrl: 'https://poonawallafincorp.com/personal-loan.php',
     ),
     BrandModel(
       name: 'Prefr Personal Loan',
@@ -1757,7 +1757,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24574?id=',
+      websiteUrl: 'https://prefr.com/',
     ),
     BrandModel(
       name: 'Olyv Personal Loan',
@@ -1766,7 +1766,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Instant Loan',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24770?id=',
+      websiteUrl: 'https://olyv.com/',
     ),
     BrandModel(
       name: 'Axis Bank Personal Loan',
@@ -1775,7 +1775,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.60% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24493?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/loans/personal-loan',
     ),
     BrandModel(
       name: 'Tata Capital Personal Loan',
@@ -1784,7 +1784,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24495?id=',
+      websiteUrl: 'https://www.tatacapital.com/personal-loan.html',
     ),
     BrandModel(
       name: 'Bajaj Finserv Personal Loan',
@@ -1793,7 +1793,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.80% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24494?id=',
+      websiteUrl: 'https://www.bajajfinserv.in/personal-loan',
     ),
     BrandModel(
       name: 'FIRSTmoney by IDFC FIRST Bank Personal Loan',
@@ -1802,7 +1802,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.25% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24369?id=',
+      websiteUrl: 'https://www.idfcfirstbank.com/personal-banking/loans/personal-loan',
     ),
     BrandModel(
       name: 'Mpokket  Personal Loan',
@@ -1811,7 +1811,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹40 Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24833?id=',
+      websiteUrl: 'https://mpokket.in/',
     ),
     BrandModel(
       name: 'HDFC Smart EMI',
@@ -1820,7 +1820,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043149?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'Zype Personal Loan',
@@ -1829,7 +1829,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24354?id=',
+      websiteUrl: 'https://getzype.com/',
     ),
     BrandModel(
       name: 'CreditSea Personal Loan',
@@ -1838,7 +1838,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26938?id=',
+      websiteUrl: 'https://creditsea.com/',
     ),
     BrandModel(
       name: 'BankKaro Personal Loan',
@@ -1847,7 +1847,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Get Instant Loan Every Your Needs ☛Get Instant Loans from ₹1',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043157?id=',
+      websiteUrl: 'https://bankkaro.com/',
     ),
   ];
 
@@ -1859,7 +1859,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 50% Off Designer Handbags',
-      websiteUrl: 'https://www.michaelkors.global/in',
+      websiteUrl: 'https://www.google.com/search?q=Michael+Kors',
     ),
     BrandModel(
       name: 'Coach',
@@ -1868,7 +1868,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 45% Off Leather Bags',
-      websiteUrl: 'https://india.coach.com',
+      websiteUrl: 'https://www.google.com/search?q=Coach',
     ),
     BrandModel(
       name: 'Calvin Klein',
@@ -1877,7 +1877,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 7.5% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 40% Off Designer Wear',
-      websiteUrl: 'https://www.calvinklein.in',
+      websiteUrl: 'https://www.google.com/search?q=Calvin+Klein',
     ),
     BrandModel(
       name: 'Tommy Hilfiger',
@@ -1886,7 +1886,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 50% Off Classic Styles',
-      websiteUrl: 'https://tommyhilfiger.nnnow.com',
+      websiteUrl: 'https://www.google.com/search?q=Tommy+Hilfiger',
     ),
     BrandModel(
       name: 'Ralph Lauren',
@@ -1895,7 +1895,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 6% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Polo Luxury Essentials',
-      websiteUrl: 'https://www.ralphlauren.asia/in',
+      websiteUrl: 'https://www.google.com/search?q=Ralph+Lauren',
     ),
     BrandModel(
       name: 'Hugo Boss',
@@ -1904,7 +1904,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 7% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 35% Off Tailored Suits',
-      websiteUrl: 'https://www.hugoboss.com/in',
+      websiteUrl: 'https://www.google.com/search?q=Hugo+Boss',
     ),
     BrandModel(
       name: 'Armani',
@@ -1913,7 +1913,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 6.5% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Emporio Armani Couture',
-      websiteUrl: 'https://www.armani.com/in',
+      websiteUrl: 'https://www.google.com/search?q=Armani',
     ),
     BrandModel(
       name: 'Versace',
@@ -1922,7 +1922,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Designer Perfumes & Accs',
-      websiteUrl: 'https://www.versace.com/international/en',
+      websiteUrl: 'https://www.google.com/search?q=Versace',
     ),
     BrandModel(
       name: 'Swarovski',
@@ -1931,7 +1931,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Luxury Accessories',
       offerText: 'Crystal Jewelry & Watches',
-      websiteUrl: 'https://www.swarovski.com/en-IN',
+      websiteUrl: 'https://www.google.com/search?q=Swarovski',
     ),
     BrandModel(
       name: 'Ray-Ban',
@@ -1940,7 +1940,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Eyewear',
       offerText: 'Aviator & Wayfarer Deals',
-      websiteUrl: 'https://india.ray-ban.com',
+      websiteUrl: 'https://www.google.com/search?q=Ray-Ban',
     ),
     BrandModel(
       name: 'Ted Baker',
@@ -1949,7 +1949,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Luxury Fashion',
       offerText: 'British Designer Elegance',
-      websiteUrl: 'https://www.tedbaker.com',
+      websiteUrl: 'https://www.google.com/search?q=Ted+Baker',
     ),
     BrandModel(
       name: 'Steve Madden',
@@ -1958,7 +1958,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 7% Cashback',
       category: 'Luxury Footwear',
       offerText: 'Up to 40% Off Designer Shoes',
-      websiteUrl: 'https://www.stevemadden.in',
+      websiteUrl: 'https://www.google.com/search?q=Steve+Madden',
     ),
   ];
 
@@ -2260,7 +2260,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Mobiles',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/1999?id=',
+      websiteUrl: 'https://www.amazon.in',
     ),
     BrandModel(
       name: 'realme',
@@ -2269,7 +2269,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25863?id=',
+      websiteUrl: 'https://www.realme.com/in',
     ),
     BrandModel(
       name: 'OPPO',
@@ -2278,7 +2278,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25407?id=',
+      websiteUrl: 'https://www.oppo.com/in',
     ),
     BrandModel(
       name: 'Go Noise',
@@ -2287,7 +2287,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24780?id=',
+      websiteUrl: 'https://www.gonoise.com',
     ),
   ];
 
@@ -2299,7 +2299,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹375 Cashback',
       category: 'Medicine',
       offerText: 'Flat 25% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26511?id=',
+      websiteUrl: 'https://www.truemeds.in',
     ),
     BrandModel(
       name: 'Netmeds',
@@ -2308,7 +2308,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Medicine',
       offerText: 'Flat 18% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24383?id=',
+      websiteUrl: 'https://www.netmeds.com',
     ),
     BrandModel(
       name: 'HK Vitals',
@@ -2317,7 +2317,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Medicine',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24578?id=',
+      websiteUrl: 'https://hkvitals.com',
     ),
     BrandModel(
       name: 'Medibuddy Labs',
@@ -2326,7 +2326,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Medicine',
       offerText: '15% Off Code',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/23635?id=',
+      websiteUrl: 'https://www.medibuddy.in',
     ),
     BrandModel(
       name: 'PharmEasy Diagnostics',
@@ -2335,7 +2335,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 17% Cashback',
       category: 'Medicine',
       offerText: 'B1G1',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25697?id=',
+      websiteUrl: 'https://pharmeasy.in',
     ),
   ];
 
@@ -2347,7 +2347,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Rewards',
       category: 'Health Wellness',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24470?id=',
+      websiteUrl: 'https://www.amazon.in/health-and-personal-care',
     ),
     BrandModel(
       name: 'Hyugalife',
@@ -2356,7 +2356,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 60% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26500?id=',
+      websiteUrl: 'https://hyugalife.com',
     ),
     BrandModel(
       name: 'AGEasy',
@@ -2365,7 +2365,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 28% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26749?id=',
+      websiteUrl: 'https://ageasy.in',
     ),
     BrandModel(
       name: 'Nutriburst',
@@ -2374,7 +2374,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 45% Cashback',
       category: 'Health Wellness',
       offerText: 'B2G2',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25694?id=',
+      websiteUrl: 'https://nutriburstindia.com',
     ),
     BrandModel(
       name: 'MuscleBlaze',
@@ -2383,7 +2383,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 35% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24442?id=',
+      websiteUrl: 'https://www.muscleblaze.com',
     ),
     BrandModel(
       name: 'Nveda',
@@ -2392,7 +2392,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26757?id=',
+      websiteUrl: 'https://nveda.in',
     ),
     BrandModel(
       name: 'NeuroGum',
@@ -2401,7 +2401,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 70% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24630?id=',
+      websiteUrl: 'https://neurogum.in',
     ),
     BrandModel(
       name: 'Rasayanam',
@@ -2410,7 +2410,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Health Wellness',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26915?id=',
+      websiteUrl: 'https://rasayanam.in',
     ),
     BrandModel(
       name: 'Oziva',
@@ -2419,7 +2419,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Health Wellness',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26861?id=',
+      websiteUrl: 'https://www.oziva.in',
     ),
     BrandModel(
       name: 'HK Vitals',
@@ -2428,7 +2428,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24578?id=',
+      websiteUrl: 'https://hkvitals.com',
     ),
     BrandModel(
       name: 'Zandu Care',
@@ -2437,7 +2437,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24618?id=',
+      websiteUrl: 'https://zanducare.com',
     ),
     BrandModel(
       name: 'HealthKart',
@@ -2446,7 +2446,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24390?id=',
+      websiteUrl: 'https://www.healthkart.com',
     ),
     BrandModel(
       name: 'Nua',
@@ -2455,7 +2455,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 45% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25588?id=',
+      websiteUrl: 'https://nuawoman.com',
     ),
     BrandModel(
       name: 'Sirona',
@@ -2464,7 +2464,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 22% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26792?id=',
+      websiteUrl: 'https://www.thesirona.com',
     ),
     BrandModel(
       name: 'MuscleTech',
@@ -2473,7 +2473,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 50% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25300?id=',
+      websiteUrl: 'https://muscletech.in',
     ),
     BrandModel(
       name: 'Durex',
@@ -2482,7 +2482,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Health Wellness',
       offerText: 'Enhance Intimacy with Durex\'s Range of Products! Upto 50% Of',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24412?id=',
+      websiteUrl: 'https://www.durexindia.com',
     ),
     BrandModel(
       name: 'TrueBasics',
@@ -2491,7 +2491,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24431?id=',
+      websiteUrl: 'https://www.truebasics.com',
     ),
     BrandModel(
       name: 'Kerala Ayurveda',
@@ -2500,7 +2500,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 15% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/23412?id=',
+      websiteUrl: 'https://keralaayurveda.biz',
     ),
     BrandModel(
       name: 'Fuel One',
@@ -2509,7 +2509,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 30% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26585?id=',
+      websiteUrl: 'https://fuelone.in',
     ),
     BrandModel(
       name: 'Kapiva',
@@ -2518,7 +2518,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 20% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18574?id=',
+      websiteUrl: 'https://kapiva.in',
     ),
   ];
 
@@ -2530,7 +2530,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26870?id=',
+      websiteUrl: 'https://ramfincorp.com/',
     ),
     BrandModel(
       name: 'HDFC Bank Personal Loan',
@@ -2539,7 +2539,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24492?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'HDFC Instant Loan',
@@ -2548,7 +2548,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043152?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'Money View Personal Loan',
@@ -2557,7 +2557,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/16626?id=',
+      websiteUrl: 'https://moneyview.in/personal-loan',
     ),
     BrandModel(
       name: 'ZapCash Personal Loan',
@@ -2566,7 +2566,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26867?id=',
+      websiteUrl: 'https://zapcash.in/',
     ),
     BrandModel(
       name: 'Fibe Personal Loan',
@@ -2575,7 +2575,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26271?id=',
+      websiteUrl: 'https://www.fibe.in/personal-loan/',
     ),
     BrandModel(
       name: 'Poonawalla Fincorp Personal Loan',
@@ -2584,7 +2584,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24834?id=',
+      websiteUrl: 'https://poonawallafincorp.com/personal-loan.php',
     ),
     BrandModel(
       name: 'Prefr Personal Loan',
@@ -2593,7 +2593,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24574?id=',
+      websiteUrl: 'https://prefr.com/',
     ),
     BrandModel(
       name: 'Olyv Personal Loan',
@@ -2602,7 +2602,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Instant Loan',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24770?id=',
+      websiteUrl: 'https://olyv.com/',
     ),
     BrandModel(
       name: 'Axis Bank Personal Loan',
@@ -2611,7 +2611,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.60% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24493?id=',
+      websiteUrl: 'https://www.axisbank.com/retail/loans/personal-loan',
     ),
     BrandModel(
       name: 'Tata Capital Personal Loan',
@@ -2620,7 +2620,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24495?id=',
+      websiteUrl: 'https://www.tatacapital.com/personal-loan.html',
     ),
     BrandModel(
       name: 'Bajaj Finserv Personal Loan',
@@ -2629,7 +2629,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.80% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24494?id=',
+      websiteUrl: 'https://www.bajajfinserv.in/personal-loan',
     ),
     BrandModel(
       name: 'FIRSTmoney by IDFC FIRST Bank Personal Loan',
@@ -2638,7 +2638,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.25% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24369?id=',
+      websiteUrl: 'https://www.idfcfirstbank.com/personal-banking/loans/personal-loan',
     ),
     BrandModel(
       name: 'Mpokket  Personal Loan',
@@ -2647,7 +2647,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat ₹40 Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24833?id=',
+      websiteUrl: 'https://mpokket.in/',
     ),
     BrandModel(
       name: 'HDFC Smart EMI',
@@ -2656,7 +2656,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043149?id=',
+      websiteUrl: 'https://www.hdfcbank.com/personal/borrow/popular-loans/personal-loan',
     ),
     BrandModel(
       name: 'Zype Personal Loan',
@@ -2665,7 +2665,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24354?id=',
+      websiteUrl: 'https://getzype.com/',
     ),
     BrandModel(
       name: 'CreditSea Personal Loan',
@@ -2674,7 +2674,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26938?id=',
+      websiteUrl: 'https://creditsea.com/',
     ),
     BrandModel(
       name: 'BankKaro Personal Loan',
@@ -2683,7 +2683,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Get Instant Loan Every Your Needs ☛Get Instant Loans from ₹1',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/10043157?id=',
+      websiteUrl: 'https://bankkaro.com/',
     ),
   ];
 
@@ -2695,7 +2695,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.95% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 70% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26617?id=',
+      websiteUrl: 'https://www.flipkart.com/home-kitchen',
     ),
     BrandModel(
       name: 'Amazon Kitchen & Dining',
@@ -2704,7 +2704,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 4% Rewards',
       category: 'Home Kitchen',
       offerText: 'Upto 60% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18866?id=',
+      websiteUrl: 'https://www.amazon.in/kitchen-dining',
     ),
     BrandModel(
       name: 'Dyson',
@@ -2713,7 +2713,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26970?id=',
+      websiteUrl: 'https://www.dyson.in',
     ),
     BrandModel(
       name: 'Ruhe',
@@ -2722,7 +2722,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18251?id=',
+      websiteUrl: 'https://ruheindia.com',
     ),
     BrandModel(
       name: 'Loophoop',
@@ -2731,7 +2731,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 40% Cashback',
       category: 'Home Kitchen',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/25722?id=',
+      websiteUrl: 'https://loophoop.in',
     ),
     BrandModel(
       name: 'Kohler',
@@ -2740,7 +2740,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26656?id=',
+      websiteUrl: 'https://www.kohler.co.in',
     ),
     BrandModel(
       name: 'Milton',
@@ -2749,7 +2749,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18492?id=',
+      websiteUrl: 'https://www.milton.in',
     ),
     BrandModel(
       name: 'Beco',
@@ -2758,7 +2758,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26606?id=',
+      websiteUrl: 'https://shopbeco.com',
     ),
     BrandModel(
       name: 'Wonderchef',
@@ -2767,7 +2767,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/16906?id=',
+      websiteUrl: 'https://www.wonderchef.com',
     ),
     BrandModel(
       name: 'Art of Puja',
@@ -2776,7 +2776,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Home Kitchen',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24838?id=',
+      websiteUrl: 'https://artofpuja.com',
     ),
   ];
 
@@ -2788,7 +2788,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 5% Cashback',
       category: 'Departmental',
       offerText: 'Daily Grocery & Home Savings',
-      websiteUrl: 'https://www.dmart.in',
+      websiteUrl: 'https://www.google.com/search?q=DMart',
     ),
     BrandModel(
       name: 'Reliance Smart',
@@ -2797,7 +2797,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Departmental',
       offerText: 'Fresh Produce & Superstore Deals',
-      websiteUrl: 'https://www.reliancesmart.in',
+      websiteUrl: 'https://www.google.com/search?q=Reliance+Smart',
     ),
     BrandModel(
       name: 'Spencer\'s',
@@ -2815,7 +2815,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Departmental',
       offerText: '15-Min Delivery & Supermarket',
-      websiteUrl: 'https://www.bigbasket.com',
+      websiteUrl: 'https://www.google.com/search?q=BigBasket',
     ),
   ];
 
@@ -2827,7 +2827,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Food Grocery',
       offerText: 'Upto 80% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/1999?id=',
+      websiteUrl: 'https://www.amazon.in',
     ),
     BrandModel(
       name: 'Flipkart CB Grocery',
@@ -2836,7 +2836,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 1.30% Cashback',
       category: 'Food Grocery',
       offerText: '50-90% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26891?id=',
+      websiteUrl: 'https://www.flipkart.com/grocery-supermart-store',
     ),
     BrandModel(
       name: 'Rage Coffee',
@@ -2845,7 +2845,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26755?id=',
+      websiteUrl: 'https://ragecoffee.com',
     ),
     BrandModel(
       name: 'Nutslane',
@@ -2854,7 +2854,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 12% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26764?id=',
+      websiteUrl: 'https://nutslane.com',
     ),
     BrandModel(
       name: 'Zoff',
@@ -2863,7 +2863,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 40% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/16615?id=',
+      websiteUrl: 'https://zofffoods.com',
     ),
     BrandModel(
       name: 'True Elements',
@@ -2872,7 +2872,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/24593?id=',
+      websiteUrl: 'https://www.true-elements.com',
     ),
     BrandModel(
       name: 'Haldiram',
@@ -2881,7 +2881,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Food Grocery',
       offerText: 'Exclusive Rewards & Cashback',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26887?id=',
+      websiteUrl: 'https://www.haldirams.com',
     ),
     BrandModel(
       name: 'City Gold Tea',
@@ -2890,7 +2890,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/26024?id=',
+      websiteUrl: 'https://citygoldtea.com',
     ),
     BrandModel(
       name: 'Krafted Millets',
@@ -2899,7 +2899,7 @@ class HomeMockData {
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
-      websiteUrl: 'https://tracking.cashkaro.com/visitretailer/18704?id=',
+      websiteUrl: 'https://kraftedmillets.com',
     ),
   ];
 
@@ -2911,7 +2911,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 15% Cashback',
       category: 'Education',
       offerText: 'Courses from ₹499',
-      websiteUrl: 'https://www.udemy.com',
+      websiteUrl: 'https://www.google.com/search?q=Udemy',
     ),
     BrandModel(
       name: 'Coursera',
@@ -2920,7 +2920,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 12% Cashback',
       category: 'Education',
       offerText: 'Certificates & Degrees',
-      websiteUrl: 'https://www.coursera.org',
+      websiteUrl: 'https://www.google.com/search?q=Coursera',
     ),
     BrandModel(
       name: 'Unacademy',
@@ -2929,7 +2929,7 @@ class HomeMockData {
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Education',
       offerText: 'Competitive Exam Prep',
-      websiteUrl: 'https://www.unacademy.com',
+      websiteUrl: 'https://www.google.com/search?q=Unacademy',
     ),
   ];
 

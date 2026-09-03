@@ -39,7 +39,7 @@ class BankingCardService {
       perks: ['5% Cashback on Online Spends', '1% Cashback on Offline Spends', 'Save Upto Rs.60,000 Annually'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-cashback-card-1759465154.png',
       localAssetPath: 'assets/cards/sbi-cashback-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24756?id=',
+      applyUrl: 'https://www.sbicard.com/en/personal/credit-cards/rewards/cashback-sbi-card.page',
     ),
     BankingCardModel(
       id: '26031',
@@ -53,7 +53,7 @@ class BankingCardService {
       perks: ['Lifetime Free Credit Card', '10% off on BookMyShow movie tickets', '5% off on utility payments via Amazon Pay', 'UPI payments enabled via RuPay network'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/axis-neo-rupay-credit-card-1761629159.jpg',
       localAssetPath: 'assets/cards/axis-neo-rupay-credit-card.jpg',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/26031?id=',
+      applyUrl: 'https://www.axisbank.com/retail/cards/credit-card/neo-credit-card',
     ),
     BankingCardModel(
       id: '24745',
@@ -67,7 +67,7 @@ class BankingCardService {
       perks: ['Lifetime FREE', '2 Reward Points per every Rs.150 Spent', '5x Reward Points on Milestone Spends'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/hsbc-platinum-credit-card-1760087739.png',
       localAssetPath: 'assets/cards/hsbc-platinum-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24745?id=',
+      applyUrl: 'https://www.hsbc.co.in/credit-cards/products/platinum/',
     ),
     BankingCardModel(
       id: '26525',
@@ -81,7 +81,7 @@ class BankingCardService {
       perks: ['Lifetime Free with zero joining fee', '1% Pure 24K Digital Gold on all spends', 'Zero foreign transaction mark-up fees', 'Instant digital onboarding & virtual card'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/uni-goldx-credit-card-1778750640.png',
       localAssetPath: 'assets/cards/uni-goldx-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/26525?id=',
+      applyUrl: 'https://www.uni.cards/',
     ),
     BankingCardModel(
       id: '24742',
@@ -95,7 +95,7 @@ class BankingCardService {
       perks: ['Explore more, spend less - with the Scapia Co-Branded Credit Card! Get 10% back as Scapia Coins on eligible spends, unlimited domestic lounge access, and zero forex markup -- all with no annual fees', 'Travel enthusiasts, apply via CashKaro today and enjoy extra Rewards on successful approval on Card Activation'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/federal-bank-scapia-credit-card-offer-1770186828.png',
       localAssetPath: 'assets/cards/federal-bank-scapia-credit-card-offer.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24742?id=',
+      applyUrl: 'https://www.scapia.cards/',
     ),
     BankingCardModel(
       id: '18487',
@@ -109,7 +109,7 @@ class BankingCardService {
       perks: ['5% Unlimited Cashback on Flipkart purchases', '4% Cashback on preferred merchants (Swiggy, Uber)', '1% Cashback on all other offline & online spends', 'Complimentary domestic airport lounge visits'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-flipkart-credit-card-1767875438.png',
       localAssetPath: 'assets/cards/flipkart-sbi-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/18487?id=',
+      applyUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/flipkart-sbi-card.page',
     ),
     BankingCardModel(
       id: '24715',
@@ -123,7 +123,7 @@ class BankingCardService {
       perks: ['Lifetime FREE - No joining or annual fee', 'Reward Point NEVER Expire - Unique Feature', 'No interest on ATM withdrawals till 48 days'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/idfc-first-credit-card-1741857744.png',
       localAssetPath: 'assets/cards/idfc-first-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24715?id=',
+      applyUrl: 'https://www.idfcfirstbank.com/credit-card',
     ),
     BankingCardModel(
       id: '25861',
@@ -137,7 +137,7 @@ class BankingCardService {
       perks: ['Unlimited Domestic Airport Lounge Access', '3 Reward Points per ₹100 on dining & travel', 'Complimentary movie ticket per month on Paytm', '1% Fuel Surcharge waiver across all stations'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/bobcard-eterna-credit-card-1763982656.png',
       localAssetPath: 'assets/cards/bobcard-eterna-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/25861?id=',
+      applyUrl: 'https://www.bobcard.co.in/',
     ),
     BankingCardModel(
       id: '10043151',
@@ -151,7 +151,7 @@ class BankingCardService {
       perks: ['Lifetime FREE', 'Rs.5000 worth of Joining Benefits', 'Get POPcoins on every transaction', 'Up to 2.5% Cashback on coins conversion to vouchers '],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/yes-bank-popclub-credit-card-1771480308.png',
       localAssetPath: 'assets/cards/yes-bank-popclub-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/10043151?id=',
+      applyUrl: 'https://www.yesbank.in/personal-banking/yes-individual/cards/credit-cards',
     ),
     BankingCardModel(
       id: '10043150',
@@ -165,7 +165,7 @@ class BankingCardService {
       perks: ['Flat 1.5% Edge Rewards on UPI scan & pay transactions', 'Virtual issuance in under 2 minutes', 'Zero annual fee and zero joining fee', 'Cashback directly credited to linked bank account'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/kiwi-credit-card-offers-1759329211.png',
       localAssetPath: 'assets/cards/kiwi-credit-card-offers.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/10043150?id=',
+      applyUrl: 'https://gokiwi.in/',
     ),
     BankingCardModel(
       id: '19878',
@@ -179,7 +179,7 @@ class BankingCardService {
       perks: ['custom> The Kotak League Platinum Credit Card enhances everyday spending with up to 8 reward points per Rs', '150 across categories, fuel surcharge waivers, railway surcharge benefits, priority assistance, and fraud protection for a secure and rewarding experience', 'Apply via CashKaro to earn extra Rewards on successful activation on Credit Card Activation'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/kotak-league-platinum-credit-card-1774347914.png',
       localAssetPath: 'assets/cards/kotak-league-platinum-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/19878?id=',
+      applyUrl: 'https://www.kotak.com/en/personal-banking/cards/credit-cards/league-platinum-card.html',
     ),
     BankingCardModel(
       id: '24732',
@@ -193,7 +193,7 @@ class BankingCardService {
       perks: ['Earn Upto 6 Reward Points (1 Reward Point = 1.2 Airmiles) on every Rs 100 spent', '2 Domestic and 2 International Lounge access per year', 'One complimentary movie ticket upto Rs.500 on BookMyShow every 6 months', '1.50% Discounted Forex Mark-up Fee'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/indusind-tiger-credit-card-1740289352.png',
       localAssetPath: 'assets/cards/indusind-tiger-credit.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24732?id=',
+      applyUrl: 'https://www.indusind.com/in/en/personal/cards/credit-cards.html',
     ),
     BankingCardModel(
       id: '24759',
@@ -207,7 +207,7 @@ class BankingCardService {
       perks: ['10X Reward Points on Amazon, Cleartrip & BookMyShow', '5X Reward Points on all other online spends', '₹500 Amazon gift voucher on joining', 'Annual fee reversal on spends over ₹1,00,000'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/simply-click-sbi-card-1740289499.png',
       localAssetPath: 'assets/cards/simply-click-sbi-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24759?id=',
+      applyUrl: 'https://www.sbicard.com/en/personal/credit-cards/shopping/simplyclick-sbi-card.page',
     ),
     BankingCardModel(
       id: '26940',
@@ -221,7 +221,7 @@ class BankingCardService {
       perks: ['Lifetime Free with no annual maintenance charges', 'Scan & Pay via UPI with instant rewards', 'Rewards on bill payments, recharges, and groceries', 'Seamless salary-linked limit enhancement'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/salaryse-coupons-test-1783665209.png',
       localAssetPath: 'assets/cards/cub-salaryse-level-up-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/26940?id=',
+      applyUrl: 'https://salaryse.com/',
     ),
     BankingCardModel(
       id: '24654',
@@ -235,7 +235,7 @@ class BankingCardService {
       perks: ['UNLIMITED 5% Cashback on Flipkart  & Cleartrip!', '4% Cashback on Swiggy & preferred merchants', '1% Cashback on Everything else!'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/bank-karo-axis-flipkart-1759675165.png',
       localAssetPath: 'assets/cards/bank-karo-axis-flipkart.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24654?id=',
+      applyUrl: 'https://www.axisbank.com/retail/cards/credit-card/flipkart-axis-bank-credit-card',
     ),
     BankingCardModel(
       id: '24746',
@@ -249,7 +249,7 @@ class BankingCardService {
       perks: ['Lifetime FREE', 'Amazing offers on Zomato, Swiggy, Zepto, Tata Cliq and more', '20 Reward points for every Rs.100 spent on groceries', '10% discount (up to Rs.100) on movie tickets on BookMyShow'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/rbl-bank-shoprite-credit-card-1740289410.png',
       localAssetPath: 'assets/cards/rbl-bank-shoprite-credit.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24746?id=',
+      applyUrl: 'https://www.rblbank.com/personal-banking/cards/credit-cards',
     ),
     BankingCardModel(
       id: '19714',
@@ -263,7 +263,7 @@ class BankingCardService {
       perks: ['10% NeuCoins on Tata Neu app purchases', '5% NeuCoins on non-EMI Tata brand spends', '8 complimentary domestic and 4 international lounge visits', '1 NeuCoin = ₹1 spendable across Air India, Croma, BigBasket, Westside'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/tata-neu-infinity-sbi-credit-card-1773726015.png',
       localAssetPath: 'assets/cards/tata-neu-infinity-sbi-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/19714?id=',
+      applyUrl: 'https://www.tataneu.com/',
     ),
     BankingCardModel(
       id: '19723',
@@ -277,7 +277,7 @@ class BankingCardService {
       perks: ['7% NeuCoins on Tata Neu app purchases', '2% NeuCoins on partner Tata brands', '4 complimentary domestic airport lounge visits per year', '1% Fuel surcharge waiver'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/tata-neu-plus-sbi-credit-card-1773726607.png',
       localAssetPath: 'assets/cards/tata-neu-plus-sbi-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/19723?id=',
+      applyUrl: 'https://www.tataneu.com/',
     ),
     BankingCardModel(
       id: '24741',
@@ -291,7 +291,7 @@ class BankingCardService {
       perks: ['10% Accelerated Cashback on dining, food delivery & groceries', '1.5% Unlimited Cashback on all other eligible spends', 'Complimentary domestic airport lounge access', 'Dining discount privileges up to 15% across major cities'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/hsbc-live-plus-credit-card-1740289013.png',
       localAssetPath: 'assets/cards/hsbc-live-plus-credit-card.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24741?id=',
+      applyUrl: 'https://www.hsbc.co.in/credit-cards/products/live-plus/',
     ),
     BankingCardModel(
       id: '24660',
@@ -305,7 +305,7 @@ class BankingCardService {
       perks: ['Buy 1 Get 1 Free on Paytm Movies (up to ₹200 off)', 'Flat ₹120 off on Swiggy food orders twice a month', 'Complimentary domestic airport lounge access per quarter', 'UPI payments enabled via RuPay network'],
       remoteImageUrl: 'https://asset21.ckassets.com/resources/image/stores/bank-karo-axis-my-zone-1740288393.png',
       localAssetPath: 'assets/cards/bank-karo-axis-my-zone.png',
-      applyUrl: 'https://tracking.cashkaro.com/visitretailer/24660?id=',
+      applyUrl: 'https://www.axisbank.com/retail/cards/credit-card/my-zone-credit-card',
     ),
   ];
 }

@@ -6,6 +6,8 @@ import '../services/url_launcher_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 
+import 'product_detail_screen.dart';
+
 class ShoppingConfirmationScreen extends StatelessWidget {
   static const String routeName = '/shopping-confirmation';
 
@@ -17,12 +19,23 @@ class ShoppingConfirmationScreen extends StatelessWidget {
   });
 
   Future<void> _handleShopNow(BuildContext context) async {
-    final success = await UrlLauncherService.openUrl(brand.websiteUrl);
+    var urlToOpen = brand.websiteUrl.trim();
+    if (urlToOpen.isEmpty) {
+      urlToOpen = ProductDetailScreen.resolveStoreUrl(brand.name);
+    }
+
+    var success = await UrlLauncherService.openUrl(urlToOpen);
+    if (!success) {
+      final fallback = ProductDetailScreen.resolveStoreUrl(brand.name);
+      if (fallback != urlToOpen) {
+        success = await UrlLauncherService.openUrl(fallback);
+      }
+    }
 
     if (!success && context.mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Could not open ${brand.name} website: ${brand.websiteUrl}'),
+          content: Text('Could not open ${brand.name} website. Please check your internet connection.'),
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -260,11 +273,15 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                     ),
                   ),
                   icon: const Icon(Icons.open_in_new, size: 20),
-                  label: Text(
-                    'Shop Now at ${brand.name}',
-                    style: AppTextStyles.buttonText(
-                      color: AppColors.cardBackground,
-                    ).copyWith(fontSize: 15),
+                  label: Flexible(
+                    child: Text(
+                      'Shop Now at ${brand.name}',
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                      style: AppTextStyles.buttonText(
+                        color: AppColors.cardBackground,
+                      ).copyWith(fontSize: 15),
+                    ),
                   ),
                 ),
               ),

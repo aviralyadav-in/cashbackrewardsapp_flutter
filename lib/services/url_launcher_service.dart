@@ -15,19 +15,34 @@ class UrlLauncherService {
     final Uri? uri = Uri.tryParse(formatted);
     if (uri == null) return false;
 
+    // Stage 1: Try launching in external application (Chrome / default browser)
     try {
-      if (await canLaunchUrl(uri)) {
-        return await launchUrl(
-          uri,
-          mode: LaunchMode.externalApplication,
-        );
-      } else {
-        // Fallback to platform default launch mode
-        return await launchUrl(
-          uri,
-          mode: LaunchMode.platformDefault,
-        );
-      }
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.externalApplication,
+      );
+      if (launched) return true;
+    } catch (e) {
+      debugPrint('External browser launch attempt: $e');
+    }
+
+    // Stage 2: Fallback to in-app browser view
+    try {
+      final launched = await launchUrl(
+        uri,
+        mode: LaunchMode.inAppBrowserView,
+      );
+      if (launched) return true;
+    } catch (e) {
+      debugPrint('In-app browser launch attempt: $e');
+    }
+
+    // Stage 3: Fallback to platform default
+    try {
+      return await launchUrl(
+        uri,
+        mode: LaunchMode.platformDefault,
+      );
     } catch (e) {
       debugPrint('Error launching URL ($urlString): $e');
       return false;

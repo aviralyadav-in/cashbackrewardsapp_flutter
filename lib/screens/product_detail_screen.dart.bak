@@ -70,7 +70,7 @@ class ProductDetailScreen extends StatefulWidget {
       customCashbackTag: item.cashbackTag,
       customDescription: item.description,
       customImageUrl: item.imageUrl,
-      customWebsiteUrl: resolveStoreUrl(item.storeName),
+      customWebsiteUrl: _resolveStoreUrl(item.storeName),
     );
   }
 
@@ -120,9 +120,9 @@ class ProductDetailScreen extends StatefulWidget {
       customDescription:
           'Shop online at ${brand.name} to earn up to ${brand.cashbackPercentage} cashback on your purchase. All transactions are securely tracked.',
       customImageUrl: brand.bannerUrl.isNotEmpty ? brand.bannerUrl : brand.logoUrl,
-      customWebsiteUrl: (brand.websiteUrl.isNotEmpty && !brand.websiteUrl.contains('cashkaro.com'))
+      customWebsiteUrl: brand.websiteUrl.isNotEmpty
           ? brand.websiteUrl
-          : resolveStoreUrl(brand.name),
+          : _resolveStoreUrl(brand.name),
     );
   }
 
@@ -132,41 +132,8 @@ class ProductDetailScreen extends StatefulWidget {
     return str.replaceAllMapped(reg, (Match m) => '${m[1]},');
   }
 
-  static String resolveStoreUrl(String storeOrBrand) {
+  static String _resolveStoreUrl(String storeOrBrand) {
     final target = storeOrBrand.toLowerCase();
-
-    // Banks & Financial Institutions (Credit Cards & Loans)
-    if (target.contains('sbi')) return 'https://www.sbicard.com';
-    if (target.contains('hdfc')) return 'https://www.hdfcbank.com';
-    if (target.contains('axis')) return 'https://www.axisbank.com';
-    if (target.contains('icici')) return 'https://www.icicibank.com';
-    if (target.contains('hsbc')) return 'https://www.hsbc.co.in';
-    if (target.contains('kotak')) return 'https://www.kotak.com';
-    if (target.contains('idfc')) return 'https://www.idfcfirstbank.com';
-    if (target.contains('bobcard') || target.contains('baroda')) return 'https://www.bobcard.co.in';
-    if (target.contains('yes bank') || target.contains('yes')) return 'https://www.yesbank.in';
-    if (target.contains('indusind')) return 'https://www.indusind.com';
-    if (target.contains('rbl')) return 'https://www.rblbank.com';
-    if (target.contains('scapia')) return 'https://www.scapia.cards';
-    if (target.contains('uni')) return 'https://www.uni.cards';
-    if (target.contains('tata neu')) return 'https://www.tataneu.com';
-    if (target.contains('tata capital') || target.contains('tata')) return 'https://www.tatacapital.com';
-    if (target.contains('bajaj')) return 'https://www.bajajfinserv.in';
-    if (target.contains('poonawalla')) return 'https://www.poonawallafincorp.com';
-    if (target.contains('money view') || target.contains('moneyview')) return 'https://moneyview.in';
-    if (target.contains('fibe')) return 'https://www.fibe.in';
-    if (target.contains('kiwi')) return 'https://gokiwi.in';
-    if (target.contains('salaryse')) return 'https://salaryse.com';
-    if (target.contains('ram fincorp')) return 'https://ramfincorp.com';
-    if (target.contains('zapcash')) return 'https://zapcash.in';
-    if (target.contains('prefr')) return 'https://prefr.com';
-    if (target.contains('olyv') || target.contains('smartcoin')) return 'https://olyv.com';
-    if (target.contains('mpokket')) return 'https://mpokket.in';
-    if (target.contains('zype')) return 'https://getzype.com';
-    if (target.contains('creditsea')) return 'https://creditsea.com';
-    if (target.contains('bankkaro')) return 'https://bankkaro.com';
-
-    // Top E-commerce & Shopping Brands
     if (target.contains('flipkart')) return 'https://www.flipkart.com';
     if (target.contains('meesho')) return 'https://www.meesho.com';
     if (target.contains('amazon')) return 'https://www.amazon.in';
@@ -175,7 +142,6 @@ class ProductDetailScreen extends StatefulWidget {
     if (target.contains('ajio')) return 'https://www.ajio.com';
     if (target.contains('croma')) return 'https://www.croma.com';
     if (target.contains('reliance')) return 'https://www.reliancedigital.in';
-    if (target.contains('jiomart')) return 'https://www.jiomart.com';
     if (target.contains('zara')) return 'https://www.zara.com/in';
     if (target.contains('h&m') || target.contains('hm')) return 'https://www2.hm.com/en_in';
     if (target.contains('nike')) return 'https://www.nike.com/in';
@@ -187,93 +153,7 @@ class ProductDetailScreen extends StatefulWidget {
     if (target.contains('boat')) return 'https://www.boat-lifestyle.com';
     if (target.contains('noise')) return 'https://www.gonoise.com';
     if (target.contains('dyson')) return 'https://www.dyson.in';
-    if (target.contains('realme')) return 'https://www.realme.com/in';
-    if (target.contains('swiggy')) return 'https://www.swiggy.com';
-    if (target.contains('zomato')) return 'https://www.zomato.com';
-    if (target.contains('blinkit')) return 'https://blinkit.com';
-    if (target.contains('zepto')) return 'https://www.zeptonow.com';
-    if (target.contains('makemytrip')) return 'https://www.makemytrip.com';
-    if (target.contains('goibibo')) return 'https://www.goibibo.com';
-    if (target.contains('cleartrip')) return 'https://www.cleartrip.com';
-    if (target.contains('1mg')) return 'https://www.1mg.com';
-    if (target.contains('pharmeasy')) return 'https://pharmeasy.in';
-    if (target.contains('netmeds')) return 'https://www.netmeds.com';
-    if (target.contains('apollo')) return 'https://www.apollopharmacy.in';
-
     return 'https://www.google.com/search?q=${Uri.encodeComponent(storeOrBrand)}';
-  }
-
-  static String _extractBankName(String name) {
-    if (name.contains('SBI')) return 'SBI';
-    if (name.contains('HDFC')) return 'HDFC Bank';
-    if (name.contains('Axis')) return 'Axis Bank';
-    if (name.contains('ICICI')) return 'ICICI Bank';
-    if (name.contains('HSBC')) return 'HSBC';
-    if (name.contains('Kotak')) return 'Kotak';
-    if (name.contains('IDFC')) return 'IDFC FIRST';
-    if (name.contains('BOBCARD') || name.contains('Bank of Baroda')) return 'BOBCARD';
-    if (name.contains('Yes Bank') || name.contains('YES BANK')) return 'Yes Bank';
-    if (name.contains('IndusInd') || name.contains('Indusind')) return 'IndusInd';
-    if (name.contains('RBL')) return 'RBL Bank';
-    if (name.contains('Federal') || name.contains('Scapia')) return 'Scapia';
-    if (name.contains('Uni')) return 'Uni';
-    if (name.contains('Tata Neu')) return 'Tata Neu';
-    if (name.contains('Tata Capital') || name.contains('Tata')) return 'Tata';
-    if (name.contains('Bajaj')) return 'Bajaj Finserv';
-    if (name.contains('Poonawalla')) return 'Poonawalla';
-    if (name.contains('Money View') || name.contains('MoneyView')) return 'Money View';
-    if (name.contains('Fibe')) return 'Fibe';
-    if (name.contains('KIWI') || name.contains('Kiwi')) return 'Kiwi';
-    if (name.contains('SalarySe')) return 'SalarySe';
-    if (name.contains('Ram Fincorp')) return 'Ram Fincorp';
-    if (name.contains('ZapCash')) return 'ZapCash';
-    if (name.contains('Prefr')) return 'Prefr';
-    if (name.contains('Olyv') || name.contains('SmartCoin')) return 'Olyv';
-    if (name.contains('Mpokket') || name.contains('mPokket')) return 'mPokket';
-    if (name.contains('Zype')) return 'Zype';
-    if (name.contains('CreditSea')) return 'CreditSea';
-    if (name.contains('BankKaro')) return 'BankKaro';
-
-    final words = name.split(RegExp(r'\s+'));
-    return words.length > 2 ? '${words[0]} ${words[1]}' : name;
-  }
-
-  static bool isCreditCard(String name, String category) {
-    final lowerName = name.toLowerCase();
-    final lowerCat = category.toLowerCase();
-    return lowerCat.contains('card') ||
-        lowerName.contains('card') ||
-        lowerName.contains('credit');
-  }
-
-  static bool isLoan(String name, String category) {
-    final lowerName = name.toLowerCase();
-    final lowerCat = category.toLowerCase();
-    return lowerCat.contains('loan') || lowerName.contains('loan');
-  }
-
-  static String getButtonLabel(String brandOrStoreName, String category) {
-    if (isCreditCard(brandOrStoreName, category)) {
-      final bank = _extractBankName(brandOrStoreName);
-      return 'Visit $bank Card';
-    }
-
-    if (isLoan(brandOrStoreName, category)) {
-      final bank = _extractBankName(brandOrStoreName);
-      return 'Visit $bank Loan';
-    }
-
-    return 'Shop Now on ${brandOrStoreName.toUpperCase()}';
-  }
-
-  static IconData getButtonIcon(String brandOrStoreName, String category) {
-    if (isCreditCard(brandOrStoreName, category)) {
-      return Icons.credit_card_rounded;
-    }
-    if (isLoan(brandOrStoreName, category)) {
-      return Icons.account_balance_wallet_rounded;
-    }
-    return Icons.shopping_bag_outlined;
   }
 
   @override
@@ -284,25 +164,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _currentImageIndex = 0;
 
   Future<void> _handleShopNow(String targetUrl, String storeName) async {
-    var urlToOpen = targetUrl.trim();
-    if (urlToOpen.isEmpty || urlToOpen.contains('cashkaro.com')) {
-      urlToOpen = ProductDetailScreen.resolveStoreUrl(storeName);
-    }
-
-    var success = await UrlLauncherService.openUrl(urlToOpen);
-
-    // If primary URL fails (e.g., tracking redirect block), fallback directly to official store website
-    if (!success) {
-      final fallbackUrl = ProductDetailScreen.resolveStoreUrl(storeName);
-      if (fallbackUrl != urlToOpen) {
-        success = await UrlLauncherService.openUrl(fallbackUrl);
-      }
-    }
-
+    final success = await UrlLauncherService.openUrl(targetUrl);
     if (!success && mounted) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('Could not open $storeName website. Please check your internet connection.'),
+          content: Text('Could not open $storeName website. Please try again.'),
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
         ),
@@ -424,26 +290,17 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.finalPrice * (1 - (amazonDeal.rewardPercentage / 100)))}'
                 : null));
 
-    final rawUrl = widget.customWebsiteUrl ??
+    final websiteUrl = widget.customWebsiteUrl ??
         (brand != null && brand.websiteUrl.isNotEmpty
             ? brand.websiteUrl
             : (amazonDeal != null && amazonDeal.productUrl.isNotEmpty
                 ? amazonDeal.productUrl
-                : ''));
-
-    final websiteUrl = (rawUrl.isNotEmpty && !rawUrl.contains('cashkaro.com'))
-        ? rawUrl
-        : ProductDetailScreen.resolveStoreUrl(
-            brandName.isNotEmpty ? brandName : (category.isNotEmpty ? category : title));
+                : ProductDetailScreen._resolveStoreUrl(
+                    brandName.isNotEmpty ? brandName : (category.isNotEmpty ? category : title))));
 
     final displayStoreName = brandName.isNotEmpty
         ? brandName
         : (category.isNotEmpty ? category : 'Store');
-
-    final isCard = ProductDetailScreen.isCreditCard(displayStoreName, category);
-    final isLoan = ProductDetailScreen.isLoan(displayStoreName, category);
-    final buttonLabel = ProductDetailScreen.getButtonLabel(displayStoreName, category);
-    final buttonIcon = ProductDetailScreen.getButtonIcon(displayStoreName, category);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
@@ -575,10 +432,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         // BRAND & CATEGORY & RATING CHIPS
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 6,
-                          crossAxisAlignment: WrapCrossAlignment.center,
+                        Row(
                           children: [
                             if (brandName.isNotEmpty)
                               Container(
@@ -594,8 +448,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 child: Text(
                                   brandName.toUpperCase(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                   style: GoogleFonts.fraunces(
                                     color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                                     fontSize: 11.5,
@@ -604,6 +456,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                                 ),
                               ),
+                            if (brandName.isNotEmpty && category.isNotEmpty)
+                              const SizedBox(width: 8),
                             if (category.isNotEmpty)
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -618,8 +472,6 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 ),
                                 child: Text(
                                   category,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
                                   style: AppTextStyles.caption(
                                     color: isDark
                                         ? AppColors.darkTextSecondary
@@ -627,6 +479,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   ),
                                 ),
                               ),
+                            const Spacer(),
                             if (rating != null)
                               Container(
                                 padding: const EdgeInsets.symmetric(
@@ -755,26 +608,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                             ],
                             const Spacer(),
                             if (discountTag != null && discountTag.isNotEmpty)
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.successBackground,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
-                                  ),
-                                  child: Text(
-                                    discountTag,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.end,
-                                    style: AppTextStyles.smallLabel(
-                                      color: AppColors.success,
-                                    ).copyWith(fontSize: 12),
-                                  ),
+                              Container(
+                                padding: const EdgeInsets.symmetric(
+                                  horizontal: 10,
+                                  vertical: 6,
+                                ),
+                                decoration: BoxDecoration(
+                                  color: AppColors.successBackground,
+                                  borderRadius: BorderRadius.circular(10),
+                                  border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
+                                ),
+                                child: Text(
+                                  discountTag,
+                                  style: AppTextStyles.smallLabel(
+                                    color: AppColors.success,
+                                  ).copyWith(fontSize: 12),
                                 ),
                               ),
                           ],
@@ -831,11 +679,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                     ),
                                     const SizedBox(height: 2),
                                     Text(
-                                      isCard
-                                          ? 'Rewards track automatically on card application'
-                                          : (isLoan
-                                              ? 'Rewards track automatically on loan disbursal'
-                                              : 'Cashback tracks automatically on ${displayStoreName.toUpperCase()}'),
+                                      'Cashback tracks automatically on ${displayStoreName.toUpperCase()}',
                                       style: AppTextStyles.caption(
                                         color: isDark
                                             ? AppColors.darkTextSecondary
@@ -851,8 +695,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
                         if (finalPrice != null) ...[
                           const SizedBox(height: 10),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
+                          Row(
                             children: [
                               Text(
                                 'Effective Price after Cashback: ',
@@ -948,11 +791,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                         const SizedBox(height: 8),
                         _buildCashbackStep(
                           '1',
-                          isCard
-                              ? 'Tap "$buttonLabel" below to visit & apply for your card'
-                              : (isLoan
-                                  ? 'Tap "$buttonLabel" below to check eligibility & apply'
-                                  : 'Tap "Shop Now" below to visit $displayStoreName'),
+                          'Tap "Shop Now" below to visit $displayStoreName',
                           isDark,
                         ),
                         const SizedBox(height: 6),
@@ -1011,15 +850,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Icon(buttonIcon, size: 20),
+                    const Icon(Icons.shopping_bag_outlined, size: 20),
                     const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        buttonLabel,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14.5),
-                      ),
+                    Text(
+                      'Shop Now on ${displayStoreName.toUpperCase()}',
+                      style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14.5),
                     ),
                     const SizedBox(width: 6),
                     const Icon(Icons.arrow_forward_rounded, size: 18),
