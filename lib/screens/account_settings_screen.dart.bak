@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/user_provider.dart';
@@ -27,17 +26,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     _nameController = TextEditingController(text: userProvider.fullName);
     _emailController = TextEditingController(text: userProvider.email);
-
-    // Extract 10-digit national number from stored phone (strips +91 if present)
-    final rawPhone = userProvider.phoneNumber;
-    var initialDigits = rawPhone.replaceAll(RegExp(r'\D'), '');
-    if (initialDigits.startsWith('91') && initialDigits.length > 10) {
-      initialDigits = initialDigits.substring(2);
-    }
-    if (initialDigits.length > 10) {
-      initialDigits = initialDigits.substring(initialDigits.length - 10);
-    }
-    _phoneController = TextEditingController(text: initialDigits);
+    _phoneController = TextEditingController(text: userProvider.phoneNumber);
   }
 
   @override
@@ -67,13 +56,10 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    final phoneDigits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
-    final cleanPhone = phoneDigits.isNotEmpty ? '+91$phoneDigits' : '';
-
     final success = await userProvider.updateUserProfile(
-      fullName: _nameController.text.trim(),
-      email: _emailController.text.trim(),
-      phoneNumber: cleanPhone,
+      fullName: _nameController.text,
+      email: _emailController.text,
+      phoneNumber: _phoneController.text,
     );
 
     if (!mounted) return;
@@ -262,28 +248,21 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                     TextFormField(
                       controller: _phoneController,
                       keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      maxLength: 10,
-                      buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
                       style: AppTextStyles.input(
                         color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                       ),
                       decoration: _buildInputDecoration(
-                        label: 'Enter 10-digit phone number',
+                        label: 'Enter your phone number',
                         icon: Icons.phone_outlined,
                         isDark: isDark,
-                        prefixText: '+91 ',
                       ),
                       validator: (value) {
                         if (value == null || value.trim().isEmpty) {
                           return 'Please enter your phone number';
                         }
                         final clean = value.replaceAll(RegExp(r'\D'), '');
-                        if (clean.length != 10) {
-                          return 'Phone number must be exactly 10 digits';
+                        if (clean.length < 7 || clean.length > 15) {
+                          return 'Please enter a valid phone number';
                         }
                         return null;
                       },
@@ -335,7 +314,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     required String label,
     required IconData icon,
     required bool isDark,
-    String? prefixText,
   }) {
     return InputDecoration(
       hintText: label,
@@ -344,10 +322,6 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       ),
       filled: true,
       fillColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
-      prefixText: prefixText,
-      prefixStyle: AppTextStyles.input(
-        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-      ).copyWith(fontWeight: FontWeight.w600),
       prefixIcon: Icon(
         icon,
         color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
