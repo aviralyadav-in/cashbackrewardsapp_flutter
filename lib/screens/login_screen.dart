@@ -30,7 +30,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isLoading = false;
   bool _isOtpSent = false;
 
-  String _targetPhone = '';
+  String _targetDisplay = '';
 
   @override
   void dispose() {
@@ -81,10 +81,12 @@ class _LoginScreenState extends State<LoginScreen> {
     try {
       if (_isPhoneMode) {
         final formattedPhone = _formatPhoneNumber(_phoneController.text);
-        _targetPhone = formattedPhone;
+        _targetDisplay = formattedPhone;
         await _requestMockPhoneOtp(formattedPhone);
       } else {
-        await _handleEmailFlow(_emailController.text.trim());
+        final email = _emailController.text.trim();
+        _targetDisplay = email;
+        await _requestMockEmailOtp(email);
       }
     } catch (e) {
       _showSnackBar(e.toString());
@@ -99,8 +101,7 @@ class _LoginScreenState extends State<LoginScreen> {
 
   /// Requests Mock Phone OTP
   Future<void> _requestMockPhoneOtp(String phone) async {
-    // Simulate network delay
-    await Future.delayed(const Duration(seconds: 1));
+    await Future.delayed(const Duration(milliseconds: 600));
 
     if (!mounted) return;
     setState(() {
@@ -109,11 +110,22 @@ class _LoginScreenState extends State<LoginScreen> {
     _showSnackBar('OTP sent to $phone.', isError: false);
   }
 
-  /// Verifies entered OTP for main phone flow
+  /// Requests Mock Email OTP
+  Future<void> _requestMockEmailOtp(String email) async {
+    await Future.delayed(const Duration(milliseconds: 600));
+
+    if (!mounted) return;
+    setState(() {
+      _isOtpSent = true;
+    });
+    _showSnackBar('OTP sent to $email.', isError: false);
+  }
+
+  /// Verifies entered OTP and directly redirects to HomeScreen
   Future<void> _verifyEnteredOtp() async {
     final otp = _otpController.text.trim();
-    if (otp.length != 6 || !RegExp(r'^\d{6}$').hasMatch(otp)) {
-      _showSnackBar('Please enter valid 6-digit OTP');
+    if (otp.isEmpty) {
+      _showSnackBar('Please enter the OTP');
       return;
     }
 
@@ -122,21 +134,35 @@ class _LoginScreenState extends State<LoginScreen> {
     });
 
     try {
+      await Future.delayed(const Duration(milliseconds: 500));
+      if (!mounted) return;
+
       final userProvider = Provider.of<UserProvider>(context, listen: false);
       final name = _nameController.text.trim().isNotEmpty
           ? _nameController.text.trim()
-          : 'CashKaro User';
+          : (_emailController.text.trim().isNotEmpty
+              ? _emailController.text.trim().split('@').first
+              : 'CashKaro User');
+      final email = _emailController.text.trim();
+      final phone = _phoneController.text.trim().isNotEmpty
+          ? _formatPhoneNumber(_phoneController.text)
+          : '';
 
       await userProvider.setInitialUserProfile(
         uid: 'user_${DateTime.now().millisecondsSinceEpoch}',
         fullName: name,
-        email: '',
-        phoneNumber: _targetPhone,
+        email: email,
+        phoneNumber: phone,
       );
 
       if (!mounted) return;
       _showSnackBar('Logged in successfully!', isError: false);
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
+
+      // Direct redirection to Home screen
+      Navigator.of(context).pushNamedAndRemoveUntil(
+        HomeScreen.routeName,
+        (route) => false,
+      );
     } catch (e) {
       _showSnackBar('Verification failed: $e');
     } finally {
@@ -146,266 +172,6 @@ class _LoginScreenState extends State<LoginScreen> {
         });
       }
     }
-  }
-
-  /// Handles email verification / registration flow
-  Future<void> _handleEmailFlow(String email) async {
-    final userProvider = Provider.of<UserProvider>(context, listen: false);
-
-    // Mock search for user by email
-    await Future.delayed(const Duration(milliseconds: 800));
-
-    if (userProvider.user != null && userProvider.user?.email == email) {
-      _showSnackBar('Welcome back!', isError: false);
-      if (!mounted) return;
-      Navigator.of(context).pushReplacementNamed(HomeScreen.routeName);
-    } else {
-      // Prompt user to complete registration via bottom sheet
-      if (!mounted) return;
-      _showRegistrationBottomSheet(email);
-    }
-  }
-
-  /// Registration Bottom Sheet for Email flow
-  void _showRegistrationBottomSheet(String email) {
-    final isDark = Theme.of(context).brightness == Brightness.dark;
-    final sheetFormKey = GlobalKey<FormState>();
-    final nameController = TextEditingController();
-    final phoneController = TextEditingController();
-    final otpSheetController = TextEditingController();
-
-    Country sheetSelectedCountry = Country.defaultCountry;
-    bool isOtpSentInSheet = false;
-    String sheetFormattedPhone = '';
-    bool isSendingOtp = false;
-
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) {
-        return StatefulBuilder(
-          builder: (context, setSheetState) {
-            Future<void> sendSheetOtp() async {
-              if (!sheetFormKey.currentState!.validate()) return;
-
-              setSheetState(() {
-                isSendingOtp = true;
-              });
-
-              final cleanPhone = _formatPhoneNumber(
-                phoneController.text,
-                sheetSelectedCountry,
-              );
-              sheetFormattedPhone = cleanPhone;
-
-              await Future.delayed(const Duration(seconds: 1));
-
-              setSheetState(() {
-                isSendingOtp = false;
-                isOtpSentInSheet = true;
-              });
-
-              _showSnackBar('OTP sent to $cleanPhone.', isError: false);
-            }
-
-            Future<void> verifySheetOtpAndRegister() async {
-              final otp = otpSheetController.text.trim();
-              if (otp.length != 6 || !RegExp(r'^\d{6}$').hasMatch(otp)) {
-                _showSnackBar('Please enter valid 6-digit OTP');
-                return;
-              }
-
-              final userProvider = Provider.of<UserProvider>(context, listen: false);
-              final nav = Navigator.of(context);
-              final sheetNav = Navigator.of(ctx);
-
-              await userProvider.setInitialUserProfile(
-                uid: 'user_${DateTime.now().millisecondsSinceEpoch}',
-                fullName: nameController.text.trim(),
-                phoneNumber: sheetFormattedPhone,
-                email: email,
-              );
-
-              if (!mounted) return;
-              sheetNav.pop();
-              _showSnackBar('Registration successful!', isError: false);
-              nav.pushReplacementNamed(HomeScreen.routeName);
-            }
-
-            return Padding(
-              padding: EdgeInsets.only(
-                left: 24,
-                right: 24,
-                top: 20,
-                bottom: MediaQuery.of(context).viewInsets.bottom + 24,
-              ),
-              child: SingleChildScrollView(
-                child: Form(
-                  key: sheetFormKey,
-                  child: Column(
-                    mainAxisSize: MainAxisSize.min,
-                    crossAxisAlignment: CrossAxisAlignment.stretch,
-                    children: [
-                      Center(
-                        child: Container(
-                          width: 40,
-                          height: 4,
-                          decoration: BoxDecoration(
-                            color: isDark ? AppColors.darkBorder : AppColors.border,
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 16),
-                      Text(
-                        'Complete Registration',
-                        style: GoogleFonts.fraunces(
-                          fontSize: 20,
-                          fontWeight: FontWeight.w700,
-                          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                        ),
-                      ),
-                      const SizedBox(height: 4),
-                      Text(
-                        'Registering with: $email',
-                        style: AppTextStyles.caption(
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      if (!isOtpSentInSheet) ...[
-                        TextFormField(
-                          key: const ValueKey('sheet_name_input'),
-                          controller: nameController,
-                          style: TextStyle(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                          ),
-                          decoration: _buildInputDecoration(
-                            label: 'Full Name',
-                            icon: Icons.person_outline_rounded,
-                            isDark: isDark,
-                          ),
-                          validator: (val) {
-                            if (val == null || val.trim().isEmpty) {
-                              return 'Please enter your full name';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 16),
-                        PhoneInputWithCountrySelector(
-                          inputKey: const ValueKey('sheet_phone_input'),
-                          controller: phoneController,
-                          selectedCountry: sheetSelectedCountry,
-                          onCountryChanged: (country) {
-                            setSheetState(() {
-                              sheetSelectedCountry = country;
-                            });
-                          },
-                          validator: (val) {
-                            if (val == null || val.trim().isEmpty) {
-                              return 'Please enter phone number';
-                            }
-                            final clean = val.replaceAll(RegExp(r'\D'), '');
-                            if (clean.length != 10) {
-                              return 'Enter valid 10-digit phone number';
-                            }
-                            return null;
-                          },
-                        ),
-                        const SizedBox(height: 24),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: isSendingOtp ? null : sendSheetOtp,
-                            style: _buildButtonStyle(),
-                            child: isSendingOtp
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.5,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Text(
-                                    'Send OTP & Verify',
-                                    style: AppTextStyles.buttonText(
-                                      color: AppColors.cardBackground,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ] else ...[
-                        Text(
-                          'OTP sent to $sheetFormattedPhone',
-                          style: GoogleFonts.fraunces(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
-                            fontSize: 14,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        const SizedBox(height: 16),
-                        TextFormField(
-                          key: const ValueKey('sheet_otp_input'),
-                          controller: otpSheetController,
-                          keyboardType: TextInputType.number,
-                          maxLength: 6,
-                          buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
-                          inputFormatters: [
-                            FilteringTextInputFormatter.digitsOnly,
-                            LengthLimitingTextInputFormatter(6),
-                          ],
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                            fontSize: 22,
-                            letterSpacing: 8,
-                            fontWeight: FontWeight.bold,
-                          ),
-                          decoration: _buildInputDecoration(
-                            label: 'Enter 6-digit OTP',
-                            icon: Icons.lock_clock_outlined,
-                            isDark: isDark,
-                          ),
-                        ),
-                        const SizedBox(height: 20),
-                        SizedBox(
-                          height: 50,
-                          child: ElevatedButton(
-                            onPressed: isSendingOtp ? null : verifySheetOtpAndRegister,
-                            style: _buildButtonStyle(),
-                            child: isSendingOtp
-                                ? const SizedBox(
-                                    width: 24,
-                                    height: 24,
-                                    child: CircularProgressIndicator(
-                                      strokeWidth: 2.5,
-                                      color: Colors.white,
-                                    ),
-                                  )
-                                : Text(
-                                    'Verify & Register',
-                                    style: AppTextStyles.buttonText(
-                                      color: AppColors.cardBackground,
-                                    ),
-                                  ),
-                          ),
-                        ),
-                      ],
-                    ],
-                  ),
-                ),
-              ),
-            );
-          },
-        );
-      },
-    );
   }
 
   InputDecoration _buildInputDecoration({
@@ -676,6 +442,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 50,
                           child: ElevatedButton(
+                            key: const ValueKey('main_continue_btn'),
                             onPressed: _isLoading ? null : _handleInitialSubmit,
                             style: _buildButtonStyle(),
                             child: _isLoading
@@ -698,7 +465,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ] else ...[
                         // OTP Verification State
                         Text(
-                          'OTP sent to $_targetPhone',
+                          'OTP sent to $_targetDisplay',
                           textAlign: TextAlign.center,
                           style: GoogleFonts.fraunces(
                             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -734,6 +501,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         SizedBox(
                           height: 50,
                           child: ElevatedButton(
+                            key: const ValueKey('main_verify_otp_btn'),
                             onPressed: _isLoading ? null : _verifyEnteredOtp,
                             style: _buildButtonStyle(),
                             child: _isLoading
@@ -765,7 +533,7 @@ class _LoginScreenState extends State<LoginScreen> {
                                 });
                               },
                               child: Text(
-                                'Change Number',
+                                _isPhoneMode ? 'Change Number' : 'Change Email',
                                 style: AppTextStyles.caption(
                                   color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                                 ),
@@ -775,7 +543,11 @@ class _LoginScreenState extends State<LoginScreen> {
                               onPressed: _isLoading
                                   ? null
                                   : () {
-                                      _requestMockPhoneOtp(_targetPhone);
+                                      if (_isPhoneMode) {
+                                        _requestMockPhoneOtp(_targetDisplay);
+                                      } else {
+                                        _requestMockEmailOtp(_targetDisplay);
+                                      }
                                     },
                               child: Text(
                                 'Resend OTP',
