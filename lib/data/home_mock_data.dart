@@ -3058,6 +3058,7 @@ class HomeMockData {
       darkBackgroundColor: Color(0xFF29374D),
       accentColor: Color(0xFF475569),
     ),
+  
   ];
 
   static List<BrandModel> getBrandsForTopCategory(String title) {

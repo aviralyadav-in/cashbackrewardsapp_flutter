@@ -23,6 +23,14 @@ class AppTheme {
         onPrimary: AppColors.cardBackground,
       ),
       useMaterial3: true,
+      iconTheme: const IconThemeData(
+        color: AppColors.primaryBrown,
+        size: 24,
+      ),
+      primaryIconTheme: const IconThemeData(
+        color: AppColors.primaryBrown,
+        size: 24,
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.mainBackground,
         foregroundColor: AppColors.deepBrown,
@@ -85,13 +93,21 @@ class AppTheme {
       scaffoldBackgroundColor: AppColors.darkBackground,
       textTheme: GoogleFonts.frauncesTextTheme(ThemeData.dark().textTheme),
       colorScheme: const ColorScheme.dark(
-        primary: AppColors.primaryBrown,
+        primary: AppColors.darkPrimary,
         secondary: AppColors.deepBrown,
         surface: AppColors.darkCard,
         onSurface: AppColors.darkTextPrimary,
         onPrimary: AppColors.cardBackground,
       ),
       useMaterial3: true,
+      iconTheme: const IconThemeData(
+        color: AppColors.darkPrimary,
+        size: 24,
+      ),
+      primaryIconTheme: const IconThemeData(
+        color: AppColors.darkPrimary,
+        size: 24,
+      ),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.darkBackground,
         foregroundColor: AppColors.darkTextPrimary,

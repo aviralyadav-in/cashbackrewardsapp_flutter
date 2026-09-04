@@ -41,7 +41,7 @@ class MyEarningsScreen extends StatelessWidget {
             child: Text(
               'OK',
               style: AppTextStyles.buttonText(
-                color: AppColors.primaryBrown,
+                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
               ),
             ),
           ),
@@ -188,12 +188,12 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 InkWell(
                   onTap: onInfoTap,
                   borderRadius: BorderRadius.circular(12),
-                  child: const Padding(
-                    padding: EdgeInsets.all(4.0),
+                  child: Padding(
+                    padding: const EdgeInsets.all(4.0),
                     child: Icon(
                       Icons.info_outline_rounded,
                       size: 16,
-                      color: AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     ),
                   ),
                 ),
@@ -232,7 +232,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 32,
-                  color: AppColors.border,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
                 Expanded(
                   child: _buildBreakdownItem(
@@ -244,7 +244,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 Container(
                   width: 1,
                   height: 32,
-                  color: AppColors.border,
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
                 Expanded(
                   child: _buildBreakdownItem(
@@ -262,10 +262,10 @@ class _AllTimeEarningsCard extends StatelessWidget {
             padding: const EdgeInsets.all(16),
             child: Row(
               children: [
-                const Icon(
+                Icon(
                   Icons.access_time_rounded,
                   size: 14,
-                  color: AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.primaryBrown,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
@@ -294,7 +294,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, size: 14, color: AppColors.primaryBrown),
+            Icon(icon, size: 14, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
             const SizedBox(width: 4),
             Text(
               title,
@@ -355,12 +355,14 @@ class _ConfirmedEarningsCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.successBackground,
+              color: isDark
+                  ? AppColors.darkSuccess.withValues(alpha: 0.22)
+                  : AppColors.successBackground,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.check_circle_rounded,
-              color: AppColors.success,
+              color: isDark ? AppColors.darkSuccess : AppColors.success,
               size: 24,
             ),
           ),
@@ -450,12 +452,14 @@ class _PendingEarningsCard extends StatelessWidget {
             width: 42,
             height: 42,
             decoration: BoxDecoration(
-              color: AppColors.pendingBackground,
+              color: isDark
+                  ? AppColors.darkWarning.withValues(alpha: 0.22)
+                  : AppColors.pendingBackground,
               shape: BoxShape.circle,
             ),
-            child: const Icon(
+            child: Icon(
               Icons.hourglass_top_rounded,
-              color: AppColors.pending,
+              color: isDark ? AppColors.darkWarning : AppColors.pending,
               size: 22,
             ),
           ),
@@ -474,7 +478,7 @@ class _PendingEarningsCard extends StatelessWidget {
                 Text(
                   '₹366.30',
                   style: GoogleFonts.fraunces(
-                    color: AppColors.pending,
+                    color: isDark ? AppColors.darkWarning : AppColors.pending,
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
                   ),
@@ -487,8 +491,8 @@ class _PendingEarningsCard extends StatelessWidget {
           OutlinedButton(
             onPressed: onKnowWhyTap,
             style: OutlinedButton.styleFrom(
-              backgroundColor: AppColors.cardBackground,
-              side: const BorderSide(color: AppColors.border, width: 1.2),
+              backgroundColor: isDark ? AppColors.darkSurface : AppColors.cardBackground,
+              side: BorderSide(color: isDark ? AppColors.darkBorder : AppColors.border, width: 1.2),
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
@@ -497,7 +501,7 @@ class _PendingEarningsCard extends StatelessWidget {
             child: Text(
               'Know Why?',
               style: AppTextStyles.buttonText(
-                color: AppColors.deepBrown,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
               ),
             ),
           ),
@@ -543,9 +547,9 @@ class _AdditionalOptionsCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.receipt_long_rounded,
-                      color: AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       size: 20,
                     ),
                     const SizedBox(width: 14),
@@ -559,7 +563,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                     ),
                     Icon(
                       Icons.chevron_right_rounded,
-                      color: AppColors.textMuted,
+                      color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
                       size: 20,
                     ),
                   ],
@@ -584,9 +588,9 @@ class _AdditionalOptionsCard extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 15),
                 child: Row(
                   children: [
-                    const Icon(
+                    Icon(
                       Icons.help_outline_rounded,
-                      color: AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       size: 20,
                     ),
                     const SizedBox(width: 14),
@@ -600,7 +604,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                     ),
                     Icon(
                       Icons.chevron_right_rounded,
-                      color: AppColors.textMuted,
+                      color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
                       size: 20,
                     ),
                   ],

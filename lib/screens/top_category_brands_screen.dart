@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../models/amazon_deal_model.dart';
 import '../models/brand_model.dart';
 import '../theme/app_theme.dart';
+import '../widgets/home/amazon_deal_card.dart';
 import '../widgets/home/grid_brand_card.dart';
 import 'product_detail_screen.dart';
 
@@ -11,22 +13,25 @@ class TopCategoryBrandsScreen extends StatelessWidget {
 
   final String categoryTitle;
   final List<BrandModel> brands;
+  final List<AmazonDealItemData>? deals;
 
   const TopCategoryBrandsScreen({
     super.key,
     required this.categoryTitle,
-    required this.brands,
+    this.brands = const [],
+    this.deals,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final isDealsMode = deals != null && deals!.isNotEmpty;
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         title: Text(
-          '$categoryTitle Websites & Brands',
+          isDealsMode ? categoryTitle : '$categoryTitle Websites & Brands',
           style: AppTextStyles.screenHeading(
             color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
           ).copyWith(fontSize: 17),
@@ -86,7 +91,9 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Top $categoryTitle Partners',
+                          isDealsMode
+                              ? 'Exclusive $categoryTitle'
+                              : 'Top $categoryTitle Partners',
                           style: GoogleFonts.fraunces(
                             color: Colors.white,
                             fontSize: 19,
@@ -95,7 +102,9 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Shop via CashKaro to earn extra guaranteed cashback rewards!',
+                          isDealsMode
+                              ? 'Shop top Amazon deals and earn extra guaranteed cashback rewards!'
+                              : 'Shop via CashKaro to earn extra guaranteed cashback rewards!',
                           style: AppTextStyles.caption(
                             color: Colors.white.withValues(alpha: 0.8),
                           ),
@@ -111,8 +120,10 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                       color: Colors.white.withValues(alpha: 0.2),
                       shape: BoxShape.circle,
                     ),
-                    child: const Icon(
-                      Icons.storefront_rounded,
+                    child: Icon(
+                      isDealsMode
+                          ? Icons.local_offer_rounded
+                          : Icons.storefront_rounded,
                       color: Colors.white,
                       size: 28,
                     ),
@@ -122,20 +133,22 @@ class TopCategoryBrandsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Websites & Brands List Header
+            // Websites & Brands / Deals List Header
             Row(
               children: [
                 Container(
                   width: 4,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
                 const SizedBox(width: 8),
                 Text(
-                  'Featured Websites & Brands',
+                  isDealsMode
+                      ? 'Featured Deals & Products'
+                      : 'Featured Websites & Brands',
                   style: AppTextStyles.sectionHeading(
                     color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                   ).copyWith(fontSize: 15),
@@ -144,8 +157,27 @@ class TopCategoryBrandsScreen extends StatelessWidget {
             ),
             const SizedBox(height: 14),
 
-            // 2-Column Brands Grid (2 cards per row)
-            if (brands.isEmpty)
+            // Grid Content: Deals vs Brands
+            if (isDealsMode)
+              GridView.builder(
+                shrinkWrap: true,
+                physics: const NeverScrollableScrollPhysics(),
+                itemCount: deals!.length,
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 2,
+                  crossAxisSpacing: 12,
+                  mainAxisSpacing: 12,
+                  mainAxisExtent: 280,
+                ),
+                itemBuilder: (context, index) {
+                  final deal = deals![index];
+                  return AmazonDealCard(
+                    deal: deal,
+                    isDark: isDark,
+                  );
+                },
+              )
+            else if (brands.isEmpty)
               Padding(
                 padding: const EdgeInsets.symmetric(vertical: 40),
                 child: Center(

@@ -353,8 +353,8 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                         ),
                         focusedBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
-                          borderSide: const BorderSide(
-                            color: AppColors.primaryBrown,
+                          borderSide: BorderSide(
+                            color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                             width: 1.5,
                           ),
                         ),

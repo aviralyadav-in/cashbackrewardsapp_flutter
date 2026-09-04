@@ -303,7 +303,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                             style: GoogleFonts.fraunces(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
-                              color: AppColors.primaryBrown,
+                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                             ),
                           ),
                         ),
@@ -421,7 +421,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   Text(
                     '${_recentWithdrawals.length} Records',
                     style: AppTextStyles.smallLabel(
-                      color: AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     ),
                   ),
                 ],
@@ -597,11 +597,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: AppColors.primaryBrown
+                color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                     .withValues(alpha: isDark ? 0.18 : 0.10),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 22, color: AppColors.primaryBrown),
+              child: Icon(icon, size: 22, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -650,7 +650,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ? Icons.radio_button_checked_rounded
                   : Icons.radio_button_off_rounded,
               color: isSelected
-                  ? AppColors.primaryBrown
+                  ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                   : (isDark ? AppColors.darkTextSecondary : AppColors.textMuted),
               size: 20,
             ),

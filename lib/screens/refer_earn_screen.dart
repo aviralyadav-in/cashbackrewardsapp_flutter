@@ -417,9 +417,9 @@ class _ReferralLinkSection extends StatelessWidget {
           ),
           child: Row(
             children: [
-              const Icon(
+              Icon(
                 Icons.link_rounded,
-                color: AppColors.primaryBrown,
+                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                 size: 22,
               ),
               const SizedBox(width: 10),
@@ -440,7 +440,7 @@ class _ReferralLinkSection extends StatelessWidget {
               // Copy Button
               Material(
                 color: isDark
-                    ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                    ? AppColors.darkPrimary.withValues(alpha: 0.2)
                     : AppColors.beigeSurface,
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
@@ -451,16 +451,16 @@ class _ReferralLinkSection extends StatelessWidget {
                     child: Row(
                       mainAxisSize: MainAxisSize.min,
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.copy_rounded,
                           size: 16,
-                          color: AppColors.primaryBrown,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                         ),
                         const SizedBox(width: 4),
                         Text(
                           'Copy',
                           style: AppTextStyles.buttonText(
-                            color: AppColors.deepBrown,
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                           ).copyWith(fontSize: 12),
                         ),
                       ],
@@ -627,7 +627,7 @@ class _HowItWorksSection extends StatelessWidget {
             height: 38,
             decoration: BoxDecoration(
               color: isDark
-                  ? AppColors.primaryBrown.withValues(alpha: 0.25)
+                  ? AppColors.darkPrimary.withValues(alpha: 0.2)
                   : AppColors.beigeSurface,
               shape: BoxShape.circle,
             ),

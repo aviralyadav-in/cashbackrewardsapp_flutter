@@ -162,14 +162,14 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Icon(
                       Icons.search,
-                      color: AppColors.textMuted,
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                       size: 20,
                     ),
                     const SizedBox(width: 10),
                     Text(
                       'Search stores, products & cashback',
                       style: AppTextStyles.body(
-                        color: AppColors.textMuted,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                       ),
                     ),
                   ],
@@ -318,13 +318,13 @@ class _HomeScreenState extends State<HomeScreen> {
             currentIndex: _selectedIndex,
             type: BottomNavigationBarType.fixed,
             selectedItemColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-            unselectedItemColor: AppColors.textMuted,
+            unselectedItemColor: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
             backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
             selectedLabelStyle: AppTextStyles.navLabel(
               color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
             ),
             unselectedLabelStyle: AppTextStyles.navLabel(
-              color: AppColors.textMuted,
+              color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
             ),
             elevation: 0,
             onTap: _onBottomNavigationTap,

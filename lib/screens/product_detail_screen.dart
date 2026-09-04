@@ -485,11 +485,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                     child: imageList.isEmpty
                         ? Container(
                             color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
-                            child: const Center(
+                            child: Center(
                               child: Icon(
                                 Icons.storefront_rounded,
                                 size: 80,
-                                color: AppColors.primaryBrown,
+                                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                               ),
                             ),
                           )

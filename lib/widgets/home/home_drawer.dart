@@ -200,7 +200,7 @@ class HomeDrawer extends StatelessWidget {
                                       child: Container(
                                         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                                         decoration: BoxDecoration(
-                                          color: AppColors.beigeSurface,
+                                          color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
                                           borderRadius: BorderRadius.circular(20),
                                         ),
                                         child: Row(
@@ -209,16 +209,16 @@ class HomeDrawer extends StatelessWidget {
                                             Text(
                                               'Explore Now',
                                               style: GoogleFonts.fraunces(
-                                                color: AppColors.primaryBrown,
+                                                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                                 fontSize: 11.5,
                                                 fontWeight: FontWeight.bold,
                                               ),
                                             ),
                                             const SizedBox(width: 4),
-                                            const Icon(
+                                            Icon(
                                               Icons.arrow_forward_rounded,
                                               size: 13,
-                                              color: AppColors.primaryBrown,
+                                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                             ),
                                           ],
                                         ),
@@ -301,7 +301,7 @@ class HomeDrawer extends StatelessWidget {
                                 width: 3.5,
                                 height: 14,
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBrown,
+                                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                   borderRadius: BorderRadius.circular(2),
                                 ),
                               ),

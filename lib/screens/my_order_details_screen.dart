@@ -336,13 +336,13 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                     height: 44,
                                     decoration: BoxDecoration(
                                       color: isDark
-                                          ? AppColors.primaryBrown.withValues(alpha: 0.2)
+                                          ? AppColors.darkPrimary.withValues(alpha: 0.18)
                                           : AppColors.beigeSurface,
                                       borderRadius: BorderRadius.circular(12),
                                     ),
                                     child: Icon(
                                       order.icon,
-                                      color: AppColors.primaryBrown,
+                                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                       size: 22,
                                     ),
                                   ),
@@ -473,13 +473,14 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primaryBrown
+              ? (isDark ? const Color(0xFF4A3428) : AppColors.primaryBrown)
               : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
-                ? AppColors.primaryBrown
+                ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                 : (isDark ? AppColors.darkBorder : AppColors.border),
+            width: isSelected ? 1.5 : 1,
           ),
         ),
         child: Text(

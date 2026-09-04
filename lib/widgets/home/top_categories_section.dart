@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../data/home_mock_data.dart';
 import '../../models/brand_model.dart';
 import '../../models/top_category_model.dart';
+import '../../screens/all_categories_screen.dart';
+import '../../theme/app_theme.dart';
 import '../network_image_with_skeleton.dart';
 import 'grid_brand_card.dart';
 
@@ -229,10 +231,78 @@ class CategorySelectorSection extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               padding: const EdgeInsets.symmetric(horizontal: 16),
-              itemCount: categories.length,
+              itemCount: categories.length + 1,
               separatorBuilder: (context, index) =>
                   SizedBox(width: itemSpacing),
               itemBuilder: (context, index) {
+                if (index == categories.length) {
+                  return GestureDetector(
+                    onTap: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (_) => const AllCategoriesScreen(),
+                        ),
+                      );
+                    },
+                    behavior: HitTestBehavior.opaque,
+                    child: Container(
+                      width: itemWidth,
+                      padding: const EdgeInsets.only(top: 8),
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Container(
+                            width: 58,
+                            height: 58,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              color: isDark
+                                  ? const Color(0xFF1E1E22)
+                                  : Colors.white,
+                              border: Border.all(
+                                color: isDark
+                                    ? AppColors.darkBorder
+                                    : AppColors.primaryBrown.withValues(alpha: 0.35),
+                                width: 1.2,
+                              ),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black.withValues(
+                                    alpha: isDark ? 0.2 : 0.04,
+                                  ),
+                                  blurRadius: 4,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            child: Center(
+                              child: Icon(
+                                Icons.keyboard_double_arrow_right_rounded,
+                                size: 26,
+                                color: isDark
+                                    ? AppColors.darkPrimary
+                                    : AppColors.primaryBrown,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'View All',
+                            style: GoogleFonts.fraunces(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w700,
+                              color: isDark
+                                  ? AppColors.darkPrimary
+                                  : AppColors.primaryBrown,
+                            ),
+                            textAlign: TextAlign.center,
+                          ),
+                        ],
+                      ),
+                    ),
+                  );
+                }
+
                 final cat = categories[index];
                 final isSelected = selectedIndex == index;
 

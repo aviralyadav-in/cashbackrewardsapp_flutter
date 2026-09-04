@@ -42,7 +42,14 @@ class AppColors {
   static const Color darkSurface = Color(0xFF322721);
   static const Color darkBorder = Color(0xFF4A3B33);
   static const Color darkTextPrimary = Color(0xFFFAF5ED);
-  static const Color darkTextSecondary = Color(0xFFC7B7AD);
+  static const Color darkTextSecondary = Color(0xFFD4C5B9);
+  static const Color darkTextMuted = Color(0xFFB5A499);
+  static const Color darkPrimary = Color(0xFFE29D62);
+  static const Color darkSuccess = Color(0xFF81C784);
+  static const Color darkWarning = Color(0xFFFFB74D);
+
+  /// Resolves the theme-aware icon color matching the brown brand in light mode and warm caramel in dark mode.
+  static Color iconColor(bool isDark) => isDark ? darkPrimary : primaryBrown;
 
   // Aliases for compatibility
   static const Color terracotta = primaryBrown;

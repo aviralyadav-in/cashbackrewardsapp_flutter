@@ -368,8 +368,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        borderSide: const BorderSide(
-          color: AppColors.primaryBrown,
+        borderSide: BorderSide(
+          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
           width: 1.5,
         ),
       ),

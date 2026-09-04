@@ -71,6 +71,19 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
         .toList();
   }
 
+  Color _resolveStatusColor(Color baseColor, String status, bool isDark) {
+    if (!isDark) return baseColor;
+    final lower = status.toLowerCase();
+    if (lower.contains('investigation') || lower.contains('pending')) {
+      return AppColors.darkWarning;
+    } else if (lower.contains('query') || baseColor == AppColors.primaryBrown) {
+      return const Color(0xFFFF8A65);
+    } else if (lower.contains('resolved') || lower.contains('credit') || baseColor == AppColors.success) {
+      return AppColors.darkSuccess;
+    }
+    return AppColors.darkPrimary;
+  }
+
   void _showAddTicketModal(BuildContext context, bool isDark) {
     final storeCtrl = TextEditingController();
     final orderIdCtrl = TextEditingController();
@@ -236,20 +249,29 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                     ),
                   ],
                 ),
-                Container(
-                  padding:
-                      const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: (ticket['statusColor'] as Color)
-                        .withValues(alpha: isDark ? 0.2 : 0.12),
-                    borderRadius: BorderRadius.circular(8),
-                  ),
-                  child: Text(
-                    ticket['status'] as String,
-                    style: AppTextStyles.smallLabel(
-                      color: ticket['statusColor'] as Color,
-                    ),
-                  ),
+                Builder(
+                  builder: (_) {
+                    final resolvedStatusColor = _resolveStatusColor(
+                      ticket['statusColor'] as Color,
+                      ticket['status'] as String,
+                      isDark,
+                    );
+                    return Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 10, vertical: 4),
+                      decoration: BoxDecoration(
+                        color: resolvedStatusColor
+                            .withValues(alpha: isDark ? 0.2 : 0.12),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Text(
+                        ticket['status'] as String,
+                        style: AppTextStyles.smallLabel(
+                          color: resolvedStatusColor,
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),
@@ -403,12 +425,12 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                     Container(
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: AppColors.primaryBrown
+                        color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                             .withValues(alpha: isDark ? 0.18 : 0.10),
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(Icons.help_outline_rounded,
-                          color: AppColors.primaryBrown, size: 24),
+                      child: Icon(Icons.help_outline_rounded,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown, size: 24),
                     ),
                     const SizedBox(width: 14),
                     Expanded(
@@ -479,6 +501,11 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 )
               else
                 ..._filteredTickets.map((ticket) {
+                  final resolvedStatusColor = _resolveStatusColor(
+                    ticket['statusColor'] as Color,
+                    ticket['status'] as String,
+                    isDark,
+                  );
                   return Container(
                     margin: const EdgeInsets.only(bottom: 12),
                     decoration: BoxDecoration(
@@ -524,7 +551,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                                     padding: const EdgeInsets.symmetric(
                                         horizontal: 8, vertical: 3),
                                     decoration: BoxDecoration(
-                                      color: (ticket['statusColor'] as Color)
+                                      color: resolvedStatusColor
                                           .withValues(
                                               alpha: isDark ? 0.2 : 0.12),
                                       borderRadius: BorderRadius.circular(6),
@@ -532,7 +559,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                                     child: Text(
                                       ticket['status'] as String,
                                       style: AppTextStyles.smallLabel(
-                                        color: ticket['statusColor'] as Color,
+                                        color: resolvedStatusColor,
                                       ).copyWith(fontSize: 11),
                                     ),
                                   ),
@@ -565,14 +592,14 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                                       Text(
                                         'View Details',
                                         style: AppTextStyles.smallLabel(
-                                          color: AppColors.primaryBrown,
+                                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                         ),
                                       ),
                                       const SizedBox(width: 4),
-                                      const Icon(
+                                      Icon(
                                         Icons.arrow_forward_ios_rounded,
                                         size: 11,
-                                        color: AppColors.primaryBrown,
+                                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                       ),
                                     ],
                                   ),
@@ -594,8 +621,9 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                 icon: const Icon(Icons.add_circle_outline_rounded, size: 18),
                 label: const Text('Add New Missing Ticket'),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBrown,
-                  foregroundColor: AppColors.cardBackground,
+                  backgroundColor: isDark ? const Color(0xFF3F2B22) : AppColors.primaryBrown,
+                  foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.cardBackground,
+                  side: isDark ? const BorderSide(color: Color(0xFF6B4C3D), width: 1) : null,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -628,23 +656,24 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primaryBrown
+              ? (isDark ? const Color(0xFF4A3428) : AppColors.primaryBrown)
               : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
           borderRadius: BorderRadius.circular(10),
           border: Border.all(
             color: isSelected
-                ? AppColors.primaryBrown
+                ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                 : (isDark
                     ? AppColors.darkBorder
                     : AppColors.border),
+            width: isSelected ? 1.5 : 1,
           ),
         ),
         child: Text(
           filterName,
           style: AppTextStyles.buttonText(
             color: isSelected
-                ? AppColors.cardBackground
-                : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+                ? (isDark ? AppColors.darkTextPrimary : AppColors.cardBackground)
+                : (isDark ? AppColors.darkTextPrimary.withValues(alpha: 0.85) : AppColors.textPrimary),
           ).copyWith(fontSize: 12.5),
         ),
       ),

@@ -105,8 +105,9 @@ class YourQueriesScreen extends StatelessWidget {
                         style: AppTextStyles.buttonText(color: AppColors.cardBackground),
                       ),
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBrown,
-                        foregroundColor: AppColors.cardBackground,
+                        backgroundColor: isDark ? const Color(0xFF3F2B22) : AppColors.primaryBrown,
+                        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.cardBackground,
+                        side: isDark ? const BorderSide(color: Color(0xFF6B4C3D), width: 1) : null,
                         padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),

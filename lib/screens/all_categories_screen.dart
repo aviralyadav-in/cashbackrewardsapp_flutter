@@ -302,7 +302,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                               icon: const Icon(Icons.refresh_rounded, size: 16),
                               label: const Text('Clear search'),
                               style: TextButton.styleFrom(
-                                foregroundColor: AppColors.primaryBrown,
+                                foregroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                               ),
                             ),
                           ],
@@ -349,7 +349,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                                 crossAxisCount: 3,
                                 mainAxisSpacing: 10,
                                 crossAxisSpacing: 10,
-                                childAspectRatio: 0.88,
+                                childAspectRatio: 1.05,
                               ),
                               itemBuilder: (context, index) {
                                 final item = filteredPopular[index];
@@ -458,11 +458,11 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
       color: Colors.transparent,
       child: InkWell(
         onTap: () => _onCategoryTap(item),
-        borderRadius: BorderRadius.circular(18),
+        borderRadius: BorderRadius.circular(10),
         child: Container(
           decoration: BoxDecoration(
             color: cardBgColor,
-            borderRadius: BorderRadius.circular(18),
+            borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: borderColor,
               width: 1,
@@ -475,23 +475,23 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               ),
             ],
           ),
-          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 12),
+          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 8),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // Emoji / Icon Container
               Container(
-                width: 48,
-                height: 48,
+                width: 40,
+                height: 40,
                 decoration: BoxDecoration(
                   color: iconContainerBg,
-                  borderRadius: BorderRadius.circular(14),
+                  borderRadius: BorderRadius.circular(11),
                 ),
                 child: Center(
                   child: Text(
                     item.emoji,
                     style: const TextStyle(
-                      fontSize: 24,
+                      fontSize: 21,
                     ),
                   ),
                 ),
@@ -505,7 +505,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
                 style: GoogleFonts.fraunces(
-                  fontSize: 12.5,
+                  fontSize: 12.0,
                   fontWeight: FontWeight.w700,
                   color: titleColor,
                   height: 1.15,

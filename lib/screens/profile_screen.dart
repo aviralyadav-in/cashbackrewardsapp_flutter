@@ -237,13 +237,13 @@ class ProfileScreen extends StatelessWidget {
                               icon: Container(
                                 padding: const EdgeInsets.all(8),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBrown.withValues(alpha: isDark ? 0.2 : 0.1),
+                                  color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: isDark ? 0.2 : 0.1),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Icon(
+                                child: Icon(
                                   Icons.edit,
                                   size: 18,
-                                  color: AppColors.primaryBrown,
+                                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                 ),
                               ),
                               tooltip: 'Edit Profile',
@@ -273,10 +273,10 @@ class ProfileScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           Icons.account_balance_wallet_outlined,
                                           size: 16,
-                                          color: AppColors.primaryBrown,
+                                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
@@ -316,10 +316,10 @@ class ProfileScreen extends StatelessWidget {
                                   children: [
                                     Row(
                                       children: [
-                                        const Icon(
+                                        Icon(
                                           Icons.card_giftcard_outlined,
                                           size: 16,
-                                          color: AppColors.primaryBrown,
+                                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
@@ -573,7 +573,9 @@ class _ProfileOptionTile extends StatelessWidget {
                 Icon(
                   icon,
                   size: 20,
-                  color: isDestructive ? AppColors.error : AppColors.primaryBrown,
+                  color: isDestructive
+                      ? AppColors.error
+                      : (isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
                 ),
                 const SizedBox(width: 14),
                 Expanded(
@@ -589,7 +591,7 @@ class _ProfileOptionTile extends StatelessWidget {
                 Icon(
                   Icons.chevron_right_rounded,
                   size: 20,
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
                 ),
               ],
             ),

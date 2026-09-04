@@ -54,7 +54,7 @@ class SubtleSectionContainer extends StatelessWidget {
                   width: 4,
                   height: 18,
                   decoration: BoxDecoration(
-                    color: AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     borderRadius: BorderRadius.circular(2),
                   ),
                 ),
@@ -130,8 +130,8 @@ class SubtleSectionContainer extends StatelessWidget {
                           Icons.arrow_forward_ios_rounded,
                           size: 11,
                           color: isDark
-                              ? AppColors.darkTextPrimary
-                              : AppColors.primaryBrown,
+                            ? AppColors.darkPrimary
+                            : AppColors.primaryBrown,
                         ),
                       ],
                     ),

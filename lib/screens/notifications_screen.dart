@@ -243,11 +243,13 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                             : AppColors.beigeSurface,
                                         shape: BoxShape.circle,
                                       ),
-                                      child: Icon(
-                                        notif['icon'] as IconData,
-                                        color: notif['color'] as Color,
-                                        size: 22,
-                                      ),
+                                       child: Icon(
+                                         notif['icon'] as IconData,
+                                         color: (notif['color'] == AppColors.primaryBrown && isDark)
+                                             ? AppColors.darkPrimary
+                                             : (notif['color'] as Color),
+                                         size: 22,
+                                       ),
                                     ),
                                     const SizedBox(width: 12),
                                     // Notification Texts
@@ -278,11 +280,10 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
                                                 Container(
                                                   width: 8,
                                                   height: 8,
-                                                  decoration:
-                                                      const BoxDecoration(
-                                                    color: AppColors.primaryBrown,
-                                                    shape: BoxShape.circle,
-                                                  ),
+                                                   decoration: BoxDecoration(
+                                                     color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                                     shape: BoxShape.circle,
+                                                   ),
                                                 ),
                                             ],
                                           ),
@@ -363,15 +364,16 @@ class _NotificationsScreenState extends State<NotificationsScreen> {
         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
         decoration: BoxDecoration(
           color: isSelected
-              ? AppColors.primaryBrown
+              ? (isDark ? const Color(0xFF4A3428) : AppColors.primaryBrown)
               : (isDark ? AppColors.darkCard : AppColors.cardBackground),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
-                ? AppColors.primaryBrown
+                ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                 : (isDark
                     ? AppColors.darkBorder
                     : AppColors.border),
+            width: isSelected ? 1.5 : 1,
           ),
         ),
         child: Text(

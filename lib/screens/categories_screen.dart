@@ -597,7 +597,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               Container(
                                 padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2),
                                 decoration: BoxDecoration(
-                                  color: AppColors.primaryBrown,
+                                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: Text(
@@ -682,9 +682,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         ? (isDark ? AppColors.darkCard : AppColors.cardBackground)
                                         : Colors.transparent,
                                     border: isSelected
-                                        ? const Border(
+                                        ? Border(
                                             left: BorderSide(
-                                              color: AppColors.primaryBrown,
+                                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                               width: 3.5,
                                             ),
                                           )
@@ -709,7 +709,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                         Container(
                                           padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1),
                                           decoration: BoxDecoration(
-                                            color: AppColors.primaryBrown.withValues(alpha: 0.18),
+                                            color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: 0.18),
                                             borderRadius: BorderRadius.circular(10),
                                           ),
                                           child: Text(
@@ -717,7 +717,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                             style: GoogleFonts.fraunces(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
-                                              color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                             ),
                                           ),
                                         ),
@@ -964,7 +964,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                             Container(
                               padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                               decoration: BoxDecoration(
-                                color: AppColors.primaryBrown,
+                                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -1304,7 +1304,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     return RefreshIndicator(
-      color: AppColors.primaryBrown,
+      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
       onRefresh: () async {
         if (provider.selectedCategory != null) {
           await provider.fetchProductsByCategory(

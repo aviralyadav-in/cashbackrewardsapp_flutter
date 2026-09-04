@@ -431,7 +431,7 @@ class _SectionTitle extends StatelessWidget {
             width: 4,
             height: 16,
             decoration: BoxDecoration(
-              color: AppColors.primaryBrown,
+              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
               borderRadius: BorderRadius.circular(2),
             ),
           ),
