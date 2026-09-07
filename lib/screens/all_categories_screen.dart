@@ -2,22 +2,29 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../models/category_group_model.dart';
 import '../providers/category_provider.dart';
 import '../theme/app_theme.dart';
 import 'categories_screen.dart';
 
-/// Data model representing a category item with display title, emoji, and target query.
+/// Data model representing a category display item
 class CategoryDisplayItem {
   final String id;
   final String title;
+  final String subtitle;
   final String emoji;
-  final String query;
+  final String groupId;
+  final String? subcategorySlug;
+  final List<String> keywords;
 
   const CategoryDisplayItem({
     required this.id,
     required this.title,
+    this.subtitle = '',
     required this.emoji,
-    required this.query,
+    required this.groupId,
+    this.subcategorySlug,
+    this.keywords = const [],
   });
 }
 
@@ -34,40 +41,217 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
 
-  // 8 Popular Categories shown in the 3-column grid (matching screenshots)
+  // 8 Popular Categories shown in the 3-column grid (deduplicated & comprehensive)
   static const List<CategoryDisplayItem> _popularCategories = [
-    CategoryDisplayItem(id: 'fashion', title: 'Fashion', emoji: '👕', query: 'mens-shirts'),
-    CategoryDisplayItem(id: 'electronics', title: 'Electronics', emoji: '📱', query: 'smartphones'),
-    CategoryDisplayItem(id: 'home_living', title: 'Home & Living', emoji: '🏠', query: 'home-decoration'),
-    CategoryDisplayItem(id: 'beauty', title: 'Beauty', emoji: '💄', query: 'beauty'),
-    CategoryDisplayItem(id: 'travel', title: 'Travel', emoji: '✈️', query: 'vehicle'),
-    CategoryDisplayItem(id: 'food', title: 'Food', emoji: '🍔', query: 'groceries'),
-    CategoryDisplayItem(id: 'health_fitness', title: 'Health & Fitness', emoji: '🏋️', query: 'sports-accessories'),
-    CategoryDisplayItem(id: 'footwear', title: 'Footwear', emoji: '👟', query: 'mens-shoes'),
+    CategoryDisplayItem(
+      id: 'fashion',
+      title: 'Fashion',
+      emoji: '👗',
+      groupId: 'fashion',
+      subcategorySlug: 'all',
+      keywords: ['clothes', 'shirt', 'dress', 'top', 'shoes', 'bags', 'jewellery', 'watches', 'sunglasses'],
+    ),
+    CategoryDisplayItem(
+      id: 'electronics',
+      title: 'Mobiles & Tech',
+      emoji: '📱',
+      groupId: 'electronics',
+      subcategorySlug: 'all',
+      keywords: ['smartphones', 'phones', 'mobiles', 'laptops', 'tablets', 'gadgets', 'tech', 'electronics'],
+    ),
+    CategoryDisplayItem(
+      id: 'home_living',
+      title: 'Home & Living',
+      emoji: '🏠',
+      groupId: 'home_living',
+      subcategorySlug: 'all',
+      keywords: ['home', 'decor', 'furniture', 'kitchen', 'dining'],
+    ),
+    CategoryDisplayItem(
+      id: 'beauty',
+      title: 'Beauty & Care',
+      emoji: '💄',
+      groupId: 'beauty',
+      subcategorySlug: 'all',
+      keywords: ['beauty', 'cosmetics', 'skincare', 'perfumes', 'fragrances'],
+    ),
+    CategoryDisplayItem(
+      id: 'food_groceries',
+      title: 'Food & Groceries',
+      emoji: '🛒',
+      groupId: 'groceries',
+      subcategorySlug: 'all',
+      keywords: ['groceries', 'food', 'staples', 'kitchen', 'essentials', 'snacks'],
+    ),
+    CategoryDisplayItem(
+      id: 'sports_fitness',
+      title: 'Sports & Fitness',
+      emoji: '🏋️',
+      groupId: 'sports',
+      subcategorySlug: 'all',
+      keywords: ['sports', 'fitness', 'gym', 'workout', 'accessories'],
+    ),
+    CategoryDisplayItem(
+      id: 'footwear',
+      title: 'Footwear',
+      emoji: '👟',
+      groupId: 'footwear',
+      subcategorySlug: 'all',
+      keywords: ['shoes', 'sneakers', 'heels', 'boots', 'sandals'],
+    ),
+    CategoryDisplayItem(
+      id: 'automotive',
+      title: 'Automotive & Bikes',
+      emoji: '🚗',
+      groupId: 'automotive',
+      subcategorySlug: 'all',
+      keywords: ['vehicle', 'cars', 'bikes', 'motorcycles', 'automotive'],
+    ),
   ];
 
-  // Comprehensive list of All Categories shown in the grouped card list (matching screenshots)
+  // Comprehensive list of All Categories shown in the grouped card list (NO DUPLICATES)
   static const List<CategoryDisplayItem> _allCategoriesList = [
-    CategoryDisplayItem(id: 'fashion', title: 'Fashion', emoji: '👕', query: 'mens-shirts'),
-    CategoryDisplayItem(id: 'electronics', title: 'Electronics', emoji: '📱', query: 'smartphones'),
-    CategoryDisplayItem(id: 'home_living', title: 'Home & Living', emoji: '🏠', query: 'home-decoration'),
-    CategoryDisplayItem(id: 'beauty', title: 'Beauty', emoji: '💄', query: 'beauty'),
-    CategoryDisplayItem(id: 'travel', title: 'Travel', emoji: '✈️', query: 'vehicle'),
-    CategoryDisplayItem(id: 'food', title: 'Food', emoji: '🍔', query: 'groceries'),
-    CategoryDisplayItem(id: 'health_fitness', title: 'Health & Fitness', emoji: '🏋️', query: 'sports-accessories'),
-    CategoryDisplayItem(id: 'footwear', title: 'Footwear', emoji: '👟', query: 'mens-shoes'),
-    CategoryDisplayItem(id: 'groceries', title: 'Groceries & Essentials', emoji: '🛒', query: 'groceries'),
-    CategoryDisplayItem(id: 'jewellery', title: 'Jewellery & Watches', emoji: '💍', query: 'womens-jewellery'),
-    CategoryDisplayItem(id: 'bags', title: 'Bags & Luggage', emoji: '🎒', query: 'womens-bags'),
-    CategoryDisplayItem(id: 'fragrances', title: 'Fragrances & Perfumes', emoji: '🌸', query: 'fragrances'),
-    CategoryDisplayItem(id: 'mobile_accessories', title: 'Mobile & Tech', emoji: '🎧', query: 'mobile-accessories'),
-    CategoryDisplayItem(id: 'automotive', title: 'Automotive & Bikes', emoji: '🚗', query: 'motorcycle'),
-    CategoryDisplayItem(id: 'sunglasses', title: 'Sunglasses & Eyewear', emoji: '🕶️', query: 'sunglasses'),
-    CategoryDisplayItem(id: 'kitchen', title: 'Kitchen & Dining', emoji: '🍳', query: 'kitchen-accessories'),
-    CategoryDisplayItem(id: 'sports', title: 'Sports & Outdoors', emoji: '⚽', query: 'sports-accessories'),
-    CategoryDisplayItem(id: 'furniture', title: 'Furniture & Decor', emoji: '🛋️', query: 'furniture'),
-    CategoryDisplayItem(id: 'skincare', title: 'Skin Care', emoji: '✨', query: 'skin-care'),
-    CategoryDisplayItem(id: 'laptops', title: 'Laptops & Computers', emoji: '💻', query: 'laptops'),
+    CategoryDisplayItem(
+      id: 'fashion_main',
+      title: 'Fashion & Apparel',
+      subtitle: 'Shirts, Dresses, Tops, Bags, Shoes & Jewellery',
+      emoji: '👗',
+      groupId: 'fashion',
+      subcategorySlug: 'all',
+      keywords: ['clothing', 'men', 'women', 'apparel', 'fashion', 'jewellery', 'jewelry', 'watches'],
+    ),
+    CategoryDisplayItem(
+      id: 'electronics_main',
+      title: 'Mobiles, Laptops & Electronics',
+      subtitle: 'Smartphones, Laptops, Tablets & Audio Tech',
+      emoji: '📱',
+      groupId: 'electronics',
+      subcategorySlug: 'all',
+      keywords: [
+        'smartphones',
+        'phones',
+        'mobiles',
+        'laptops',
+        'tablets',
+        'gadgets',
+        'tech',
+        'electronics',
+        'computers',
+        'macbook',
+        'audio',
+        'headphones',
+        'chargers',
+        'accessories',
+      ],
+    ),
+    CategoryDisplayItem(
+      id: 'home_living_main',
+      title: 'Home & Living',
+      subtitle: 'Furniture, Home Decor & Kitchen Dining',
+      emoji: '🏠',
+      groupId: 'home_living',
+      subcategorySlug: 'all',
+      keywords: ['living', 'interior', 'decoration', 'appliances'],
+    ),
+    CategoryDisplayItem(
+      id: 'beauty_care_main',
+      title: 'Beauty & Personal Care',
+      subtitle: 'Skincare, Makeup & Luxury Fragrances',
+      emoji: '💄',
+      groupId: 'beauty',
+      subcategorySlug: 'all',
+      keywords: ['care', 'glow', 'skin', 'cosmetics', 'perfume'],
+    ),
+    CategoryDisplayItem(
+      id: 'groceries_main',
+      title: 'Food & Groceries',
+      subtitle: 'Daily Staples, Food & Kitchen Essentials',
+      emoji: '🛒',
+      groupId: 'groceries',
+      subcategorySlug: 'all',
+      keywords: ['groceries', 'food', 'pantry', 'staples', 'essentials'],
+    ),
+    CategoryDisplayItem(
+      id: 'sports_fitness_main',
+      title: 'Sports & Fitness',
+      subtitle: 'Sports Gear, Fitness Equipment & Outdoors',
+      emoji: '🏋️',
+      groupId: 'sports',
+      subcategorySlug: 'all',
+      keywords: ['workout', 'exercise', 'training', 'athletics'],
+    ),
+    CategoryDisplayItem(
+      id: 'footwear_main',
+      title: 'Footwear & Shoes',
+      subtitle: "Men's & Women's Footwear & Sneakers",
+      emoji: '👟',
+      groupId: 'footwear',
+      subcategorySlug: 'all',
+      keywords: ['footwear', 'shoes', 'running', 'boots'],
+    ),
+    CategoryDisplayItem(
+      id: 'bags_luggage',
+      title: 'Bags & Luggage',
+      subtitle: 'Handbags, Backpacks & Travel Luggage',
+      emoji: '🎒',
+      groupId: 'fashion',
+      subcategorySlug: 'womens-bags',
+      keywords: ['bags', 'purse', 'handbag', 'backpack', 'tote'],
+    ),
+    CategoryDisplayItem(
+      id: 'fragrances_perfumes',
+      title: 'Fragrances & Perfumes',
+      subtitle: 'Luxury Scents, Colognes & Deodorants',
+      emoji: '🌸',
+      groupId: 'beauty',
+      subcategorySlug: 'fragrances',
+      keywords: ['perfumes', 'cologne', 'scent', 'deodorant'],
+    ),
+    CategoryDisplayItem(
+      id: 'skincare_sub',
+      title: 'Skin Care',
+      subtitle: 'Moisturizers, Serums, Cleansers & Sunscreen',
+      emoji: '✨',
+      groupId: 'beauty',
+      subcategorySlug: 'skin-care',
+      keywords: ['serum', 'cream', 'face', 'cleanser'],
+    ),
+    CategoryDisplayItem(
+      id: 'kitchen_dining',
+      title: 'Kitchen & Dining',
+      subtitle: 'Cookware, Utensils & Tableware',
+      emoji: '🍳',
+      groupId: 'home_living',
+      subcategorySlug: 'kitchen-accessories',
+      keywords: ['cooking', 'pans', 'pots', 'dining'],
+    ),
+    CategoryDisplayItem(
+      id: 'furniture_decor',
+      title: 'Furniture & Decor',
+      subtitle: 'Living Room, Bedroom & Office Decor',
+      emoji: '🛋️',
+      groupId: 'home_living',
+      subcategorySlug: 'furniture',
+      keywords: ['sofa', 'table', 'chair', 'bed', 'decor'],
+    ),
+    CategoryDisplayItem(
+      id: 'sunglasses_eyewear',
+      title: 'Sunglasses & Eyewear',
+      subtitle: 'Designer Frames, Shades & UV Protection',
+      emoji: '🕶️',
+      groupId: 'fashion',
+      subcategorySlug: 'sunglasses',
+      keywords: ['glasses', 'shades', 'frames', 'sun'],
+    ),
+    CategoryDisplayItem(
+      id: 'automotive_vehicles',
+      title: 'Automotive & Vehicles',
+      subtitle: 'Cars, Bikes, Motorcycles & Motor Gear',
+      emoji: '🚗',
+      groupId: 'automotive',
+      subcategorySlug: 'all',
+      keywords: ['cars', 'bikes', 'motorcycle', 'vehicles'],
+    ),
   ];
 
   @override
@@ -89,36 +273,17 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
 
   void _onCategoryTap(CategoryDisplayItem item) {
     final provider = context.read<CategoryProvider>();
-    String targetCategory = item.query;
+    final group = CategoryGroup.findById(item.groupId);
+    final subcat = item.subcategorySlug ?? 'all';
 
-    if (provider.categories.isNotEmpty) {
-      final cleanTarget = item.query.trim().toLowerCase().replaceAll(RegExp(r"[\s\-_']+"), '');
-      int foundIndex = provider.categories.indexWhere(
-        (cat) => cat.toLowerCase().replaceAll(RegExp(r"[\s\-_']+"), '') == cleanTarget,
-      );
-
-      if (foundIndex == -1) {
-        final lowerTitle = item.title.trim().toLowerCase().replaceAll(' ', '-');
-        foundIndex = provider.categories.indexWhere(
-          (cat) => cat.toLowerCase().replaceAll(' ', '-') == lowerTitle,
-        );
-      }
-
-      if (foundIndex == -1) {
-        foundIndex = provider.categories.indexWhere(
-          (cat) =>
-              cat.toLowerCase().contains(item.id.replaceAll('_', '')) ||
-              item.title.toLowerCase().contains(cat.toLowerCase()),
-        );
-      }
-
-      if (foundIndex != -1) {
-        targetCategory = provider.categories[foundIndex];
-      }
-    }
-
-    provider.fetchProductsByCategory(targetCategory);
-    Navigator.of(context).pushNamed(CategoriesScreen.routeName);
+    provider.selectCategoryGroup(group, subcategorySlug: subcat);
+    Navigator.of(context).pushNamed(
+      CategoriesScreen.routeName,
+      arguments: {
+        'groupId': item.groupId,
+        'subcategorySlug': subcat,
+      },
+    );
   }
 
   @override
@@ -134,16 +299,20 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
 
     final trimmedQuery = _searchQuery.trim().toLowerCase();
 
-    // Filter categories based on search input
+    // Filter categories based on search input (checks title, subtitle, and subcategory keywords)
     final filteredPopular = _popularCategories.where((cat) {
       if (trimmedQuery.isEmpty) return true;
-      return cat.title.toLowerCase().contains(trimmedQuery) || cat.query.toLowerCase().contains(trimmedQuery);
+      return cat.title.toLowerCase().contains(trimmedQuery) ||
+          cat.keywords.any((k) => k.toLowerCase().contains(trimmedQuery));
     }).toList();
 
     final filteredAll = _allCategoriesList.where((cat) {
       if (trimmedQuery.isEmpty) return true;
-      return cat.title.toLowerCase().contains(trimmedQuery) || cat.query.toLowerCase().contains(trimmedQuery);
+      return cat.title.toLowerCase().contains(trimmedQuery) ||
+          cat.subtitle.toLowerCase().contains(trimmedQuery) ||
+          cat.keywords.any((k) => k.toLowerCase().contains(trimmedQuery));
     }).toList();
+
 
     final bool hasNoResults = trimmedQuery.isNotEmpty && filteredPopular.isEmpty && filteredAll.isEmpty;
 
@@ -175,7 +344,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                     style: AppTextStyles.screenHeading(
                       color: titleColor,
                     ).copyWith(
-                      fontSize: 26,
+                      fontSize: 20,
                       fontWeight: FontWeight.w700,
                       letterSpacing: -0.4,
                     ),
@@ -551,15 +720,32 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               ),
               const SizedBox(width: 14),
 
-              // Title
+              // Title & Subtitle
               Expanded(
-                child: Text(
-                  item.title,
-                  style: GoogleFonts.fraunces(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: primaryTextColor,
-                  ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      item.title,
+                      style: GoogleFonts.fraunces(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w700,
+                        color: primaryTextColor,
+                      ),
+                    ),
+                    if (item.subtitle.isNotEmpty) ...[
+                      const SizedBox(height: 2),
+                      Text(
+                        item.subtitle,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                        ).copyWith(fontSize: 12),
+                      ),
+                    ],
+                  ],
                 ),
               ),
 
@@ -576,4 +762,5 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
     );
   }
 }
+
 

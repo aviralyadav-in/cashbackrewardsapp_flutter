@@ -205,6 +205,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                   return GridBrandCard(
                     brand: brand,
                     isDark: isDark,
+                    columnIndex: index % 3,
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(

@@ -191,6 +191,7 @@ class GridCardsSection extends StatelessWidget {
                   child: GridBrandCard(
                     brand: rowBrands[0],
                     isDark: isDark,
+                    columnIndex: 0,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -199,6 +200,7 @@ class GridCardsSection extends StatelessWidget {
                       ? GridBrandCard(
                           brand: rowBrands[1],
                           isDark: isDark,
+                          columnIndex: 1,
                         )
                       : const SizedBox.shrink(),
                 ),
@@ -208,6 +210,7 @@ class GridCardsSection extends StatelessWidget {
                       ? GridBrandCard(
                           brand: rowBrands[2],
                           isDark: isDark,
+                          columnIndex: 2,
                         )
                       : const SizedBox.shrink(),
                 ),

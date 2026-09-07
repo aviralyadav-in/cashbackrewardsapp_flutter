@@ -8,6 +8,7 @@ import '../providers/category_provider.dart';
 import '../providers/product_provider.dart';
 import '../theme/app_theme.dart';
 import '../widgets/cashback_banner_carousel.dart';
+import '../widgets/home/flash_deals_section.dart';
 import '../widgets/home/home_drawer.dart';
 import '../widgets/home/subcategory_promotional_banner.dart';
 import '../widgets/home/subtle_section_container.dart';
@@ -200,42 +201,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       TopCategoriesSection(
                         isDark: isDark,
                       ),
-                      const SizedBox(height: 24),
+                      const SizedBox(height: 20),
 
                       // 1. CASHBACK ON MOST POPULAR BRANDS
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 16),
-                        child: Column(
-                          children: [
-                            SubtleSectionContainer(
-                              title: 'Cashback on Most Popular Brands',
-                              isDark: isDark,
-                              lightGradientColors: const [AppColors.beigeSurface, AppColors.cardBackground],
-                              darkGradientColors: const [AppColors.darkSurface, AppColors.darkCard],
-                              onViewAllTap: () {
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (_) => const TopCategoryBrandsScreen(
-                                      categoryTitle: 'Most Popular',
-                                      brands: HomeMockData.popularBrandsCatalog,
-                                    ),
-                                  ),
-                                );
-                              },
-                              child: GridCardsSection(
-                                brands: HomeMockData.popularBrandsCatalog,
-                                isDark: isDark,
-                                initialCount: 6,
-                              ),
-                            ),
-                            SubcategoryPromotionalBannerWidget(
-                              bannerData: HomeMockData.popularBrandsBanner,
-                              isDark: isDark,
-                            ),
-                          ],
-                        ),
-                      ),
+                      // Padding(
+                      //   padding: const EdgeInsets.symmetric(horizontal: 16),
+                      //   child: Column(
+                      //     children: [
+                      //       SubtleSectionContainer(
+                      //         title: 'Cashback on Most Popular Brands',
+                      //         isDark: isDark,
+                      //         lightGradientColors: const [AppColors.beigeSurface, AppColors.cardBackground],
+                      //         darkGradientColors: const [AppColors.darkSurface, AppColors.darkCard],
+                      //         onViewAllTap: () {
+                      //           Navigator.of(context).push(
+                      //             MaterialPageRoute(
+                      //               builder: (_) => const TopCategoryBrandsScreen(
+                      //                 categoryTitle: 'Most Popular',
+                      //                 brands: HomeMockData.popularBrandsCatalog,
+                      //               ),
+                      //             ),
+                      //           );
+                      //         },
+                      //         child: GridCardsSection(
+                      //           brands: HomeMockData.popularBrandsCatalog,
+                      //           isDark: isDark,
+                      //           initialCount: 6,
+                      //         ),
+                      //       ),
+                      //       SubcategoryPromotionalBannerWidget(
+                      //         bannerData: HomeMockData.popularBrandsBanner,
+                      //         isDark: isDark,
+                      //       ),
+                      //     ],
+                      //   ),
+                      // ),
 
+                      
+
+                      // NEW: FLASH DEALS SECTION (FULL WIDTH)
+                      FlashDealsSection(isDark: isDark),
+                       const SizedBox(height: 20),
                       // 2. DISCOVERY SECTIONS
                       ...HomeMockData.discoverySections.map(
                         (s) => Padding(

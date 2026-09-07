@@ -31,6 +31,7 @@ class _LoginScreenState extends State<LoginScreen> {
   bool _isOtpSent = false;
 
   String _targetDisplay = '';
+  String _savedEmail = '';
 
   @override
   void dispose() {
@@ -74,20 +75,30 @@ class _LoginScreenState extends State<LoginScreen> {
   Future<void> _handleInitialSubmit() async {
     if (!_mainFormKey.currentState!.validate()) return;
 
+    // If user entered email first, save email and switch to phone login
+    if (!_isPhoneMode) {
+      final email = _emailController.text.trim();
+      _savedEmail = email;
+
+      setState(() {
+        _isPhoneMode = true;
+      });
+
+      _showSnackBar(
+        'Email saved. Please enter your phone number to login.',
+        isError: false,
+      );
+      return;
+    }
+
     setState(() {
       _isLoading = true;
     });
 
     try {
-      if (_isPhoneMode) {
-        final formattedPhone = _formatPhoneNumber(_phoneController.text);
-        _targetDisplay = formattedPhone;
-        await _requestMockPhoneOtp(formattedPhone);
-      } else {
-        final email = _emailController.text.trim();
-        _targetDisplay = email;
-        await _requestMockEmailOtp(email);
-      }
+      final formattedPhone = _formatPhoneNumber(_phoneController.text);
+      _targetDisplay = formattedPhone;
+      await _requestMockPhoneOtp(formattedPhone);
     } catch (e) {
       _showSnackBar(e.toString());
     } finally {
@@ -138,12 +149,12 @@ class _LoginScreenState extends State<LoginScreen> {
       if (!mounted) return;
 
       final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final email = _emailController.text.trim().isNotEmpty
+          ? _emailController.text.trim()
+          : _savedEmail;
       final name = _nameController.text.trim().isNotEmpty
           ? _nameController.text.trim()
-          : (_emailController.text.trim().isNotEmpty
-              ? _emailController.text.trim().split('@').first
-              : 'CashKaro User');
-      final email = _emailController.text.trim();
+          : 'CashKaro User';
       final phone = _phoneController.text.trim().isNotEmpty
           ? _formatPhoneNumber(_phoneController.text)
           : '';

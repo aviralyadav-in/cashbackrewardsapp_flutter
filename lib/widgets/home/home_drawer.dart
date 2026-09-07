@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/category_group_model.dart';
 import '../../providers/category_provider.dart';
 import '../../screens/all_categories_screen.dart';
 import '../../screens/categories_screen.dart';
@@ -41,8 +42,15 @@ class HomeDrawer extends StatelessWidget {
       }
     }
 
-    provider.fetchProductsByCategory(matchedCat);
-    Navigator.of(context).pushNamed(CategoriesScreen.routeName);
+    final group = CategoryGroup.findGroupForSlug(matchedCat);
+    provider.selectCategoryGroup(group, subcategorySlug: matchedCat);
+    Navigator.of(context).pushNamed(
+      CategoriesScreen.routeName,
+      arguments: {
+        'groupId': group.id,
+        'subcategorySlug': matchedCat,
+      },
+    );
   }
 
   void _onCategoryTap(BuildContext context, CategoryProvider provider, String targetQuery) {

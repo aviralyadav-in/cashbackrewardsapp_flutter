@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../models/category_group_model.dart';
 import '../models/product.dart';
 import '../providers/category_provider.dart';
 import '../theme/app_theme.dart';
@@ -19,7 +20,10 @@ class CategoriesScreen extends StatefulWidget {
 
 class _CategoriesScreenState extends State<CategoriesScreen> {
   final ScrollController _categoryScrollController = ScrollController();
-  String? _lastScrolledCategory;
+  final ScrollController _subcategoryScrollController = ScrollController();
+  String? _lastScrolledGroupId;
+  String? _lastScrolledSubcatSlug;
+  bool _initializedFromArgs = false;
 
   // Sorting state
   String _selectedSort = 'Popular';
@@ -65,63 +69,87 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
       if (!mounted) return;
 
       final provider = context.read<CategoryProvider>();
-      provider.fetchCategories().then((_) {
-        if (mounted && provider.selectedCategory != null) {
-          _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
-        }
-      });
+      if (provider.allGroupProducts.isEmpty &&
+          provider.productsStatus != CategoryStatus.loading) {
+        provider.fetchCategories().then((_) {
+          if (mounted) {
+            _scrollToSelectedGroup(provider.selectedGroup, provider.categoryGroups);
+            _scrollToSelectedSubcategory(provider.selectedSubcategorySlug, provider.selectedGroup.subcategories);
+          }
+        });
+      } else {
+        _scrollToSelectedGroup(provider.selectedGroup, provider.categoryGroups);
+        _scrollToSelectedSubcategory(provider.selectedSubcategorySlug, provider.selectedGroup.subcategories);
+      }
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    if (!_initializedFromArgs) {
+      _initializedFromArgs = true;
+      final args = ModalRoute.of(context)?.settings.arguments;
+      if (args is Map<String, dynamic>) {
+        final groupId = args['groupId'] as String?;
+        final subcatSlug = args['subcategorySlug'] as String?;
+        if (groupId != null) {
+          final group = CategoryGroup.findById(groupId);
+          final provider = context.read<CategoryProvider>();
+          provider.selectCategoryGroup(group, subcategorySlug: subcatSlug ?? 'all').then((_) {
+            if (mounted) {
+              _scrollToSelectedGroup(group, provider.categoryGroups);
+              _scrollToSelectedSubcategory(subcatSlug ?? 'all', group.subcategories);
+            }
+          });
+        }
+      }
+    }
   }
 
   @override
   void dispose() {
     _categoryScrollController.dispose();
+    _subcategoryScrollController.dispose();
     super.dispose();
   }
 
-  void _scrollToSelectedCategory(String? selectedCategory, List<String> categories) {
-    if (selectedCategory == null || categories.isEmpty) return;
-
-    final selectedIndex = categories.indexOf(selectedCategory);
-    if (selectedIndex < 0) return;
-
+  void _scrollToSelectedGroup(CategoryGroup selectedGroup, List<CategoryGroup> groups) {
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted || !_categoryScrollController.hasClients) return;
 
-      final screenWidth = MediaQuery.of(context).size.width;
-
-      double targetOffset = 0.0;
-      for (int i = 0; i < selectedIndex; i++) {
-        final tp = TextPainter(
-          text: TextSpan(
-            text: categories[i],
-            style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-          ),
-          textDirection: TextDirection.ltr,
-        )..layout();
-        targetOffset += tp.width + 36.0 + 10.0;
-      }
-
-      final selectedTp = TextPainter(
-        text: TextSpan(
-          text: categories[selectedIndex],
-          style: const TextStyle(fontWeight: FontWeight.w600, fontSize: 14),
-        ),
-        textDirection: TextDirection.ltr,
-      )..layout();
-      final selectedWidth = selectedTp.width + 36.0;
-
-      final centeredOffset = targetOffset - (screenWidth / 2) + (selectedWidth / 2) + 16.0;
-      final maxScroll = _categoryScrollController.position.maxScrollExtent;
-      final clampedOffset = centeredOffset.clamp(0.0, maxScroll);
-
       _categoryScrollController.animateTo(
-        clampedOffset,
-        duration: const Duration(milliseconds: 350),
+        0.0,
+        duration: const Duration(milliseconds: 300),
         curve: Curves.easeOutCubic,
       );
     });
   }
+
+  void _scrollToSelectedSubcategory(String slug, List<SubCategoryItem> subcategories) {
+    int targetIndex = 0;
+    if (slug != 'all') {
+      final found = subcategories.indexWhere((s) => s.slug == slug);
+      targetIndex = found >= 0 ? found + 1 : 0; // +1 because 'View All' is at index 0
+    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted || !_subcategoryScrollController.hasClients) return;
+
+      final screenWidth = MediaQuery.of(context).size.width;
+      const approxWidth = 110.0;
+      final targetOffset = (targetIndex * approxWidth) - (screenWidth / 2) + (approxWidth / 2);
+      final maxScroll = _subcategoryScrollController.position.maxScrollExtent;
+      final clampedOffset = targetOffset.clamp(0.0, maxScroll);
+
+      _subcategoryScrollController.animateTo(
+        clampedOffset,
+        duration: const Duration(milliseconds: 300),
+        curve: Curves.easeOutCubic,
+      );
+    });
+  }
+
 
   List<Product> _getFilteredAndSortedProducts(List<Product> rawProducts) {
     List<Product> filtered = rawProducts.where((product) {
@@ -1018,10 +1046,16 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               onPressed: () => Navigator.of(context).pop(),
             ),
             title: Text(
-              'Categories',
+              provider.selectedGroup.title,
               style: AppTextStyles.screenHeading(
                 color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ).copyWith(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                letterSpacing: -0.3,
               ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
             centerTitle: true,
           ),
@@ -1031,7 +1065,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
           body: SafeArea(
             child: () {
               if (provider.categoriesStatus == CategoryStatus.loading &&
-                  provider.categories.isEmpty) {
+                  provider.allGroupProducts.isEmpty) {
                 return Center(
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
@@ -1049,7 +1083,8 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 );
               }
 
-              if (provider.categoriesStatus == CategoryStatus.error) {
+              if (provider.categoriesStatus == CategoryStatus.error &&
+                  provider.allGroupProducts.isEmpty) {
                 return Center(
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 24.0),
@@ -1071,7 +1106,10 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         ),
                         const SizedBox(height: 16),
                         ElevatedButton(
-                          onPressed: provider.fetchCategories,
+                          onPressed: () => provider.selectCategoryGroup(
+                            provider.selectedGroup,
+                            subcategorySlug: provider.selectedSubcategorySlug,
+                          ),
                           style: ElevatedButton.styleFrom(
                             backgroundColor: AppColors.primaryBrown,
                             foregroundColor: AppColors.cardBackground,
@@ -1084,76 +1122,94 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                 );
               }
 
-              if (provider.categories.isEmpty) {
-                return Center(
-                  child: Text(
-                    'No categories available.',
-                    style: AppTextStyles.body(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-                    ),
-                  ),
-                );
+              // Trigger auto-scroll whenever selectedGroup or selectedSubcategory updates
+              if (provider.selectedGroup.id != _lastScrolledGroupId) {
+                _lastScrolledGroupId = provider.selectedGroup.id;
+                _scrollToSelectedGroup(provider.selectedGroup, provider.categoryGroups);
+              }
+              if (provider.selectedSubcategorySlug != _lastScrolledSubcatSlug) {
+                _lastScrolledSubcatSlug = provider.selectedSubcategorySlug;
+                _scrollToSelectedSubcategory(provider.selectedSubcategorySlug, provider.selectedGroup.subcategories);
               }
 
-              // Trigger auto-scroll whenever selectedCategory updates
-              if (provider.selectedCategory != null &&
-                  _lastScrolledCategory != provider.selectedCategory) {
-                _lastScrolledCategory = provider.selectedCategory;
-                _scrollToSelectedCategory(provider.selectedCategory, provider.categories);
-              }
+              final activeGroup = provider.selectedGroup;
+              final subcategories = activeGroup.subcategories;
 
               return Padding(
-                padding: const EdgeInsets.all(16),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SizedBox(height: 4),
-
-                    // ALL CATEGORIES HORIZONTAL SCROLLABLE LIST WITH AUTO-SCROLL
+                    // LEVEL 1: MAIN CATEGORY GROUPS (DEPARTMENTS)
                     SizedBox(
-                      height: 46,
+                      height: 42,
                       child: ListView.separated(
                         controller: _categoryScrollController,
                         scrollDirection: Axis.horizontal,
-                        itemCount: provider.categories.length,
-                        separatorBuilder: (context, index) => const SizedBox(width: 10),
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: provider.categoryGroups.length,
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
                         itemBuilder: (context, index) {
-                          final category = provider.categories[index];
-                          final isSelected = provider.selectedCategory == category;
+                          final group = provider.categoryGroups[index];
+                          final isGroupSelected = provider.selectedGroup.id == group.id;
 
                           return GestureDetector(
+                            key: ValueKey('cat_group_${group.id}'),
                             onTap: () {
                               _clearAllFilters();
-                              provider.fetchProductsByCategory(category);
-                              _scrollToSelectedCategory(category, provider.categories);
+                              provider.selectCategoryGroup(group, subcategorySlug: 'all');
+                              _scrollToSelectedGroup(group, provider.categoryGroups);
+                              _scrollToSelectedSubcategory('all', group.subcategories);
                             },
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 16,
-                                vertical: 10,
-                              ),
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 220),
+                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
                               decoration: BoxDecoration(
-                                color: isSelected
+                                color: isGroupSelected
                                     ? AppColors.primaryBrown
                                     : (isDark ? AppColors.darkCard : AppColors.cardBackground),
                                 border: Border.all(
-                                  color: isSelected
+                                  color: isGroupSelected
                                       ? AppColors.primaryBrown
                                       : (isDark ? AppColors.darkBorder : AppColors.border),
+                                  width: isGroupSelected ? 1.4 : 1.0,
                                 ),
-                                borderRadius: BorderRadius.circular(25),
+                                borderRadius: BorderRadius.circular(22),
+                                boxShadow: isGroupSelected
+                                    ? [
+                                        BoxShadow(
+                                          color: AppColors.primaryBrown.withValues(alpha: 0.28),
+                                          blurRadius: 6,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+                                          blurRadius: 4,
+                                          offset: const Offset(0, 1),
+                                        ),
+                                      ],
                               ),
-                              child: Center(
-                                child: Text(
-                                  category,
-                                  style: AppTextStyles.caption(
-                                    color: isSelected
-                                        ? AppColors.cardBackground
-                                        : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
-                                  ).copyWith(
-                                    fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    group.emoji,
+                                    style: const TextStyle(fontSize: 15),
                                   ),
-                                ),
+                                  const SizedBox(width: 6),
+                                  Text(
+                                    group.title,
+                                    style: GoogleFonts.fraunces(
+                                      fontSize: 13,
+                                      fontWeight: isGroupSelected ? FontWeight.w700 : FontWeight.w600,
+                                      color: isGroupSelected
+                                          ? AppColors.cardBackground
+                                          : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
                           );
@@ -1161,9 +1217,187 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       ),
                     ),
 
-                    const SizedBox(height: 16),
+                    const SizedBox(height: 10),
 
-                    // PRODUCTS
+                    // LEVEL 2: SUBCATEGORY FILTER CHIPS WITH "VIEW ALL" (THE CORE FEATURE)
+                    SizedBox(
+                      height: 36,
+                      child: ListView.separated(
+                        controller: _subcategoryScrollController,
+                        scrollDirection: Axis.horizontal,
+                        physics: const BouncingScrollPhysics(),
+                        itemCount: subcategories.length + 1, // +1 for "View All"
+                        separatorBuilder: (context, index) => const SizedBox(width: 8),
+                        itemBuilder: (context, index) {
+                          if (index == 0) {
+                            // "VIEW ALL" CHIP
+                            final isAllActive = provider.selectedSubcategorySlug == 'all';
+                            final totalCount = provider.allGroupProducts.length;
+
+                            return GestureDetector(
+                              onTap: () {
+                                provider.selectSubcategory('all');
+                                _scrollToSelectedSubcategory('all', subcategories);
+                              },
+                              child: AnimatedContainer(
+                                duration: const Duration(milliseconds: 200),
+                                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+                                decoration: BoxDecoration(
+                                  color: isAllActive
+                                      ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                                      : (isDark ? AppColors.darkSurface : AppColors.beigeSurface.withValues(alpha: 0.65)),
+                                  borderRadius: BorderRadius.circular(18),
+                                  border: Border.all(
+                                    color: isAllActive
+                                        ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                                        : (isDark ? AppColors.darkBorder : AppColors.border),
+                                    width: isAllActive ? 1.4 : 1.0,
+                                  ),
+                                  boxShadow: isAllActive
+                                      ? [
+                                          BoxShadow(
+                                            color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: 0.25),
+                                            blurRadius: 5,
+                                            offset: const Offset(0, 2),
+                                          ),
+                                        ]
+                                      : null,
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(
+                                      Icons.auto_awesome_rounded,
+                                      size: 14,
+                                      color: isAllActive
+                                          ? Colors.white
+                                          : (isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Text(
+                                      totalCount > 0 ? 'View All ($totalCount)' : 'View All',
+                                      style: GoogleFonts.fraunces(
+                                        fontSize: 12,
+                                        fontWeight: isAllActive ? FontWeight.w700 : FontWeight.w500,
+                                        color: isAllActive
+                                            ? Colors.white
+                                            : (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            );
+                          }
+
+                          final subcat = subcategories[index - 1];
+                          final isSubcatActive = provider.selectedSubcategorySlug == subcat.slug;
+
+                          final subcatCount = provider.allGroupProducts
+                              .where((p) => (p.category ?? '').toLowerCase() == subcat.slug.toLowerCase())
+                              .length;
+
+                          return GestureDetector(
+                            onTap: () {
+                              provider.selectSubcategory(subcat.slug);
+                              _scrollToSelectedSubcategory(subcat.slug, subcategories);
+                            },
+                            child: AnimatedContainer(
+                              duration: const Duration(milliseconds: 200),
+                              padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
+                              decoration: BoxDecoration(
+                                color: isSubcatActive
+                                    ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                                    : (isDark ? AppColors.darkCard : AppColors.cardBackground),
+                                borderRadius: BorderRadius.circular(18),
+                                border: Border.all(
+                                  color: isSubcatActive
+                                      ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                                      : (isDark ? AppColors.darkBorder : AppColors.border),
+                                  width: isSubcatActive ? 1.4 : 1.0,
+                                ),
+                                boxShadow: isSubcatActive
+                                    ? [
+                                        BoxShadow(
+                                          color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: 0.25),
+                                          blurRadius: 5,
+                                          offset: const Offset(0, 2),
+                                        ),
+                                      ]
+                                    : null,
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  Text(
+                                    subcat.emoji,
+                                    style: const TextStyle(fontSize: 13),
+                                  ),
+                                  const SizedBox(width: 5),
+                                  Text(
+                                    subcatCount > 0 ? '${subcat.title} ($subcatCount)' : subcat.title,
+                                    style: GoogleFonts.fraunces(
+                                      fontSize: 12,
+                                      fontWeight: isSubcatActive ? FontWeight.w700 : FontWeight.w500,
+                                      color: isSubcatActive
+                                          ? Colors.white
+                                          : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+
+                    const SizedBox(height: 12),
+
+                    // LEVEL 2.5: PRODUCT COUNT & ACTIVE FILTER STATUS HEADER
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 2),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text(
+                            '${displayedProducts.length} ${displayedProducts.length == 1 ? "Product" : "Products"}',
+                            style: GoogleFonts.fraunces(
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            ),
+                          ),
+                          if (provider.selectedSubcategorySlug != 'all')
+                            GestureDetector(
+                              onTap: () {
+                                provider.selectSubcategory('all');
+                                _scrollToSelectedSubcategory('all', subcategories);
+                              },
+                              child: Row(
+                                children: [
+                                  Text(
+                                    'Show all ${activeGroup.title}',
+                                    style: AppTextStyles.caption(
+                                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                    ).copyWith(fontSize: 11.5, fontWeight: FontWeight.w600),
+                                  ),
+                                  const SizedBox(width: 4),
+                                  Icon(
+                                    Icons.close_rounded,
+                                    size: 13,
+                                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                  ),
+                                ],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+
+                    const SizedBox(height: 8),
+
+                    // LEVEL 3: PRODUCTS GRID
                     Expanded(
                       child: _buildCategoryProducts(
                         context,
@@ -1240,8 +1474,9 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
               ),
               const SizedBox(height: 16),
               ElevatedButton(
-                onPressed: () => provider.fetchProductsByCategory(
-                  provider.selectedCategory ?? '',
+                onPressed: () => provider.selectCategoryGroup(
+                  provider.selectedGroup,
+                  subcategorySlug: provider.selectedSubcategorySlug,
                 ),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBrown,
@@ -1267,38 +1502,50 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     }
 
     if (displayedProducts.isEmpty) {
+      final isSubcatActive = provider.selectedSubcategorySlug != 'all';
+
       return Center(
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Icon(
-              Icons.filter_alt_off_rounded,
-              size: 48,
-              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-            ),
-            const SizedBox(height: 12),
-            Text(
-              'No products match your selected filters.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.cardTitle(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Icon(
+                Icons.filter_alt_off_rounded,
+                size: 48,
+                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
               ),
-            ),
-            const SizedBox(height: 12),
-            OutlinedButton(
-              onPressed: _clearAllFilters,
-              style: OutlinedButton.styleFrom(
-                foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
-                side: BorderSide(
-                  color: isDark ? AppColors.darkBorder : AppColors.border,
-                ),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
+              const SizedBox(height: 12),
+              Text(
+                isSubcatActive
+                    ? 'No products found in this subcategory.'
+                    : 'No products match your selected filters.',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.cardTitle(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                 ),
               ),
-              child: const Text('Clear Filters'),
-            ),
-          ],
+              const SizedBox(height: 12),
+              OutlinedButton(
+                onPressed: () {
+                  _clearAllFilters();
+                  if (isSubcatActive) {
+                    provider.selectSubcategory('all');
+                  }
+                },
+                style: OutlinedButton.styleFrom(
+                  foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                  side: BorderSide(
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
+                  ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                ),
+                child: Text(isSubcatActive ? 'View All ${provider.selectedGroup.title}' : 'Clear Filters'),
+              ),
+            ],
+          ),
         ),
       );
     }
@@ -1306,12 +1553,12 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
     return RefreshIndicator(
       color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
       onRefresh: () async {
-        if (provider.selectedCategory != null) {
-          await provider.fetchProductsByCategory(
-            provider.selectedCategory!,
-          );
-        }
+        await provider.selectCategoryGroup(
+          provider.selectedGroup,
+          subcategorySlug: provider.selectedSubcategorySlug,
+        );
       },
+
       child: GridView.builder(
         padding: const EdgeInsets.only(bottom: 16),
         physics: const BouncingScrollPhysics(),

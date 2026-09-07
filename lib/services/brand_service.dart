@@ -22,7 +22,7 @@ class BrandService {
   static final List<BrandModel> _fallbackBrands = [
     const BrandModel(
       name: 'Amazon.in',
-      logoUrl: 'assets/logos/amazon.svg',
+      logoUrl: 'assets/cards/amazon.jpg',
       bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Electronics & Shopping',
@@ -31,7 +31,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Myntra',
-      logoUrl: 'assets/logos/myntra.svg',
+      logoUrl: 'assets/cards/myntra.jpg',
       bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 7.5% Cashback',
       category: 'Fashion & Lifestyle',
@@ -40,7 +40,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Flipkart',
-      logoUrl: 'assets/logos/flipkart.svg',
+      logoUrl: 'assets/cards/flipkart-electronics.png',
       bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Mobiles & Mega Sale',
@@ -49,7 +49,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'AJIO',
-      logoUrl: 'assets/logos/ajio.svg',
+      logoUrl: 'assets/cards/ajio-coupons.jpg',
       bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Trendy Fashion',
@@ -58,7 +58,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Meesho',
-      logoUrl: 'assets/logos/meesho.svg',
+      logoUrl: 'assets/cards/shopsy-coupons.png',
       bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Budget Shopping',
@@ -67,7 +67,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'MCaffeine',
-      logoUrl: 'https://cdn.shopify.com/s/files/1/1454/5188/files/mcaffeine-logo.png',
+      logoUrl: 'assets/cards/mcaffeine-coupons.jpg',
       bannerUrl: 'https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 12% Cashback',
       category: 'Personal Care & Skincare',
@@ -76,7 +76,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Dot & Key',
-      logoUrl: 'https://www.dotandkey.com/cdn/shop/files/Dot_Key_Logo.png',
+      logoUrl: 'assets/cards/dotandkey-coupons.png',
       bannerUrl: 'https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty & Skincare',
@@ -85,7 +85,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'HyugaLife',
-      logoUrl: 'https://hyugalife.com/assets/logo.png',
+      logoUrl: 'assets/cards/hyugalife-coupons.jpg',
       bannerUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Health & Supplements',
@@ -94,7 +94,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Reliance Digital',
-      logoUrl: 'assets/logos/reliancedigital.svg',
+      logoUrl: 'assets/cards/jiomart-electronics.png',
       bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Tech & Appliances',
@@ -103,7 +103,7 @@ class BrandService {
     ),
     const BrandModel(
       name: 'Aqualogica',
-      logoUrl: 'https://aqualogica.in/cdn/shop/files/Aqualogica_Logo.png',
+      logoUrl: 'assets/cards/aqualogica-coupons.png',
       bannerUrl: 'https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80',
       cashbackPercentage: 'Flat 14% Cashback',
       category: 'Hydrating Skincare',
