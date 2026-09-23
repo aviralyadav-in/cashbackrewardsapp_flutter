@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../core/utils/brand_asset_helper.dart';
 
 class NetworkImageWithSkeleton extends StatefulWidget {
   final String imageUrl;
@@ -124,10 +125,19 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
   @override
   Widget build(BuildContext context) {
     final raw = widget.imageUrl.trim();
-    if (raw.startsWith('assets/')) {
-      if (_isSvgUrl(raw)) {
+    String effectivePath = raw;
+
+    if (!effectivePath.startsWith('assets/')) {
+      final local = BrandAssetHelper.findLocalAssetForUrl(effectivePath);
+      if (local != null) {
+        effectivePath = local;
+      }
+    }
+
+    if (effectivePath.startsWith('assets/')) {
+      if (_isSvgUrl(effectivePath)) {
         return SvgPicture.asset(
-          raw,
+          effectivePath,
           width: widget.width,
           height: widget.height,
           fit: widget.fit,
@@ -135,11 +145,17 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
         );
       }
       return Image.asset(
-        raw,
+        effectivePath,
         width: widget.width,
         height: widget.height,
         fit: widget.fit,
         alignment: widget.alignment,
+        errorBuilder: (context, error, stackTrace) {
+          if (widget.errorBuilder != null) {
+            return widget.errorBuilder!(context, error, stackTrace);
+          }
+          return _buildErrorWidget(context, error, stackTrace);
+        },
       );
     }
 
@@ -250,6 +266,9 @@ class _NetworkImageWithSkeletonState extends State<NetworkImageWithSkeleton>
   }
 
   Widget _buildErrorWidget(BuildContext context, Object error, StackTrace? stackTrace) {
+    if (widget.errorBuilder != null) {
+      return widget.errorBuilder!(context, error, stackTrace);
+    }
     final isDark = Theme.of(context).brightness == Brightness.dark;
     return Container(
       width: widget.width,

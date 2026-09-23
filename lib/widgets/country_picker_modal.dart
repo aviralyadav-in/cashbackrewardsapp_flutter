@@ -194,6 +194,13 @@ class _CountryPickerModalState extends State<CountryPickerModal> {
                             fontWeight: isSelected ? FontWeight.bold : FontWeight.normal,
                           ),
                         ),
+                        subtitle: Text(
+                          country.digitsHint,
+                          style: TextStyle(
+                            fontSize: 12,
+                            color: isDark ? Colors.grey.shade400 : Colors.grey.shade600,
+                          ),
+                        ),
                         trailing: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [

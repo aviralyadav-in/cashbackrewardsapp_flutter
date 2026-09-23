@@ -557,7 +557,7 @@ class _FlagShadowPainter extends CustomPainter {
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 14);
 
     final glowPaint = Paint()
-      ..color = const Color(0xFFD4AF37).withValues(alpha: 0.28)
+      ..color = const Color(0xFF2563EB).withValues(alpha: 0.28)
       ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 18);
 
     canvas.drawPath(path, glowPaint);

@@ -1,3 +1,5 @@
+import '../core/utils/brand_asset_helper.dart';
+
 class BrandModel {
   final String name;
   final String logoUrl;
@@ -18,12 +20,24 @@ class BrandModel {
   });
 
   factory BrandModel.fromJson(Map<String, dynamic> json) {
+    final name = json['name'] as String? ?? '';
+    final category = json['category'] as String? ?? '';
+    var logo = json['logoUrl'] as String? ?? '';
+    var banner = json['bannerUrl'] as String? ?? '';
+
+    if (!logo.startsWith('assets/')) {
+      logo = BrandAssetHelper.getBrandLogo(name, fallback: logo);
+    }
+    if (!banner.startsWith('assets/')) {
+      banner = BrandAssetHelper.getBrandBanner(name, category: category, fallback: banner);
+    }
+
     return BrandModel(
-      name: json['name'] as String? ?? '',
-      logoUrl: json['logoUrl'] as String? ?? '',
-      bannerUrl: json['bannerUrl'] as String? ?? '',
+      name: name,
+      logoUrl: logo,
+      bannerUrl: banner,
       cashbackPercentage: json['cashbackPercentage'] as String? ?? '',
-      category: json['category'] as String? ?? '',
+      category: category,
       offerText: json['offerText'] as String? ?? '',
       websiteUrl: json['websiteUrl'] as String? ?? '',
     );

@@ -79,7 +79,7 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   bannerData.brandName.toUpperCase(),
-                                  style: GoogleFonts.fraunces(
+                                  style: GoogleFonts.inter(
                                     color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w700,
@@ -95,7 +95,7 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                                 ),
                                 child: Text(
                                   bannerData.offerTag,
-                                  style: GoogleFonts.fraunces(
+                                  style: GoogleFonts.inter(
                                     color: AppColors.cardBackground,
                                     fontSize: 10,
                                     fontWeight: FontWeight.w800,
@@ -112,7 +112,7 @@ class SubcategoryPromotionalBannerWidget extends StatelessWidget {
                             bannerData.headline,
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
-                            style: GoogleFonts.fraunces(
+                            style: GoogleFonts.inter(
                               color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                               fontSize: 16,
                               fontWeight: FontWeight.w700,

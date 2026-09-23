@@ -18,6 +18,6 @@ class TopCategoryItemData {
     required this.slug,
     this.backgroundColor = const Color(0xFFFFF8F0),
     this.darkBackgroundColor = const Color(0xFF251B15),
-    this.accentColor = const Color(0xFFC65D45),
+    this.accentColor = const Color(0xFF2563EB),
   });
 }

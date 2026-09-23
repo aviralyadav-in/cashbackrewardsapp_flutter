@@ -4,6 +4,8 @@ import '../../models/brand_model.dart';
 import '../../theme/app_theme.dart';
 import 'grid_brand_card.dart';
 
+/// Clean, elegant subcategory section inside a stylized container box.
+/// Encapsulates section header and horizontally swipable full-sized brand cards.
 class SubtleSectionContainer extends StatelessWidget {
   final String title;
   final Widget child;
@@ -24,129 +26,106 @@ class SubtleSectionContainer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final gradientColors = isDark ? darkGradientColors : lightGradientColors;
-
     return Container(
       width: double.infinity,
-      margin: const EdgeInsets.only(bottom: 24),
+      margin: const EdgeInsets.fromLTRB(16, 0, 16, 20),
+      clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
         gradient: LinearGradient(
-          colors: gradientColors,
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+          colors: isDark ? darkGradientColors : lightGradientColors,
         ),
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
-          width: 0.8,
+          color: isDark ? const Color(0xFF2E2A38) : const Color(0xFFE2E8F0),
+          width: 1.2,
         ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
+          ),
+        ],
       ),
-      padding: const EdgeInsets.symmetric(vertical: 16, horizontal: 10),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Section Header Row
+          // Section Header Row: Title on Left, View All on Right
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+            padding: const EdgeInsets.fromLTRB(14, 14, 14, 10),
             child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 4,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-                    borderRadius: BorderRadius.circular(2),
-                  ),
+                Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      title,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 16.5,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.3,
+                        color: isDark ? Colors.white : const Color(0xFF1E1E24),
+                      ),
+                    ),
+                  ],
                 ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    title,
-                    maxLines: 2,
-                    softWrap: true,
-                    style: GoogleFonts.fraunces(
-                      fontSize: 18.5,
-                      fontWeight: FontWeight.w700,
-                      letterSpacing: -0.2,
-                      color: isDark ? Colors.white : const Color(0xFF1E1E24),
+                if (onViewAllTap != null)
+                  InkWell(
+                    onTap: onViewAllTap,
+                    borderRadius: BorderRadius.circular(16),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          Text(
+                            'View All',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 12.0,
+                              fontWeight: FontWeight.w700,
+                              color: isDark
+                                  ? AppColors.darkPrimary
+                                  : AppColors.primaryBrown,
+                            ),
+                          ),
+                          const SizedBox(width: 3),
+                          Icon(
+                            Icons.arrow_forward_ios_rounded,
+                            size: 10,
+                            color: isDark
+                                ? AppColors.darkPrimary
+                                : AppColors.primaryBrown,
+                          ),
+                        ],
+                      ),
                     ),
                   ),
-                ),
               ],
             ),
           ),
-          const SizedBox(height: 12),
+
+          // Swipable Cards Area: Smooth, clipped horizontal scrolling
           child,
-          if (onViewAllTap != null) ...[
-            const SizedBox(height: 14),
-            Center(
-              child: Material(
-                color: Colors.transparent,
-                child: InkWell(
-                  onTap: onViewAllTap,
-                  borderRadius: BorderRadius.circular(20),
-                  child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 22,
-                      vertical: 9,
-                    ),
-                    decoration: BoxDecoration(
-                      color: isDark
-                          ? const Color(0xFF1E1E22)
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(20),
-                      border: Border.all(
-                        color: isDark
-                            ? AppColors.darkBorder
-                            : AppColors.primaryBrown.withValues(alpha: 0.35),
-                        width: 1.2,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(
-                            alpha: isDark ? 0.25 : 0.06,
-                          ),
-                          blurRadius: 6,
-                          offset: const Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        Text(
-                          'View All',
-                          style: GoogleFonts.fraunces(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w700,
-                            color: isDark
-                                ? AppColors.darkTextPrimary
-                                : AppColors.primaryBrown,
-                            letterSpacing: 0.2,
-                          ),
-                        ),
-                        const SizedBox(width: 6),
-                        Icon(
-                          Icons.arrow_forward_ios_rounded,
-                          size: 11,
-                          color: isDark
-                            ? AppColors.darkPrimary
-                            : AppColors.primaryBrown,
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            const SizedBox(height: 2),
-          ],
+          const SizedBox(height: 14),
         ],
       ),
     );
   }
 }
 
+/// Horizontally Swipable Brand Cards Section with full-sized cards
 class GridCardsSection extends StatelessWidget {
   final List<BrandModel> brands;
   final bool isDark;
@@ -163,62 +142,34 @@ class GridCardsSection extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final displayBrands = isExpanded ? brands : brands.take(initialCount).toList();
+    final displayBrands = isExpanded ? brands : brands;
 
-    // Chunk into 3-column rows
-    final List<List<BrandModel>> rows = [];
-    for (var i = 0; i < displayBrands.length; i += 3) {
-      rows.add(
-        displayBrands.sublist(
-          i,
-          i + 3 > displayBrands.length ? displayBrands.length : i + 3,
-        ),
-      );
+    if (displayBrands.isEmpty) {
+      return const SizedBox.shrink();
     }
 
-    return Column(
-      children: List.generate(rows.length, (rowIndex) {
-        final rowBrands = rows[rowIndex];
-        final isLastRow = rowIndex == rows.length - 1;
-
-        return Padding(
-          padding: EdgeInsets.only(bottom: isLastRow ? 0.0 : 10.0),
-          child: IntrinsicHeight(
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                Expanded(
-                  child: GridBrandCard(
-                    brand: rowBrands[0],
-                    isDark: isDark,
-                    columnIndex: 0,
-                  ),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: rowBrands.length > 1
-                      ? GridBrandCard(
-                          brand: rowBrands[1],
-                          isDark: isDark,
-                          columnIndex: 1,
-                        )
-                      : const SizedBox.shrink(),
-                ),
-                const SizedBox(width: 8),
-                Expanded(
-                  child: rowBrands.length > 2
-                      ? GridBrandCard(
-                          brand: rowBrands[2],
-                          isDark: isDark,
-                          columnIndex: 2,
-                        )
-                      : const SizedBox.shrink(),
-                ),
-              ],
+    return SizedBox(
+      height: 256,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        clipBehavior: Clip.hardEdge,
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 4),
+        itemCount: displayBrands.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
+        itemBuilder: (context, index) {
+          return SizedBox(
+            width: 156,
+            child: GridBrandCard(
+              brand: displayBrands[index],
+              isDark: isDark,
+              columnIndex: index,
             ),
-          ),
-        );
-      }),
+          );
+        },
+      ),
     );
   }
 }
+
+typedef SwipableCardsSection = GridCardsSection;

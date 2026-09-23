@@ -37,7 +37,13 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
                   CountryPickerModal.show(
                     context,
                     selectedCountry: selectedCountry,
-                    onSelectCountry: onCountryChanged,
+                    onSelectCountry: (country) {
+                      final clean = controller.text.replaceAll(RegExp(r'\D'), '');
+                      if (clean.length > country.maxDigits) {
+                        controller.text = clean.substring(0, country.maxDigits);
+                      }
+                      onCountryChanged(country);
+                    },
                   );
                 }
               : null,
@@ -85,11 +91,11 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
             controller: controller,
             keyboardType: TextInputType.number,
             enabled: enabled,
-            maxLength: 10,
+            maxLength: selectedCountry.maxDigits,
             buildCounter: (context, {required currentLength, required isFocused, maxLength}) => null,
             inputFormatters: [
               FilteringTextInputFormatter.digitsOnly,
-              LengthLimitingTextInputFormatter(10),
+              LengthLimitingTextInputFormatter(selectedCountry.maxDigits),
             ],
             style: TextStyle(
               color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
@@ -97,7 +103,7 @@ class PhoneInputWithCountrySelector extends StatelessWidget {
             ),
             decoration: InputDecoration(
               labelText: 'Phone Number',
-              hintText: '10-digit phone number',
+              hintText: selectedCountry.digitsHint,
               labelStyle: TextStyle(
                 color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
               ),

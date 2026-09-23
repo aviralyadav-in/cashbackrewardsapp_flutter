@@ -2,7 +2,7 @@
   {
     "name": "Amazon.in",
     "logoUrl": "assets/cards/amazon.jpg",
-    "bannerUrl": "https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_amazon.jpg",
     "cashbackPercentage": "Up to 8% Cashback",
     "category": "Electronics & Shopping",
     "offerText": "Earn rewards on Electronics, Fashion, Appliances & More",
@@ -11,7 +11,7 @@
   {
     "name": "Myntra",
     "logoUrl": "assets/cards/myntra.jpg",
-    "bannerUrl": "https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_myntra.jpg",
     "cashbackPercentage": "Flat 7.5% Cashback",
     "category": "Fashion & Lifestyle",
     "offerText": "Huge discounts on Top Fashion Brands + Extra Cashback",
@@ -20,7 +20,7 @@
   {
     "name": "Flipkart",
     "logoUrl": "assets/cards/flipkart-electronics.png",
-    "bannerUrl": "https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_flipkart.jpg",
     "cashbackPercentage": "Up to 7% Cashback",
     "category": "Mobiles & Mega Sale",
     "offerText": "Best Cashback Deals on Smartphones, Laptops & Home",
@@ -29,16 +29,16 @@
   {
     "name": "AJIO",
     "logoUrl": "assets/cards/ajio-coupons.jpg",
-    "bannerUrl": "https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_ajio.jpg",
     "cashbackPercentage": "Flat 10% Cashback",
     "category": "Trendy Fashion",
     "offerText": "Exclusive Trends & Designer Collections with Real Rewards",
     "websiteUrl": "https://www.ajio.com"
   },
   {
-    "name": "Meesho",
+    "name": "Shopsy",
     "logoUrl": "assets/cards/shopsy-coupons.png",
-    "bannerUrl": "https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_shopsy.jpg",
     "cashbackPercentage": "Up to 6% Cashback",
     "category": "Budget Shopping",
     "offerText": "Lowest Prices Guaranteed + Extra Cashback on Orders",
@@ -47,7 +47,7 @@
   {
     "name": "MCaffeine",
     "logoUrl": "assets/cards/mcaffeine-coupons.jpg",
-    "bannerUrl": "https://images.unsplash.com/photo-1556228720-195a672e8a03?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_mcaffeine.jpg",
     "cashbackPercentage": "Flat 12% Cashback",
     "category": "Personal Care & Skincare",
     "offerText": "Caffeinated Skincare & Body Products with Bonus Cashback",
@@ -56,7 +56,7 @@
   {
     "name": "Dot & Key",
     "logoUrl": "assets/cards/dotandkey-coupons.png",
-    "bannerUrl": "https://images.unsplash.com/photo-1598440947619-2c35fc9aa908?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_dotkey.jpg",
     "cashbackPercentage": "Up to 15% Cashback",
     "category": "Beauty & Skincare",
     "offerText": "Fruit-forward Skincare Essentials + Highest Cashback",
@@ -65,7 +65,7 @@
   {
     "name": "HyugaLife",
     "logoUrl": "assets/cards/hyugalife-coupons.jpg",
-    "bannerUrl": "https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/banners/supplements_banner_16_9.jpg",
     "cashbackPercentage": "Flat 8% Cashback",
     "category": "Health & Supplements",
     "offerText": "Authentic Health Supplements & Protein Drinks with Cashback",
@@ -74,7 +74,7 @@
   {
     "name": "Reliance Digital",
     "logoUrl": "assets/cards/jiomart-electronics.png",
-    "bannerUrl": "https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/banners/reliance_banner_16_9.jpg",
     "cashbackPercentage": "Up to 5% Cashback",
     "category": "Tech & Appliances",
     "offerText": "Great Deals on TV, Audio, Refrigerators & Laptops",
@@ -83,7 +83,7 @@
   {
     "name": "Aqualogica",
     "logoUrl": "assets/cards/aqualogica-coupons.png",
-    "bannerUrl": "https://images.unsplash.com/photo-1571781926291-c477ebfd024b?w=800&auto=format&fit=crop&q=80",
+    "bannerUrl": "assets/cards/col_aqualogica.jpg",
     "cashbackPercentage": "Flat 14% Cashback",
     "category": "Hydrating Skincare",
     "offerText": "Sunscreen & Gel Moisturizers + Special Bonus Rewards",

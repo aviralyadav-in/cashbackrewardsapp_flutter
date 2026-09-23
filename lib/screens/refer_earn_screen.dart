@@ -2,7 +2,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:share_plus/share_plus.dart';
 
+import '../providers/user_provider.dart';
 import '../theme/app_theme.dart';
 
 class ReferEarnScreen extends StatefulWidget {
@@ -16,11 +19,14 @@ class ReferEarnScreen extends StatefulWidget {
 }
 
 class _ReferEarnScreenState extends State<ReferEarnScreen> {
-  static const String _referralLink = 'https://CashKaro.app/refer/CK89421';
-
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final userProvider = Provider.of<UserProvider>(context);
+    final myCode = userProvider.referralCode.isNotEmpty
+        ? userProvider.referralCode
+        : 'KASH100';
+    final referralLink = 'kashiq://referral?code=$myCode';
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
@@ -62,21 +68,28 @@ class _ReferEarnScreenState extends State<ReferEarnScreen> {
 
               const SizedBox(height: 24),
 
-              // 2. YOUR REFERRAL LINK SECTION
-              _ReferralLinkSection(
-                referralLink: _referralLink,
+              // 2. YOUR REFERRAL CODE & LINK SECTION
+              _ReferralCodeAndLinkSection(
+                referralCode: myCode,
+                referralLink: referralLink,
                 isDark: isDark,
               ),
 
               const SizedBox(height: 20),
 
               // 3. INVITE FRIENDS BUTTON
-              _InviteFriendsButton(referralLink: _referralLink),
+              _InviteFriendsButton(
+                referralCode: myCode,
+                referralLink: referralLink,
+              ),
 
               const SizedBox(height: 28),
 
               // 4. HOW REFER & EARN WORKS SECTION
-              _HowItWorksSection(isDark: isDark),
+              _HowItWorksSection(
+                referralCode: myCode,
+                isDark: isDark,
+              ),
 
               const SizedBox(height: 32),
             ],
@@ -225,7 +238,7 @@ class _PromotionalCarouselWidgetState
                                 ),
                                 child: Text(
                                   slide.tag,
-                                  style: GoogleFonts.fraunces(
+                                  style: GoogleFonts.inter(
                                     color: AppColors.deepBrown,
                                     fontSize: 9.5,
                                     fontWeight: FontWeight.w800,
@@ -240,7 +253,7 @@ class _PromotionalCarouselWidgetState
                                 slide.title,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
@@ -254,7 +267,7 @@ class _PromotionalCarouselWidgetState
                                 slide.subtitle,
                                 maxLines: 2,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   color: Colors.white.withValues(alpha: 0.9),
                                   fontSize: 12,
                                   height: 1.25,
@@ -336,29 +349,31 @@ class _PromoSlideData {
 }
 
 // ==========================================
-// 2. REFERRAL LINK SECTION WIDGET
+// 2. REFERRAL CODE & LINK SECTION WIDGET
 // ==========================================
-class _ReferralLinkSection extends StatelessWidget {
+class _ReferralCodeAndLinkSection extends StatelessWidget {
+  final String referralCode;
   final String referralLink;
   final bool isDark;
 
-  const _ReferralLinkSection({
+  const _ReferralCodeAndLinkSection({
+    required this.referralCode,
     required this.referralLink,
     required this.isDark,
   });
 
-  void _copyToClipboard(BuildContext context) {
-    Clipboard.setData(ClipboardData(text: referralLink));
+  void _copyToClipboard(BuildContext context, String text, String label) {
+    Clipboard.setData(ClipboardData(text: text));
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
-        content: const Row(
+        content: Row(
           children: [
-            Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
-            SizedBox(width: 10),
+            const Icon(Icons.check_circle_rounded, color: Colors.white, size: 20),
+            const SizedBox(width: 10),
             Text(
-              'Link copied!',
-              style: TextStyle(fontWeight: FontWeight.bold),
+              '$label copied to clipboard!',
+              style: const TextStyle(fontWeight: FontWeight.bold),
             ),
           ],
         ),
@@ -377,6 +392,134 @@ class _ReferralLinkSection extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // --- A. REFERRAL CODE CARD ---
+        Row(
+          children: [
+            Container(
+              width: 4,
+              height: 18,
+              decoration: BoxDecoration(
+                color: AppColors.primaryBrown,
+                borderRadius: BorderRadius.circular(2),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(
+              'Your Referral Code',
+              style: AppTextStyles.sectionHeading(
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ),
+            ),
+          ],
+        ),
+        const SizedBox(height: 10),
+
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+            borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+            border: Border.all(
+              color: isDark ? AppColors.darkBorder : AppColors.border,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
+                blurRadius: 8,
+                offset: const Offset(0, 2),
+              ),
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(8),
+                    decoration: BoxDecoration(
+                      color: AppColors.primaryBrown.withValues(alpha: 0.12),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.monetization_on_rounded,
+                      color: AppColors.primaryBrown,
+                      size: 20,
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'REFERRAL CODE',
+                          style: GoogleFonts.inter(
+                            fontSize: 11,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 0.8,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          referralCode,
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: 1.5,
+                            color: isDark ? AppColors.darkPrimary : AppColors.deepBrown,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Material(
+                    color: isDark
+                        ? AppColors.darkPrimary.withValues(alpha: 0.2)
+                        : AppColors.beigeSurface,
+                    borderRadius: BorderRadius.circular(10),
+                    child: InkWell(
+                      onTap: () => _copyToClipboard(context, referralCode, 'Referral code'),
+                      borderRadius: BorderRadius.circular(10),
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.copy_rounded,
+                              size: 16,
+                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                            ),
+                            const SizedBox(width: 6),
+                            Text(
+                              'Copy',
+                              style: AppTextStyles.buttonText(
+                                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                              ).copyWith(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 8),
+              Text(
+                'You get ₹20 and your friend gets ₹10 once they complete their 1st shopping order!',
+                style: AppTextStyles.caption(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                ),
+              ),
+            ],
+          ),
+        ),
+
+        const SizedBox(height: 16),
+
+        // --- B. REFERRAL LINK CARD ---
         Row(
           children: [
             Container(
@@ -398,7 +541,6 @@ class _ReferralLinkSection extends StatelessWidget {
         ),
         const SizedBox(height: 10),
 
-        // Rounded Container with Copy Button
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
@@ -428,7 +570,7 @@ class _ReferralLinkSection extends StatelessWidget {
                   referralLink,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: GoogleFonts.fraunces(
+                  style: GoogleFonts.inter(
                     fontSize: 13.5,
                     fontWeight: FontWeight.w600,
                     color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
@@ -436,15 +578,13 @@ class _ReferralLinkSection extends StatelessWidget {
                 ),
               ),
               const SizedBox(width: 8),
-
-              // Copy Button
               Material(
                 color: isDark
                     ? AppColors.darkPrimary.withValues(alpha: 0.2)
                     : AppColors.beigeSurface,
                 borderRadius: BorderRadius.circular(10),
                 child: InkWell(
-                  onTap: () => _copyToClipboard(context),
+                  onTap: () => _copyToClipboard(context, referralLink, 'Referral link'),
                   borderRadius: BorderRadius.circular(10),
                   child: Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -480,14 +620,22 @@ class _ReferralLinkSection extends StatelessWidget {
 // 3. INVITE FRIENDS BUTTON
 // ==========================================
 class _InviteFriendsButton extends StatelessWidget {
+  final String referralCode;
   final String referralLink;
 
-  const _InviteFriendsButton({required this.referralLink});
+  const _InviteFriendsButton({
+    required this.referralCode,
+    required this.referralLink,
+  });
 
   void _shareViaWhatsApp(BuildContext context) {
     final shareText =
-        'Hey! Join CashKaro using my referral link and earn real cashback on all your online shopping: $referralLink';
+        'Hey! Join KashIQ with my referral code $referralCode to get ₹10 bonus on your 1st shopping order + earn guaranteed cashback on Flipkart, Amazon, Myntra & 1,500+ stores!\n\nUse Code: $referralCode\nTap to join: $referralLink\nOr visit: https://kashiq.app/refer/$referralCode';
     Clipboard.setData(ClipboardData(text: shareText));
+
+    // Open native system share dialog (WhatsApp, Telegram, SMS, etc.)
+    SharePlus.instance.share(ShareParams(text: shareText));
+
 
     ScaffoldMessenger.of(context).hideCurrentSnackBar();
     ScaffoldMessenger.of(context).showSnackBar(
@@ -555,9 +703,13 @@ class _InviteFriendsButton extends StatelessWidget {
 // 4. HOW IT WORKS SECTION
 // ==========================================
 class _HowItWorksSection extends StatelessWidget {
+  final String referralCode;
   final bool isDark;
 
-  const _HowItWorksSection({required this.isDark});
+  const _HowItWorksSection({
+    required this.referralCode,
+    required this.isDark,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -588,19 +740,19 @@ class _HowItWorksSection extends StatelessWidget {
         _buildStepCard(
           stepNumber: '1',
           title: 'Invite your friends',
-          description: 'Share your unique referral link via WhatsApp or Social Media.',
+          description: 'Share your referral code $referralCode or link with friends via WhatsApp.',
         ),
         const SizedBox(height: 10),
         _buildStepCard(
           stepNumber: '2',
-          title: 'Friends shop online',
-          description: 'Your friends shop via CashKaro at 1500+ top retailers.',
+          title: 'Friend completes 1st shopping order',
+          description: 'Your friend signs up using your code and completes their very first shopping order on any store.',
         ),
         const SizedBox(height: 10),
         _buildStepCard(
           stepNumber: '3',
-          title: 'Earn 10% cashback for life!',
-          description: 'You get 10% of their earned cashback credited directly to you, forever.',
+          title: 'You get ₹20, Friend gets ₹10!',
+          description: 'Once their 1st shopping order is tracked, ₹20 is credited to your wallet (User A) and ₹10 to your friend (User B)!',
         ),
       ],
     );
@@ -634,7 +786,7 @@ class _HowItWorksSection extends StatelessWidget {
             child: Center(
               child: Text(
                 stepNumber,
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                   fontSize: 16,
                   fontWeight: FontWeight.w700,

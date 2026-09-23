@@ -131,7 +131,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                   const SizedBox(height: 4),
                   Text(
                     record['amount'] as String,
-                    style: GoogleFonts.fraunces(
+                    style: GoogleFonts.inter(
                       fontSize: 28,
                       fontWeight: FontWeight.w700,
                       color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -412,7 +412,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                 children: [
                                   Text(
                                     record['amount'] as String,
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 15.5,
                                       fontWeight: FontWeight.w700,
                                       color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -430,7 +430,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                                     ),
                                     child: Text(
                                       record['status'] as String,
-                                      style: GoogleFonts.fraunces(
+                                      style: GoogleFonts.inter(
                                         fontSize: 10,
                                         fontWeight: FontWeight.bold,
                                         color: record['statusColor'] as Color,
@@ -472,7 +472,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
         const SizedBox(height: 4),
         Text(
           value,
-          style: GoogleFonts.fraunces(
+          style: GoogleFonts.inter(
             fontSize: 16,
             fontWeight: FontWeight.w700,
             color: valueColor,
@@ -511,7 +511,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
           child: Center(
             child: Text(
               label,
-              style: GoogleFonts.fraunces(
+              style: GoogleFonts.inter(
                 fontSize: 11.5,
                 fontWeight: FontWeight.bold,
                 color: isSelected

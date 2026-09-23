@@ -106,7 +106,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 icon: Icons.info_outline_rounded,
                 title: '1. Introduction',
                 content:
-                    'Welcome to CashKaro. We are committed to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner. This policy outlines how we collect, use, and safeguard your data.',
+                    'Welcome to KashIQ. We are committed to protecting your privacy and ensuring your personal information is handled in a safe and responsible manner. This policy outlines how we collect, use, and safeguard your data.',
                 isDark: isDark,
               ),
 
@@ -196,8 +196,8 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 title: '10. Contact Us',
                 content:
                     'If you have any questions or concerns regarding this Privacy Policy, please contact our Data Protection Officer at:\n\n'
-                    'Email: privacy@CashKaro.com\n'
-                    'Helpline: 1800-CashKaro (1800-227-4828)',
+                    'Email: privacy@KashIQ.com\n'
+                    'Helpline: 1800-KashIQ (1800-227-4828)',
                 isDark: isDark,
               ),
 

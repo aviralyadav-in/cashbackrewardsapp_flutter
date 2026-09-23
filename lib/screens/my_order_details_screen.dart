@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_provider.dart';
+import '../services/affiliate_service.dart';
 import '../theme/app_theme.dart';
 
 class OrderRecord {
@@ -34,8 +37,70 @@ class MyOrderDetailsScreen extends StatefulWidget {
 
 class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
   String _selectedFilter = 'All';
+  bool _isLoadingOrders = false;
+  List<OrderRecord> _orders = [];
 
-  final List<OrderRecord> _orders = const [
+  @override
+  void initState() {
+    super.initState();
+    _orders = _defaultOrders;
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _loadTrackedOrders();
+    });
+  }
+
+  Future<void> _loadTrackedOrders() async {
+    final uid = Provider.of<UserProvider>(context, listen: false).uid;
+    if (uid.isEmpty) return;
+
+    setState(() {
+      _isLoadingOrders = true;
+    });
+
+    try {
+      final remoteOrders = await AffiliateService().getUserOrders(uid);
+      if (remoteOrders.isNotEmpty && mounted) {
+        final mapped = remoteOrders.map((o) {
+          final isPending = o.status == 'PENDING';
+          final isConfirmed = o.status == 'CONFIRMED';
+          final statusTitle = isConfirmed ? 'Confirmed' : (isPending ? 'Pending' : 'Rejected');
+          final color = isConfirmed ? AppColors.success : (isPending ? AppColors.pending : AppColors.error);
+
+          return OrderRecord(
+            orderId: o.id.startsWith('#') ? o.id : '#${o.id}',
+            store: o.storeName,
+            category: 'Affiliate Shopping',
+            date: '${o.createdAt.day} ${_monthName(o.createdAt.month)} ${o.createdAt.year}',
+            amount: '₹${o.orderAmount.toStringAsFixed(2)}',
+            cashback: '₹${o.cashbackAmount.toStringAsFixed(2)}',
+            rate: o.commissionAmount > 0 ? 'Cashback Tracked' : 'Reward',
+            status: statusTitle,
+            statusColor: color,
+            expectedDate: isConfirmed ? 'Confirmed on date' : 'Expected in 45-60 days',
+            icon: Icons.shopping_bag_outlined,
+          );
+        }).toList();
+
+        setState(() {
+          _orders = mapped;
+        });
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isLoadingOrders = false;
+        });
+      }
+    }
+  }
+
+  static String _monthName(int m) {
+    const months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+    if (m >= 1 && m <= 12) return months[m - 1];
+    return '';
+  }
+
+  static const List<OrderRecord> _defaultOrders = [
     OrderRecord(
       orderId: '#OD-982341',
       store: 'Amazon',
@@ -139,7 +204,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                   children: [
                     Text(
                       o.store,
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -218,7 +283,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
         Text(
           val,
           style: isHighlight
-              ? GoogleFonts.fraunces(
+              ? GoogleFonts.inter(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
                   color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -264,6 +329,15 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.stretch,
             children: [
+              if (_isLoadingOrders)
+                const Padding(
+                  padding: EdgeInsets.only(bottom: 12),
+                  child: LinearProgressIndicator(
+                    color: AppColors.primaryBrown,
+                    backgroundColor: AppColors.beigeSurface,
+                  ),
+                ),
+
               // 1. Filter Chips
               Row(
                 children: [
@@ -356,7 +430,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                           children: [
                                             Text(
                                               order.store,
-                                              style: GoogleFonts.fraunces(
+                                              style: GoogleFonts.inter(
                                                 fontSize: 16,
                                                 fontWeight: FontWeight.w700,
                                                 color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -432,7 +506,7 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
                                       const SizedBox(height: 2),
                                       Text(
                                         order.cashback,
-                                        style: GoogleFonts.fraunces(
+                                        style: GoogleFonts.inter(
                                           fontSize: 15,
                                           fontWeight: FontWeight.w700,
                                           color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,

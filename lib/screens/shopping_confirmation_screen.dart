@@ -1,14 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
 import '../models/brand_model.dart';
+import '../providers/user_provider.dart';
+import '../services/affiliate_service.dart';
 import '../services/url_launcher_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
 
 import 'product_detail_screen.dart';
 
-class ShoppingConfirmationScreen extends StatelessWidget {
+class ShoppingConfirmationScreen extends StatefulWidget {
   static const String routeName = '/shopping-confirmation';
 
   final BrandModel brand;
@@ -18,33 +21,69 @@ class ShoppingConfirmationScreen extends StatelessWidget {
     required this.brand,
   });
 
+  @override
+  State<ShoppingConfirmationScreen> createState() => _ShoppingConfirmationScreenState();
+}
+
+class _ShoppingConfirmationScreenState extends State<ShoppingConfirmationScreen> {
+  bool _isRedirecting = false;
+
   Future<void> _handleShopNow(BuildContext context) async {
-    var urlToOpen = brand.websiteUrl.trim();
-    if (urlToOpen.isEmpty) {
-      urlToOpen = ProductDetailScreen.resolveStoreUrl(brand.name);
-    }
+    if (_isRedirecting) return;
 
-    var success = await UrlLauncherService.openUrl(urlToOpen);
-    if (!success) {
-      final fallback = ProductDetailScreen.resolveStoreUrl(brand.name);
-      if (fallback != urlToOpen) {
-        success = await UrlLauncherService.openUrl(fallback);
+    setState(() {
+      _isRedirecting = true;
+    });
+
+    try {
+      var rawTargetUrl = widget.brand.websiteUrl.trim();
+      if (rawTargetUrl.isEmpty) {
+        rawTargetUrl = ProductDetailScreen.resolveStoreUrl(widget.brand.name);
       }
-    }
 
-    if (!success && context.mounted) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Could not open ${brand.name} website. Please check your internet connection.'),
-          backgroundColor: AppColors.error,
-          behavior: SnackBarBehavior.floating,
-        ),
+      // 1. Generate Sub-ID tracked affiliate URL and log click
+      final userProvider = Provider.of<UserProvider>(context, listen: false);
+      final activeUid = userProvider.uid;
+
+      final trackedResult = await AffiliateService().generateTrackedLink(
+        userId: activeUid,
+        storeName: widget.brand.name,
+        targetUrl: rawTargetUrl,
+        storeId: widget.brand.name.toLowerCase().replaceAll(RegExp(r'\s+'), '_'),
       );
+
+      final urlToLaunch = trackedResult.urlToOpen.isNotEmpty ? trackedResult.urlToOpen : rawTargetUrl;
+
+      // 2. Launch in external browser/app
+      var success = await UrlLauncherService.openUrl(urlToLaunch);
+      if (!success) {
+        final fallback = ProductDetailScreen.resolveStoreUrl(widget.brand.name);
+        if (fallback != urlToLaunch) {
+          success = await UrlLauncherService.openUrl(fallback);
+        }
+      }
+
+      if (!success && context.mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Could not open ${widget.brand.name} website. Please check your internet connection.'),
+            backgroundColor: AppColors.error,
+            behavior: SnackBarBehavior.floating,
+          ),
+        );
+      }
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isRedirecting = false;
+        });
+      }
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    final brand = widget.brand;
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
     return Scaffold(
@@ -121,7 +160,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                             return Center(
                               child: Text(
                                 brand.name.substring(0, 1).toUpperCase(),
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   fontSize: 32,
                                   fontWeight: FontWeight.bold,
                                   color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -191,7 +230,7 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                           const SizedBox(width: 8),
                           Text(
                             brand.cashbackPercentage,
-                            style: GoogleFonts.fraunces(
+                            style: GoogleFonts.inter(
                               color: Colors.white,
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
@@ -262,8 +301,8 @@ class ShoppingConfirmationScreen extends StatelessWidget {
               SizedBox(
                 width: double.infinity,
                 height: 52,
-                child: ElevatedButton.icon(
-                  onPressed: () => _handleShopNow(context),
+                child: ElevatedButton(
+                  onPressed: _isRedirecting ? null : () => _handleShopNow(context),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBrown,
                     foregroundColor: AppColors.cardBackground,
@@ -272,17 +311,44 @@ class ShoppingConfirmationScreen extends StatelessWidget {
                       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                     ),
                   ),
-                  icon: const Icon(Icons.open_in_new, size: 20),
-                  label: Flexible(
-                    child: Text(
-                      'Shop Now at ${brand.name}',
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: AppTextStyles.buttonText(
-                        color: AppColors.cardBackground,
-                      ).copyWith(fontSize: 15),
-                    ),
-                  ),
+                  child: _isRedirecting
+                      ? Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                valueColor: AlwaysStoppedAnimation<Color>(Colors.white),
+                              ),
+                            ),
+                            const SizedBox(width: 12),
+                            Text(
+                              'Activating Cashback...',
+                              style: AppTextStyles.buttonText(
+                                color: AppColors.cardBackground,
+                              ).copyWith(fontSize: 15),
+                            ),
+                          ],
+                        )
+                      : Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Icon(Icons.open_in_new, size: 20, color: Colors.white),
+                            const SizedBox(width: 8),
+                            Flexible(
+                              child: Text(
+                                'Shop Now at ${brand.name}',
+                                maxLines: 1,
+                                overflow: TextOverflow.ellipsis,
+                                style: AppTextStyles.buttonText(
+                                  color: AppColors.cardBackground,
+                                ).copyWith(fontSize: 15),
+                              ),
+                            ),
+                          ],
+                        ),
                 ),
               ),
             ],

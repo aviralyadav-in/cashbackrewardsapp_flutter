@@ -1,4 +1,4 @@
-# CashKaro App — Complete Architecture, Workflow & Screens Guide
+# KashIQ App — Complete Architecture, Workflow & Screens Guide
 
 A clean, concise, plain-language reference explaining what the app does, why this specific folder structure is used, how the user journey works, and a breakdown of all 30 screens.
 
@@ -6,11 +6,11 @@ A clean, concise, plain-language reference explaining what the app does, why thi
 
 ## 1. What This App Does (In Simple Words)
 
-**CashKaro** is a shopping rewards and cashback mobile app. When users want to buy anything online (clothes, electronics, medicines, groceries, or apply for personal loans/credit cards), they:
-1. Open the **CashKaro app** and choose a partner store (Amazon, Flipkart, Myntra, Ajio, Nykaa, Navi Loans, etc.).
+**KashIQ** is a shopping rewards and cashback mobile app. When users want to buy anything online (clothes, electronics, medicines, groceries, or apply for personal loans/credit cards), they:
+1. Open the **KashIQ app** and choose a partner store (Amazon, Flipkart, Myntra, Ajio, Nykaa, Navi Loans, etc.).
 2. Tap **"Shop Now"** to open the retailer's website or app.
 3. Make their purchase as normal.
-4. The retailer pays CashKaro a commission, and CashKaro gives that money back to the user as **Real Cashback**.
+4. The retailer pays KashIQ a commission, and KashIQ gives that money back to the user as **Real Cashback**.
 5. Once verified, users can transfer that money directly into their **Bank Account (via NEFT)**, **UPI (GPay/PhonePe/Paytm)**, or redeem as **Amazon Pay Gift Cards**.
 
 ---

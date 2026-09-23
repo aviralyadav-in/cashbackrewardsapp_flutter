@@ -79,7 +79,7 @@ class CallUsScreen extends StatelessWidget {
                     const SizedBox(height: 12),
                     Text(
                       'We are here to help!',
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
@@ -146,8 +146,8 @@ class CallUsScreen extends StatelessWidget {
                               ),
                               const SizedBox(height: 2),
                               Text(
-                                '1800-CashKaro',
-                                style: GoogleFonts.fraunces(
+                                '1800-KashIQ',
+                                style: GoogleFonts.inter(
                                   fontSize: 18,
                                   fontWeight: FontWeight.w700,
                                   color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -225,7 +225,7 @@ class CallUsScreen extends StatelessWidget {
               // Alternate Channels
               Text(
                 'OTHER WAYS TO CONNECT',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -240,8 +240,8 @@ class CallUsScreen extends StatelessWidget {
                 isDark: isDark,
                 icon: Icons.email_outlined,
                 title: 'Email Support',
-                subtitle: 'support@CashKaro.com (24h response time)',
-                onTap: () => UrlLauncherService.openUrl('mailto:support@CashKaro.com'),
+                subtitle: 'support@KashIQ.com (24h response time)',
+                onTap: () => UrlLauncherService.openUrl('mailto:support@KashIQ.com'),
               ),
 
               const SizedBox(height: 10),

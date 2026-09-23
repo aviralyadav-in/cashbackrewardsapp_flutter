@@ -232,7 +232,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                   children: [
                     Text(
                       ticket['store'] as String,
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 20,
                         fontWeight: FontWeight.w700,
                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -347,7 +347,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
         Text(
           value,
           style: isHighlight
-              ? GoogleFonts.fraunces(
+              ? GoogleFonts.inter(
                   fontSize: 13.5,
                   fontWeight: FontWeight.w700,
                   color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -541,7 +541,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                                 children: [
                                   Text(
                                     ticket['store'] as String,
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 16,
                                       fontWeight: FontWeight.w700,
                                       color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -581,7 +581,7 @@ class _MissingTicketsScreenState extends State<MissingTicketsScreen> {
                                 children: [
                                   Text(
                                     'Expected: ${ticket['expectedCashback']}',
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w700,
                                       color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,

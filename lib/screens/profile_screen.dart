@@ -1,11 +1,10 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/theme_provider.dart';
 import '../providers/user_provider.dart';
-import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 import 'account_settings_screen.dart';
 import 'call_us_screen.dart';
@@ -21,11 +20,27 @@ import 'refer_earn_screen.dart';
 import 'review_us_screen.dart';
 import 'your_queries_screen.dart';
 
-class ProfileScreen extends StatelessWidget {
+class ProfileScreen extends StatefulWidget {
   static const String routeName = '/profile';
   final VoidCallback? onBack;
 
   const ProfileScreen({super.key, this.onBack});
+
+  @override
+  State<ProfileScreen> createState() => _ProfileScreenState();
+}
+
+class _ProfileScreenState extends State<ProfileScreen> {
+  @override
+  void initState() {
+    super.initState();
+    // Fetch latest user details from Node.js + PostgreSQL backend (GET /api/users/:id)
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (mounted) {
+        Provider.of<UserProvider>(context, listen: false).loadUserProfile();
+      }
+    });
+  }
 
   void _confirmLogout(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -64,8 +79,6 @@ class ProfileScreen extends StatelessWidget {
               Navigator.of(ctx).pop();
               final userProvider = Provider.of<UserProvider>(context, listen: false);
               await userProvider.clearUser();
-              final authService = AuthService();
-              await authService.signOut();
 
               if (context.mounted) {
                 Navigator.of(context).pushAndRemoveUntil(
@@ -105,8 +118,8 @@ class ProfileScreen extends StatelessWidget {
             size: 20,
           ),
           onPressed: () {
-            if (onBack != null) {
-              onBack!();
+            if (widget.onBack != null) {
+              widget.onBack!();
             } else if (Navigator.of(context).canPop()) {
               Navigator.of(context).pop();
             }
@@ -123,21 +136,12 @@ class ProfileScreen extends StatelessWidget {
       body: SafeArea(
         child: Consumer<UserProvider>(
           builder: (context, userProvider, child) {
-            final firebaseUser = FirebaseAuth.instance.currentUser;
-
             final userName = userProvider.fullName.isNotEmpty
                 ? userProvider.fullName
-                : (firebaseUser?.displayName?.trim().isNotEmpty == true
-                    ? firebaseUser!.displayName!.trim()
-                    : 'CashKaro User');
+                : 'KashIQ User';
 
-            final userEmail = userProvider.email.isNotEmpty
-                ? userProvider.email
-                : (firebaseUser?.email?.trim() ?? '');
-
-            final userPhone = userProvider.phoneNumber.isNotEmpty
-                ? userProvider.phoneNumber
-                : (firebaseUser?.phoneNumber?.trim() ?? '');
+            final userEmail = userProvider.email;
+            final userPhone = userProvider.phoneNumber;
 
             return SingleChildScrollView(
               physics: const BouncingScrollPhysics(),
@@ -181,7 +185,7 @@ class ProfileScreen extends StatelessWidget {
                                   const SizedBox(height: 2),
                                   Text(
                                     userName,
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w700,
                                       color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -255,7 +259,7 @@ class ProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 16),
 
-                        // Two Summary Cards: Total Cashback & Total Rewards
+                        // Two Summary Cards: Total Cashback & Referral Bonus
                         Row(
                           children: [
                             Expanded(
@@ -289,8 +293,8 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      '₹0.0',
-                                      style: GoogleFonts.fraunces(
+                                      '₹${userProvider.confirmedCashback.toStringAsFixed(2)}',
+                                      style: GoogleFonts.inter(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
                                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -317,13 +321,13 @@ class ProfileScreen extends StatelessWidget {
                                     Row(
                                       children: [
                                         Icon(
-                                          Icons.card_giftcard_outlined,
+                                          Icons.card_giftcard_rounded,
                                           size: 16,
                                           color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                         ),
                                         const SizedBox(width: 6),
                                         Text(
-                                          'Total Rewards',
+                                          'Referral Bonus',
                                           style: AppTextStyles.smallLabel(
                                             color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                                           ),
@@ -332,8 +336,8 @@ class ProfileScreen extends StatelessWidget {
                                     ),
                                     const SizedBox(height: 6),
                                     Text(
-                                      '₹0.0',
-                                      style: GoogleFonts.fraunces(
+                                      '₹${userProvider.referralEarnings.toStringAsFixed(2)}',
+                                      style: GoogleFonts.inter(
                                         fontSize: 18,
                                         fontWeight: FontWeight.w700,
                                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -345,6 +349,83 @@ class ProfileScreen extends StatelessWidget {
                             ),
                           ],
                         ),
+
+                        // Referral Code Banner
+                        if (userProvider.referralCode.isNotEmpty) ...[
+                          const SizedBox(height: 12),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+                            decoration: BoxDecoration(
+                              color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: isDark ? 0.2 : 0.08),
+                              borderRadius: BorderRadius.circular(10),
+                              border: Border.all(
+                                color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: 0.25),
+                              ),
+                            ),
+                            child: Row(
+                              children: [
+                                Icon(
+                                  Icons.card_giftcard_rounded,
+                                  size: 18,
+                                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                ),
+                                const SizedBox(width: 8),
+                                Expanded(
+                                  child: Text(
+                                    'Referral Code: ${userProvider.referralCode}',
+                                    style: GoogleFonts.inter(
+                                      fontSize: 13,
+                                      fontWeight: FontWeight.w700,
+                                      color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                    ),
+                                  ),
+                                ),
+                                InkWell(
+                                  onTap: () {
+                                    Clipboard.setData(ClipboardData(text: userProvider.referralCode));
+                                    ScaffoldMessenger.of(context).showSnackBar(
+                                      SnackBar(
+                                        content: const Row(
+                                          children: [
+                                            Icon(Icons.check_circle, color: Colors.white, size: 16),
+                                            SizedBox(width: 8),
+                                            Text('Referral code copied!'),
+                                          ],
+                                        ),
+                                        backgroundColor: AppColors.primaryBrown,
+                                        duration: const Duration(seconds: 2),
+                                        behavior: SnackBarBehavior.floating,
+                                        shape: RoundedRectangleBorder(
+                                          borderRadius: BorderRadius.circular(8),
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  borderRadius: BorderRadius.circular(6),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
+                                    child: Row(
+                                      children: [
+                                        Icon(
+                                          Icons.copy_rounded,
+                                          size: 14,
+                                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                        ),
+                                        const SizedBox(width: 4),
+                                        Text(
+                                          'Copy',
+                                          style: AppTextStyles.caption(
+                                            color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                          ).copyWith(fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
                       ],
                     ),
                   ),

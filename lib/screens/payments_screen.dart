@@ -86,7 +86,7 @@ class PaymentsScreen extends StatelessWidget {
                               const SizedBox(width: 4),
                               Text(
                                 'Threshold: ₹250',
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   color: Colors.white,
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
@@ -100,7 +100,7 @@ class PaymentsScreen extends StatelessWidget {
                     const SizedBox(height: 10),
                     Text(
                       '₹0.00',
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: 34,
                         fontWeight: FontWeight.w700,
@@ -122,7 +122,7 @@ class PaymentsScreen extends StatelessWidget {
               // Withdrawal Methods Section
               Text(
                 'PAYOUT METHODS',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -295,7 +295,7 @@ class PaymentsScreen extends StatelessWidget {
                       ),
                       child: Text(
                         badgeText,
-                        style: GoogleFonts.fraunces(
+                        style: GoogleFonts.inter(
                           fontSize: 9.5,
                           fontWeight: FontWeight.bold,
                           color: AppColors.success,
@@ -337,7 +337,7 @@ class PaymentsScreen extends StatelessWidget {
           child: Center(
             child: Text(
               number,
-              style: GoogleFonts.fraunces(
+              style: GoogleFonts.inter(
                 fontSize: 9.5,
                 fontWeight: FontWeight.bold,
                 color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,

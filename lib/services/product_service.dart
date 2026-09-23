@@ -13,7 +13,9 @@ class ProductService {
   ProductService({http.Client? client}) : _client = client ?? http.Client();
 
   Future<List<Product>> fetchProducts() async {
-    final response = await _client.get(Uri.parse(_endpoint));
+    final response = await _client
+        .get(Uri.parse(_endpoint))
+        .timeout(const Duration(seconds: 4));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to load products');

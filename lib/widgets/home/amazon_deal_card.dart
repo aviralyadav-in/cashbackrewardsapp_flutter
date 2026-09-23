@@ -83,7 +83,7 @@ class AmazonDealCard extends StatelessWidget {
                         deal.brandName.toUpperCase(),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.fraunces(
+                        style: GoogleFonts.inter(
                           fontSize: 10,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.5,
@@ -159,7 +159,7 @@ class AmazonDealCard extends StatelessWidget {
                   children: [
                     Text(
                       'After Rewards of ${deal.rewardPercentage.toStringAsFixed(deal.rewardPercentage % 1 == 0 ? 0 : 1)}%',
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
                         color: isDark
@@ -180,7 +180,7 @@ class AmazonDealCard extends StatelessWidget {
                         ),
                         Text(
                           '₹${formatCurrency(deal.finalPrice)}',
-                          style: GoogleFonts.fraunces(
+                          style: GoogleFonts.inter(
                             fontSize: 13.5,
                             fontWeight: FontWeight.w700,
                             color: isDark

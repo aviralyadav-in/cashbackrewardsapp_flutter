@@ -9,6 +9,94 @@ import '../screens/offer_section_screen.dart';
 
 class HomeMockData {
   // =========================================================================
+  // HIGHEST CASHBACK STORES CATALOG (Curated Top Rates)
+  // =========================================================================
+
+  static const List<BrandModel> highestCashbackCatalog = [
+    BrandModel(
+      name: 'The Derma Co',
+      logoUrl: 'assets/cards/thedermaco-coupons.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
+      cashbackPercentage: 'Up to 25% Cashback',
+      category: 'Beauty',
+      offerText: 'Buy 2 Get 2 Free',
+      websiteUrl: 'https://thedermaco.com',
+    ),
+    BrandModel(
+      name: 'boAt',
+      logoUrl: 'assets/cards/boat-coupon.jpg',
+      bannerUrl: 'assets/banners/headphone_banner_16_9.jpg',
+      cashbackPercentage: 'Up to 22% Cashback',
+      category: 'Audio Gear',
+      offerText: 'Up to 75% Off',
+      websiteUrl: 'https://www.boat-lifestyle.com',
+    ),
+    BrandModel(
+      name: 'Truemeds',
+      logoUrl: 'assets/cards/truemeds-coupon-code.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
+      cashbackPercentage: 'Flat ₹375 Cashback',
+      category: 'Medicine',
+      offerText: 'Flat 25% Off',
+      websiteUrl: 'https://www.truemeds.in',
+    ),
+    BrandModel(
+      name: 'Sirona',
+      logoUrl: 'assets/cards/sirona-coupons.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
+      cashbackPercentage: 'Up to 22% Cashback',
+      category: 'Health Wellness',
+      offerText: 'Upto 40% Off',
+      websiteUrl: 'https://www.thesirona.com',
+    ),
+    BrandModel(
+      name: 'Foxtale',
+      logoUrl: 'assets/cards/foxtale-coupons.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
+      cashbackPercentage: 'Up to 20% Cashback',
+      category: 'Beauty',
+      offerText: 'Buy 2 Get 4 Free',
+      websiteUrl: 'https://foxtale.in',
+    ),
+    BrandModel(
+      name: 'Nykaa',
+      logoUrl: 'assets/cards/nykaa.jpg',
+      bannerUrl: 'assets/cards/col_nykaa.jpg',
+      cashbackPercentage: 'Up to 15% Cashback',
+      category: 'Beauty',
+      offerText: 'Upto 50% Off',
+      websiteUrl: 'https://www.nykaa.com',
+    ),
+    BrandModel(
+      name: 'Agoda',
+      logoUrl: 'assets/cards/agoda.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
+      cashbackPercentage: 'Up to 12% Cashback',
+      category: 'Travel',
+      offerText: 'Flat 10% Extra Off',
+      websiteUrl: 'https://www.agoda.com',
+    ),
+    BrandModel(
+      name: 'Myntra',
+      logoUrl: 'assets/cards/myntra.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
+      cashbackPercentage: 'Up to 12% Cashback',
+      category: 'Fashion',
+      offerText: 'Flat 10% Off Code',
+      websiteUrl: 'https://www.myntra.com',
+    ),
+    BrandModel(
+      name: 'AJIO',
+      logoUrl: 'assets/cards/ajio-coupons.jpg',
+      bannerUrl: 'assets/cards/col_ajio.jpg',
+      cashbackPercentage: 'Up to 10% Cashback',
+      category: 'Fashion',
+      offerText: 'Trends Mega Sale',
+      websiteUrl: 'https://www.ajio.com',
+    ),
+  ];
+
+  // =========================================================================
   // PROMOTIONAL BANNERS
   // =========================================================================
 
@@ -84,7 +172,7 @@ class HomeMockData {
     subText: 'Earn Unlimited Cashback on Amazon, Flipkart, Zomato & More',
     offerTag: '5% UNLIMITED',
     buttonText: 'Get Card',
-    themeColor: Color(0xFFEA580C),
+    themeColor: Color(0xFF2563EB),
     lightColor: Color(0xFFFED7AA),
     logoIcon: Icons.shopping_bag_rounded,
   );
@@ -146,7 +234,7 @@ class HomeMockData {
 
   static const SubcategoryBannerData amazonDealsBanner = SubcategoryBannerData(
     brandName: 'Amazon Deals',
-    headline: 'CashKaroBACK DEALS',
+    headline: 'KashIQBACK DEALS',
     subText: 'Extra Cashback on Daily Essentials, Electronics & Appliances',
     offerTag: 'SUPER CASHBACK',
     buttonText: 'Shop Amazon',
@@ -196,7 +284,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon India',
       logoUrl: 'assets/cards/amazon.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-1735629515.jpg',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Popular',
       offerText: 'Upto 80% Off',
@@ -205,7 +293,7 @@ class HomeMockData {
     BrandModel(
       name: 'Flipkart CB Affoy',
       logoUrl: 'assets/cards/flipkart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/flipkart-1768222060.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Up to 6.50% Cashback',
       category: 'Popular',
       offerText: '50-90% Off',
@@ -214,7 +302,7 @@ class HomeMockData {
     BrandModel(
       name: 'AJIO',
       logoUrl: 'assets/cards/ajio-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ajio-coupons-1735561339.jpg',
+      bannerUrl: 'assets/cards/col_ajio.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Popular',
       offerText: '50-90% Off',
@@ -223,7 +311,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nykaa',
       logoUrl: 'assets/cards/nykaa.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nykaa-1735636843.jpg',
+      bannerUrl: 'assets/cards/col_nykaa.jpg',
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Popular',
       offerText: 'Upto 50% Off',
@@ -232,7 +320,7 @@ class HomeMockData {
     BrandModel(
       name: 'Myntra',
       logoUrl: 'assets/cards/myntra.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/myntra-1735792893.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Popular',
       offerText: 'Sale Live Now',
@@ -241,7 +329,7 @@ class HomeMockData {
     BrandModel(
       name: 'Foxtale',
       logoUrl: 'assets/cards/foxtale-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/foxtale-coupons-1735635292.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 Get 4 Free',
@@ -250,7 +338,7 @@ class HomeMockData {
     BrandModel(
       name: 'Emergent',
       logoUrl: 'assets/cards/emergent-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/emergent-coupons-1786968608.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat ₹150 Cashback',
       category: 'Popular',
       offerText: 'Build App @₹99',
@@ -259,7 +347,7 @@ class HomeMockData {
     BrandModel(
       name: 'The Derma Co',
       logoUrl: 'assets/cards/thedermaco-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/thedermaco-coupons-1735635861.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Popular',
       offerText: 'Upto 35% Off',
@@ -268,7 +356,7 @@ class HomeMockData {
     BrandModel(
       name: 'Dot & Key',
       logoUrl: 'assets/cards/dotandkey-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/dotandkey-coupons-1716552540.png',
+      bannerUrl: 'assets/cards/col_dotkey.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Popular',
       offerText: 'Upto 20% Off',
@@ -277,7 +365,7 @@ class HomeMockData {
     BrandModel(
       name: 'Aqualogica',
       logoUrl: 'assets/cards/aqualogica-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/aqualogica-coupons-1690539040.png',
+      bannerUrl: 'assets/cards/col_aqualogica.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 @ 699',
@@ -286,7 +374,7 @@ class HomeMockData {
     BrandModel(
       name: 'Shopsy',
       logoUrl: 'assets/cards/shopsy-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/shopsy-coupons-test-1691651556.png',
+      bannerUrl: 'assets/cards/col_shopsy.jpg',
       cashbackPercentage: 'Up to 7.50% Cashback',
       category: 'Popular',
       offerText: 'Upto 90% Off',
@@ -295,7 +383,7 @@ class HomeMockData {
     BrandModel(
       name: 'Times Prime',
       logoUrl: 'assets/cards/times-prime-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/times-prime-coupons-1735635238.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat ₹400 Cashback',
       category: 'Popular',
       offerText: 'Flat Rs.699 Off',
@@ -304,7 +392,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hyugalife',
       logoUrl: 'assets/cards/hyugalife-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hyugalife-coupons-1735639138.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Popular',
       offerText: 'Upto 60% Off',
@@ -313,7 +401,7 @@ class HomeMockData {
     BrandModel(
       name: 'AGEasy',
       logoUrl: 'assets/cards/ageasy-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ageasy-coupons-1772534200.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 28% Cashback',
       category: 'Popular',
       offerText: 'Flat 15% Off',
@@ -322,7 +410,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nutslane',
       logoUrl: 'assets/cards/nutslane-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nutslane-coupons-1782547156.png',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Popular',
       offerText: 'Flat 12% Off',
@@ -331,7 +419,7 @@ class HomeMockData {
     BrandModel(
       name: 'MuscleBlaze',
       logoUrl: 'assets/cards/muscleblaze-coupon-codes.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/muscleblaze-coupon-codes-1735638355.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Popular',
       offerText: 'Upto 35% Off',
@@ -340,7 +428,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hyphen',
       logoUrl: 'assets/cards/hyphen-coupon-codes.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hyphen-coupon-codes-1777980437.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Popular',
       offerText: 'Buy 2 @ 799',
@@ -349,7 +437,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hummel',
       logoUrl: 'assets/cards/hummel-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hummel-coupons-1783685018.png',
+      bannerUrl: 'assets/banners/sneaker_banner_16_9.jpg',
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Popular',
       offerText: 'Upto 50% Off',
@@ -358,7 +446,7 @@ class HomeMockData {
     BrandModel(
       name: 'realme',
       logoUrl: 'assets/cards/realme-offers.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/realme-offers-1735625309.jpg',
+      bannerUrl: 'assets/banners/phone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Popular',
       offerText: 'Upto 40% Off',
@@ -367,7 +455,7 @@ class HomeMockData {
     BrandModel(
       name: 'R for Rabbit',
       logoUrl: 'assets/cards/r-for-rabbit-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/r-for-rabbit-coupons-new-1784029397.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Popular',
       offerText: 'Upto 30% Off',
@@ -379,7 +467,7 @@ class HomeMockData {
     BrandModel(
       name: 'Flipkart Fashion CB Affoy',
       logoUrl: 'assets/cards/flipkart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/flipkart-fashion-hide-1767957531.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Up to 5.20% Cashback',
       category: 'Fashion',
       offerText: '50-90% Off',
@@ -388,7 +476,7 @@ class HomeMockData {
     BrandModel(
       name: 'AJIO',
       logoUrl: 'assets/cards/ajio-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ajio-coupons-1735561339.jpg',
+      bannerUrl: 'assets/cards/col_ajio.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: '50-90% Off',
@@ -397,7 +485,7 @@ class HomeMockData {
     BrandModel(
       name: 'Myntra',
       logoUrl: 'assets/cards/myntra.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/myntra-1735792893.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Fashion',
       offerText: 'Sale Live Now',
@@ -406,7 +494,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon Fashion & Clothing',
       logoUrl: 'assets/cards/amazon-clothing.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-clothing-1758477313.png',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Fashion',
       offerText: '50-90% Off',
@@ -415,7 +503,7 @@ class HomeMockData {
     BrandModel(
       name: 'STRCH',
       logoUrl: 'assets/cards/strch-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/strch-coupons-1735648158.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Fashion',
       offerText: 'Upto 50% Off',
@@ -424,7 +512,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hummel',
       logoUrl: 'assets/cards/hummel-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hummel-coupons-1783685018.png',
+      bannerUrl: 'assets/banners/sneaker_banner_16_9.jpg',
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Fashion',
       offerText: 'Upto 50% Off',
@@ -433,7 +521,7 @@ class HomeMockData {
     BrandModel(
       name: 'Lavie',
       logoUrl: 'assets/cards/lavie-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/lavie-coupons-1782210859.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -442,7 +530,7 @@ class HomeMockData {
     BrandModel(
       name: 'House Of Koala',
       logoUrl: 'assets/cards/house-of-koala-offers.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/house-of-koala-offers-1745230983.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Fashion',
       offerText: 'Flat 15% Off',
@@ -451,7 +539,7 @@ class HomeMockData {
     BrandModel(
       name: 'Uniqlo',
       logoUrl: 'assets/cards/uniqlo-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/uniqlo-coupons-1735647469.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 1.20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -460,7 +548,7 @@ class HomeMockData {
     BrandModel(
       name: 'XYXX Crew',
       logoUrl: 'assets/cards/xyxx-discount-code.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/xyxx-discount-code-1735643105.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: 'Buy 5 at Rs.999',
@@ -469,7 +557,7 @@ class HomeMockData {
     BrandModel(
       name: 'Libas',
       logoUrl: 'assets/cards/libas-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/libas-coupons-1735642094.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Fashion',
       offerText: 'Upto 70% Off',
@@ -478,7 +566,7 @@ class HomeMockData {
     BrandModel(
       name: 'Shyaway',
       logoUrl: 'assets/cards/shyaway-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/shyaway-coupons-1735646185.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Perfect Fitting | Discreet Packaging 10th Birthday Bash Sale',
@@ -487,7 +575,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tata CLiQ',
       logoUrl: 'assets/cards/tatacliq-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tatacliq-coupons-1632828732.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Fashion',
       offerText: 'Upto 60% Off',
@@ -496,7 +584,7 @@ class HomeMockData {
     BrandModel(
       name: 'Lucira Jewelry',
       logoUrl: 'assets/cards/lucira-jewelry-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/lucira-jewelry-coupons-1786961616.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -505,7 +593,7 @@ class HomeMockData {
     BrandModel(
       name: 'Zop',
       logoUrl: 'assets/cards/zop-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zop-coupons-test-1749805371.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Fashion',
       offerText: 'Zop is an online platform offering a variety of products, in',
@@ -514,16 +602,16 @@ class HomeMockData {
     BrandModel(
       name: 'Tiaraa',
       logoUrl: 'assets/cards/tiaraa-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tiaraa-coupons-1735647566.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Fashion',
-      offerText: 'Designer Handcraft Jewellery Collection CashKaro Exclusive: ',
+      offerText: 'Designer Handcraft Jewellery Collection KashIQ Exclusive: ',
       websiteUrl: 'https://tiaraa.co.in',
     ),
     BrandModel(
       name: 'Uppercase',
       logoUrl: 'assets/cards/uppercase.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/uppercase-coupons-test-1697695220.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -532,7 +620,7 @@ class HomeMockData {
     BrandModel(
       name: 'Outzidr',
       logoUrl: 'assets/cards/outzidr-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/outzider-coupons-1788346621.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat ₹250 Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -541,7 +629,7 @@ class HomeMockData {
     BrandModel(
       name: 'Cahoot',
       logoUrl: 'assets/cards/cahoot-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/cahoot-coupons-1781867640.png',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Fashion',
       offerText: 'Exclusive Rewards & Cashback',
@@ -550,7 +638,7 @@ class HomeMockData {
     BrandModel(
       name: 'The Luxury Closet',
       logoUrl: 'assets/cards/the-luxury-closet-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/the-luxury-closet-coupons-1735641199.jpg',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Fashion',
       offerText: 'Where Luxury Meets Lifestyle Upto AED 1800 Off on Orders Ove',
@@ -563,7 +651,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Amazon.in',
         logoUrl: 'assets/logos/amazon.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_amazon.jpg',
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 80% Off',
@@ -575,7 +663,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Flipkart',
         logoUrl: 'assets/logos/flipkart.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_flipkart.jpg',
         cashbackPercentage: 'Up to 7% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 75% Off',
@@ -587,7 +675,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Myntra',
         logoUrl: 'assets/logos/myntra.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1483985988355-763728e1935b?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_myntra.jpg',
         cashbackPercentage: 'Flat 7.5% Rewards',
         category: 'Fashion',
         offerText: 'Up to 60% Off',
@@ -599,7 +687,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'AJIO',
         logoUrl: 'assets/logos/ajio.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1445205170230-053b83016050?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_ajio.jpg',
         cashbackPercentage: 'Flat 10% Rewards',
         category: 'Fashion',
         offerText: 'Flat 50% Off',
@@ -611,7 +699,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Meesho',
         logoUrl: 'assets/logos/meesho.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_shopsy.jpg',
         cashbackPercentage: 'Up to 15% Rewards',
         category: 'E-Commerce',
         offerText: 'Deals from ₹99',
@@ -623,7 +711,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Tata CLiQ',
         logoUrl: 'assets/logos/tatacliq.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Flat 8% Rewards',
         category: 'Lifestyle',
         offerText: 'Up to 60% Off',
@@ -635,7 +723,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Nykaa',
         logoUrl: 'assets/logos/nykaa.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1596462502278-27bfdc403348?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_nykaa.jpg',
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'Beauty',
         offerText: 'Up to 50% Off',
@@ -647,7 +735,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Croma',
         logoUrl: 'assets/logos/croma.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_derma.jpg',
         cashbackPercentage: 'Flat 6% Rewards',
         category: 'Electronics',
         offerText: 'Up to 45% Off',
@@ -659,7 +747,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Reliance Digital',
         logoUrl: 'assets/logos/reliancedigital.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/banners/reliance_banner_16_9.jpg',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Electronics',
         offerText: 'Up to 40% Off',
@@ -671,7 +759,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Snapdeal',
         logoUrl: 'assets/logos/snapdeal.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Up to 7% Rewards',
         category: 'E-Commerce',
         offerText: 'Up to 65% Off',
@@ -683,7 +771,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Nike',
         logoUrl: 'assets/logos/nike.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/banners/sneaker_banner_16_9.jpg',
         cashbackPercentage: 'Up to 9% Rewards',
         category: 'Fashion',
         offerText: 'Up to 40% Off',
@@ -695,7 +783,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Adidas',
         logoUrl: 'assets/logos/adidas.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1518002171953-a080ee817e1f?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/banners/sneaker_banner_16_9.jpg',
         cashbackPercentage: 'Up to 8% Rewards',
         category: 'Fashion',
         offerText: 'Up to 45% Off',
@@ -707,7 +795,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'H&M',
         logoUrl: 'assets/logos/hm.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_myntra.jpg',
         cashbackPercentage: 'Flat 8% Rewards',
         category: 'Fashion',
         offerText: 'Up to 50% Off',
@@ -719,7 +807,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Zara',
         logoUrl: 'assets/logos/zara.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_zara.jpg',
         cashbackPercentage: 'Up to 6% Rewards',
         category: 'Fashion',
         offerText: 'Up to 30% Off',
@@ -731,7 +819,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Sephora',
         logoUrl: 'assets/logos/sephora.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_myntra.jpg',
         cashbackPercentage: 'Flat 10% Rewards',
         category: 'Beauty',
         offerText: 'Up to 40% Off',
@@ -743,7 +831,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'Etsy',
         logoUrl: 'assets/logos/etsy.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1513519245088-0e12902e5a38?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_derma.jpg',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Up to 30% Off',
@@ -755,7 +843,7 @@ class HomeMockData {
       brand: BrandModel(
         name: 'eBay',
         logoUrl: 'assets/logos/ebay.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1526738549149-8e07eca6c147?w=800&auto=format&fit=crop&q=80',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Up to 4% Rewards',
         category: 'Global',
         offerText: 'Global Deals',
@@ -766,8 +854,8 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Walmart',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/ca/Walmart_logo.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80',
+        logoUrl: 'assets/cards/col_shopsy.jpg',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Rollback Prices',
@@ -778,8 +866,8 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Best Buy',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/f/f5/Best_Buy_Logo.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1550009158-9ebf69173e03?w=800&auto=format&fit=crop&q=80',
+        logoUrl: 'assets/cards/col_electronics.jpg',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Up to 6% Rewards',
         category: 'Global',
         offerText: 'Tech Outlet Sale',
@@ -790,8 +878,8 @@ class HomeMockData {
     TrendingBannerItemData(
       brand: BrandModel(
         name: 'Target',
-        logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/c/c5/Target_Corporation_logo_vector.svg',
-        bannerUrl: 'https://images.unsplash.com/photo-1472851294608-062f824d29cc?w=800&auto=format&fit=crop&q=80',
+        logoUrl: 'assets/cards/col_shopsy.jpg',
+        bannerUrl: 'assets/cards/col_electronics.jpg',
         cashbackPercentage: 'Up to 5% Rewards',
         category: 'Global',
         offerText: 'Target Circle Deals',
@@ -805,7 +893,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon Beauty',
       logoUrl: 'assets/cards/amazon-beauty-offers.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-beauty-offers-1758477322.png',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Beauty',
       offerText: '50-90% Off',
@@ -814,7 +902,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nykaa',
       logoUrl: 'assets/cards/nykaa.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nykaa-1735636843.jpg',
+      bannerUrl: 'assets/cards/col_nykaa.jpg',
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Beauty',
       offerText: 'Upto 50% Off',
@@ -823,7 +911,7 @@ class HomeMockData {
     BrandModel(
       name: 'Foxtale',
       logoUrl: 'assets/cards/foxtale-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/foxtale-coupons-1735635292.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 Get 4 Free',
@@ -832,7 +920,7 @@ class HomeMockData {
     BrandModel(
       name: 'mCaffeine',
       logoUrl: 'assets/cards/mcaffeine-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/mcaffeine-coupons-1735628969.jpg',
+      bannerUrl: 'assets/cards/col_mcaffeine.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 Get 3',
@@ -841,7 +929,7 @@ class HomeMockData {
     BrandModel(
       name: 'The Derma Co',
       logoUrl: 'assets/cards/thedermaco-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/thedermaco-coupons-1735635861.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Upto 35% Off',
@@ -850,7 +938,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ounce Organics',
       logoUrl: 'assets/cards/ounce-organics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ounce-organics-1762249165.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 80% Cashback',
       category: 'Beauty',
       offerText: 'Flat 35% Off',
@@ -859,7 +947,7 @@ class HomeMockData {
     BrandModel(
       name: 'Dot & Key',
       logoUrl: 'assets/cards/dotandkey-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/dotandkey-coupons-1716552540.png',
+      bannerUrl: 'assets/cards/col_dotkey.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Upto 20% Off',
@@ -868,7 +956,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kama Ayurveda',
       logoUrl: 'assets/cards/kama-ayurveda-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kamaayurveda-coupons-1726052887.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Upto 40% Off',
@@ -877,7 +965,7 @@ class HomeMockData {
     BrandModel(
       name: 'Aqualogica',
       logoUrl: 'assets/cards/aqualogica-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/aqualogica-coupons-1690539040.png',
+      bannerUrl: 'assets/cards/col_aqualogica.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ 699',
@@ -886,7 +974,7 @@ class HomeMockData {
     BrandModel(
       name: 'JiViSa',
       logoUrl: 'assets/cards/jivisa-offers.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/jivisa-offers-1758697610.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 65% Cashback',
       category: 'Beauty',
       offerText: 'Flat 50% Off',
@@ -895,7 +983,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hyphen',
       logoUrl: 'assets/cards/hyphen-coupon-codes.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hyphen-coupon-codes-1777980437.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ 799',
@@ -904,7 +992,7 @@ class HomeMockData {
     BrandModel(
       name: 'World of Asaya',
       logoUrl: 'assets/cards/world-of-asaya-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/world-of-asaya-coupons-1782293862.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Beauty',
       offerText: 'Flat 5% Off',
@@ -913,7 +1001,7 @@ class HomeMockData {
     BrandModel(
       name: 'Dr. Sheth\'s',
       logoUrl: 'assets/cards/dr-sheths-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/dr-sheths-coupons-new-1785925052.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Beauty',
       offerText: 'Buy 1 Get 1',
@@ -922,7 +1010,7 @@ class HomeMockData {
     BrandModel(
       name: 'TM Perfumes',
       logoUrl: 'assets/cards/tm-perfumes-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tm-perfumes-coupons-1782732463.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Beauty',
       offerText: 'Upto 10% Off',
@@ -931,7 +1019,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nature 4 Nature',
       logoUrl: 'assets/cards/nature4nature-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nature4nature-coupons-1750679015.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 60% Cashback',
       category: 'Beauty',
       offerText: 'Upto 50% Off',
@@ -940,7 +1028,7 @@ class HomeMockData {
     BrandModel(
       name: 'The Man Company',
       logoUrl: 'assets/cards/themancompany-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/themancompany-coupons-hide-1735630188.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Buy 2 @ Rs.649',
@@ -949,7 +1037,7 @@ class HomeMockData {
     BrandModel(
       name: 'Swiss Beauty',
       logoUrl: 'assets/cards/swiss-beauty-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/swiss-beauty-coupons-1736340607.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Beauty',
       offerText: 'Flat 40% Off',
@@ -958,7 +1046,7 @@ class HomeMockData {
     BrandModel(
       name: 'Forest Essentials India',
       logoUrl: 'assets/cards/forestessentialsindia-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/forestessentialsindia-coupons-1735628573.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Beauty',
       offerText: 'Flat 10% Off',
@@ -967,7 +1055,7 @@ class HomeMockData {
     BrandModel(
       name: 'WoW',
       logoUrl: 'assets/cards/buywow-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/buywow-coupons-1740393789.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 16% Cashback',
       category: 'Beauty',
       offerText: 'Buy 8 @ Rs.1000',
@@ -976,7 +1064,7 @@ class HomeMockData {
     BrandModel(
       name: 'Yaan Man',
       logoUrl: 'assets/cards/yaan-man-mens-makeup.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/yaan-man-mens-makeup-test-1751362519.png',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Beauty',
       offerText: 'Upto 15% Off',
@@ -988,7 +1076,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis Neo Rupay Credit Card',
       logoUrl: 'assets/cards/axis-neo-rupay-credit-card.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/axis-neo-rupay-credit-card-1761629159.jpg',
+      bannerUrl: 'assets/cards/col_derma.jpg',
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -997,7 +1085,7 @@ class HomeMockData {
     BrandModel(
       name: 'HSBC Platinum Credit Card',
       logoUrl: 'assets/cards/hsbc-platinum-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hsbc-platinum-credit-card-1760087739.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1006,7 +1094,7 @@ class HomeMockData {
     BrandModel(
       name: 'Uni GoldX Credit Card',
       logoUrl: 'assets/cards/uni-goldx-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/uni-goldx-credit-card-1778750640.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1015,7 +1103,7 @@ class HomeMockData {
     BrandModel(
       name: 'IDFC First Credit Card',
       logoUrl: 'assets/cards/idfc-first-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/idfc-first-credit-card-1741857744.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹700 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1024,7 +1112,7 @@ class HomeMockData {
     BrandModel(
       name: 'BOBCARD Eterna Credit Card',
       logoUrl: 'assets/cards/bobcard-eterna-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bobcard-eterna-credit-card-1763982656.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹540 Rewards',
       category: 'Banking',
       offerText: 'First Year Free',
@@ -1033,7 +1121,7 @@ class HomeMockData {
     BrandModel(
       name: 'Yes Bank Pop-Club Credit Card',
       logoUrl: 'assets/cards/yes-bank-popclub-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/yes-bank-popclub-credit-card-1771480308.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1042,7 +1130,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kotak League Platinum Credit Card',
       logoUrl: 'assets/cards/kotak-league-platinum-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kotak-league-platinum-credit-card-1774347914.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹800 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1051,7 +1139,7 @@ class HomeMockData {
     BrandModel(
       name: 'Indusind Tiger Credit Card',
       logoUrl: 'assets/cards/indusind-tiger-credit.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/indusind-tiger-credit-card-1740289352.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹500 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1060,7 +1148,7 @@ class HomeMockData {
     BrandModel(
       name: 'SalarySe',
       logoUrl: 'assets/cards/cub-salaryse-level-up-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/salaryse-coupons-test-1783665209.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹900 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1069,7 +1157,7 @@ class HomeMockData {
     BrandModel(
       name: 'RBL Bank Shoprite Credit Card',
       logoUrl: 'assets/cards/rbl-bank-shoprite-credit.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/rbl-bank-shoprite-credit-card-1740289410.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹700 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1081,7 +1169,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon Large Appliances',
       logoUrl: 'assets/cards/amazon-large-appliances.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-large-appliances-1781681968.png',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Electronics',
       offerText: 'Upto 65% Off',
@@ -1090,7 +1178,7 @@ class HomeMockData {
     BrandModel(
       name: 'Flipkart CB Electronics',
       logoUrl: 'assets/cards/flipkart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/flipkart-1768222060.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Up to 1.95% Cashback',
       category: 'Electronics',
       offerText: '50-90% Off',
@@ -1099,7 +1187,7 @@ class HomeMockData {
     BrandModel(
       name: 'JioMart Electronics',
       logoUrl: 'assets/cards/jiomart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/jiomart-electronics-1788342141.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 50% Off',
@@ -1108,7 +1196,7 @@ class HomeMockData {
     BrandModel(
       name: 'realme',
       logoUrl: 'assets/cards/realme-offers.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/realme-offers-1735625309.jpg',
+      bannerUrl: 'assets/banners/phone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Electronics',
       offerText: 'Upto 40% Off',
@@ -1117,7 +1205,7 @@ class HomeMockData {
     BrandModel(
       name: 'OPPO',
       logoUrl: 'assets/cards/oppo-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/oppo-coupons-test-1754396635.png',
+      bannerUrl: 'assets/banners/phone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 40% Off',
@@ -1126,7 +1214,7 @@ class HomeMockData {
     BrandModel(
       name: 'ASUS',
       logoUrl: 'assets/cards/asus-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/asus-coupons-test-1750247458.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Electronics',
       offerText: 'Upto 50% Off',
@@ -1135,7 +1223,7 @@ class HomeMockData {
     BrandModel(
       name: 'Controlz World',
       logoUrl: 'assets/cards/controlz-coupon-codes.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/controlz-coupon-codes-1745231057.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
@@ -1144,7 +1232,7 @@ class HomeMockData {
     BrandModel(
       name: 'Daily Objects',
       logoUrl: 'assets/cards/daily-objects-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/daily-objects-coupons-1781851455.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat ₹410 Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
@@ -1153,7 +1241,7 @@ class HomeMockData {
     BrandModel(
       name: 'Go Noise',
       logoUrl: 'assets/cards/gonoise-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/gonoise-coupons-1735625425.jpg',
+      bannerUrl: 'assets/banners/headphone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Electronics',
       offerText: 'Upto 80% Off',
@@ -1162,7 +1250,7 @@ class HomeMockData {
     BrandModel(
       name: 'Havells',
       logoUrl: 'assets/cards/havells-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/havells-coupons-1580197106.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
@@ -1171,7 +1259,7 @@ class HomeMockData {
     BrandModel(
       name: 'Elver',
       logoUrl: 'assets/cards/elver-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/elver-coupons-1783340331.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Electronics',
       offerText: 'Exclusive Rewards & Cashback',
@@ -1180,7 +1268,7 @@ class HomeMockData {
     BrandModel(
       name: 'Mivi',
       logoUrl: 'assets/cards/mivi-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/mivi-coupons-test-1676437228.png',
+      bannerUrl: 'assets/banners/headphone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Electronics',
       offerText: 'Upto 20% Off',
@@ -1189,7 +1277,7 @@ class HomeMockData {
     BrandModel(
       name: 'Moglix',
       logoUrl: 'assets/cards/moglix-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/moglix-coupons-1765950319.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 4% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
@@ -1198,7 +1286,7 @@ class HomeMockData {
     BrandModel(
       name: 'HP',
       logoUrl: 'assets/cards/hp-coupon-codes.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hp-coupon-codes-1764223620.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Electronics',
       offerText: 'Flat 5% Off',
@@ -1207,7 +1295,7 @@ class HomeMockData {
     BrandModel(
       name: 'boAt',
       logoUrl: 'assets/cards/boat-coupon.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/boat-coupon-1735627937.jpg',
+      bannerUrl: 'assets/banners/headphone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Electronics',
       offerText: 'Upto 80% Off',
@@ -1216,7 +1304,7 @@ class HomeMockData {
     BrandModel(
       name: 'Whirlpool',
       logoUrl: 'assets/cards/whirlpool-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/whirlpool-coupons-1781766610.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 0.85% Cashback',
       category: 'Electronics',
       offerText: 'Flat 5% Off',
@@ -1225,7 +1313,7 @@ class HomeMockData {
     BrandModel(
       name: 'Dell',
       logoUrl: 'assets/cards/dell.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/dell-1735623662.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Electronics',
       offerText: '5% Off Code',
@@ -1234,7 +1322,7 @@ class HomeMockData {
     BrandModel(
       name: 'Lifelong',
       logoUrl: 'assets/cards/lifelong-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/lifelong-coupons1-1787657266.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Electronics',
       offerText: 'Exclusive Rewards & Cashback',
@@ -1243,7 +1331,7 @@ class HomeMockData {
     BrandModel(
       name: 'Element 14',
       logoUrl: 'assets/cards/element14-coupons-cb.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/element14-coupons-1735625396.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Electronics',
       offerText: 'Upto 10% Off',
@@ -1255,7 +1343,7 @@ class HomeMockData {
     BrandModel(
       name: 'SBI Cashback Credit Card',
       logoUrl: 'assets/cards/sbi-cashback-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-cashback-card-1759465154.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat ₹1400 Rewards',
       category: 'Banking',
       offerText: 'Best Cashback Card',
@@ -1264,7 +1352,7 @@ class HomeMockData {
     BrandModel(
       name: 'Scapia Co-Branded Credit Card',
       logoUrl: 'assets/cards/federal-bank-scapia-credit-card-offer.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/federal-bank-scapia-credit-card-offer-1770186828.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹650 Rewards',
       category: 'Banking',
       offerText: 'Best Travel Card',
@@ -1273,7 +1361,7 @@ class HomeMockData {
     BrandModel(
       name: 'SBI Flipkart Credit Card',
       logoUrl: 'assets/cards/flipkart-sbi-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-flipkart-credit-card-1767875438.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
@@ -1282,7 +1370,7 @@ class HomeMockData {
     BrandModel(
       name: 'UPI Credit Card on KIWI',
       logoUrl: 'assets/cards/kiwi-credit-card-offers.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kiwi-credit-card-offers-1759329211.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Save on UPI',
@@ -1291,7 +1379,7 @@ class HomeMockData {
     BrandModel(
       name: 'SBI Simply Click Credit Card',
       logoUrl: 'assets/cards/simply-click-sbi-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/simply-click-sbi-card-1740289499.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Amazon Sale Saver',
@@ -1300,7 +1388,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis Flipkart Credit Card',
       logoUrl: 'assets/cards/bank-karo-axis-flipkart.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bank-karo-axis-flipkart-1759675165.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
@@ -1309,7 +1397,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tata Neu Infinity SBI Credit Card',
       logoUrl: 'assets/cards/tata-neu-infinity-sbi-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tata-neu-infinity-sbi-credit-card-1773726015.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
@@ -1318,7 +1406,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tata Neu Plus SBI Credit Card',
       logoUrl: 'assets/cards/tata-neu-plus-sbi-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tata-neu-plus-sbi-credit-card-1773726607.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
@@ -1327,7 +1415,7 @@ class HomeMockData {
     BrandModel(
       name: 'HSBC Live Plus Credit Card',
       logoUrl: 'assets/cards/hsbc-live-plus-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hsbc-live-plus-credit-card-1740289013.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Best for Grocery',
@@ -1336,7 +1424,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis MyZone Rupay Credit Card',
       logoUrl: 'assets/cards/bank-karo-axis-my-zone.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bank-karo-axis-my-zone-1740288393.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1120 Rewards',
       category: 'Banking',
       offerText: 'Exclusive Rewards & Cashback',
@@ -1348,7 +1436,7 @@ class HomeMockData {
     BrandModel(
       name: 'Truemeds',
       logoUrl: 'assets/cards/truemeds-coupon-code.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/truemeds-coupon-code-1735633410.jpg',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹375 Cashback',
       category: 'Medicine',
       offerText: 'Flat 25% Off',
@@ -1357,7 +1445,7 @@ class HomeMockData {
     BrandModel(
       name: 'Netmeds',
       logoUrl: 'assets/cards/netmeds-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/netmeds-coupons-1735633034.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Medicine',
       offerText: 'Flat 18% Off',
@@ -1366,7 +1454,7 @@ class HomeMockData {
     BrandModel(
       name: 'HK Vitals',
       logoUrl: 'assets/cards/hk-vitals-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hk-vitals-coupons-1735637609.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Medicine',
       offerText: 'Flat 10% Off',
@@ -1375,7 +1463,7 @@ class HomeMockData {
     BrandModel(
       name: 'Medibuddy Labs',
       logoUrl: 'assets/cards/medibuddy-labs-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/medibuddy-labs-coupons-1735636446.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Medicine',
       offerText: '15% Off Code',
@@ -1384,7 +1472,7 @@ class HomeMockData {
     BrandModel(
       name: 'PharmEasy Diagnostics',
       logoUrl: 'assets/cards/pharmeasy-diagnostics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/pharmeasy-diagnostics-1777374838.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 17% Cashback',
       category: 'Medicine',
       offerText: 'B1G1',
@@ -1396,7 +1484,7 @@ class HomeMockData {
     BrandModel(
       name: 'SBI Cashback Credit Card',
       logoUrl: 'assets/cards/sbi-cashback-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-cashback-card-1759465154.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Flat ₹1400 Rewards',
       category: 'Banking',
       offerText: 'Best Cashback Card',
@@ -1405,7 +1493,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis Neo Rupay Credit Card',
       logoUrl: 'assets/cards/axis-neo-rupay-credit-card.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/axis-neo-rupay-credit-card-1761629159.jpg',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹960 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1414,7 +1502,7 @@ class HomeMockData {
     BrandModel(
       name: 'HSBC Platinum Credit Card',
       logoUrl: 'assets/cards/hsbc-platinum-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hsbc-platinum-credit-card-1760087739.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹2000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1423,7 +1511,7 @@ class HomeMockData {
     BrandModel(
       name: 'Uni GoldX Credit Card',
       logoUrl: 'assets/cards/uni-goldx-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/uni-goldx-credit-card-1778750640.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹1000 Rewards',
       category: 'Banking',
       offerText: 'Lifetime Free',
@@ -1432,7 +1520,7 @@ class HomeMockData {
     BrandModel(
       name: 'Scapia Co-Branded Credit Card',
       logoUrl: 'assets/cards/federal-bank-scapia-credit-card-offer.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/federal-bank-scapia-credit-card-offer-1770186828.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹650 Rewards',
       category: 'Banking',
       offerText: 'Best Travel Card',
@@ -1441,7 +1529,7 @@ class HomeMockData {
     BrandModel(
       name: 'SBI Flipkart Credit Card',
       logoUrl: 'assets/cards/flipkart-sbi-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/sbi-flipkart-credit-card-1767875438.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Flat ₹1200 Rewards',
       category: 'Banking',
       offerText: 'Best for Flipkart',
@@ -1450,7 +1538,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ram Fincorp Personal Loan',
       logoUrl: 'assets/cards/ram-fincorp-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ram-fincorp-personal-loan-1784805975.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -1459,7 +1547,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Bank Personal Loan',
       logoUrl: 'assets/cards/hdfcbank-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfcbank-personal-loan-1743417204.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -1468,7 +1556,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Instant Loan',
       logoUrl: 'assets/cards/hdfc-loan-on-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfc-loan-on-credit-card-1740288820.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
@@ -1477,7 +1565,7 @@ class HomeMockData {
     BrandModel(
       name: 'Money View Personal Loan',
       logoUrl: 'assets/cards/money-view-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/money-view-personal-loan-test-1764655200.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
@@ -1486,7 +1574,7 @@ class HomeMockData {
     BrandModel(
       name: 'ZapCash Personal Loan',
       logoUrl: 'assets/cards/zapcash-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zapcash-pesonal-loan-coupons-1784802285.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -1495,7 +1583,7 @@ class HomeMockData {
     BrandModel(
       name: 'Fibe Personal Loan',
       logoUrl: 'assets/cards/fibe-personal-loan-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/fibe-personal-loan-coupons-1777881269.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
@@ -1507,7 +1595,7 @@ class HomeMockData {
     BrandModel(
       name: 'IHG',
       logoUrl: 'assets/cards/ihg-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ihg-coupons-1735634458.jpg',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 7.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1516,7 +1604,7 @@ class HomeMockData {
     BrandModel(
       name: 'Etihad Airways',
       logoUrl: 'assets/cards/etihad-airways-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/etihad-airways-coupons-1781865637.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 1.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 20% Off',
@@ -1525,7 +1613,7 @@ class HomeMockData {
     BrandModel(
       name: 'Qatar Airways',
       logoUrl: 'assets/cards/qatar-airways-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/qatar-airways-coupons-1777463107.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 1% Cashback',
       category: 'Travel',
       offerText: 'Upto 14% Off',
@@ -1534,7 +1622,7 @@ class HomeMockData {
     BrandModel(
       name: 'Air India',
       logoUrl: 'assets/cards/air-india-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/air-india-coupons-1780573968.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 0.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1543,7 +1631,7 @@ class HomeMockData {
     BrandModel(
       name: 'Skyscanner',
       logoUrl: 'assets/cards/skyscanner-hotels-promo-code.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/skyscanner-coupons-1778240653.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 35% Off',
@@ -1552,7 +1640,7 @@ class HomeMockData {
     BrandModel(
       name: 'Booking.com',
       logoUrl: 'assets/cards/booking.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/booking-1735641926.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 15% Off',
@@ -1561,7 +1649,7 @@ class HomeMockData {
     BrandModel(
       name: 'Cleartrip Flights',
       logoUrl: 'assets/cards/cleartrip.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/cleartrip-1773982548.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹45 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1570,7 +1658,7 @@ class HomeMockData {
     BrandModel(
       name: 'Air India Express',
       logoUrl: 'assets/cards/air-india-express-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/air-india-express-coupons-1765869350.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹100 Cashback',
       category: 'Travel',
       offerText: 'Upto 20% Off',
@@ -1579,7 +1667,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hotels.com Partnerize',
       logoUrl: 'assets/cards/hotels-com.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hotels-com-1738236496.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 50% Off',
@@ -1588,7 +1676,7 @@ class HomeMockData {
     BrandModel(
       name: 'Goibibo Hotels',
       logoUrl: 'assets/cards/goibibo-hotels.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/goibibo-hotels-1759903406.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹150 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1597,7 +1685,7 @@ class HomeMockData {
     BrandModel(
       name: 'MakeMyTrip Hotels',
       logoUrl: 'assets/cards/makemytrip-hotels.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/makemytrip-hotels-1743598908.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹140 Cashback',
       category: 'Travel',
       offerText: 'Upto 50% Off',
@@ -1606,7 +1694,7 @@ class HomeMockData {
     BrandModel(
       name: 'Cleartrip Hotels',
       logoUrl: 'assets/cards/cleartrip-hotel-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/cleartrip-hotel-coupons-1743593095.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹180 Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1615,7 +1703,7 @@ class HomeMockData {
     BrandModel(
       name: 'Agoda',
       logoUrl: 'assets/cards/agoda.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/agoda-1784609454.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Travel',
       offerText: 'Upto 75% Off',
@@ -1624,7 +1712,7 @@ class HomeMockData {
     BrandModel(
       name: 'Expedia Partnerize',
       logoUrl: 'assets/cards/expedia-flightbookings.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/expedia-flightbookings-1735639557.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Travel',
       offerText: 'Upto 25% Off',
@@ -1633,7 +1721,7 @@ class HomeMockData {
     BrandModel(
       name: 'Accor Hotels',
       logoUrl: 'assets/cards/accor-coupons-cb.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/accor-coupons-1735633749.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 10% Off',
@@ -1642,7 +1730,7 @@ class HomeMockData {
     BrandModel(
       name: 'GetYourGuide',
       logoUrl: 'assets/cards/getyourguide-coupons-cb.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/getyourguide-coupons-test-1740472860.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3.50% Cashback',
       category: 'Travel',
       offerText: 'Upto 40% Off',
@@ -1651,7 +1739,7 @@ class HomeMockData {
     BrandModel(
       name: 'University Living',
       logoUrl: 'assets/cards/university-living-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/university-living-coupons-1735639372.jpg',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Flat ₹1500 Cashback',
       category: 'Travel',
       offerText: 'Upto 30% Off',
@@ -1660,7 +1748,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kayak Hotels',
       logoUrl: 'assets/cards/kayak-hotels-coupons-cb.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kayak-hotels-coupons-1743598854.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Travel',
       offerText: 'Upto 15% Off',
@@ -1669,7 +1757,7 @@ class HomeMockData {
     BrandModel(
       name: 'Radisson Hotels',
       logoUrl: 'assets/cards/radisson-hotel-benefits.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/radisson-blu-coupons-test-1749532752.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Travel',
       offerText: 'Upto 35% Off',
@@ -1678,7 +1766,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kayak Flights',
       logoUrl: 'assets/cards/kayak-flights-coupons-cb.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kayak-flights-coupons-1743598836.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 0.80% Cashback',
       category: 'Travel',
       offerText: 'Upto 17% Off',
@@ -1690,7 +1778,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ram Fincorp Personal Loan',
       logoUrl: 'assets/cards/ram-fincorp-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ram-fincorp-personal-loan-1784805975.png',
+      bannerUrl: 'assets/cards/col_travel.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -1699,7 +1787,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Bank Personal Loan',
       logoUrl: 'assets/cards/hdfcbank-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfcbank-personal-loan-1743417204.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -1708,7 +1796,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Instant Loan',
       logoUrl: 'assets/cards/hdfc-loan-on-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfc-loan-on-credit-card-1740288820.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
@@ -1717,7 +1805,7 @@ class HomeMockData {
     BrandModel(
       name: 'Money View Personal Loan',
       logoUrl: 'assets/cards/money-view-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/money-view-personal-loan-test-1764655200.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
@@ -1726,7 +1814,7 @@ class HomeMockData {
     BrandModel(
       name: 'ZapCash Personal Loan',
       logoUrl: 'assets/cards/zapcash-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zapcash-pesonal-loan-coupons-1784802285.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -1735,7 +1823,7 @@ class HomeMockData {
     BrandModel(
       name: 'Fibe Personal Loan',
       logoUrl: 'assets/cards/fibe-personal-loan-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/fibe-personal-loan-coupons-1777881269.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
@@ -1744,7 +1832,7 @@ class HomeMockData {
     BrandModel(
       name: 'Poonawalla Fincorp Personal Loan',
       logoUrl: 'assets/cards/poonawala-instant-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/poonawala-instant-loan-1743414880.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
@@ -1753,7 +1841,7 @@ class HomeMockData {
     BrandModel(
       name: 'Prefr Personal Loan',
       logoUrl: 'assets/cards/prefr-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/prefr-coupons-1744201380.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
@@ -1762,7 +1850,7 @@ class HomeMockData {
     BrandModel(
       name: 'Olyv Personal Loan',
       logoUrl: 'assets/cards/smartcoin-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/smartcoin-coupons-1736927951.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Instant Loan',
@@ -1771,7 +1859,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis Bank Personal Loan',
       logoUrl: 'assets/cards/axisbank-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/axisbank-personal-loan-1743421167.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.60% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -1780,7 +1868,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tata Capital Personal Loan',
       logoUrl: 'assets/cards/tataneu-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tataneu-personal-loan-1743487475.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
@@ -1789,7 +1877,7 @@ class HomeMockData {
     BrandModel(
       name: 'Bajaj Finserv Personal Loan',
       logoUrl: 'assets/cards/bajajfinserv-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bajajfinserv-personal-loan-1745561267.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.80% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
@@ -1798,7 +1886,7 @@ class HomeMockData {
     BrandModel(
       name: 'FIRSTmoney by IDFC FIRST Bank Personal Loan',
       logoUrl: 'assets/cards/idfc-firstmoney-smart-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/idfc-firstmoney-smart-personal-loan-1725020673.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.25% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -1807,7 +1895,7 @@ class HomeMockData {
     BrandModel(
       name: 'Mpokket  Personal Loan',
       logoUrl: 'assets/cards/mpokket-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/mpokket-coupons-1742539340.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹40 Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -1816,7 +1904,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Smart EMI',
       logoUrl: 'assets/cards/hdfc-smart-emi.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfc-smart-emi-1740288959.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -1825,7 +1913,7 @@ class HomeMockData {
     BrandModel(
       name: 'Zype Personal Loan',
       logoUrl: 'assets/cards/zype-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zype-test-1742284322.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -1834,7 +1922,7 @@ class HomeMockData {
     BrandModel(
       name: 'CreditSea Personal Loan',
       logoUrl: 'assets/cards/creditsea-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/creditsea-personal-loan-1786099528.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -1843,7 +1931,7 @@ class HomeMockData {
     BrandModel(
       name: 'BankKaro Personal Loan',
       logoUrl: 'assets/cards/bankkaro-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bankkaro-loan-1747222603.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Get Instant Loan Every Your Needs ☛Get Instant Loans from ₹1',
@@ -1855,7 +1943,7 @@ class HomeMockData {
     BrandModel(
       name: 'Michael Kors',
       logoUrl: 'assets/logos/michaelkors.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1548036328-c9fa89d128fa?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 50% Off Designer Handbags',
@@ -1864,7 +1952,7 @@ class HomeMockData {
     BrandModel(
       name: 'Coach',
       logoUrl: 'assets/logos/coach.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1584917865442-de89df76afd3?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 45% Off Leather Bags',
@@ -1873,7 +1961,7 @@ class HomeMockData {
     BrandModel(
       name: 'Calvin Klein',
       logoUrl: 'assets/logos/calvinklein.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1509631179647-0177331693ae?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 7.5% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 40% Off Designer Wear',
@@ -1882,7 +1970,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tommy Hilfiger',
       logoUrl: 'assets/logos/tommyhilfiger.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1490481651871-ab68de25d43d?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 50% Off Classic Styles',
@@ -1891,7 +1979,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ralph Lauren',
       logoUrl: 'assets/logos/ralphlauren.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1507679799987-c73779587ccf?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 6% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Polo Luxury Essentials',
@@ -1900,7 +1988,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hugo Boss',
       logoUrl: 'assets/logos/hugoboss.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1594938298603-c8148c4dae35?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 7% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Up to 35% Off Tailored Suits',
@@ -1909,7 +1997,7 @@ class HomeMockData {
     BrandModel(
       name: 'Armani',
       logoUrl: 'assets/logos/armani.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 6.5% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Emporio Armani Couture',
@@ -1918,7 +2006,7 @@ class HomeMockData {
     BrandModel(
       name: 'Versace',
       logoUrl: 'assets/logos/versace.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Fashion',
       offerText: 'Designer Perfumes & Accs',
@@ -1927,7 +2015,7 @@ class HomeMockData {
     BrandModel(
       name: 'Swarovski',
       logoUrl: 'assets/logos/swarovski.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Luxury Accessories',
       offerText: 'Crystal Jewelry & Watches',
@@ -1936,7 +2024,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ray-Ban',
       logoUrl: 'assets/logos/rayban.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1511499767150-a48a237f0083?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Luxury Eyewear',
       offerText: 'Aviator & Wayfarer Deals',
@@ -1945,7 +2033,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ted Baker',
       logoUrl: 'assets/logos/tedbaker.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1496747611176-843222e1e57c?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Luxury Fashion',
       offerText: 'British Designer Elegance',
@@ -1954,7 +2042,7 @@ class HomeMockData {
     BrandModel(
       name: 'Steve Madden',
       logoUrl: 'assets/logos/stevemadden.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1543163521-1bf539c55dd2?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_myntra.jpg',
       cashbackPercentage: 'Flat 7% Cashback',
       category: 'Luxury Footwear',
       offerText: 'Up to 40% Off Designer Shoes',
@@ -1966,7 +2054,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Samsung',
       productName: 'Samsung Galaxy S24 Ultra 5G (256GB)',
-      imageUrl: 'https://images.unsplash.com/photo-1610945265064-0e34e5519bbf?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/phone_banner_16_9.jpg',
       actualPrice: 129999,
       rewardPercentage: 5.0,
       productUrl: 'https://www.amazon.in',
@@ -1974,7 +2062,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Apple',
       productName: 'Apple MacBook Air M3 (15-inch, 16GB)',
-      imageUrl: 'https://images.unsplash.com/photo-1517336714731-489689fd1ca8?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       actualPrice: 134900,
       rewardPercentage: 4.0,
       productUrl: 'https://www.amazon.in',
@@ -1982,7 +2070,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Sony',
       productName: 'Sony WH-1000XM5 Wireless Headphones',
-      imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/headphone_banner_16_9.jpg',
       actualPrice: 29990,
       rewardPercentage: 6.0,
       productUrl: 'https://www.amazon.in',
@@ -1990,7 +2078,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Nike',
       productName: "Nike Air Force 1 '07 Sneakers",
-      imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/sneaker_banner_16_9.jpg',
       actualPrice: 8695,
       rewardPercentage: 8.0,
       productUrl: 'https://www.amazon.in',
@@ -1998,7 +2086,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Logitech',
       productName: 'Logitech MX Master 3S Mouse',
-      imageUrl: 'https://images.unsplash.com/photo-1615663245857-ac93bb7c39e7?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       actualPrice: 10995,
       rewardPercentage: 5.0,
       productUrl: 'https://www.amazon.in',
@@ -2006,7 +2094,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Bose',
       productName: 'Bose QuietComfort Ultra Earbuds',
-      imageUrl: 'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/headphone_banner_16_9.jpg',
       actualPrice: 25900,
       rewardPercentage: 7.0,
       productUrl: 'https://www.amazon.in',
@@ -2014,7 +2102,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Dyson',
       productName: 'Dyson V15 Detect Vacuum Cleaner',
-      imageUrl: 'https://images.unsplash.com/photo-1558317374-067fb5f30001?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/dyson-discount-codes.jpg',
       actualPrice: 65900,
       rewardPercentage: 5.0,
       productUrl: 'https://www.amazon.in',
@@ -2022,7 +2110,7 @@ class HomeMockData {
     AmazonDealItemData(
       brandName: 'Asus',
       productName: 'Asus ROG Zephyrus G16 Gaming Laptop',
-      imageUrl: 'https://images.unsplash.com/photo-1603302576837-37561b2e2302?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       actualPrice: 189990,
       rewardPercentage: 5.0,
       productUrl: 'https://www.amazon.in',
@@ -2036,8 +2124,7 @@ class HomeMockData {
       description: '8GB RAM, 128GB Storage, Flagship Camera',
       priceOrRate: '₹33,999',
       cashbackTag: 'FLAT 10% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1592750475338-74b7b21085ab?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/phone_banner_16_9.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2046,8 +2133,7 @@ class HomeMockData {
       description: 'Dynamic Island, 48MP Main Camera, A16 Bionic',
       priceOrRate: '₹65,999',
       cashbackTag: 'FLAT 6% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1510557880182-3d4d3cba35a5?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/phone_banner_16_9.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2056,8 +2142,7 @@ class HomeMockData {
       description: 'Active Noise Cancellation, 42H Battery Playtime',
       priceOrRate: '₹1,299',
       cashbackTag: 'FLAT 18% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1590658268037-6bf12165a8df?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/headphone_banner_16_9.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2066,8 +2151,7 @@ class HomeMockData {
       description: 'Intel Core i5 11th Gen, 16GB RAM, RTX 3050',
       priceOrRate: '₹52,990',
       cashbackTag: 'FLAT 8% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1588872657578-7efd1f1555ed?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2076,8 +2160,7 @@ class HomeMockData {
       description: '1.85" AMOLED Display, Bluetooth Calling, 7-Day Battery',
       priceOrRate: '₹2,499',
       cashbackTag: 'FLAT 20% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1523275335684-37898b6baf30?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/watch_banner_16_9.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2086,8 +2169,7 @@ class HomeMockData {
       description: '43 Inch Google TV with Dolby Atmos & HDR10',
       priceOrRate: '₹42,990',
       cashbackTag: 'FLAT 7% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1593359677879-a4bb92f829d1?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2096,8 +2178,7 @@ class HomeMockData {
       description: 'High-Performance Lightweight Breathable Running Shoes',
       priceOrRate: '₹3,499',
       cashbackTag: 'FLAT 15% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1542291026-7eec264c27ff?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/sneaker_banner_16_9.jpg',
       storeName: 'Flipkart',
     ),
     OfferSectionItem(
@@ -2106,8 +2187,7 @@ class HomeMockData {
       description: 'Powerful Suction, HEPA Filtration Deep Clean',
       priceOrRate: '₹29,900',
       cashbackTag: 'FLAT 9% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1558089687-f282ffcbc126?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/dyson-discount-codes.jpg',
       storeName: 'Flipkart',
     ),
   ];
@@ -2119,8 +2199,7 @@ class HomeMockData {
       description: 'Traditional Embroidered Zari Border Saree',
       priceOrRate: '₹699',
       cashbackTag: 'UP TO 25% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1610030469983-98e550d6193c?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_myntra.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2129,8 +2208,7 @@ class HomeMockData {
       description: '100% Pure Breathable Cotton Regular Fit',
       priceOrRate: '₹399',
       cashbackTag: 'UP TO 30% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1596755094514-f87e34085b2c?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_myntra.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2139,8 +2217,7 @@ class HomeMockData {
       description: 'Long Lasting 16H Waterproof Smudge-Proof',
       priceOrRate: '₹249',
       cashbackTag: 'UP TO 20% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1586495777744-4413f21062fa?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_nykaa.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2149,8 +2226,7 @@ class HomeMockData {
       description: 'Ultra Lightweight Anti-Slip Athletic Sneakers',
       priceOrRate: '₹499',
       cashbackTag: 'UP TO 22% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1560769629-975ec94e6a86?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/sneaker_banner_16_9.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2159,8 +2235,7 @@ class HomeMockData {
       description: '12 Pcs BPA-Free Modular Kitchen Jar Organizer',
       priceOrRate: '₹349',
       cashbackTag: 'UP TO 25% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1584992236310-6edddc08acff?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_shopsy.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2169,8 +2244,7 @@ class HomeMockData {
       description: 'Rayon Gold Foil Printed Festive Party Wear',
       priceOrRate: '₹549',
       cashbackTag: 'UP TO 28% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_myntra.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2179,8 +2253,7 @@ class HomeMockData {
       description: 'Stainless Steel Double Wall Hot & Cold Flask',
       priceOrRate: '₹299',
       cashbackTag: 'UP TO 15% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1602143407151-7111542de6e8?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_shopsy.jpg',
       storeName: 'Meesho',
     ),
     OfferSectionItem(
@@ -2189,8 +2262,7 @@ class HomeMockData {
       description: '30 Hours Playtime Deep Bass Bluetooth v5.3',
       priceOrRate: '₹399',
       cashbackTag: 'UP TO 30% CASHBACK',
-      imageUrl:
-          'https://images.unsplash.com/photo-1546435770-a3e426bf472b?w=800&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/headphone_banner_16_9.jpg',
       storeName: 'Meesho',
     ),
   ];
@@ -2201,9 +2273,8 @@ class HomeMockData {
       title: 'Instant Personal Loan',
       description: 'Quick Approval in 10 Mins',
       priceOrRate: '10.49% p.a.',
-      cashbackTag: 'FLAT \$50 REWARD',
-      imageUrl:
-          'https://cdn.dummyjson.com/products/images/groceries/Apple/1.png',
+      cashbackTag: 'FLAT ₹1500 REWARD',
+      imageUrl: 'assets/cards/col_cards.jpg',
       storeName: 'Loans',
     ),
     OfferSectionItem(
@@ -2211,9 +2282,8 @@ class HomeMockData {
       title: 'Pre-Approved Home Loan',
       description: 'Lowest Interest Rates & 0 Processing Fee',
       priceOrRate: '8.40% p.a.',
-      cashbackTag: 'FLAT \$100 REWARD',
-      imageUrl:
-          'https://cdn.dummyjson.com/products/images/groceries/Honey%20Jar/1.png',
+      cashbackTag: 'FLAT ₹2000 REWARD',
+      imageUrl: 'assets/cards/col_cards.jpg',
       storeName: 'Loans',
     ),
     OfferSectionItem(
@@ -2221,9 +2291,8 @@ class HomeMockData {
       title: 'Business Expansion Loan',
       description: 'Unsecured Collateral-Free Business Loan',
       priceOrRate: '11.99% p.a.',
-      cashbackTag: 'FLAT \$75 REWARD',
-      imageUrl:
-          'https://cdn.dummyjson.com/products/images/groceries/Kiwi/1.png',
+      cashbackTag: 'FLAT ₹2500 REWARD',
+      imageUrl: 'assets/cards/col_cards.jpg',
       storeName: 'Loans',
     ),
     OfferSectionItem(
@@ -2231,9 +2300,8 @@ class HomeMockData {
       title: 'Instant Credit Card Loan',
       description: 'Zero Interest for 45 Days',
       priceOrRate: '0% Interest',
-      cashbackTag: 'FLAT \$30 REWARD',
-      imageUrl:
-          'https://cdn.dummyjson.com/products/images/groceries/Lemon/1.png',
+      cashbackTag: 'FLAT ₹1000 REWARD',
+      imageUrl: 'assets/cards/col_cards.jpg',
       storeName: 'Loans',
     ),
     OfferSectionItem(
@@ -2241,14 +2309,11 @@ class HomeMockData {
       title: 'Higher Education Loan',
       description: 'Coverage for Tuition & Living Expenses',
       priceOrRate: '9.50% p.a.',
-      cashbackTag: 'FLAT \$60 REWARD',
-      imageUrl:
-          'https://cdn.dummyjson.com/products/images/groceries/Milk/1.png',
+      cashbackTag: 'FLAT ₹1800 REWARD',
+      imageUrl: 'assets/cards/col_cards.jpg',
       storeName: 'Loans',
     ),
   ];
-
-  // =========================================================================
   // CATEGORY-SPECIFIC BRAND CATALOGS
   // =========================================================================
 
@@ -2256,7 +2321,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon India',
       logoUrl: 'assets/cards/amazon.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-1735629515.jpg',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Mobiles',
       offerText: 'Upto 80% Off',
@@ -2265,7 +2330,7 @@ class HomeMockData {
     BrandModel(
       name: 'realme',
       logoUrl: 'assets/cards/realme-offers.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/realme-offers-1735625309.jpg',
+      bannerUrl: 'assets/banners/phone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 40% Off',
@@ -2274,7 +2339,7 @@ class HomeMockData {
     BrandModel(
       name: 'OPPO',
       logoUrl: 'assets/cards/oppo-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/oppo-coupons-test-1754396635.png',
+      bannerUrl: 'assets/banners/phone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 40% Off',
@@ -2283,7 +2348,7 @@ class HomeMockData {
     BrandModel(
       name: 'Go Noise',
       logoUrl: 'assets/cards/gonoise-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/gonoise-coupons-1735625425.jpg',
+      bannerUrl: 'assets/banners/headphone_banner_16_9.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Mobiles',
       offerText: 'Upto 80% Off',
@@ -2295,7 +2360,7 @@ class HomeMockData {
     BrandModel(
       name: 'Truemeds',
       logoUrl: 'assets/cards/truemeds-coupon-code.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/truemeds-coupon-code-1735633410.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat ₹375 Cashback',
       category: 'Medicine',
       offerText: 'Flat 25% Off',
@@ -2304,7 +2369,7 @@ class HomeMockData {
     BrandModel(
       name: 'Netmeds',
       logoUrl: 'assets/cards/netmeds-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/netmeds-coupons-1735633034.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Medicine',
       offerText: 'Flat 18% Off',
@@ -2313,7 +2378,7 @@ class HomeMockData {
     BrandModel(
       name: 'HK Vitals',
       logoUrl: 'assets/cards/hk-vitals-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hk-vitals-coupons-1735637609.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Medicine',
       offerText: 'Flat 10% Off',
@@ -2322,7 +2387,7 @@ class HomeMockData {
     BrandModel(
       name: 'Medibuddy Labs',
       logoUrl: 'assets/cards/medibuddy-labs-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/medibuddy-labs-coupons-1735636446.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Medicine',
       offerText: '15% Off Code',
@@ -2331,7 +2396,7 @@ class HomeMockData {
     BrandModel(
       name: 'PharmEasy Diagnostics',
       logoUrl: 'assets/cards/pharmeasy-diagnostics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/pharmeasy-diagnostics-1777374838.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 17% Cashback',
       category: 'Medicine',
       offerText: 'B1G1',
@@ -2343,7 +2408,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon India Health & Personal Care',
       logoUrl: 'assets/cards/amazon-health-personal-care.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-health-personal-care-1782906986.png',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 3% Rewards',
       category: 'Health Wellness',
       offerText: 'Upto 20% Off',
@@ -2352,7 +2417,7 @@ class HomeMockData {
     BrandModel(
       name: 'Hyugalife',
       logoUrl: 'assets/cards/hyugalife-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hyugalife-coupons-1735639138.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 9% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 60% Off',
@@ -2361,7 +2426,7 @@ class HomeMockData {
     BrandModel(
       name: 'AGEasy',
       logoUrl: 'assets/cards/ageasy-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ageasy-coupons-1772534200.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 28% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 15% Off',
@@ -2370,7 +2435,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nutriburst',
       logoUrl: 'assets/cards/nutriburst-india-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nutriburst-india-coupons-test-1750417964.png',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 45% Cashback',
       category: 'Health Wellness',
       offerText: 'B2G2',
@@ -2379,7 +2444,7 @@ class HomeMockData {
     BrandModel(
       name: 'MuscleBlaze',
       logoUrl: 'assets/cards/muscleblaze-coupon-codes.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/muscleblaze-coupon-codes-1735638355.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 35% Off',
@@ -2388,7 +2453,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nveda',
       logoUrl: 'assets/cards/nveda-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nveda-coupons-1782454098.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 5% Off',
@@ -2397,7 +2462,7 @@ class HomeMockData {
     BrandModel(
       name: 'NeuroGum',
       logoUrl: 'assets/cards/neurogum-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/neurogum-coupons-test-1730197761.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 70% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 10% Off',
@@ -2406,7 +2471,7 @@ class HomeMockData {
     BrandModel(
       name: 'Rasayanam',
       logoUrl: 'assets/cards/rasayanam-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/rasayanam-coupons-1785739376.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Health Wellness',
       offerText: 'Exclusive Rewards & Cashback',
@@ -2415,7 +2480,7 @@ class HomeMockData {
     BrandModel(
       name: 'Oziva',
       logoUrl: 'assets/cards/oziva-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/oziva-coupons-1784792998.png',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Health Wellness',
       offerText: 'Exclusive Rewards & Cashback',
@@ -2424,7 +2489,7 @@ class HomeMockData {
     BrandModel(
       name: 'HK Vitals',
       logoUrl: 'assets/cards/hk-vitals-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hk-vitals-coupons-1735637609.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 10% Off',
@@ -2433,7 +2498,7 @@ class HomeMockData {
     BrandModel(
       name: 'Zandu Care',
       logoUrl: 'assets/cards/zanducare-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zanducare-coupons-1735638623.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 50% Off',
@@ -2442,7 +2507,7 @@ class HomeMockData {
     BrandModel(
       name: 'HealthKart',
       logoUrl: 'assets/cards/healthkart.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/healthkart-1735638256.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
@@ -2451,7 +2516,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nua',
       logoUrl: 'assets/cards/nua-coupon.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nua-coupon-1761802164.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 45% Off',
@@ -2460,7 +2525,7 @@ class HomeMockData {
     BrandModel(
       name: 'Sirona',
       logoUrl: 'assets/cards/sirona-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/thesirona-coupons-1780659344.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 22% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
@@ -2469,7 +2534,7 @@ class HomeMockData {
     BrandModel(
       name: 'MuscleTech',
       logoUrl: 'assets/cards/muscletech-coupon.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/muscletech-coupon-1735638548.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 50% Off',
@@ -2478,7 +2543,7 @@ class HomeMockData {
     BrandModel(
       name: 'Durex',
       logoUrl: 'assets/cards/durex-india-offers.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/durex-india-offers-1778846864.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 18% Cashback',
       category: 'Health Wellness',
       offerText: 'Enhance Intimacy with Durex\'s Range of Products! Upto 50% Of',
@@ -2487,7 +2552,7 @@ class HomeMockData {
     BrandModel(
       name: 'TrueBasics',
       logoUrl: 'assets/cards/truebasics-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/truebasics-coupons-1735638385.jpg',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 40% Off',
@@ -2496,7 +2561,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kerala Ayurveda',
       logoUrl: 'assets/cards/kerala-ayurveda-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kerala-ayurveda-coupons-1775652933.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Health Wellness',
       offerText: 'Flat 15% Off',
@@ -2505,7 +2570,7 @@ class HomeMockData {
     BrandModel(
       name: 'Fuel One',
       logoUrl: 'assets/cards/fuel-one-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/fuel-one-coupons-1771392357.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 3% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 30% Off',
@@ -2514,7 +2579,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kapiva',
       logoUrl: 'assets/cards/kapiva-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kapiva-coupons-1735636283.jpg',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Health Wellness',
       offerText: 'Upto 20% Off',
@@ -2526,7 +2591,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ram Fincorp Personal Loan',
       logoUrl: 'assets/cards/ram-fincorp-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ram-fincorp-personal-loan-1784805975.png',
+      bannerUrl: 'assets/cards/col_pharmacy.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -2535,7 +2600,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Bank Personal Loan',
       logoUrl: 'assets/cards/hdfcbank-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfcbank-personal-loan-1743417204.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -2544,7 +2609,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Instant Loan',
       logoUrl: 'assets/cards/hdfc-loan-on-credit-card.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfc-loan-on-credit-card-1740288820.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Cash in a min',
@@ -2553,7 +2618,7 @@ class HomeMockData {
     BrandModel(
       name: 'Money View Personal Loan',
       logoUrl: 'assets/cards/money-view-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/money-view-personal-loan-test-1764655200.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.65% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
@@ -2562,7 +2627,7 @@ class HomeMockData {
     BrandModel(
       name: 'ZapCash Personal Loan',
       logoUrl: 'assets/cards/zapcash-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zapcash-pesonal-loan-coupons-1784802285.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -2571,7 +2636,7 @@ class HomeMockData {
     BrandModel(
       name: 'Fibe Personal Loan',
       logoUrl: 'assets/cards/fibe-personal-loan-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/fibe-personal-loan-coupons-1777881269.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
@@ -2580,7 +2645,7 @@ class HomeMockData {
     BrandModel(
       name: 'Poonawalla Fincorp Personal Loan',
       logoUrl: 'assets/cards/poonawala-instant-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/poonawala-instant-loan-1743414880.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Zero Foreclosure Charges',
@@ -2589,7 +2654,7 @@ class HomeMockData {
     BrandModel(
       name: 'Prefr Personal Loan',
       logoUrl: 'assets/cards/prefr-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/prefr-coupons-1744201380.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: '100% Digital',
@@ -2598,7 +2663,7 @@ class HomeMockData {
     BrandModel(
       name: 'Olyv Personal Loan',
       logoUrl: 'assets/cards/smartcoin-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/smartcoin-coupons-1736927951.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.85% Rewards',
       category: 'Loans',
       offerText: 'Instant Loan',
@@ -2607,7 +2672,7 @@ class HomeMockData {
     BrandModel(
       name: 'Axis Bank Personal Loan',
       logoUrl: 'assets/cards/axisbank-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/axisbank-personal-loan-1743421167.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.60% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -2616,7 +2681,7 @@ class HomeMockData {
     BrandModel(
       name: 'Tata Capital Personal Loan',
       logoUrl: 'assets/cards/tataneu-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/tataneu-personal-loan-1743487475.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.75% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
@@ -2625,7 +2690,7 @@ class HomeMockData {
     BrandModel(
       name: 'Bajaj Finserv Personal Loan',
       logoUrl: 'assets/cards/bajajfinserv-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bajajfinserv-personal-loan-1745561267.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.80% Rewards',
       category: 'Loans',
       offerText: 'Use as You Need',
@@ -2634,7 +2699,7 @@ class HomeMockData {
     BrandModel(
       name: 'FIRSTmoney by IDFC FIRST Bank Personal Loan',
       logoUrl: 'assets/cards/idfc-firstmoney-smart-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/idfc-firstmoney-smart-personal-loan-1725020673.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.25% Rewards',
       category: 'Loans',
       offerText: 'Rates from 9.99%',
@@ -2643,7 +2708,7 @@ class HomeMockData {
     BrandModel(
       name: 'Mpokket  Personal Loan',
       logoUrl: 'assets/cards/mpokket-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/mpokket-coupons-1742539340.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Flat ₹40 Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -2652,7 +2717,7 @@ class HomeMockData {
     BrandModel(
       name: 'HDFC Smart EMI',
       logoUrl: 'assets/cards/hdfc-smart-emi.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/hdfc-smart-emi-1740288959.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -2661,7 +2726,7 @@ class HomeMockData {
     BrandModel(
       name: 'Zype Personal Loan',
       logoUrl: 'assets/cards/zype-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zype-test-1742284322.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Instant Disbursal',
@@ -2670,7 +2735,7 @@ class HomeMockData {
     BrandModel(
       name: 'CreditSea Personal Loan',
       logoUrl: 'assets/cards/creditsea-personal-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/creditsea-personal-loan-1786099528.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 0.50% Rewards',
       category: 'Loans',
       offerText: 'For Low Cibil',
@@ -2679,7 +2744,7 @@ class HomeMockData {
     BrandModel(
       name: 'BankKaro Personal Loan',
       logoUrl: 'assets/cards/bankkaro-loan.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/bankkaro-loan-1747222603.png',
+      bannerUrl: 'assets/cards/col_cards.jpg',
       cashbackPercentage: 'Up to 1% Rewards',
       category: 'Loans',
       offerText: 'Get Instant Loan Every Your Needs ☛Get Instant Loans from ₹1',
@@ -2691,7 +2756,7 @@ class HomeMockData {
     BrandModel(
       name: 'Flipkart CB Home',
       logoUrl: 'assets/cards/flipkart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/flipkart-home-cat-1781069719.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Up to 1.95% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 70% Off',
@@ -2700,7 +2765,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon Kitchen & Dining',
       logoUrl: 'assets/cards/amazon-kitchen-dining.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-kitchen-dining-1781682001.png',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 4% Rewards',
       category: 'Home Kitchen',
       offerText: 'Upto 60% Off',
@@ -2709,7 +2774,7 @@ class HomeMockData {
     BrandModel(
       name: 'Dyson',
       logoUrl: 'assets/cards/dyson-discount-codes.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/dyson-discount-codes-1735635553.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 2% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
@@ -2718,7 +2783,7 @@ class HomeMockData {
     BrandModel(
       name: 'Ruhe',
       logoUrl: 'assets/cards/ruhe-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/ruhe-coupons-1767001581.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
@@ -2727,7 +2792,7 @@ class HomeMockData {
     BrandModel(
       name: 'Loophoop',
       logoUrl: 'assets/cards/loophoop-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/loophoop-coupons-1777465898.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 40% Cashback',
       category: 'Home Kitchen',
       offerText: 'Flat 10% Off',
@@ -2736,7 +2801,7 @@ class HomeMockData {
     BrandModel(
       name: 'Kohler',
       logoUrl: 'assets/cards/kohler-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/kohler-coupons-1781690818.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
@@ -2745,7 +2810,7 @@ class HomeMockData {
     BrandModel(
       name: 'Milton',
       logoUrl: 'assets/cards/milton-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/milton-coupons-test-1782725946.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
@@ -2754,7 +2819,7 @@ class HomeMockData {
     BrandModel(
       name: 'Beco',
       logoUrl: 'assets/cards/beco-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/beco-coupons-1780566165.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 12% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 5% Off',
@@ -2763,7 +2828,7 @@ class HomeMockData {
     BrandModel(
       name: 'Wonderchef',
       logoUrl: 'assets/cards/wonderchef-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/wonderchef-coupons-1765370776.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Home Kitchen',
       offerText: 'Upto 10% Off',
@@ -2772,7 +2837,7 @@ class HomeMockData {
     BrandModel(
       name: 'Art of Puja',
       logoUrl: 'assets/cards/art-of-puja-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/art-of-puja-coupons-1777531195.png',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 20% Cashback',
       category: 'Home Kitchen',
       offerText: 'Flat 10% Off',
@@ -2784,7 +2849,7 @@ class HomeMockData {
     BrandModel(
       name: 'DMart',
       logoUrl: 'assets/logos/dmart.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1578916171728-46686eac8d58?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat 5% Cashback',
       category: 'Departmental',
       offerText: 'Daily Grocery & Home Savings',
@@ -2793,7 +2858,7 @@ class HomeMockData {
     BrandModel(
       name: 'Reliance Smart',
       logoUrl: 'assets/logos/reliancesmart.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/banners/reliance_banner_16_9.jpg',
       cashbackPercentage: 'Up to 6% Cashback',
       category: 'Departmental',
       offerText: 'Fresh Produce & Superstore Deals',
@@ -2802,7 +2867,7 @@ class HomeMockData {
     BrandModel(
       name: 'Spencer\'s',
       logoUrl: 'assets/logos/spencers.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1583258292688-d0213dc5a3a8?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat 8% Cashback',
       category: 'Departmental',
       offerText: 'Gourmet & Household Essentials',
@@ -2811,7 +2876,7 @@ class HomeMockData {
     BrandModel(
       name: 'BigBasket',
       logoUrl: 'assets/logos/bigbasket.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1534723452862-4c874018d66d?w=800&auto=format&fit=crop&q=80',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Up to 7% Cashback',
       category: 'Departmental',
       offerText: '15-Min Delivery & Supermarket',
@@ -2823,7 +2888,7 @@ class HomeMockData {
     BrandModel(
       name: 'Amazon India',
       logoUrl: 'assets/cards/amazon.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/amazon-1735629515.jpg',
+      bannerUrl: 'assets/cards/col_amazon.jpg',
       cashbackPercentage: 'Up to 5% Rewards',
       category: 'Food Grocery',
       offerText: 'Upto 80% Off',
@@ -2832,7 +2897,7 @@ class HomeMockData {
     BrandModel(
       name: 'Flipkart CB Grocery',
       logoUrl: 'assets/cards/flipkart-electronics.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/flipkart-1768222060.png',
+      bannerUrl: 'assets/cards/col_flipkart.jpg',
       cashbackPercentage: 'Up to 1.30% Cashback',
       category: 'Food Grocery',
       offerText: '50-90% Off',
@@ -2841,7 +2906,7 @@ class HomeMockData {
     BrandModel(
       name: 'Rage Coffee',
       logoUrl: 'assets/cards/rage-coffee-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/rage-coffee-coupons-1782382739.png',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 15% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 10% Off',
@@ -2850,7 +2915,7 @@ class HomeMockData {
     BrandModel(
       name: 'Nutslane',
       logoUrl: 'assets/cards/nutslane-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/nutslane-coupons-1782547156.png',
+      bannerUrl: 'assets/banners/supplements_banner_16_9.jpg',
       cashbackPercentage: 'Up to 25% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 12% Off',
@@ -2859,7 +2924,7 @@ class HomeMockData {
     BrandModel(
       name: 'Zoff',
       logoUrl: 'assets/cards/zoff-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/zoff-coupons-1763718588.png',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 40% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
@@ -2868,7 +2933,7 @@ class HomeMockData {
     BrandModel(
       name: 'True Elements',
       logoUrl: 'assets/cards/true-elements-coupons.jpg',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/true-elements-coupons-1735638532.jpg',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 10% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
@@ -2877,7 +2942,7 @@ class HomeMockData {
     BrandModel(
       name: 'Haldiram',
       logoUrl: 'assets/cards/haldiram-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/haldiram-coupons-1785319099.png',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 5% Cashback',
       category: 'Food Grocery',
       offerText: 'Exclusive Rewards & Cashback',
@@ -2886,7 +2951,7 @@ class HomeMockData {
     BrandModel(
       name: 'City Gold Tea',
       logoUrl: 'assets/cards/citygoldtea-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/citygoldtea-coupons-1763530928.png',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 30% Cashback',
       category: 'Food Grocery',
       offerText: 'Flat 10% Off',
@@ -2895,7 +2960,7 @@ class HomeMockData {
     BrandModel(
       name: 'Krafted Millets',
       logoUrl: 'assets/cards/krafted-millets-coupons.png',
-      bannerUrl: 'https://asset21.ckassets.com/resources/image/stores/krafted-millets-coupons-1772177409.png',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Up to 8% Cashback',
       category: 'Food Grocery',
       offerText: 'Upto 10% Off',
@@ -2906,8 +2971,8 @@ class HomeMockData {
   static const List<BrandModel> educationCatalog = [
     BrandModel(
       name: 'Udemy',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e3/Udemy_logo.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1516321318423-f06f85e504b3?w=800&auto=format&fit=crop&q=80',
+      logoUrl: 'assets/cards/col_electronics.jpg',
+      bannerUrl: 'assets/cards/col_food.jpg',
       cashbackPercentage: 'Flat 15% Cashback',
       category: 'Education',
       offerText: 'Courses from ₹499',
@@ -2915,8 +2980,8 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Coursera',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/9/97/Coursera-Logo_600x600.svg',
-      bannerUrl: 'https://images.unsplash.com/photo-1501504905252-473c47e087f8?w=800&auto=format&fit=crop&q=80',
+      logoUrl: 'assets/cards/col_electronics.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat 12% Cashback',
       category: 'Education',
       offerText: 'Certificates & Degrees',
@@ -2924,8 +2989,8 @@ class HomeMockData {
     ),
     BrandModel(
       name: 'Unacademy',
-      logoUrl: 'https://upload.wikimedia.org/wikipedia/commons/e/e0/Unacademy_Logo.png',
-      bannerUrl: 'https://images.unsplash.com/photo-1434030216411-0b793f4b4173?w=800&auto=format&fit=crop&q=80',
+      logoUrl: 'assets/cards/col_electronics.jpg',
+      bannerUrl: 'assets/cards/col_electronics.jpg',
       cashbackPercentage: 'Flat 10% Cashback',
       category: 'Education',
       offerText: 'Competitive Exam Prep',
@@ -2941,17 +3006,17 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'most_popular',
       title: 'Most Popular',
-      imageUrl: 'https://images.unsplash.com/photo-1607082348824-0a96f2a4b9da?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       icon: Icons.local_fire_department_rounded,
       slug: 'smartphones',
       backgroundColor: Color(0xFFFFE0D0),
       darkBackgroundColor: Color(0xFF38231B),
-      accentColor: Color(0xFFC65D45),
+      accentColor: Color(0xFF2563EB),
     ),
     TopCategoryItemData(
       id: 'electronics',
       title: 'Electronics',
-      imageUrl: 'https://images.unsplash.com/photo-1505740420928-5e560c06d30e?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       icon: Icons.devices_rounded,
       slug: 'laptops',
       backgroundColor: Color(0xFFD6E4FF),
@@ -2961,7 +3026,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'fashion',
       title: 'Fashion',
-      imageUrl: 'https://images.unsplash.com/photo-1489987707025-afc232f7ea0f?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_myntra.jpg',
       icon: Icons.checkroom_rounded,
       slug: 'mens-shirts',
       backgroundColor: Color(0xFFFFD9E2),
@@ -2971,17 +3036,17 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'beauty_grooming',
       title: 'Beauty & Grooming',
-      imageUrl: 'https://images.unsplash.com/photo-1522337360788-8b13dee7a37e?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_derma.jpg',
       icon: Icons.face_retouching_natural_rounded,
       slug: 'beauty',
       backgroundColor: Color(0xFFFFE2CA),
       darkBackgroundColor: Color(0xFF452718),
-      accentColor: Color(0xFFEA580C),
+      accentColor: Color(0xFF2563EB),
     ),
     TopCategoryItemData(
       id: 'credit_cards',
       title: 'Credit Cards',
-      imageUrl: 'https://images.unsplash.com/photo-1559526324-4b87b5e36e44?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_cards.jpg',
       icon: Icons.credit_card_rounded,
       slug: 'groceries',
       backgroundColor: Color(0xFFE6DCFD),
@@ -2991,7 +3056,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'travel',
       title: 'Flights & Hotels',
-      imageUrl: 'https://images.unsplash.com/photo-1436491865332-7a61a109cc05?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_travel.jpg',
       icon: Icons.flight_takeoff_rounded,
       slug: 'smartphones',
       backgroundColor: Color(0xFFCEECFE),
@@ -3001,7 +3066,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'food_grocery',
       title: 'Food & Grocery',
-      imageUrl: 'https://images.unsplash.com/photo-1542838132-92c53300491e?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_food.jpg',
       icon: Icons.shopping_bag_rounded,
       slug: 'groceries',
       backgroundColor: Color(0xFFFEEB9E),
@@ -3011,7 +3076,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'mobiles',
       title: 'Mobiles',
-      imageUrl: 'https://images.unsplash.com/photo-1511707171634-5f897ff02aa9?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/banners/phone_banner_16_9.jpg',
       icon: Icons.smartphone_rounded,
       slug: 'smartphones',
       backgroundColor: Color(0xFFC4F6FB),
@@ -3021,7 +3086,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'health_wellness',
       title: 'Health & Wellness',
-      imageUrl: 'https://images.unsplash.com/photo-1584308666744-24d5c474f2ae?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_pharmacy.jpg',
       icon: Icons.health_and_safety_rounded,
       slug: 'skin-care',
       backgroundColor: Color(0xFFC7F4D2),
@@ -3031,7 +3096,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'home_kitchen',
       title: 'Home & Kitchen',
-      imageUrl: 'https://images.unsplash.com/photo-1555041469-a586c61ea9bc?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_electronics.jpg',
       icon: Icons.home_rounded,
       slug: 'home-decoration',
       backgroundColor: Color(0xFFE8E0D7),
@@ -3041,7 +3106,7 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'pharmacy',
       title: 'Pharmacy',
-      imageUrl: 'https://images.unsplash.com/photo-1471864190281-a93a3070b6de?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_pharmacy.jpg',
       icon: Icons.medical_services_rounded,
       slug: 'skin-care',
       backgroundColor: Color(0xFFBCF4DA),
@@ -3051,15 +3116,82 @@ class HomeMockData {
     TopCategoryItemData(
       id: 'loans',
       title: 'Loans',
-      imageUrl: 'https://images.unsplash.com/photo-1579621970563-ebec7560ff3e?w=200&auto=format&fit=crop&q=80',
+      imageUrl: 'assets/cards/col_cards.jpg',
       icon: Icons.account_balance_wallet_rounded,
       slug: 'groceries',
       backgroundColor: Color(0xFFE2E8F0),
       darkBackgroundColor: Color(0xFF29374D),
       accentColor: Color(0xFF475569),
     ),
-  
   ];
+
+  static SubcategoryBannerData? getBannerForCategory(String title) {
+    switch (title.toLowerCase().trim()) {
+      case 'most popular':
+      case 'popular':
+      case 'stores with highest cashback':
+      case 'favourites':
+        return popularBrandsBanner;
+
+      case 'fashion':
+      case 'fashion & apparel':
+      case 'top fashion & apparel':
+        return fashionBanner;
+
+      case 'trending':
+      case 'trending zone':
+      case 'trending & viral':
+        return trendingBanner;
+
+      case 'beauty':
+      case 'beauty & grooming':
+      case 'beauty & personal care':
+        return beautyBanner;
+
+      case 'credit cards':
+      case 'banking & credit cards':
+      case 'lifetime free credit cards':
+        return lifetimeCardsBanner;
+
+      case 'electronics':
+      case 'gadgets':
+      case 'mega gadget & tech':
+        return electronicsBanner;
+
+      case 'shopping cards':
+        return shoppingCardsBanner;
+
+      case 'health & wellness':
+      case 'pharmacy':
+      case 'medicine':
+        return medicineBanner;
+
+      case 'loans':
+      case 'credit & loans':
+        return cardsLoansBanner;
+
+      case 'hotels':
+      case 'travel':
+      case 'hotel booking':
+        return hotelBookingBanner;
+
+      case 'personal loans':
+        return personalLoansBanner;
+
+      case 'luxury':
+      case 'luxury brands':
+        return luxuryBanner;
+
+      default:
+        for (final section in discoverySections) {
+          if (section.title.toLowerCase().contains(title.toLowerCase()) ||
+              title.toLowerCase().contains(section.title.toLowerCase())) {
+            return section.bannerData;
+          }
+        }
+        return null;
+    }
+  }
 
   static List<BrandModel> getBrandsForTopCategory(String title) {
     switch (title) {

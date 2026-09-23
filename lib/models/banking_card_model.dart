@@ -69,10 +69,11 @@ class BankingCardModel {
   /// Converts this banking card to a [BrandModel] so it can be rendered
   /// seamlessly by existing brand widgets (e.g. GridBrandCard).
   BrandModel toBrandModel() {
+    final asset = localAssetPath.isNotEmpty ? localAssetPath : 'assets/cards/col_cards.jpg';
     return BrandModel(
       name: name,
-      logoUrl: localAssetPath.isNotEmpty ? localAssetPath : remoteImageUrl,
-      bannerUrl: remoteImageUrl,
+      logoUrl: asset,
+      bannerUrl: asset,
       cashbackPercentage: cashbackText.isNotEmpty ? cashbackText : rewardAmount,
       category: 'Banking & Finance',
       offerText: perks.isNotEmpty ? perks.first : shortDescription,

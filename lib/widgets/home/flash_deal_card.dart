@@ -6,7 +6,7 @@ import '../../models/flash_deal_model.dart';
 import '../network_image_with_skeleton.dart';
 import 'brand_confirmation_dialog.dart';
 
-class FlashDealCard extends StatelessWidget {
+class FlashDealCard extends StatefulWidget {
   final FlashDeal deal;
   final bool isDark;
   final VoidCallback? onTap;
@@ -18,12 +18,20 @@ class FlashDealCard extends StatelessWidget {
     this.onTap,
   });
 
+  @override
+  State<FlashDealCard> createState() => _FlashDealCardState();
+}
+
+class _FlashDealCardState extends State<FlashDealCard> {
+  bool _isPressed = false;
+
   void _handleAction(BuildContext context) {
-    if (onTap != null) {
-      onTap!();
+    if (widget.onTap != null) {
+      widget.onTap!();
       return;
     }
 
+    final deal = widget.deal;
     final brand = BrandModel(
       name: deal.brandName,
       logoUrl: deal.logo,
@@ -38,141 +46,34 @@ class FlashDealCard extends StatelessWidget {
   }
 
   Widget _buildBrandLogo(FlashDeal deal) {
-    final name = deal.brandName.toLowerCase();
-
-    Widget content;
-
-    // 1. Daily Objects Logo Badge (matches screenshot)
-    if (name.contains('daily')) {
-      content = Row(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Text(
-            'D',
-            style: GoogleFonts.poppins(
-              fontSize: 15,
-              fontWeight: FontWeight.w900,
-              color: const Color(0xFF161616),
-            ),
-          ),
-          const Icon(
-            Icons.all_inclusive_rounded,
-            size: 13,
-            color: Color(0xFF161616),
-          ),
-          const SizedBox(width: 3),
-          Column(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: const [
-              Text(
-                'Daily',
-                style: TextStyle(
-                  fontSize: 7,
-                  fontWeight: FontWeight.w900,
-                  color: Color(0xFF161616),
-                  height: 1.0,
-                ),
-              ),
-              Text(
-                'Objects',
-                style: TextStyle(
-                  fontSize: 7,
-                  fontWeight: FontWeight.w600,
-                  color: Color(0xFF161616),
-                  height: 1.0,
-                ),
-              ),
-            ],
-          ),
-        ],
-      );
-    }
-    // 2. IndusInd Bank Logo Badge (matches screenshot)
-    else if (name.contains('indusind')) {
-      content = Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: const [
-          Text(
-            'IndusInd Bank',
-            style: TextStyle(
-              fontSize: 9,
-              fontWeight: FontWeight.w900,
-              color: Color(0xFF8B1E1E),
-              letterSpacing: -0.2,
-            ),
-          ),
-          SizedBox(height: 1),
-          Text(
-            'EAZYDINER CARD',
-            style: TextStyle(
-              fontSize: 5.5,
-              fontWeight: FontWeight.w700,
-              color: Colors.black87,
-              letterSpacing: 0.4,
-            ),
-          ),
-        ],
-      );
-    }
-    // 3. Ounce Organics Logo Badge (matches screenshot)
-    else if (name.contains('ounce')) {
-      content = Column(
-        mainAxisSize: MainAxisSize.min,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          Row(
-            mainAxisSize: MainAxisSize.min,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Text(
-                'ounce',
-                style: GoogleFonts.fraunces(
-                  fontSize: 12.5,
-                  fontWeight: FontWeight.w900,
-                  color: const Color(0xFF141414),
-                ),
-              ),
-              const SizedBox(width: 2),
-              Container(
-                width: 3,
-                height: 3,
-                decoration: const BoxDecoration(
-                  color: Color(0xFF141414),
-                  shape: BoxShape.circle,
-                ),
-              ),
-            ],
-          ),
-          const Text(
-            'ORGANICS',
-            style: TextStyle(
-              fontSize: 5.5,
-              fontWeight: FontWeight.w800,
-              letterSpacing: 1.1,
-              color: Color(0xFF4A4A4A),
-              height: 1.0,
-            ),
-          ),
-        ],
-      );
-    }
-    // Fallback: assets/cards raster image
-    else {
-      content = ClipRRect(
-        borderRadius: BorderRadius.circular(6),
-        child: NetworkImageWithSkeleton(
+    if (deal.logo.isNotEmpty) {
+      if (deal.logo.startsWith('assets/')) {
+        return Image.asset(
+          deal.logo,
+          fit: BoxFit.contain,
+          errorBuilder: (_, _, _) => _buildTextLogoFallback(deal.brandName),
+        );
+      } else {
+        return NetworkImageWithSkeleton(
           imageUrl: deal.logo,
           fit: BoxFit.contain,
-        ),
-      );
+          errorBuilder: (_, _, _) => _buildTextLogoFallback(deal.brandName),
+        );
+      }
     }
+    return _buildTextLogoFallback(deal.brandName);
+  }
 
-    return FittedBox(
-      fit: BoxFit.scaleDown,
-      child: content,
+  Widget _buildTextLogoFallback(String name) {
+    return Text(
+      name,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+      style: GoogleFonts.plusJakartaSans(
+        fontSize: 11,
+        fontWeight: FontWeight.w800,
+        color: const Color(0xFF1E293B),
+      ),
     );
   }
 
@@ -181,243 +82,386 @@ class FlashDealCard extends StatelessWidget {
       return const SizedBox.shrink();
     }
 
+    Widget img;
+    if (deal.productImage!.startsWith('assets/')) {
+      img = Image.asset(
+        deal.productImage!,
+        fit: BoxFit.contain,
+        errorBuilder: (_, _, _) => const SizedBox.shrink(),
+      );
+    } else {
+      img = NetworkImageWithSkeleton(
+        imageUrl: deal.productImage!,
+        fit: BoxFit.contain,
+        errorBuilder: (_, _, _) => const SizedBox.shrink(),
+      );
+    }
+
     return Container(
       decoration: BoxDecoration(
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: 0.14),
+            color: Colors.black.withValues(alpha: 0.12),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
         ],
       ),
-      child: NetworkImageWithSkeleton(
-        imageUrl: deal.productImage!,
-        fit: BoxFit.contain,
-      ),
+      child: img,
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      width: 285,
-      height: 246,
-      child: Stack(
-        clipBehavior: Clip.none,
-        children: [
-          // ===================================================================
-          // 1. CARD BODY (Starts at top: 28, product pops out above it!)
-          // ===================================================================
-          Positioned(
-            top: 28,
-            left: 0,
-            right: 0,
-            bottom: 0,
-            child: Container(
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(22),
-                gradient: const LinearGradient(
-                  begin: Alignment.topCenter,
-                  end: Alignment.bottomCenter,
-                  colors: [
-                    Color(0xFFE5F4FB),
-                    Color(0xFFCEECF8),
-                  ],
-                ),
-                border: Border.all(
-                  color: Colors.white.withValues(alpha: 0.75),
-                  width: 1.2,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.16),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(22),
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(
-                    horizontal: 16,
-                    vertical: 12,
-                  ),
-                  child: Column(
-                    children: [
-                      // UPPER SECTION: Left Column (Brand + Offer + Condition)
-                      Expanded(
-                        child: Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Expanded(
-                              flex: 55,
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  // Top-Left Brand Logo Container
-                                  Container(
-                                    height: 36,
-                                    constraints: const BoxConstraints(
-                                      minWidth: 70,
-                                      maxWidth: 96,
-                                    ),
-                                    padding: const EdgeInsets.symmetric(
-                                      horizontal: 8,
-                                      vertical: 3,
-                                    ),
-                                    decoration: BoxDecoration(
-                                      color: Colors.white,
-                                      borderRadius: BorderRadius.circular(10),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: Colors.black.withValues(
-                                            alpha: 0.05,
-                                          ),
-                                          blurRadius: 4,
-                                          offset: const Offset(0, 1),
-                                        ),
-                                      ],
-                                    ),
-                                    child: Center(
-                                      child: _buildBrandLogo(deal),
-                                    ),
-                                  ),
+    final deal = widget.deal;
+    final isDark = widget.isDark;
 
-                                  // Offer & Minimum Condition
-                                  Column(
-                                    crossAxisAlignment:
-                                        CrossAxisAlignment.start,
-                                    mainAxisSize: MainAxisSize.min,
+    final cardBg = isDark ? const Color(0xFF171C2B) : Colors.white;
+    final cardBorder = isDark ? const Color(0xFF2C354A) : const Color(0xFFE2E8F0);
+    final textPrimary = isDark ? Colors.white : const Color(0xFF0F172A);
+    final textSecondary = isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B);
+
+    return AnimatedScale(
+      scale: _isPressed ? 0.96 : 1.0,
+      duration: const Duration(milliseconds: 120),
+      curve: Curves.easeOutCubic,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) {
+          setState(() => _isPressed = false);
+          _handleAction(context);
+        },
+        onTapCancel: () => setState(() => _isPressed = false),
+        child: SizedBox(
+          width: 285,
+          height: 246,
+          child: Stack(
+            clipBehavior: Clip.none,
+            children: [
+              // ===============================================================
+              // 1. CARD BODY
+              // ===============================================================
+              Positioned(
+                top: 24,
+                left: 0,
+                right: 0,
+                bottom: 0,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: cardBg,
+                    borderRadius: BorderRadius.circular(20),
+                    border: Border.all(
+                      color: cardBorder,
+                      width: 1.2,
+                    ),
+                    boxShadow: [
+                      BoxShadow(
+                        color: Colors.black.withValues(
+                          alpha: isDark ? 0.4 : 0.12,
+                        ),
+                        blurRadius: 14,
+                        offset: const Offset(0, 5),
+                      ),
+                    ],
+                  ),
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(20),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(
+                        horizontal: 14,
+                        vertical: 12,
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.stretch,
+                        children: [
+                          // UPPER SECTION: Header + Offer
+                          Expanded(
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                // Left details column
+                                Expanded(
+                                  flex: 56,
+                                  child: Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
-                                        deal.offer,
-                                        maxLines: 1,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w800,
-                                          color: Color(0xFF14171A),
-                                          letterSpacing: -0.2,
+                                      // Top Brand Logo
+                                      Container(
+                                        height: 34,
+                                        constraints: const BoxConstraints(
+                                          minWidth: 68,
+                                          maxWidth: 96,
+                                        ),
+                                        padding: const EdgeInsets.symmetric(
+                                          horizontal: 7,
+                                          vertical: 3,
+                                        ),
+                                        decoration: BoxDecoration(
+                                          color: isDark
+                                              ? const Color(0xFF22293C)
+                                              : Colors.white,
+                                          borderRadius:
+                                              BorderRadius.circular(9),
+                                          border: Border.all(
+                                            color: isDark
+                                                ? Colors.white.withValues(alpha: 0.1)
+                                                : Colors.black.withValues(alpha: 0.06),
+                                            width: 1,
+                                          ),
+                                          boxShadow: [
+                                            BoxShadow(
+                                              color: Colors.black.withValues(
+                                                alpha: 0.05,
+                                              ),
+                                              blurRadius: 4,
+                                              offset: const Offset(0, 1),
+                                            ),
+                                          ],
+                                        ),
+                                        child: Center(
+                                          child: _buildBrandLogo(deal),
                                         ),
                                       ),
-                                      const SizedBox(height: 2),
-                                      Text(
-                                        deal.minimumOrder,
-                                        maxLines: 2,
-                                        overflow: TextOverflow.ellipsis,
-                                        style: const TextStyle(
-                                          fontSize: 11,
-                                          fontWeight: FontWeight.w500,
-                                          color: Color(0xFF525D6B),
-                                          height: 1.2,
+
+                                      // Offer & Condition
+                                      Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          Text(
+                                            deal.offer,
+                                            maxLines: 1,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w800,
+                                              color: textPrimary,
+                                              letterSpacing: -0.2,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 2),
+                                          Text(
+                                            deal.minimumOrder,
+                                            maxLines: 2,
+                                            overflow: TextOverflow.ellipsis,
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 11,
+                                              fontWeight: FontWeight.w500,
+                                              color: textSecondary,
+                                              height: 1.2,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 4),
+                                          Container(
+                                            padding: const EdgeInsets.symmetric(
+                                              horizontal: 6,
+                                              vertical: 2,
+                                            ),
+                                            decoration: BoxDecoration(
+                                              color: (isDark
+                                                      ? Colors.white
+                                                      : Colors.black)
+                                                  .withValues(alpha: 0.05),
+                                              borderRadius:
+                                                  BorderRadius.circular(6),
+                                            ),
+                                            child: Text(
+                                              deal.category.toUpperCase(),
+                                              style: GoogleFonts.plusJakartaSans(
+                                                fontSize: 8.5,
+                                                fontWeight: FontWeight.w700,
+                                                color: textSecondary,
+                                                letterSpacing: 0.5,
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+
+                                // Space reserved for product cutout on the right
+                                const SizedBox(width: 8),
+                                const Expanded(
+                                  flex: 44,
+                                  child: SizedBox.shrink(),
+                                ),
+                              ],
+                            ),
+                          ),
+
+                          // DIVIDER
+                          const SizedBox(height: 6),
+                          Divider(
+                            height: 1,
+                            thickness: 0.8,
+                            color: isDark
+                                ? Colors.white.withValues(alpha: 0.08)
+                                : const Color(0xFFE2E8F0),
+                          ),
+                          const SizedBox(height: 8),
+
+                          // BOTTOM ROW: Cashback Capsule + Modern CTA Button
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              // Glowing Mint Cashback Tag
+                              Expanded(
+                                child: Container(
+                                  padding: const EdgeInsets.symmetric(
+                                    horizontal: 8,
+                                    vertical: 4,
+                                  ),
+                                  decoration: BoxDecoration(
+                                    color: const Color(0xFF00C853)
+                                        .withValues(alpha: 0.12),
+                                    borderRadius: BorderRadius.circular(8),
+                                    border: Border.all(
+                                      color: const Color(0xFF00C853)
+                                          .withValues(alpha: 0.3),
+                                      width: 1,
+                                    ),
+                                  ),
+                                  child: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      const Text(
+                                        '✦',
+                                        style: TextStyle(
+                                          color: Color(0xFF00C853),
+                                          fontSize: 10,
+                                        ),
+                                      ),
+                                      const SizedBox(width: 3.5),
+                                      Flexible(
+                                        child: Text(
+                                          deal.cashback,
+                                          maxLines: 1,
+                                          overflow: TextOverflow.ellipsis,
+                                          style: GoogleFonts.plusJakartaSans(
+                                            color: const Color(0xFF00A844),
+                                            fontSize: 11.5,
+                                            fontWeight: FontWeight.w800,
+                                            letterSpacing: -0.1,
+                                          ),
                                         ),
                                       ),
                                     ],
                                   ),
-                                ],
+                                ),
                               ),
-                            ),
-                            // Space reserved for the product that pops out on the right
-                            const SizedBox(width: 8),
-                            const Expanded(
-                              flex: 45,
-                              child: SizedBox.shrink(),
-                            ),
-                          ],
-                        ),
-                      ),
+                              const SizedBox(width: 8),
 
-                      // DIVIDER LINE
-                      const SizedBox(height: 6),
-                      Divider(
-                        height: 1,
-                        thickness: 0.85,
-                        color: const Color(0xFFB8DAEC).withValues(alpha: 0.85),
-                      ),
-                      const SizedBox(height: 8),
-
-                      // BOTTOM ROW: Cashback + CTA Button
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          Expanded(
-                            child: Text(
-                              deal.cashback,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                fontSize: 14.5,
-                                fontWeight: FontWeight.w800,
-                                color: Color(0xFF14171A),
-                                letterSpacing: -0.1,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 8),
-
-                          // Action CTA Button
-                          Material(
-                            color: Colors.transparent,
-                            child: InkWell(
-                              onTap: () => _handleAction(context),
-                              borderRadius: BorderRadius.circular(20),
-                              child: Ink(
+                              // Modern Gradient CTA Pill
+                              Container(
                                 padding: const EdgeInsets.symmetric(
-                                  horizontal: 16,
-                                  vertical: 8,
+                                  horizontal: 14,
+                                  vertical: 7,
                                 ),
                                 decoration: BoxDecoration(
-                                  color: const Color(0xFF0044EE),
-                                  borderRadius: BorderRadius.circular(20),
+                                  gradient: const LinearGradient(
+                                    colors: [
+                                      Color(0xFF2563EB),
+                                      Color(0xFF1D4ED8),
+                                    ],
+                                    begin: Alignment.topLeft,
+                                    end: Alignment.bottomRight,
+                                  ),
+                                  borderRadius: BorderRadius.circular(18),
                                   boxShadow: [
                                     BoxShadow(
-                                      color: const Color(0xFF0044EE).withValues(
-                                        alpha: 0.35,
-                                      ),
+                                      color: const Color(0xFF2563EB)
+                                          .withValues(alpha: 0.32),
                                       blurRadius: 6,
                                       offset: const Offset(0, 2),
                                     ),
                                   ],
                                 ),
-                                child: Text(
-                                  deal.cta,
-                                  style: const TextStyle(
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w800,
-                                    fontSize: 12.5,
-                                    letterSpacing: 0.2,
-                                  ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Text(
+                                      deal.cta,
+                                      style: GoogleFonts.plusJakartaSans(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.w800,
+                                        fontSize: 12,
+                                        letterSpacing: 0.2,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 3.5),
+                                    const Icon(
+                                      Icons.arrow_forward_rounded,
+                                      size: 11,
+                                      color: Colors.white,
+                                    ),
+                                  ],
                                 ),
                               ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
-                    ],
+                    ),
                   ),
                 ),
               ),
-            ),
-          ),
 
-          // ===================================================================
-          // 2. PRODUCT IMAGE (POPS OUT OF THE CARD TOP EDGE!)
-          // ===================================================================
-          Positioned(
-            top: 0,
-            right: 8,
-            width: 140,
-            height: 148,
-            child: IgnorePointer(
-              child: _buildProductImage(deal),
-            ),
+              // ===============================================================
+              // 2. PRODUCT IMAGE (POPS OUT OF THE CARD TOP EDGE)
+              // ===============================================================
+              Positioned(
+                top: 0,
+                right: 8,
+                width: 136,
+                height: 144,
+                child: IgnorePointer(
+                  child: _buildProductImage(deal),
+                ),
+              ),
+
+              // ===============================================================
+              // 3. FLOATING SAVING BADGE (TOP RIGHT)
+              // ===============================================================
+              if (deal.saving.isNotEmpty)
+                Positioned(
+                  top: 29,
+                  right: 12,
+                  child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 7,
+                      vertical: 3,
+                    ),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFF5722),
+                      borderRadius: BorderRadius.circular(6),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color(0xFFFF5722).withValues(alpha: 0.4),
+                          blurRadius: 6,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Text(
+                      deal.saving,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 9.5,
+                        fontWeight: FontWeight.w800,
+                        color: Colors.white,
+                        letterSpacing: 0.3,
+                      ),
+                    ),
+                  ),
+                ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

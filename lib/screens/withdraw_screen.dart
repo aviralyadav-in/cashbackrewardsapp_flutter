@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
 
+import '../providers/user_provider.dart';
+import '../services/auth_service.dart';
 import '../theme/app_theme.dart';
 
 class WithdrawScreen extends StatefulWidget {
@@ -13,9 +16,13 @@ class WithdrawScreen extends StatefulWidget {
 }
 
 class _WithdrawScreenState extends State<WithdrawScreen> {
+  final AuthService _authService = AuthService();
   final TextEditingController _amountController =
       TextEditingController(text: '500');
+  final TextEditingController _paymentDetailsController =
+      TextEditingController();
   String _selectedMethod = 'upi'; // 'upi', 'bank', 'amazon'
+  bool _isSubmitting = false;
 
   final List<Map<String, dynamic>> _recentWithdrawals = [
     {
@@ -47,10 +54,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
   @override
   void dispose() {
     _amountController.dispose();
+    _paymentDetailsController.dispose();
     super.dispose();
   }
 
-  void _handleWithdrawalSubmit() {
+  Future<void> _handleWithdrawalSubmit() async {
+    if (_isSubmitting) return;
+
     final amount = double.tryParse(_amountController.text.trim()) ?? 0;
     if (amount < 250) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -64,10 +74,13 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       return;
     }
 
-    if (amount > 1850) {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final availableBalance = userProvider.walletBalance;
+
+    if (amount > availableBalance) {
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: const Text('Amount exceeds your available balance of ₹1,850.00.'),
+          content: Text('Amount exceeds your available balance of ₹${availableBalance.toStringAsFixed(2)}.'),
           backgroundColor: AppColors.error,
           behavior: SnackBarBehavior.floating,
           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
@@ -76,82 +89,151 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
       return;
     }
 
-    final isDark = Theme.of(context).brightness == Brightness.dark;
+    final userId = userProvider.uid;
+    if (userId.isEmpty) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Please sign in to withdraw funds.'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+      return;
+    }
 
-    showModalBottomSheet(
-      context: context,
-      backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
-      ),
-      builder: (ctx) => Padding(
-        padding: const EdgeInsets.all(24.0),
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Container(
-              width: 40,
-              height: 4,
-              decoration: BoxDecoration(
-                color: isDark ? AppColors.darkBorder : AppColors.border,
-                borderRadius: BorderRadius.circular(2),
+    setState(() {
+      _isSubmitting = true;
+    });
+
+    final details = _paymentDetailsController.text.trim().isNotEmpty
+        ? _paymentDetailsController.text.trim()
+        : (_selectedMethod == 'upi'
+            ? (userProvider.phoneNumber.isNotEmpty
+                ? '${userProvider.phoneNumber}@okhdfcbank'
+                : 'user@okhdfcbank')
+            : (_selectedMethod == 'bank'
+                ? 'HDFC Bank - A/C **4129'
+                : (userProvider.email.isNotEmpty ? userProvider.email : 'user@email.com')));
+
+    final res = await _authService.requestWithdrawal(
+      userId: userId,
+      amount: amount,
+      method: _selectedMethod.toUpperCase(),
+      paymentDetails: details,
+    );
+
+    if (!mounted) return;
+
+    setState(() {
+      _isSubmitting = false;
+    });
+
+    if (res['success'] == true) {
+      await userProvider.loadWalletData();
+
+      setState(() {
+        _recentWithdrawals.insert(0, {
+          'id': res['transactionId'] ??
+              'WTH-${DateTime.now().millisecondsSinceEpoch.toString().substring(7)}',
+          'date': 'Today',
+          'amount': '₹${amount.toStringAsFixed(2)}',
+          'method': '${_selectedMethod.toUpperCase()} ($details)',
+          'status': 'Pending',
+          'statusColor': AppColors.pending,
+        });
+
+      });
+
+      if (!mounted) return;
+      final isDark = Theme.of(context).brightness == Brightness.dark;
+
+      showModalBottomSheet(
+        context: context,
+        backgroundColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        shape: const RoundedRectangleBorder(
+          borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+        ),
+        builder: (ctx) => Padding(
+          padding: const EdgeInsets.all(24.0),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              Container(
+                width: 40,
+                height: 4,
+                decoration: BoxDecoration(
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
+                  borderRadius: BorderRadius.circular(2),
+                ),
               ),
-            ),
-            const SizedBox(height: 20),
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                shape: BoxShape.circle,
-                color: AppColors.successBackground,
+              const SizedBox(height: 20),
+              Container(
+                padding: const EdgeInsets.all(16),
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColors.successBackground,
+                ),
+                child: const Icon(Icons.check_circle_rounded,
+                    color: AppColors.success, size: 48),
               ),
-              child: const Icon(Icons.check_circle_rounded,
-                  color: AppColors.success, size: 48),
-            ),
-            const SizedBox(height: 16),
-            Text(
-              'Withdrawal Request Placed!',
-              style: AppTextStyles.cardTitle(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-              ).copyWith(fontSize: 18),
-            ),
-            const SizedBox(height: 8),
-            Text(
-              '₹${amount.toStringAsFixed(2)} will be credited to your selected payment method within 24-48 business hours.',
-              textAlign: TextAlign.center,
-              style: AppTextStyles.body(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+              const SizedBox(height: 16),
+              Text(
+                'Withdrawal Request Placed!',
+                style: AppTextStyles.cardTitle(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                ).copyWith(fontSize: 18),
               ),
-            ),
-            const SizedBox(height: 24),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: () {
-                  Navigator.of(ctx).pop();
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBrown,
-                  foregroundColor: AppColors.cardBackground,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+              const SizedBox(height: 8),
+              Text(
+                '₹${amount.toStringAsFixed(2)} will be credited via ${_selectedMethod.toUpperCase()} within 24-48 business hours.',
+                textAlign: TextAlign.center,
+                style: AppTextStyles.body(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                ),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(ctx).pop();
+                  },
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: AppColors.primaryBrown,
+                    foregroundColor: AppColors.cardBackground,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                    ),
+                  ),
+                  child: Text(
+                    'Done',
+                    style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 15),
                   ),
                 ),
-                child: Text(
-                  'Done',
-                  style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 15),
-                ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
-      ),
-    );
+      );
+    } else {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(res['message']?.toString() ?? 'Withdrawal failed. Please try again.'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+        ),
+      );
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
+    final userProvider = Provider.of<UserProvider>(context);
 
     return Scaffold(
       backgroundColor:
@@ -209,7 +291,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       children: [
                         Text(
                           'Available for Withdrawal',
-                          style: GoogleFonts.fraunces(
+                          style: GoogleFonts.inter(
                             color: Colors.white70,
                             fontSize: 13,
                             fontWeight: FontWeight.w600,
@@ -242,8 +324,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     ),
                     const SizedBox(height: 10),
                     Text(
-                      '₹1,850.00',
-                      style: GoogleFonts.fraunces(
+                      '₹${userProvider.walletBalance.toStringAsFixed(2)}',
+                      style: GoogleFonts.inter(
                         color: Colors.white,
                         fontSize: 32,
                         fontWeight: FontWeight.w700,
@@ -251,8 +333,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     ),
                     const SizedBox(height: 8),
                     Text(
-                      'Confirmed Cashback: ₹1,350.00 • Referral Bonus: ₹500.00',
-                      style: GoogleFonts.fraunces(
+                      'Confirmed Cashback: ₹${userProvider.confirmedCashback.toStringAsFixed(2)} • Referral Bonus: ₹${userProvider.referralEarnings.toStringAsFixed(2)}',
+                      style: GoogleFonts.inter(
                         color: Colors.white70,
                         fontSize: 12,
                         height: 1.3,
@@ -290,7 +372,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     TextField(
                       controller: _amountController,
                       keyboardType: TextInputType.number,
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -300,7 +382,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                           padding: const EdgeInsets.only(left: 14, right: 8),
                           child: Text(
                             '₹',
-                            style: GoogleFonts.fraunces(
+                            style: GoogleFonts.inter(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
                               color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
@@ -387,24 +469,82 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 badgeText: 'Instant Code',
               ),
 
+              const SizedBox(height: 14),
+
+              TextField(
+                controller: _paymentDetailsController,
+                style: AppTextStyles.body(color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown),
+                decoration: InputDecoration(
+                  labelText: _selectedMethod == 'upi'
+                      ? 'UPI ID / VPA (Optional)'
+                      : (_selectedMethod == 'bank'
+                          ? 'Bank Account & IFSC (Optional)'
+                          : 'Voucher Receiving Email (Optional)'),
+                  hintText: _selectedMethod == 'upi'
+                      ? 'e.g. mobile@okhdfcbank'
+                      : (_selectedMethod == 'bank'
+                          ? 'e.g. 50100234129 - HDFC0000123'
+                          : 'e.g. user@gmail.com'),
+                  hintStyle: AppTextStyles.smallDescription(
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                  ),
+                  filled: true,
+                  fillColor: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: isDark ? AppColors.darkBorder : AppColors.border,
+                    ),
+                  ),
+                  enabledBorder: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide(
+                      color: isDark ? AppColors.darkBorder : AppColors.border,
+                    ),
+                  ),
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+                ),
+              ),
+
               const SizedBox(height: 20),
 
+
               // Withdraw CTA Button
-              ElevatedButton.icon(
-                onPressed: _handleWithdrawalSubmit,
-                icon: const Icon(Icons.arrow_forward_rounded, size: 18),
-                label: const Text('Proceed to Withdraw'),
+              ElevatedButton(
+                onPressed: _isSubmitting ? null : _handleWithdrawalSubmit,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.primaryBrown,
                   foregroundColor: AppColors.cardBackground,
+                  disabledBackgroundColor: AppColors.primaryBrown.withValues(alpha: 0.6),
+                  disabledForegroundColor: AppColors.cardBackground.withValues(alpha: 0.7),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                   elevation: 2,
-                  textStyle: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14),
                 ),
+                child: _isSubmitting
+                    ? const SizedBox(
+                        height: 20,
+                        width: 20,
+                        child: CircularProgressIndicator(
+                          strokeWidth: 2,
+                          color: Colors.white,
+                        ),
+                      )
+                    : Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            'Proceed to Withdraw',
+                            style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14),
+                          ),
+                          const SizedBox(width: 8),
+                          const Icon(Icons.arrow_forward_rounded, size: 18),
+                        ],
+                      ),
               ),
+
 
               const SizedBox(height: 28),
 
@@ -482,7 +622,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         children: [
                           Text(
                             item['amount'] as String,
-                            style: GoogleFonts.fraunces(
+                            style: GoogleFonts.inter(
                               fontSize: 14.5,
                               fontWeight: FontWeight.w700,
                               color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,

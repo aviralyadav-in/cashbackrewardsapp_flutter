@@ -6,7 +6,7 @@ from docx.enum.table import WD_TABLE_ALIGNMENT
 from docx.oxml import OxmlElement, parse_xml
 from docx.oxml.ns import nsdecls, qn
 
-DOC_PATH = r"d:\all_flutter_projects\cashback_reward_app\CashKaro_Project_Overview_and_Architecture.docx"
+DOC_PATH = r"d:\all_flutter_projects\cashback_reward_app\KashIQ_Project_Overview_and_Architecture.docx"
 MD_PATH = r"d:\all_flutter_projects\cashback_reward_app\PROJECT_DOCUMENTATION.md"
 
 def set_cell_background(cell, hex_color):
@@ -28,7 +28,7 @@ def add_heading(doc, text, level):
     run = h.runs[0]
     if level == 1:
         run.font.size = Pt(17)
-        run.font.color.rgb = RGBColor(30, 144, 255) # CashKaro Blue
+        run.font.color.rgb = RGBColor(30, 144, 255) # KashIQ Blue
         run.font.bold = True
     elif level == 2:
         run.font.size = Pt(13)
@@ -52,7 +52,7 @@ def build_word_doc():
 
     # Main Title
     title_p = doc.add_paragraph()
-    r_title = title_p.add_run("CashKaro App — Complete Architecture, Workflow & Screens Guide")
+    r_title = title_p.add_run("KashIQ App — Complete Architecture, Workflow & Screens Guide")
     r_title.font.size = Pt(20)
     r_title.font.bold = True
     r_title.font.color.rgb = RGBColor(30, 144, 255)
@@ -70,10 +70,10 @@ def build_word_doc():
     # SECTION 1: WHAT THIS APP DOES
     add_heading(doc, "1. What This App Does (In Simple Words)", level=1)
     doc.add_paragraph(
-        "CashKaro is a shopping rewards and cashback mobile app. When users want to buy anything online "
+        "KashIQ is a shopping rewards and cashback mobile app. When users want to buy anything online "
         "(clothes, electronics, medicines, groceries, or apply for personal loans/credit cards), they open "
-        "CashKaro, click on a store (like Amazon, Flipkart, Myntra, or Navi Loans), and complete their purchase. "
-        "The retailer pays CashKaro a commission, and CashKaro gives that money back to the user as Real Cashback. "
+        "KashIQ, click on a store (like Amazon, Flipkart, Myntra, or Navi Loans), and complete their purchase. "
+        "The retailer pays KashIQ a commission, and KashIQ gives that money back to the user as Real Cashback. "
         "Once verified, users can transfer that money directly into their Bank Account (via NEFT), UPI (GPay/PhonePe), "
         "or get Amazon Pay gift vouchers."
     )

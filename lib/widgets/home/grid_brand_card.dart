@@ -6,7 +6,15 @@ import '../../screens/product_detail_screen.dart';
 import '../../theme/app_theme.dart';
 import '../network_image_with_skeleton.dart';
 
-class GridBrandCard extends StatelessWidget {
+/// Redesigned Brand Card matching the reference design:
+/// 1. Top Image Box: Real group/collection of products for the brand
+/// 2. Top-Left: Crisp white discount badge (e.g. "60% OFF")
+/// 3. Bottom-Left: Mini brand logo badge
+/// 4. Brand Name (e.g. "Zara Official", "Amazon.in")
+/// 5. Subtitle (e.g. "Apparel & Coats", "Deals & Shopping")
+/// 6. Soft mint cashback pill with "+7.5% Back ⚡"
+/// 7. Dark "Shop →" pill CTA button
+class GridBrandCard extends StatefulWidget {
   final BrandModel brand;
   final bool isDark;
   final VoidCallback? onTap;
@@ -20,338 +28,457 @@ class GridBrandCard extends StatelessWidget {
     this.columnIndex,
   });
 
-  int get _effectiveColumnIndex {
-    if (columnIndex != null) {
-      return columnIndex! % 3;
+  @override
+  State<GridBrandCard> createState() => _GridBrandCardState();
+}
+
+class _GridBrandCardState extends State<GridBrandCard> {
+  bool _isPressed = false;
+
+  String _getBrandCollectionAsset(BrandModel brand) {
+    final name = brand.name.toLowerCase();
+    final cat = brand.category.toLowerCase();
+
+    if (name.contains('zara')) return 'assets/cards/col_zara.jpg';
+    if (name.contains('amazon')) return 'assets/cards/col_amazon.jpg';
+    if (name.contains('flipkart')) return 'assets/cards/col_flipkart.jpg';
+    if (name.contains('myntra')) return 'assets/cards/col_myntra.jpg';
+    if (name.contains('ajio')) return 'assets/cards/col_ajio.jpg';
+    if (name.contains('nykaa')) return 'assets/cards/col_nykaa.jpg';
+    if (name.contains('dot & key') || name.contains('dotandkey')) {
+      return 'assets/cards/col_dotkey.jpg';
     }
-    return brand.name.hashCode.abs() % 3;
-  }
-
-  Color _getHeaderBackgroundColor(int colIndex) {
-    if (isDark) {
-      switch (colIndex) {
-        case 0: // Soft warm peach (dark)
-          return const Color(0xFF3E281C);
-        case 1: // Soft sage green (dark)
-          return const Color(0xFF223620);
-        case 2: // Soft sky blue (dark)
-        default:
-          return const Color(0xFF1B2F42);
-      }
-    } else {
-      switch (colIndex) {
-        case 0: // Soft warm peach (light)
-          return const Color(0xFFFDE8D8);
-        case 1: // Soft sage green (light)
-          return const Color(0xFFD8E8D2);
-        case 2: // Soft sky blue (light)
-        default:
-          return const Color(0xFFD2E8F6);
-      }
+    if (name.contains('mcaffeine')) return 'assets/cards/col_mcaffeine.jpg';
+    if (name.contains('aqualogica')) return 'assets/cards/col_aqualogica.jpg';
+    if (name.contains('derma') || name.contains('foxtale')) {
+      return 'assets/cards/col_derma.jpg';
     }
-  }
-
-  Color _getHeaderTextColor(int colIndex) {
-    if (isDark) {
-      switch (colIndex) {
-        case 0:
-          return const Color(0xFFFFDFCC);
-        case 1:
-          return const Color(0xFFD3EED0);
-        case 2:
-        default:
-          return const Color(0xFFCBE6FC);
-      }
-    } else {
-      switch (colIndex) {
-        case 0:
-          return const Color(0xFF321E14);
-        case 1:
-          return const Color(0xFF1E2D1A);
-        case 2:
-        default:
-          return const Color(0xFF16293A);
-      }
+    if (name.contains('shopsy') || name.contains('meesho')) {
+      return 'assets/cards/col_shopsy.jpg';
     }
-  }
-
-  bool _isLiveOrSale(String text) {
-    final lower = text.toLowerCase();
-    return lower.contains('live') || lower.contains('sale') || lower.contains('hot');
-  }
-
-  String _cleanOfferText(String rawText) {
-    final trimmed = rawText.trim();
-    if (trimmed.isEmpty) return 'Special Offer';
-    if (trimmed.length <= 22) return trimmed;
-
-    // Detect compact discount or offer phrase within longer marketing copy
-    final match = RegExp(
-      r'(?:upto|up to|flat)?\s*\d+(?:[.-]\d+)?%?\s*(?:-\s*\d+%?)?\s*(?:off|cashback|rewards)?',
-      caseSensitive: false,
-    ).firstMatch(trimmed);
-
-    if (match != null && match.group(0)!.trim().length >= 4) {
-      final extracted = match.group(0)!.trim();
-      if (!extracted.toLowerCase().contains('off') &&
-          !extracted.toLowerCase().contains('cashback') &&
-          !extracted.toLowerCase().contains('rewards')) {
-        return '$extracted Off';
-      }
-      return extracted;
+    if (name.contains('reliance') ||
+        cat.contains('electronic') ||
+        cat.contains('gadget') ||
+        cat.contains('mobile')) {
+      return 'assets/cards/col_electronics.jpg';
+    }
+    if (cat.contains('food') ||
+        cat.contains('grocery') ||
+        name.contains('haldiram') ||
+        name.contains('swiggy') ||
+        name.contains('zomato')) {
+      return 'assets/cards/col_food.jpg';
+    }
+    if (cat.contains('travel') ||
+        cat.contains('flight') ||
+        cat.contains('hotel') ||
+        name.contains('makemytrip') ||
+        name.contains('cleartrip') ||
+        name.contains('booking')) {
+      return 'assets/cards/col_travel.jpg';
+    }
+    if (cat.contains('medicine') ||
+        cat.contains('pharmacy') ||
+        cat.contains('health') ||
+        name.contains('netmeds') ||
+        name.contains('pharmeasy') ||
+        name.contains('apollo')) {
+      return 'assets/cards/col_pharmacy.jpg';
+    }
+    if (cat.contains('card') ||
+        cat.contains('banking') ||
+        cat.contains('loan') ||
+        name.contains('sbi') ||
+        name.contains('hdfc') ||
+        name.contains('axis')) {
+      return 'assets/cards/col_cards.jpg';
+    }
+    if (cat.contains('fashion') ||
+        cat.contains('clothing') ||
+        cat.contains('apparel') ||
+        name.contains('uniqlo') ||
+        name.contains('libas') ||
+        name.contains('shyaway')) {
+      return 'assets/cards/col_myntra.jpg';
+    }
+    if (cat.contains('beauty') || cat.contains('personal care')) {
+      return 'assets/cards/col_nykaa.jpg';
     }
 
-    return trimmed;
+    return 'assets/cards/col_default.jpg';
   }
 
-  List<String> _splitRewardsText(String rawText) {
-    final trimmed = rawText.trim();
-    if (trimmed.isEmpty) return ['', ''];
-    if (trimmed.contains('\n')) {
-      final parts = trimmed.split('\n');
-      return [parts[0], parts.length > 1 ? parts[1] : ''];
-    }
+  String get _discountText {
+    final raw = widget.brand.offerText.trim();
+    if (raw.isEmpty) return '60% OFF';
 
-    // Detect common reward keywords at the end
-    final keywordPattern = RegExp(
-      r'^(.*?)\s+(rewards?|bonus(?:es)?|cashback|off)$',
-      caseSensitive: false,
-    );
-    final match = keywordPattern.firstMatch(trimmed);
+    final match = RegExp(r'(\d+(?:\.\d+)?%)').firstMatch(raw);
     if (match != null) {
-      return [match.group(1) ?? '', match.group(2) ?? ''];
+      if (raw.toLowerCase().contains('upto') || raw.toLowerCase().contains('up to')) {
+        return 'UPTO ${match.group(1)} OFF';
+      }
+      return '${match.group(1)} OFF';
+    }
+    if (raw.length <= 12) {
+      return raw.toUpperCase();
+    }
+    return 'HOT DEAL';
+  }
+
+  String get _cashbackBadgeText {
+    final raw = widget.brand.cashbackPercentage.trim();
+    if (raw.isEmpty) return '+7.5% Back';
+
+    final match = RegExp(r'(\d+(?:\.\d+)?%)').firstMatch(raw);
+    if (match != null) {
+      return '+${match.group(1)} Back';
+    }
+    final amtMatch = RegExp(r'(₹\d+)').firstMatch(raw);
+    if (amtMatch != null) {
+      return '+${amtMatch.group(1)} Back';
+    }
+    return '+7.5% Back';
+  }
+
+  String get _subtitleText {
+    final cat = widget.brand.category.trim();
+    if (cat.isNotEmpty && cat.toLowerCase() != 'popular') {
+      return cat;
     }
 
-    // Fallback: If multiple words, split before the last word
-    final lastSpaceIndex = trimmed.lastIndexOf(' ');
-    if (lastSpaceIndex != -1) {
-      return [
-        trimmed.substring(0, lastSpaceIndex),
-        trimmed.substring(lastSpaceIndex + 1),
-      ];
+    final name = widget.brand.name.toLowerCase();
+    if (name.contains('zara') ||
+        name.contains('myntra') ||
+        name.contains('ajio') ||
+        name.contains('libas') ||
+        name.contains('shyaway')) {
+      return 'Apparel & Coats';
     }
-
-    return [trimmed, ''];
+    if (name.contains('amazon') || name.contains('flipkart') || name.contains('shopsy')) {
+      return 'Deals & Shopping';
+    }
+    if (name.contains('nykaa') ||
+        name.contains('dot') ||
+        name.contains('caffeine') ||
+        name.contains('derma') ||
+        name.contains('foxtale') ||
+        name.contains('aqualogica')) {
+      return 'Skincare & Beauty';
+    }
+    if (name.contains('reliance') ||
+        name.contains('boat') ||
+        name.contains('noise') ||
+        name.contains('realme') ||
+        name.contains('oppo')) {
+      return 'Tech & Gadgets';
+    }
+    if (name.contains('food') ||
+        name.contains('haldiram') ||
+        name.contains('swiggy') ||
+        name.contains('zomato')) {
+      return 'Food & Gourmet';
+    }
+    if (name.contains('travel') ||
+        name.contains('makemytrip') ||
+        name.contains('cleartrip') ||
+        name.contains('booking')) {
+      return 'Hotels & Flights';
+    }
+    return 'Offers & Rewards';
   }
 
   @override
   Widget build(BuildContext context) {
-    final logoUrl = brand.logoUrl.isNotEmpty
-        ? brand.logoUrl
-        : (brand.bannerUrl.isNotEmpty
-            ? brand.bannerUrl
-            : brand.websiteUrl);
+    final isDark = widget.isDark;
+    final brand = widget.brand;
+    final collectionAsset = _getBrandCollectionAsset(brand);
+    final logoUrl = brand.logoUrl.trim();
 
-    final colIndex = _effectiveColumnIndex;
-    final headerBgColor = _getHeaderBackgroundColor(colIndex);
-    final headerTextColor = _getHeaderTextColor(colIndex);
-    final offerText = _cleanOfferText(brand.offerText);
-    final showLiveDot = _isLiveOrSale(brand.offerText);
-    final rewardParts = _splitRewardsText(brand.cashbackPercentage);
-    final rewardLine1 = rewardParts[0];
-    final rewardLine2 = rewardParts[1];
-
-    return GestureDetector(
-      onTap: onTap ??
-          () {
+    return AnimatedScale(
+      scale: _isPressed ? 0.96 : 1.0,
+      duration: const Duration(milliseconds: 140),
+      curve: Curves.easeOutCubic,
+      child: GestureDetector(
+        onTapDown: (_) => setState(() => _isPressed = true),
+        onTapUp: (_) {
+          setState(() => _isPressed = false);
+          if (widget.onTap != null) {
+            widget.onTap!();
+          } else {
             Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => ProductDetailScreen.fromBrand(brand),
               ),
             );
-          },
-      child: Container(
-        height: 158,
-        decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF231A15) : Colors.white,
-          borderRadius: BorderRadius.circular(14),
-          border: Border.all(
-            color: isDark
-                ? const Color(0xFF3F3027)
-                : const Color(0xFFE8DFD5),
-            width: 1,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(
-                alpha: isDark ? 0.3 : 0.05,
-              ),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+          }
+        },
+        onTapCancel: () => setState(() => _isPressed = false),
+        child: Container(
+          padding: const EdgeInsets.all(8.0),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkCard : Colors.white,
+            borderRadius: BorderRadius.circular(18),
+            border: Border.all(
+              color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
+              width: 1.0,
             ),
-          ],
-        ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(14),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              // ------------------------------------------
-              // TOP OFFER BANNER ("Off %" Section)
-              // ------------------------------------------
-              Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                  vertical: 6.5,
-                ),
-                decoration: BoxDecoration(
-                  color: headerBgColor,
-                  borderRadius: const BorderRadius.only(
-                    topLeft: Radius.circular(14),
-                    topRight: Radius.circular(14),
-                  ),
-                  border: Border(
-                    bottom: BorderSide(
-                      color: isDark
-                          ? Colors.white.withValues(alpha: 0.05)
-                          : Colors.black.withValues(alpha: 0.04),
-                      width: 0.8,
-                    ),
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Flexible(
-                      child: Text(
-                        offerText,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.center,
-                        style: GoogleFonts.fraunces(
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                          color: headerTextColor,
-                          letterSpacing: 0.0,
-                        ),
-                      ),
-                    ),
-                    if (showLiveDot) ...[
-                      const SizedBox(width: 4.5),
-                      Container(
-                        width: 5.5,
-                        height: 5.5,
-                        decoration: const BoxDecoration(
-                          color: Color(0xFFE53935),
-                          shape: BoxShape.circle,
-                        ),
-                      ),
-                    ],
-                  ],
-                ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.05),
+                blurRadius: 8,
+                offset: const Offset(0, 3),
               ),
-
-              // ------------------------------------------
-              // BRAND LOGO
-              // ------------------------------------------
-              Expanded(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 4,
-                    ),
-                    child: ConstrainedBox(
-                      constraints: const BoxConstraints(
-                        maxHeight: 46,
-                        maxWidth: 94,
-                      ),
-                      child: NetworkImageWithSkeleton(
-                        imageUrl: logoUrl,
-                        fit: BoxFit.contain,
-                        alignment: Alignment.center,
+            ],
+          ),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              // 1. TOP PRODUCT COLLECTION IMAGE CONTAINER
+              ClipRRect(
+                borderRadius: BorderRadius.circular(14),
+                child: SizedBox(
+                  height: 106,
+                  width: double.infinity,
+                  child: Stack(
+                    fit: StackFit.expand,
+                    children: [
+                      // Product Collection Image
+                      Image.asset(
+                        collectionAsset,
+                        fit: BoxFit.cover,
                         errorBuilder: (context, error, stackTrace) {
-                          return Center(
-                            child: Text(
-                              brand.name,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                              textAlign: TextAlign.center,
-                              style: GoogleFonts.fraunces(
-                                fontSize: 13.0,
-                                fontWeight: FontWeight.w700,
-                                color: isDark
-                                    ? AppColors.darkTextPrimary
-                                    : AppColors.textPrimary,
+                          return Container(
+                            color: const Color(0xFF0F1E2E),
+                            child: const Center(
+                              child: Icon(
+                                Icons.shopping_bag_outlined,
+                                color: Colors.white54,
+                                size: 28,
                               ),
                             ),
                           );
                         },
                       ),
-                    ),
+
+                      // Soft Top & Bottom Scrim Gradient for Badge Legibility
+                      Container(
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            begin: Alignment.topCenter,
+                            end: Alignment.bottomCenter,
+                            colors: [
+                              Colors.black.withValues(alpha: 0.28),
+                              Colors.transparent,
+                              Colors.black.withValues(alpha: 0.35),
+                            ],
+                            stops: const [0.0, 0.5, 1.0],
+                          ),
+                        ),
+                      ),
+
+                      // Top-Left: Discount Badge (e.g. "60% OFF")
+                      Positioned(
+                        top: 7,
+                        left: 7,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(
+                            horizontal: 7.5,
+                            vertical: 3.5,
+                          ),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.18),
+                                blurRadius: 4,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: Text(
+                            _discountText,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w800,
+                              color: const Color(0xFF0F172A),
+                              letterSpacing: 0.1,
+                            ),
+                          ),
+                        ),
+                      ),
+
+                      // Bottom-Left: Brand Logo / Initial Badge
+                      Positioned(
+                        bottom: 7,
+                        left: 7,
+                        child: Container(
+                          width: 26,
+                          height: 26,
+                          padding: const EdgeInsets.all(2.5),
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(6),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: 0.25),
+                                blurRadius: 4,
+                                offset: const Offset(0, 1),
+                              ),
+                            ],
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(4),
+                            child: logoUrl.isNotEmpty
+                                ? (logoUrl.startsWith('assets/')
+                                    ? Image.asset(
+                                        logoUrl,
+                                        fit: BoxFit.contain,
+                                        errorBuilder: (context, error, stackTrace) => _buildFallbackInitial(),
+                                      )
+                                    : NetworkImageWithSkeleton(
+                                        imageUrl: logoUrl,
+                                        fit: BoxFit.contain,
+                                        shape: BoxShape.rectangle,
+                                        errorBuilder: (context, error, stackTrace) => _buildFallbackInitial(),
+                                      ))
+                                : _buildFallbackInitial(),
+                          ),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               ),
 
-              // ------------------------------------------
-              // REWARDS PILL BUTTON (Two Lines)
-              // ------------------------------------------
+              const SizedBox(height: 7),
+
+              // 2. BRAND TITLE
+              Text(
+                brand.name,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w800,
+                  color: isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A),
+                  letterSpacing: -0.2,
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
+              const SizedBox(height: 1.5),
+
+              // 3. CATEGORY / SUBTITLE
+              Text(
+                _subtitleText,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 11.0,
+                  fontWeight: FontWeight.w500,
+                  color: isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B),
+                ),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
+
+              const SizedBox(height: 7),
+
+              // 4. CASHBACK BADGE PILL (e.g. "+7.5% Back ⚡")
               Container(
                 width: double.infinity,
-                margin: const EdgeInsets.fromLTRB(8, 0, 8, 8),
-                padding: const EdgeInsets.symmetric(
-                  horizontal: 4,
-                  vertical: 5,
-                ),
+                padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4.5),
                 decoration: BoxDecoration(
-                  color: isDark
-                      ? const Color(0xFF2C1910)
-                      : const Color(0xFF382218),
+                  color: isDark ? const Color(0xFF0B251B) : const Color(0xFFEBF8F3),
                   borderRadius: BorderRadius.circular(10),
-                  border: isDark
-                      ? Border.all(
-                          color: const Color(0xFF4B3224),
-                          width: 0.8,
-                        )
-                      : null,
+                  border: Border.all(
+                    color: isDark
+                        ? const Color(0xFF00E599).withValues(alpha: 0.25)
+                        : const Color(0xFFB8EED8),
+                    width: 0.8,
+                  ),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        _cashbackBadgeText,
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 11.5,
+                          fontWeight: FontWeight.w700,
+                          color: const Color(0xFF009660),
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                    const Icon(
+                      Icons.bolt_rounded,
+                      size: 15,
+                      color: Color(0xFF009660),
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 8),
+
+              // 5. "Shop →" CTA BUTTON
+              Container(
+                height: 34,
+                width: double.infinity,
+                decoration: BoxDecoration(
+                  color: isDark ? const Color(0xFF1E293B) : const Color(0xFF0C1929),
+                  borderRadius: BorderRadius.circular(17),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(
-                        alpha: isDark ? 0.3 : 0.16,
-                      ),
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.12),
                       blurRadius: 4,
                       offset: const Offset(0, 1.5),
                     ),
                   ],
                 ),
-                child: Column(
-                  mainAxisSize: MainAxisSize.min,
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Text(
-                      rewardLine1,
-                      textAlign: TextAlign.center,
-                      maxLines: 1,
-                      overflow: TextOverflow.ellipsis,
-                      style: GoogleFonts.fraunces(
-                        fontSize: 11,
-                        fontWeight: FontWeight.w600,
-                        color: Colors.white,
-                        height: 1.18,
-                        letterSpacing: 0.2,
-                      ),
-                    ),
-                    if (rewardLine2.isNotEmpty)
+                child: Center(
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
                       Text(
-                        rewardLine2,
-                        textAlign: TextAlign.center,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: GoogleFonts.fraunces(
-                          fontSize: 11.0,
-                          fontWeight: FontWeight.w500,
+                        'Shop',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13.0,
+                          fontWeight: FontWeight.w700,
                           color: Colors.white,
-                          height: 1.18,
-                          letterSpacing: 0.2,
+                          letterSpacing: 0.1,
                         ),
                       ),
-                  ],
+                      const SizedBox(width: 4),
+                      const Icon(
+                        Icons.arrow_forward_rounded,
+                        size: 14,
+                        color: Colors.white,
+                      ),
+                    ],
+                  ),
                 ),
               ),
             ],
           ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildFallbackInitial() {
+    final initial = widget.brand.name.trim().isNotEmpty
+        ? widget.brand.name.trim()[0].toUpperCase()
+        : 'B';
+    return Center(
+      child: Text(
+        initial,
+        style: GoogleFonts.plusJakartaSans(
+          fontWeight: FontWeight.w900,
+          fontSize: 11,
+          color: const Color(0xFF0F172A),
         ),
       ),
     );

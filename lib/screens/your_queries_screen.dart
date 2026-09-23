@@ -123,7 +123,7 @@ class YourQueriesScreen extends StatelessWidget {
               // Quick Help Section
               Text(
                 'POPULAR SUPPORT TOPICS',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,

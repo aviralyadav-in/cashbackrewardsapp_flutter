@@ -1,13 +1,24 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:share_plus/share_plus.dart';
 
 import '../models/amazon_deal_model.dart';
 import '../models/brand_model.dart';
+import '../models/category_shopping_models.dart';
+import '../models/home_discovery_models.dart';
 import '../models/product.dart';
 import '../screens/offer_section_screen.dart';
 import '../services/url_launcher_service.dart';
 import '../theme/app_theme.dart';
 import '../widgets/network_image_with_skeleton.dart';
+import 'package:provider/provider.dart';
+import '../providers/home_provider.dart';
+import '../providers/user_provider.dart';
+import '../services/affiliate_service.dart';
+import '../services/auth_service.dart';
+
 
 class ProductDetailScreen extends StatefulWidget {
   static const String routeName = '/product-detail';
@@ -16,6 +27,15 @@ class ProductDetailScreen extends StatefulWidget {
   final BrandModel? brand;
   final AmazonDealItemData? amazonDeal;
   final OfferSectionItem? offerItem;
+  final CategoryDealModel? categoryDeal;
+  final BestDealModel? bestDeal;
+  final TrendingDealModel? trendingDeal;
+  final HomeOfferModel? homeOffer;
+  final PriceDropModel? priceDrop;
+  final CashbackIncreaseModel? cashbackIncrease;
+  final FeaturedStoreModel? featuredStore;
+  final String? compareId;
+  final String? productId;
 
   // Custom generic attributes for maximum flexibility
   final String? customTitle;
@@ -30,6 +50,8 @@ class ProductDetailScreen extends StatefulWidget {
   final String? customImageUrl;
   final List<String>? customImages;
   final String? customWebsiteUrl;
+  final String? customOriginalUrl;
+  final String? customAffiliateUrl;
   final double? customRating;
   final int? customStock;
 
@@ -39,6 +61,15 @@ class ProductDetailScreen extends StatefulWidget {
     this.brand,
     this.amazonDeal,
     this.offerItem,
+    this.categoryDeal,
+    this.bestDeal,
+    this.trendingDeal,
+    this.homeOffer,
+    this.priceDrop,
+    this.cashbackIncrease,
+    this.featuredStore,
+    this.compareId,
+    this.productId,
     this.customTitle,
     this.customBrandName,
     this.customCategory,
@@ -51,9 +82,47 @@ class ProductDetailScreen extends StatefulWidget {
     this.customImageUrl,
     this.customImages,
     this.customWebsiteUrl,
+    this.customOriginalUrl,
+    this.customAffiliateUrl,
     this.customRating,
     this.customStock,
   });
+
+  static final RegExp _emojiRegExp = RegExp(
+    r'[\u{1F300}-\u{1F9FF}\u{2600}-\u{26FF}\u{2700}-\u{27BF}\u{1F600}-\u{1F64F}\u{1F680}-\u{1F6FF}\u{1F1E0}-\u{1F1FF}]',
+    unicode: true,
+  );
+
+  /// Strips emojis from titles and section headings to ensure a clean theme appearance.
+  static String cleanTitle(String text) {
+    return text.replaceAll(_emojiRegExp, '').trim();
+  }
+
+  /// Factory for CategoryDealModel (from Category/Subcategory shopping journey)
+  factory ProductDetailScreen.fromCategoryDeal(
+    CategoryDealModel deal, {
+    Key? key,
+    String? categoryName,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      categoryDeal: deal,
+      compareId: deal.id,
+      customTitle: deal.title,
+      customBrandName: deal.brand,
+      customCategory: categoryName ?? 'Fashion',
+      customOriginalPrice: '₹${deal.originalPrice.toInt()}',
+      customDiscountedPrice: '₹${deal.discountedPrice.toInt()}',
+      customDiscountTag: '${deal.discountPercentage.toInt()}% OFF',
+      customCashbackTag: '${deal.cashbackPercentage.toInt()}% Cashback',
+      customFinalPrice: '₹${deal.effectivePrice.toInt()}',
+      customDescription:
+          '${deal.title} by ${deal.brand}. Recommended deal with verified store discounts and KashIQ extra cashback.',
+      customImageUrl: deal.imageUrl,
+      customImages: [deal.imageUrl],
+      customWebsiteUrl: resolveStoreUrl(deal.store),
+    );
+  }
 
   /// Factory for OfferSectionItem (Flipkart, Meesho, etc.)
   factory ProductDetailScreen.fromOfferItem(
@@ -96,7 +165,7 @@ class ProductDetailScreen extends StatefulWidget {
       customCashbackTag: rewardTag,
       customFinalPrice: finalPriceStr,
       customDescription:
-          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.',
+          'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your KashIQ wallet after delivery.',
       customImageUrl: deal.imageUrl,
       customWebsiteUrl: deal.productUrl.isNotEmpty
           ? deal.productUrl
@@ -120,9 +189,159 @@ class ProductDetailScreen extends StatefulWidget {
       customDescription:
           'Shop online at ${brand.name} to earn up to ${brand.cashbackPercentage} cashback on your purchase. All transactions are securely tracked.',
       customImageUrl: brand.bannerUrl.isNotEmpty ? brand.bannerUrl : brand.logoUrl,
-      customWebsiteUrl: (brand.websiteUrl.isNotEmpty && !brand.websiteUrl.contains('cashkaro.com'))
+      customWebsiteUrl: (brand.websiteUrl.isNotEmpty && !brand.websiteUrl.contains('KashIQ.com'))
           ? brand.websiteUrl
           : resolveStoreUrl(brand.name),
+    );
+  }
+
+  /// Factory for BestDealModel (Best Deals For You)
+  factory ProductDetailScreen.fromBestDeal(
+    BestDealModel deal, {
+    Key? key,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      bestDeal: deal,
+      compareId: deal.id,
+      customTitle: deal.title,
+      customBrandName: deal.brand.isNotEmpty ? deal.brand : deal.store,
+      customCategory: deal.category.isNotEmpty ? deal.category : 'Top Recommendation',
+      customOriginalPrice: deal.originalPrice > 0 ? '₹${deal.originalPrice.toInt()}' : null,
+      customDiscountedPrice: '₹${deal.discountedPrice.toInt()}',
+      customDiscountTag: '${deal.discountPercentage.toInt()}% OFF',
+      customCashbackTag: '${deal.cashbackPercentage.toInt()}% Cashback',
+      customFinalPrice: '₹${deal.effectivePrice.toInt()}',
+      customDescription:
+          '${deal.title} by ${deal.brand}. Verified deal on ${deal.store} with extra ₹${deal.cashbackAmount.toInt()} cashback and ₹${deal.couponDiscount.toInt()} coupon savings.',
+      customImageUrl: deal.imageUrl,
+      customImages: [deal.imageUrl],
+      customWebsiteUrl: resolveStoreUrl(deal.store),
+    );
+  }
+
+  /// Factory for TrendingDealModel (Trending Deals)
+  factory ProductDetailScreen.fromTrendingDeal(
+    TrendingDealModel deal, {
+    Key? key,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      trendingDeal: deal,
+      compareId: deal.id,
+      customTitle: deal.productName,
+      customBrandName: deal.brand.isNotEmpty ? deal.brand : deal.store,
+      customCategory: 'Trending Deals',
+      customOriginalPrice: deal.originalPrice > 0 ? '₹${deal.originalPrice.toInt()}' : null,
+      customDiscountedPrice: '₹${deal.price.toInt()}',
+      customDiscountTag: deal.discount.isNotEmpty ? deal.discount : null,
+      customCashbackTag: deal.cashback.isNotEmpty ? deal.cashback : 'KashIQ Cashback',
+      customDescription:
+          '${deal.productName} by ${deal.brand}. Trending deal on ${deal.store} with ${deal.discount} and guaranteed extra ${deal.cashback}.',
+      customImageUrl: deal.imageUrl,
+      customImages: [deal.imageUrl],
+      customWebsiteUrl: resolveStoreUrl(deal.store),
+    );
+  }
+
+  /// Factory for HomeOfferModel (Offers)
+  factory ProductDetailScreen.fromHomeOffer(
+    HomeOfferModel offer, {
+    Key? key,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      homeOffer: offer,
+      compareId: offer.id,
+      customTitle: offer.title,
+      customBrandName: offer.store,
+      customCategory: offer.category.isNotEmpty ? offer.category : 'Hot Offers',
+      customDiscountedPrice: offer.discount,
+      customDiscountTag: offer.discount,
+      customCashbackTag: offer.cashback,
+      customDescription:
+          'Exclusive deal on ${offer.store}. Enjoy ${offer.discount} with ${offer.cashback} credited to your KashIQ account. ${offer.validity.isNotEmpty ? "Valid until ${offer.validity}." : ""}',
+      customImageUrl: offer.imageUrl.isNotEmpty ? offer.imageUrl : offer.storeLogo,
+      customImages: [offer.imageUrl.isNotEmpty ? offer.imageUrl : offer.storeLogo],
+      customWebsiteUrl: offer.actionUrl.isNotEmpty && !offer.actionUrl.contains('KashIQ.com')
+          ? offer.actionUrl
+          : resolveStoreUrl(offer.store),
+    );
+  }
+
+  /// Factory for PriceDropModel (Price Drops)
+  factory ProductDetailScreen.fromPriceDrop(
+    PriceDropModel item, {
+    Key? key,
+  }) {
+    final discountPercent = item.wasPrice > 0
+        ? (((item.wasPrice - item.nowPrice) / item.wasPrice) * 100).round()
+        : 0;
+    return ProductDetailScreen(
+      key: key,
+      priceDrop: item,
+      compareId: item.id,
+      customTitle: item.productName,
+      customBrandName: item.brand.isNotEmpty ? item.brand : item.store,
+      customCategory: 'Price Drop Alert',
+      customOriginalPrice: '₹${item.wasPrice.toInt()}',
+      customDiscountedPrice: '₹${item.nowPrice.toInt()}',
+      customDiscountTag: item.priceDropBadge.isNotEmpty
+          ? item.priceDropBadge
+          : (discountPercent > 0 ? '$discountPercent% OFF' : 'Price Drop'),
+      customCashbackTag: item.cashback.isNotEmpty ? item.cashback : 'Extra Cashback',
+      customDescription:
+          '${item.productName} by ${item.brand} dropped in price by ₹${item.priceDropAmount.toInt()}! Now only ₹${item.nowPrice.toInt()} on ${item.store} with extra ${item.cashback}.',
+      customImageUrl: item.imageUrl,
+      customImages: [item.imageUrl],
+      customWebsiteUrl: resolveStoreUrl(item.store),
+    );
+  }
+
+  /// Factory for CashbackIncreaseModel (Cashback Increased)
+  factory ProductDetailScreen.fromCashbackIncrease(
+    CashbackIncreaseModel item, {
+    Key? key,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      cashbackIncrease: item,
+      compareId: item.id,
+      customTitle: item.headline.isNotEmpty ? item.headline : '${item.store} Cashback Boosted!',
+      customBrandName: item.store,
+      customCategory: 'Cashback Increased',
+      customDiscountTag: item.badge,
+      customCashbackTag: item.newRate,
+      customDescription: item.description.isNotEmpty
+          ? item.description
+          : 'Cashback rate at ${item.store} increased from ${item.previousRate} to ${item.newRate} for a limited time!',
+      customImageUrl: item.logoUrl,
+      customImages: [item.logoUrl],
+      customWebsiteUrl: resolveStoreUrl(item.store),
+    );
+  }
+
+  /// Factory for FeaturedStoreModel (⭐ Featured Stores)
+  factory ProductDetailScreen.fromFeaturedStore(
+    FeaturedStoreModel store, {
+    Key? key,
+  }) {
+    return ProductDetailScreen(
+      key: key,
+      featuredStore: store,
+      compareId: store.id,
+      customTitle: '${store.name} Cashback & Deals',
+      customBrandName: store.name,
+      customCategory: store.offerTag.isNotEmpty ? store.offerTag : 'Featured Store',
+      customDiscountTag: store.offerTag,
+      customCashbackTag: store.cashbackRate,
+      customDescription:
+          'Shop at ${store.name} through KashIQ to earn up to ${store.cashbackRate} cashback. Access ${store.totalOffers} live offers and ${store.totalCoupons} verified coupons.',
+      customImageUrl: store.logoUrl,
+      customImages: [store.logoUrl],
+      customWebsiteUrl: (store.websiteUrl.isNotEmpty && !store.websiteUrl.contains('KashIQ.com'))
+          ? store.websiteUrl
+          : resolveStoreUrl(store.name),
     );
   }
 
@@ -276,17 +495,474 @@ class ProductDetailScreen extends StatefulWidget {
     return Icons.shopping_bag_outlined;
   }
 
+  static double _parseNumericPrice(String? priceStr, {double fallback = 0.0}) {
+    if (priceStr == null || priceStr.isEmpty) return fallback;
+    final cleaned = priceStr.replaceAll(RegExp(r'[^0-9.]'), '');
+    return double.tryParse(cleaned) ?? fallback;
+  }
+
   @override
   State<ProductDetailScreen> createState() => _ProductDetailScreenState();
 }
 
+class StoreDealOption {
+  final String storeName;
+  final double storePrice;
+  final double couponDiscount;
+  final String couponCode;
+  final double cashbackRate;
+  final String badgeText;
+  final bool isBestDeal;
+  final String targetUrl;
+  final double? exactCashbackAmount;
+  final double? storeDiscount;
+  final bool isOutOfStock;
+
+  const StoreDealOption({
+    required this.storeName,
+    required this.storePrice,
+    required this.couponDiscount,
+    required this.couponCode,
+    required this.cashbackRate,
+    required this.badgeText,
+    required this.isBestDeal,
+    required this.targetUrl,
+    this.exactCashbackAmount,
+    this.storeDiscount,
+    this.isOutOfStock = false,
+  });
+}
+
 class _ProductDetailScreenState extends State<ProductDetailScreen> {
   int _currentImageIndex = 0;
+  final int _selectedStoreIndex = 0;
+  bool _isCouponApplied = true;
+  final Map<String, bool> _storeCouponApplied = {};
+  static const double minSpendThreshold = 500.0;
+
+  bool _isCouponActiveForStore(String storeName) {
+    return _storeCouponApplied[storeName] ?? _isCouponApplied;
+  }
+
+  void _toggleCouponForStore(String storeName) {
+    setState(() {
+      final current = _isCouponActiveForStore(storeName);
+      _storeCouponApplied[storeName] = !current;
+      _isCouponApplied = !current;
+    });
+  }
+
+  String _selectedColor = 'Blue';
+  final List<String> _availableColors = ['Blue', 'Black', 'Olive', 'Navy'];
+  bool _isKeyFeaturesExpanded = true;
+  bool _isSimilarExpanded = false;
+  bool _isYouMightLikeExpanded = false;
+
+  List<StoreDealOption> _buildStoreOptions({
+    required CategoryDealModel? categoryDeal,
+    required BestDealModel? bestDeal,
+    required TrendingDealModel? trendingDeal,
+    required PriceDropModel? priceDrop,
+    required HomeOfferModel? homeOffer,
+    required CashbackIncreaseModel? cashbackIncrease,
+    required Product? product,
+    required AmazonDealItemData? amazonDeal,
+    required OfferSectionItem? offerItem,
+    required BrandModel? brand,
+    required String displayStoreName,
+    required double defaultBasePrice,
+    required double defaultCoupon,
+    required String defaultCouponCode,
+    required double defaultCbRate,
+  }) {
+    if (bestDeal != null) {
+      if (bestDeal.stores.isNotEmpty) {
+        return bestDeal.stores.map((s) {
+          final isBest = s.isBest;
+          final code = s.coupon > 0
+              ? (bestDeal.couponCode.isNotEmpty ? bestDeal.couponCode : '${s.store.toUpperCase()}${s.coupon.toInt()}')
+              : '';
+          final cbRate = (s.price > 0 && s.cashback > 0)
+              ? ((s.cashback / s.price) * 100).roundToDouble().clamp(1.0, 25.0)
+              : bestDeal.cashbackPercentage;
+
+          return StoreDealOption(
+            storeName: s.store,
+            storePrice: s.price,
+            couponDiscount: s.coupon,
+            couponCode: code,
+            cashbackRate: cbRate,
+            exactCashbackAmount: s.cashback,
+            storeDiscount: s.storeDiscount > 0
+                ? s.storeDiscount
+                : (bestDeal.originalPrice > s.price ? bestDeal.originalPrice - s.price : 0.0),
+            badgeText: isBest ? 'Lowest Price' : 'Verified Store',
+            isBestDeal: isBest,
+            targetUrl: ProductDetailScreen.resolveStoreUrl(s.store),
+          );
+        }).toList();
+      }
+
+      final basePrice = bestDeal.discountedPrice;
+      final primaryStore = bestDeal.store.isNotEmpty ? bestDeal.store : 'Myntra';
+      final altStore = primaryStore.toLowerCase() == 'ajio'
+          ? 'Myntra'
+          : (primaryStore.toLowerCase() == 'flipkart' ? 'Amazon' : 'Flipkart');
+      final coupon = bestDeal.couponDiscount;
+      final code = bestDeal.couponCode.isNotEmpty ? bestDeal.couponCode : 'BESTDEAL';
+      final cb = bestDeal.cashbackPercentage > 0 ? bestDeal.cashbackPercentage : 10.0;
+      final storeDisc = bestDeal.originalPrice > basePrice ? bestDeal.originalPrice - basePrice : 0.0;
+
+      return [
+        StoreDealOption(
+          storeName: primaryStore,
+          storePrice: basePrice,
+          couponDiscount: coupon,
+          couponCode: code,
+          cashbackRate: cb,
+          exactCashbackAmount: bestDeal.cashbackAmount > 0 ? bestDeal.cashbackAmount : null,
+          storeDiscount: storeDisc,
+          badgeText: 'Lowest Price',
+          isBestDeal: true,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(primaryStore),
+        ),
+        StoreDealOption(
+          storeName: altStore,
+          storePrice: (basePrice * 1.05).roundToDouble(),
+          couponDiscount: (coupon * 0.7).roundToDouble(),
+          couponCode: 'STORE${(coupon * 0.7).toInt()}',
+          cashbackRate: (cb * 0.8).roundToDouble(),
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.8).roundToDouble() : 0.0,
+          badgeText: 'Verified Store',
+          isBestDeal: false,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(altStore),
+        ),
+        StoreDealOption(
+          storeName: 'Amazon',
+          storePrice: (basePrice * 1.08).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 5.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
+          badgeText: 'Fast Delivery',
+          isBestDeal: false,
+          targetUrl: 'https://www.amazon.in',
+        ),
+        StoreDealOption(
+          storeName: 'Flipkart',
+          storePrice: (basePrice * 1.10).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 4.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.4).roundToDouble() : 0.0,
+          badgeText: 'Popular',
+          isBestDeal: false,
+          targetUrl: 'https://www.flipkart.com',
+        ),
+      ];
+    }
+
+    if (trendingDeal != null) {
+      final basePrice = trendingDeal.price;
+      final primaryStore = trendingDeal.store.isNotEmpty ? trendingDeal.store : 'Amazon';
+      final altStore = primaryStore.toLowerCase() == 'flipkart' ? 'Amazon' : 'Flipkart';
+      final cbRate = trendingDeal.cashbackAmount > 0 && basePrice > 0
+          ? ((trendingDeal.cashbackAmount / basePrice) * 100).roundToDouble().clamp(1.0, 30.0)
+          : 8.0;
+      final storeDisc = trendingDeal.originalPrice > basePrice
+          ? (trendingDeal.originalPrice - basePrice)
+          : 0.0;
+
+      return [
+        StoreDealOption(
+          storeName: primaryStore,
+          storePrice: basePrice,
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: cbRate,
+          exactCashbackAmount: trendingDeal.cashbackAmount > 0 ? trendingDeal.cashbackAmount : null,
+          storeDiscount: storeDisc,
+          badgeText: 'Lowest Price',
+          isBestDeal: true,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(primaryStore),
+        ),
+        StoreDealOption(
+          storeName: altStore,
+          storePrice: (basePrice * 1.05).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: (cbRate * 0.8).roundToDouble(),
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.8).roundToDouble() : 0.0,
+          badgeText: 'Alternative',
+          isBestDeal: false,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(altStore),
+        ),
+        StoreDealOption(
+          storeName: 'Myntra',
+          storePrice: (basePrice * 1.08).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: (cbRate * 0.7).roundToDouble(),
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.7).roundToDouble() : 0.0,
+          badgeText: 'Official Store',
+          isBestDeal: false,
+          targetUrl: 'https://www.myntra.com',
+        ),
+      ];
+    }
+
+    if (priceDrop != null) {
+      final basePrice = priceDrop.nowPrice;
+      final primaryStore = priceDrop.store.isNotEmpty ? priceDrop.store : 'Flipkart';
+      final altStore = primaryStore.toLowerCase() == 'amazon' ? 'Flipkart' : 'Amazon';
+      final cbRate = priceDrop.cashbackAmount > 0 && basePrice > 0
+          ? ((priceDrop.cashbackAmount / basePrice) * 100).roundToDouble().clamp(1.0, 30.0)
+          : 6.0;
+      final storeDisc = priceDrop.priceDropAmount > 0
+          ? priceDrop.priceDropAmount
+          : (priceDrop.wasPrice > basePrice ? priceDrop.wasPrice - basePrice : 0.0);
+
+      return [
+        StoreDealOption(
+          storeName: primaryStore,
+          storePrice: basePrice,
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: cbRate,
+          exactCashbackAmount: priceDrop.cashbackAmount > 0 ? priceDrop.cashbackAmount : null,
+          storeDiscount: storeDisc,
+          badgeText: 'Dropped Price',
+          isBestDeal: true,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(primaryStore),
+        ),
+        StoreDealOption(
+          storeName: altStore,
+          storePrice: (basePrice * 1.05).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: (cbRate * 0.8).roundToDouble(),
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.7).roundToDouble() : 0.0,
+          badgeText: 'Standard Price',
+          isBestDeal: false,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(altStore),
+        ),
+        StoreDealOption(
+          storeName: 'Reliance Digital',
+          storePrice: (basePrice * 1.08).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 4.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
+          badgeText: 'Retail Store',
+          isBestDeal: false,
+          targetUrl: 'https://www.reliancedigital.in',
+        ),
+      ];
+    }
+
+    if (categoryDeal != null) {
+      final basePrice = categoryDeal.discountedPrice;
+      final primaryStore = categoryDeal.store.isNotEmpty ? categoryDeal.store : 'Myntra';
+      final altStore = primaryStore.toLowerCase() == 'ajio' ? 'Myntra' : 'AJIO';
+      final coupon = categoryDeal.couponDiscount > 0 ? categoryDeal.couponDiscount : 150.0;
+      final code = categoryDeal.couponCode.isNotEmpty ? categoryDeal.couponCode : 'FASHION150';
+      final cb = categoryDeal.cashbackPercentage > 0 ? categoryDeal.cashbackPercentage : 10.0;
+      final storeDisc = categoryDeal.originalPrice > basePrice ? categoryDeal.originalPrice - basePrice : 0.0;
+
+      return [
+        StoreDealOption(
+          storeName: primaryStore,
+          storePrice: basePrice,
+          couponDiscount: coupon,
+          couponCode: code,
+          cashbackRate: cb,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc,
+          badgeText: 'Lowest Price',
+          isBestDeal: true,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(primaryStore),
+        ),
+        StoreDealOption(
+          storeName: altStore,
+          storePrice: (basePrice * 1.06).roundToDouble(),
+          couponDiscount: (coupon * 0.7).roundToDouble(),
+          couponCode: 'STORE${(coupon * 0.7).toInt()}',
+          cashbackRate: (cb * 0.8).roundToDouble(),
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.8).roundToDouble() : 0.0,
+          badgeText: 'Official Store',
+          isBestDeal: false,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(altStore),
+        ),
+        StoreDealOption(
+          storeName: 'Amazon',
+          storePrice: (basePrice * 1.12).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 6.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
+          badgeText: 'Fast Delivery',
+          isBestDeal: false,
+          targetUrl: 'https://www.amazon.in',
+        ),
+        StoreDealOption(
+          storeName: 'Flipkart',
+          storePrice: (basePrice * 1.15).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 5.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.4).roundToDouble() : 0.0,
+          badgeText: 'Popular',
+          isBestDeal: false,
+          targetUrl: 'https://www.flipkart.com',
+        ),
+      ];
+    }
+
+    if (amazonDeal != null) {
+      final basePrice = amazonDeal.finalPrice.toDouble();
+      final storeDisc = amazonDeal.actualPrice > basePrice ? amazonDeal.actualPrice - basePrice : 0.0;
+      return [
+        StoreDealOption(
+          storeName: 'Amazon',
+          storePrice: basePrice,
+          couponDiscount: (basePrice * 0.06).roundToDouble().clamp(50.0, 300.0),
+          couponCode: 'AMZDEAL',
+          cashbackRate: amazonDeal.rewardPercentage > 0 ? amazonDeal.rewardPercentage : 8.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc,
+          badgeText: 'Lowest Price',
+          isBestDeal: true,
+          targetUrl: amazonDeal.productUrl.isNotEmpty ? amazonDeal.productUrl : 'https://www.amazon.in',
+        ),
+        StoreDealOption(
+          storeName: 'Flipkart',
+          storePrice: (basePrice * 1.07).roundToDouble(),
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 5.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.8).roundToDouble() : 0.0,
+          badgeText: 'Fast Delivery',
+          isBestDeal: false,
+          targetUrl: 'https://www.flipkart.com',
+        ),
+        StoreDealOption(
+          storeName: 'Myntra',
+          storePrice: (basePrice * 1.10).roundToDouble(),
+          couponDiscount: 100.0,
+          couponCode: 'MYNTRA100',
+          cashbackRate: 6.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.6).roundToDouble() : 0.0,
+          badgeText: 'Official Store',
+          isBestDeal: false,
+          targetUrl: 'https://www.myntra.com',
+        ),
+        StoreDealOption(
+          storeName: 'AJIO',
+          storePrice: (basePrice * 1.13).roundToDouble(),
+          couponDiscount: 80.0,
+          couponCode: 'AJIO80',
+          cashbackRate: 5.0,
+          exactCashbackAmount: null,
+          storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
+          badgeText: 'Special',
+          isBestDeal: false,
+          targetUrl: 'https://www.ajio.com',
+        ),
+      ];
+    }
+
+    // Product or general offer item
+    final basePrice = defaultBasePrice > 0 ? defaultBasePrice : 999.0;
+    final primaryStore = displayStoreName.isNotEmpty && displayStoreName != 'Store' ? displayStoreName : 'Myntra';
+    final altStore = primaryStore.toLowerCase() == 'ajio'
+        ? 'Myntra'
+        : (primaryStore.toLowerCase() == 'myntra' ? 'AJIO' : 'Amazon');
+
+    return [
+      StoreDealOption(
+        storeName: primaryStore,
+        storePrice: basePrice,
+        couponDiscount: defaultCoupon,
+        couponCode: defaultCouponCode,
+        cashbackRate: defaultCbRate,
+        exactCashbackAmount: null,
+        storeDiscount: null,
+        badgeText: 'Lowest Price',
+        isBestDeal: true,
+        targetUrl: ProductDetailScreen.resolveStoreUrl(primaryStore),
+      ),
+      StoreDealOption(
+        storeName: altStore,
+        storePrice: (basePrice * 1.06).roundToDouble(),
+        couponDiscount: (defaultCoupon * 0.7).roundToDouble(),
+        couponCode: 'SAVE${(defaultCoupon * 0.7).toInt()}',
+        cashbackRate: (defaultCbRate * 0.8).roundToDouble(),
+        exactCashbackAmount: null,
+        storeDiscount: null,
+        badgeText: 'Official Store',
+        isBestDeal: false,
+        targetUrl: ProductDetailScreen.resolveStoreUrl(altStore),
+      ),
+      StoreDealOption(
+        storeName: 'Amazon',
+        storePrice: (basePrice * 1.12).roundToDouble(),
+        couponDiscount: 0.0,
+        couponCode: '',
+        cashbackRate: 5.0,
+        exactCashbackAmount: null,
+        storeDiscount: null,
+        badgeText: 'Fast Delivery',
+        isBestDeal: false,
+        targetUrl: 'https://www.amazon.in',
+      ),
+      StoreDealOption(
+        storeName: 'Flipkart',
+        storePrice: (basePrice * 1.15).roundToDouble(),
+        couponDiscount: 0.0,
+        couponCode: '',
+        cashbackRate: 4.0,
+        exactCashbackAmount: null,
+        storeDiscount: null,
+        badgeText: 'Popular',
+        isBestDeal: false,
+        targetUrl: 'https://www.flipkart.com',
+      ),
+    ];
+  }
 
   Future<void> _handleShopNow(String targetUrl, String storeName) async {
     var urlToOpen = targetUrl.trim();
-    if (urlToOpen.isEmpty || urlToOpen.contains('cashkaro.com')) {
+    if (urlToOpen.isEmpty || urlToOpen.contains('KashIQ.com')) {
       urlToOpen = ProductDetailScreen.resolveStoreUrl(storeName);
+    }
+
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final activeUid = userProvider.uid;
+
+    try {
+      final tracked = await AffiliateService().generateTrackedLink(
+        userId: activeUid,
+        storeName: storeName,
+        targetUrl: urlToOpen,
+        storeId: storeName.toLowerCase().replaceAll(RegExp(r'\s+'), '_'),
+      );
+      if (tracked.urlToOpen.isNotEmpty) {
+        urlToOpen = tracked.urlToOpen;
+      }
+    } catch (e) {
+      debugPrint('Affiliate link tracking generation note: $e');
     }
 
     var success = await UrlLauncherService.openUrl(urlToOpen);
@@ -310,6 +986,256 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     }
   }
 
+  Future<void> _handleShareAndEarn({
+    required String? affiliateUrl,
+    required String productTitle,
+    String storeName = 'Partner Store',
+    String? targetUrl,
+    double? storePrice,
+    double? effectivePrice,
+    double? cashbackAmount,
+    String? productId,
+    String? imageUrl,
+  }) async {
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+    final activeUid = userProvider.uid;
+
+    var baseLink = (affiliateUrl != null && affiliateUrl.trim().isNotEmpty)
+        ? affiliateUrl.trim()
+        : (targetUrl?.trim() ?? '');
+    if (baseLink.isEmpty || baseLink.contains('KashIQ.com')) {
+      baseLink = ProductDetailScreen.resolveStoreUrl(storeName);
+    }
+
+    String merchantAffiliateLink = baseLink;
+    try {
+      final tracked = await AffiliateService().generateTrackedLink(
+        userId: activeUid,
+        storeName: storeName,
+        targetUrl: baseLink,
+        storeId: storeName.toLowerCase().replaceAll(RegExp(r'\s+'), '_'),
+      );
+      if (tracked.urlToOpen.isNotEmpty) {
+        merchantAffiliateLink = tracked.urlToOpen;
+      }
+    } catch (e) {
+      debugPrint('Error generating tracked share link: $e');
+    }
+
+    // Build the Hybrid Web Landing Page URL
+    String shareLink;
+    try {
+      final webUri = Uri.parse('${AuthService.publicDealUrl}/deal').replace(
+        queryParameters: {
+          'title': productTitle.trim(),
+          'store': storeName.trim(),
+          if (storePrice != null && storePrice > 0) 'price': storePrice.toStringAsFixed(0),
+          if (cashbackAmount != null && cashbackAmount > 0) 'cashback': cashbackAmount.toStringAsFixed(0),
+          if (imageUrl != null && imageUrl.trim().isNotEmpty) 'img': imageUrl.trim(),
+          if (productId != null && productId.trim().isNotEmpty) 'pid': productId.trim(),
+          if (activeUid.trim().isNotEmpty) 'ref': activeUid.trim(),
+          if (merchantAffiliateLink.isNotEmpty) 'affUrl': merchantAffiliateLink,
+        },
+      );
+      shareLink = webUri.toString();
+    } catch (e) {
+      debugPrint('Error building hybrid deal link: $e');
+      shareLink = merchantAffiliateLink;
+    }
+
+    final priceSection = (storePrice != null && effectivePrice != null && cashbackAmount != null && effectivePrice > 0)
+        ? '\n💰 Store Price: ₹${storePrice.toStringAsFixed(0)}\n🎁 KashIQ Cashback: ₹${cashbackAmount.toStringAsFixed(0)}\n✨ *Effective Price: ₹${effectivePrice.toStringAsFixed(0)} Only!*\n'
+        : '';
+
+    final shareText = '''
+🔥 *Hot Deal on $storeName via KashIQ!* 🔥
+*${productTitle.trim()}*
+$priceSection
+👉 View deal, buy now, or grab extra cashback here:
+$shareLink
+'''.trim();
+
+    try {
+      await SharePlus.instance.share(
+        ShareParams(
+          text: shareText,
+          subject: 'Deal on $productTitle - Save on KashIQ!',
+        ),
+      );
+    } catch (e) {
+      debugPrint('Error sharing via native share sheet: $e');
+      await Clipboard.setData(ClipboardData(text: shareLink));
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Row(
+            children: [
+              Icon(Icons.check_circle_outline, color: Colors.white, size: 20),
+              SizedBox(width: 8),
+              Expanded(
+                child: Text('Deal link copied to clipboard!'),
+              ),
+            ],
+          ),
+          backgroundColor: AppColors.primaryBrown,
+          duration: const Duration(seconds: 2),
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  Widget _buildBottomActionBar({
+    required BuildContext context,
+    required bool isDark,
+    required String title,
+    required String displayStoreName,
+    required String resolvedOriginalUrl,
+    required String? resolvedAffiliateUrl,
+    double? storePrice,
+    double? effectivePrice,
+    double? cashbackAmount,
+    String? productId,
+    String? imageUrl,
+  }) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : Colors.white,
+        border: Border(
+          top: BorderSide(
+            color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+            width: 1,
+          ),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.06),
+            blurRadius: 10,
+            offset: const Offset(0, -3),
+          ),
+        ],
+      ),
+      child: SafeArea(
+        top: false,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          child: Row(
+            children: [
+              // Secondary CTA: Share & Earn
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 48,
+                  child: OutlinedButton(
+                    onPressed: () => _handleShareAndEarn(
+                      affiliateUrl: resolvedAffiliateUrl,
+                      productTitle: title,
+                      storeName: displayStoreName,
+                      targetUrl: resolvedOriginalUrl,
+                      storePrice: storePrice,
+                      effectivePrice: effectivePrice,
+                      cashbackAmount: cashbackAmount,
+                      productId: productId,
+                      imageUrl: imageUrl,
+                    ),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: primaryAccent,
+                      side: BorderSide(
+                        color: primaryAccent,
+                        width: 1.5,
+                      ),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      backgroundColor: primaryAccent.withValues(alpha: 0.06),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.share_outlined,
+                          size: 18,
+                          color: primaryAccent,
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            'Share & Earn',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(width: 12),
+              // Primary CTA: Shop Now
+              Expanded(
+                flex: 1,
+                child: SizedBox(
+                  height: 48,
+                  child: ElevatedButton(
+                    onPressed: () => _handleShopNow(resolvedOriginalUrl, displayStoreName),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryAccent,
+                      foregroundColor: buttonTextColor,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(12),
+                      ),
+                      padding: const EdgeInsets.symmetric(horizontal: 8),
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.shopping_bag_outlined,
+                          size: 18,
+                          color: buttonTextColor,
+                        ),
+                        const SizedBox(width: 6),
+                        Flexible(
+                          child: Text(
+                            'Shop Now',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.2,
+                              color: buttonTextColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 16,
+                          color: buttonTextColor,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
@@ -320,6 +1246,13 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     BrandModel? brand = widget.brand;
     AmazonDealItemData? amazonDeal = widget.amazonDeal;
     OfferSectionItem? offerItem = widget.offerItem;
+    CategoryDealModel? categoryDeal = widget.categoryDeal;
+    BestDealModel? bestDeal = widget.bestDeal;
+    TrendingDealModel? trendingDeal = widget.trendingDeal;
+    HomeOfferModel? homeOffer = widget.homeOffer;
+    PriceDropModel? priceDrop = widget.priceDrop;
+    CashbackIncreaseModel? cashbackIncrease = widget.cashbackIncrease;
+    FeaturedStoreModel? featuredStore = widget.featuredStore;
 
     if (routeArgs != null) {
       if (routeArgs is Product) {
@@ -330,10 +1263,30 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         amazonDeal = routeArgs;
       } else if (routeArgs is OfferSectionItem) {
         offerItem = routeArgs;
+      } else if (routeArgs is CategoryDealModel) {
+        categoryDeal = routeArgs;
+      } else if (routeArgs is BestDealModel) {
+        bestDeal = routeArgs;
+      } else if (routeArgs is TrendingDealModel) {
+        trendingDeal = routeArgs;
+      } else if (routeArgs is HomeOfferModel) {
+        homeOffer = routeArgs;
+      } else if (routeArgs is PriceDropModel) {
+        priceDrop = routeArgs;
+      } else if (routeArgs is CashbackIncreaseModel) {
+        cashbackIncrease = routeArgs;
+      } else if (routeArgs is FeaturedStoreModel) {
+        featuredStore = routeArgs;
       }
     }
 
     final title = widget.customTitle ??
+        bestDeal?.title ??
+        trendingDeal?.productName ??
+        priceDrop?.productName ??
+        homeOffer?.title ??
+        cashbackIncrease?.headline ??
+        featuredStore?.name ??
         product?.title ??
         brand?.name ??
         amazonDeal?.productName ??
@@ -341,6 +1294,12 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         'Product Details';
 
     final brandName = widget.customBrandName ??
+        bestDeal?.brand ??
+        trendingDeal?.brand ??
+        priceDrop?.brand ??
+        homeOffer?.store ??
+        cashbackIncrease?.store ??
+        featuredStore?.name ??
         product?.brand ??
         brand?.name ??
         amazonDeal?.brandName ??
@@ -348,6 +1307,11 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         '';
 
     final category = widget.customCategory ??
+        bestDeal?.category ??
+        trendingDeal?.store ??
+        priceDrop?.store ??
+        homeOffer?.category ??
+        featuredStore?.offerTag ??
         product?.category ??
         brand?.category ??
         (amazonDeal != null ? 'Amazon Top Deals' : (offerItem?.storeName ?? ''));
@@ -356,12 +1320,20 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
     final stock = widget.customStock ?? product?.stock;
     final description = widget.customDescription ??
         product?.description ??
-        (brand != null
-            ? 'Shop online at ${brand.name} through CashKaro to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
-            : (amazonDeal != null
-                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your CashKaro wallet after delivery.'
-                : (offerItem?.description ??
-                    'Shop this deal via CashKaro to earn guaranteed cashback rewards credited to your account.')));
+        (bestDeal != null
+            ? '${bestDeal.title} by ${bestDeal.brand}. Recommended deal with verified store discounts and KashIQ extra cashback.'
+            : (trendingDeal != null
+                ? '${trendingDeal.productName} by ${trendingDeal.brand}. Trending deal with ${trendingDeal.discount} and guaranteed extra cashback.'
+                : (priceDrop != null
+                    ? '${priceDrop.productName} by ${priceDrop.brand}. Price dropped to ₹${priceDrop.nowPrice.toInt()} with extra ${priceDrop.cashback}.'
+                    : (homeOffer != null
+                        ? 'Exclusive deal on ${homeOffer.store}. Enjoy ${homeOffer.discount} with ${homeOffer.cashback} cashback.'
+                        : (brand != null
+                            ? 'Shop online at ${brand.name} through KashIQ to enjoy exclusive voucher discounts and guaranteed cashback rewards on your orders.'
+                            : (amazonDeal != null
+                                ? 'Special promotional pricing on Amazon with extra cashback rewards automatically credited to your KashIQ wallet after delivery.'
+                                : (offerItem?.description ??
+                                    'Shop this deal via KashIQ to earn guaranteed cashback rewards credited to your account.')))))));
 
     // Image list resolution
     List<String> imageList = [];
@@ -369,6 +1341,18 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       imageList = List.from(widget.customImages!);
     } else if (widget.customImageUrl != null && widget.customImageUrl!.isNotEmpty) {
       imageList = [widget.customImageUrl!];
+    } else if (bestDeal != null && bestDeal.imageUrl.isNotEmpty) {
+      imageList = [bestDeal.imageUrl];
+    } else if (trendingDeal != null && trendingDeal.imageUrl.isNotEmpty) {
+      imageList = [trendingDeal.imageUrl];
+    } else if (priceDrop != null && priceDrop.imageUrl.isNotEmpty) {
+      imageList = [priceDrop.imageUrl];
+    } else if (homeOffer != null && homeOffer.imageUrl.isNotEmpty) {
+      imageList = [homeOffer.imageUrl];
+    } else if (cashbackIncrease != null && cashbackIncrease.logoUrl.isNotEmpty) {
+      imageList = [cashbackIncrease.logoUrl];
+    } else if (featuredStore != null && featuredStore.logoUrl.isNotEmpty) {
+      imageList = [featuredStore.logoUrl];
     } else if (product != null) {
       if (product.images != null && product.images!.isNotEmpty) {
         imageList = List.from(product.images!);
@@ -388,53 +1372,44 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     // Pricing resolution
     final discountedPrice = widget.customDiscountedPrice ??
-        (product != null
-            ? '₹${ProductDetailScreen._formatCurrency((product.finalPrice * 83).round())}'
-            : (amazonDeal != null
-                ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.finalPrice)}'
-                : offerItem?.priceOrRate));
+        (bestDeal != null
+            ? '₹${bestDeal.discountedPrice.toInt()}'
+            : (trendingDeal != null
+                ? '₹${trendingDeal.price.toInt()}'
+                : (priceDrop != null
+                    ? '₹${priceDrop.nowPrice.toInt()}'
+                    : (product != null
+                        ? '₹${ProductDetailScreen._formatCurrency((product.finalPrice * 83).round())}'
+                        : (amazonDeal != null
+                            ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.finalPrice)}'
+                            : offerItem?.priceOrRate)))));
 
     final originalPrice = widget.customOriginalPrice ??
-        (product != null && product.discountPercentage > 0
-            ? '₹${ProductDetailScreen._formatCurrency((product.originalPrice * 83).round())}'
-            : (amazonDeal != null
-                ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.actualPrice.round())}'
-                : null));
+        (bestDeal != null && bestDeal.originalPrice > 0
+            ? '₹${bestDeal.originalPrice.toInt()}'
+            : (trendingDeal != null && trendingDeal.originalPrice > 0
+                ? '₹${trendingDeal.originalPrice.toInt()}'
+                : (priceDrop != null && priceDrop.wasPrice > 0
+                    ? '₹${priceDrop.wasPrice.toInt()}'
+                    : (product != null && product.discountPercentage > 0
+                        ? '₹${ProductDetailScreen._formatCurrency((product.originalPrice * 83).round())}'
+                        : (amazonDeal != null
+                            ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.actualPrice.round())}'
+                            : null)))));
 
     final discountTag = widget.customDiscountTag ??
-        (product != null && product.discountPercentage > 0
-            ? '${product.discountPercentage.toStringAsFixed(0)}% OFF'
-            : (brand?.offerText ??
-                (amazonDeal != null
-                    ? '${amazonDeal.rewardPercentage.toStringAsFixed(0)}% OFF'
-                    : null)));
-
-    final cashbackTag = widget.customCashbackTag ??
-        (product != null
-            ? 'FLAT ${(product.discountPercentage > 0 ? product.discountPercentage : 10).toStringAsFixed(0)}% CASHBACK'
-            : (brand?.cashbackPercentage ??
-                (amazonDeal != null
-                    ? 'Flat ${amazonDeal.rewardPercentage.toInt()}% Reward'
-                    : (offerItem?.cashbackTag ?? 'EARN EXTRA CASHBACK'))));
-
-    final finalPrice = widget.customFinalPrice ??
-        (product != null
-            ? '₹${ProductDetailScreen._formatCurrency((product.finalPrice * 83 * 0.9).round())}'
-            : (amazonDeal != null
-                ? '₹${ProductDetailScreen._formatCurrency(amazonDeal.finalPrice * (1 - (amazonDeal.rewardPercentage / 100)))}'
-                : null));
-
-    final rawUrl = widget.customWebsiteUrl ??
-        (brand != null && brand.websiteUrl.isNotEmpty
-            ? brand.websiteUrl
-            : (amazonDeal != null && amazonDeal.productUrl.isNotEmpty
-                ? amazonDeal.productUrl
-                : ''));
-
-    final websiteUrl = (rawUrl.isNotEmpty && !rawUrl.contains('cashkaro.com'))
-        ? rawUrl
-        : ProductDetailScreen.resolveStoreUrl(
-            brandName.isNotEmpty ? brandName : (category.isNotEmpty ? category : title));
+        (bestDeal != null && bestDeal.discountPercentage > 0
+            ? '${bestDeal.discountPercentage.toInt()}% OFF'
+            : (trendingDeal != null && trendingDeal.discount.isNotEmpty
+                ? trendingDeal.discount
+                : (priceDrop != null && priceDrop.priceDropBadge.isNotEmpty
+                    ? priceDrop.priceDropBadge
+                    : (product != null && product.discountPercentage > 0
+                        ? '${product.discountPercentage.toStringAsFixed(0)}% OFF'
+                        : (brand?.offerText ??
+                            (amazonDeal != null
+                                ? '${amazonDeal.rewardPercentage.toStringAsFixed(0)}% OFF'
+                                : null))))));
 
     final displayStoreName = brandName.isNotEmpty
         ? brandName
@@ -442,46 +1417,227 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     final isCard = ProductDetailScreen.isCreditCard(displayStoreName, category);
     final isLoan = ProductDetailScreen.isLoan(displayStoreName, category);
-    final buttonLabel = ProductDetailScreen.getButtonLabel(displayStoreName, category);
-    final buttonIcon = ProductDetailScreen.getButtonIcon(displayStoreName, category);
+    final isFinancialProduct = isCard || isLoan;
+
+    double baseStorePrice = 0.0;
+    double rawOriginalPrice = 0.0;
+    double defaultCouponDiscount = 150.0;
+    double defaultCashbackRate = 10.0;
+    String defaultCouponCode = 'SAVE150';
+
+    if (bestDeal != null) {
+      baseStorePrice = bestDeal.discountedPrice;
+      rawOriginalPrice = bestDeal.originalPrice;
+      defaultCouponDiscount = bestDeal.couponDiscount > 0 ? bestDeal.couponDiscount : 200.0;
+      defaultCouponCode = bestDeal.couponCode.isNotEmpty ? bestDeal.couponCode : 'SAVE${defaultCouponDiscount.toInt()}';
+      defaultCashbackRate = bestDeal.cashbackPercentage > 0 ? bestDeal.cashbackPercentage : 10.0;
+    } else if (categoryDeal != null) {
+      baseStorePrice = categoryDeal.discountedPrice;
+      rawOriginalPrice = categoryDeal.originalPrice;
+      defaultCouponDiscount = categoryDeal.couponDiscount > 0 ? categoryDeal.couponDiscount : 150.0;
+      defaultCouponCode = categoryDeal.couponCode.isNotEmpty ? categoryDeal.couponCode : 'FASHION150';
+      defaultCashbackRate = categoryDeal.cashbackPercentage > 0 ? categoryDeal.cashbackPercentage : 10.0;
+    } else if (trendingDeal != null) {
+      baseStorePrice = trendingDeal.price;
+      rawOriginalPrice = trendingDeal.originalPrice > 0 ? trendingDeal.originalPrice : trendingDeal.price * 1.25;
+      defaultCouponDiscount = 0.0;
+      defaultCouponCode = '';
+      defaultCashbackRate = trendingDeal.cashbackAmount > 0 && trendingDeal.price > 0
+          ? ((trendingDeal.cashbackAmount / trendingDeal.price) * 100).roundToDouble().clamp(1.0, 30.0)
+          : 8.0;
+    } else if (priceDrop != null) {
+      baseStorePrice = priceDrop.nowPrice;
+      rawOriginalPrice = priceDrop.wasPrice;
+      defaultCouponDiscount = 0.0;
+      defaultCouponCode = '';
+      defaultCashbackRate = priceDrop.cashbackAmount > 0 && priceDrop.nowPrice > 0
+          ? ((priceDrop.cashbackAmount / priceDrop.nowPrice) * 100).roundToDouble().clamp(1.0, 30.0)
+          : 6.0;
+    } else if (homeOffer != null) {
+      baseStorePrice = ProductDetailScreen._parseNumericPrice(discountedPrice, fallback: 999.0);
+      rawOriginalPrice = ProductDetailScreen._parseNumericPrice(originalPrice, fallback: baseStorePrice * 1.3);
+      defaultCouponDiscount = (baseStorePrice * 0.1).roundToDouble().clamp(50.0, 200.0);
+      defaultCouponCode = 'OFFER10';
+      defaultCashbackRate = homeOffer.cashbackRate > 0 ? homeOffer.cashbackRate : 8.0;
+    } else if (product != null) {
+      baseStorePrice = (product.finalPrice * 83).toDouble();
+      rawOriginalPrice = (product.originalPrice * 83).toDouble();
+      defaultCouponDiscount = (baseStorePrice * 0.1).roundToDouble().clamp(50.0, 300.0);
+      defaultCouponCode = 'SAVE${defaultCouponDiscount.toInt()}';
+      defaultCashbackRate = product.discountPercentage > 0 ? product.discountPercentage : 10.0;
+    } else if (amazonDeal != null) {
+      baseStorePrice = amazonDeal.finalPrice.toDouble();
+      rawOriginalPrice = amazonDeal.actualPrice.toDouble();
+      defaultCouponDiscount = (baseStorePrice * 0.06).roundToDouble().clamp(50.0, 300.0);
+      defaultCouponCode = 'AMZDEAL';
+      defaultCashbackRate = amazonDeal.rewardPercentage > 0 ? amazonDeal.rewardPercentage : 8.0;
+    } else {
+      baseStorePrice = ProductDetailScreen._parseNumericPrice(discountedPrice, fallback: 999.0);
+      rawOriginalPrice = ProductDetailScreen._parseNumericPrice(originalPrice, fallback: baseStorePrice * 1.3);
+      defaultCouponDiscount = (baseStorePrice * 0.1).roundToDouble().clamp(50.0, 200.0);
+      defaultCouponCode = 'EXTRA10';
+      defaultCashbackRate = 10.0;
+    }
+
+    // Build the verified store options (for multi-store comparison & selection)
+    final storeOptions = isFinancialProduct
+        ? <StoreDealOption>[]
+        : _buildStoreOptions(
+            categoryDeal: categoryDeal,
+            bestDeal: bestDeal,
+            trendingDeal: trendingDeal,
+            priceDrop: priceDrop,
+            homeOffer: homeOffer,
+            cashbackIncrease: cashbackIncrease,
+            product: product,
+            amazonDeal: amazonDeal,
+            offerItem: offerItem,
+            brand: brand,
+            displayStoreName: displayStoreName,
+            defaultBasePrice: baseStorePrice,
+            defaultCoupon: defaultCouponDiscount,
+            defaultCouponCode: defaultCouponCode,
+            defaultCbRate: defaultCashbackRate,
+          );
+
+    final selectedIndex = (storeOptions.isNotEmpty &&
+            _selectedStoreIndex >= 0 &&
+            _selectedStoreIndex < storeOptions.length)
+        ? _selectedStoreIndex
+        : 0;
+
+    final selectedStore = storeOptions.isNotEmpty ? storeOptions[selectedIndex] : null;
+
+    // Active price and offer attributes from selected store (or default for cards/loans)
+    final rawStorePrice = selectedStore != null ? selectedStore.storePrice : baseStorePrice;
+    final couponCode = selectedStore != null ? selectedStore.couponCode : defaultCouponCode;
+
+    final double storeDiscount = selectedStore?.storeDiscount ??
+        (rawOriginalPrice > rawStorePrice ? (rawOriginalPrice - rawStorePrice) : 0.0);
+
+    final lowestStore = storeOptions.isNotEmpty
+        ? (storeOptions.firstWhere((s) => s.isBestDeal, orElse: () => storeOptions.first))
+        : null;
+
+    final baseOtherStores = storeOptions.where((s) => s != lowestStore).toList();
+    final List<StoreDealOption> displayOtherStores;
+    if (baseOtherStores.isNotEmpty) {
+      displayOtherStores = baseOtherStores;
+    } else if (!isFinancialProduct) {
+      final sName = (lowestStore?.storeName.toLowerCase().contains('amazon') ?? false) ? 'Flipkart' : 'Amazon';
+      final sPrice = ((lowestStore?.storePrice ?? rawStorePrice) * 1.08).roundToDouble();
+      displayOtherStores = [
+        StoreDealOption(
+          storeName: sName,
+          storePrice: sPrice,
+          couponDiscount: 0.0,
+          couponCode: '',
+          cashbackRate: 5.0,
+          badgeText: 'Verified Store',
+          isBestDeal: false,
+          targetUrl: ProductDetailScreen.resolveStoreUrl(sName),
+          isOutOfStock: true,
+        ),
+      ];
+    } else {
+      displayOtherStores = [];
+    }
+
+    final int discountPercent = rawOriginalPrice > rawStorePrice
+        ? (((rawOriginalPrice - rawStorePrice) / rawOriginalPrice) * 100).round()
+        : (discountTag != null && discountTag.contains('%')
+            ? (int.tryParse(RegExp(r'\d+').firstMatch(discountTag)?.group(0) ?? '0') ?? 0)
+            : 0);
+
+    final String resolvedOriginalUrl = widget.customOriginalUrl ??
+        product?.originalUrl ??
+        widget.customWebsiteUrl ??
+        lowestStore?.targetUrl ??
+        selectedStore?.targetUrl ??
+        ProductDetailScreen.resolveStoreUrl(displayStoreName);
+
+    final String? resolvedAffiliateUrl = widget.customAffiliateUrl ??
+        product?.affiliateUrl;
+
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final double activeStorePrice = lowestStore?.storePrice ?? rawStorePrice;
+    final double activeCashback = lowestStore != null
+        ? (lowestStore.exactCashbackAmount ?? (activeStorePrice * (lowestStore.cashbackRate / 100)).roundToDouble())
+        : (activeStorePrice * (defaultCashbackRate / 100)).roundToDouble();
+    final double activeEffectivePrice = (activeStorePrice - activeCashback).clamp(0.0, activeStorePrice);
+    final String activeProductId = widget.productId ??
+        product?.id.toString() ??
+        bestDeal?.id ??
+        trendingDeal?.id ??
+        priceDrop?.id ??
+        offerItem?.id.toString() ??
+        widget.compareId ??
+        '';
+    final String activeImageUrl = imageList.isNotEmpty
+        ? imageList.first
+        : (widget.customImageUrl ?? '');
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         title: Text(
-          title,
+          ProductDetailScreen.cleanTitle(title),
           maxLines: 1,
           overflow: TextOverflow.ellipsis,
-          style: AppTextStyles.screenHeading(
-            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-          ).copyWith(fontSize: 18),
+          style: GoogleFonts.inter(
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+            color: textDark,
+          ),
         ),
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            color: primaryAccent,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
-        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
       ),
-      body: Column(
-        children: [
-          Expanded(
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
-              child: Column(
+      bottomNavigationBar: _buildBottomActionBar(
+        context: context,
+        isDark: isDark,
+        title: title,
+        displayStoreName: displayStoreName,
+        resolvedOriginalUrl: resolvedOriginalUrl,
+        resolvedAffiliateUrl: resolvedAffiliateUrl,
+        storePrice: activeStorePrice,
+        effectivePrice: activeEffectivePrice,
+        cashbackAmount: activeCashback,
+        productId: activeProductId,
+        imageUrl: activeImageUrl,
+      ),
+
+      body: SingleChildScrollView(
+        physics: const BouncingScrollPhysics(),
+        padding: const EdgeInsets.fromLTRB(16, 12, 16, 28),
+        child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // 1. PRODUCT / BRAND IMAGE SECTION
+                  // 1. PRODUCT / BRAND IMAGE CONTAINER WITH ROSETTE BADGE & DOTS
                   Container(
                     width: double.infinity,
                     height: 280,
-                    color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+                    clipBehavior: Clip.antiAlias,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkCard : Colors.white,
+                      borderRadius: BorderRadius.circular(16),
+                      border: Border.all(
+                        color: borderColor,
+                      ),
+                    ),
                     child: imageList.isEmpty
                         ? Container(
                             color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
@@ -489,7 +1645,7 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                               child: Icon(
                                 Icons.storefront_rounded,
                                 size: 80,
-                                color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                                color: primaryAccent,
                               ),
                             ),
                           )
@@ -504,10 +1660,10 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                 },
                                 itemBuilder: (context, index) {
                                   return Padding(
-                                    padding: const EdgeInsets.all(12.0),
+                                    padding: const EdgeInsets.all(20.0),
                                     child: Center(
                                       child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(16),
+                                        borderRadius: BorderRadius.circular(12),
                                         child: NetworkImageWithSkeleton(
                                           imageUrl: imageList[index],
                                           fit: BoxFit.contain,
@@ -531,524 +1687,181 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
                                   );
                                 },
                               ),
+                              if (discountPercent > 0)
+                                Positioned(
+                                  top: 12,
+                                  right: 12,
+                                  child: _buildRosetteDiscountBadge(discountPercent, isDark),
+                                ),
                               if (imageList.length > 1)
                                 Positioned(
                                   bottom: 12,
                                   left: 0,
                                   right: 0,
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: List.generate(
-                                      imageList.length,
-                                      (index) => AnimatedContainer(
-                                        duration: const Duration(milliseconds: 200),
-                                        margin: const EdgeInsets.symmetric(horizontal: 3),
-                                        width: _currentImageIndex == index ? 20 : 7,
-                                        height: 7,
-                                        decoration: BoxDecoration(
-                                          color: _currentImageIndex == index
-                                              ? (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown)
-                                              : (isDark ? AppColors.darkBorder : AppColors.border),
-                                          borderRadius: BorderRadius.circular(4),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
+                                  child: _buildDotIndicators(imageList.length, _currentImageIndex, isDark),
                                 ),
                             ],
                           ),
                   ),
 
-                  const SizedBox(height: 10),
-
-                  // 2. MAIN PRODUCT HEADER CARD
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
-                      border: Border.all(
-                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                  // 2. PRODUCT TITLE
+                  Padding(
+                    padding: const EdgeInsets.only(top: 14, bottom: 6),
+                    child: Text(
+                      ProductDetailScreen.cleanTitle(title),
+                      style: GoogleFonts.inter(
+                        fontSize: 18,
+                        fontWeight: FontWeight.w700,
+                        color: textDark,
+                        height: 1.3,
                       ),
                     ),
+                  ),
+
+                  // 3. VARIANT SELECTOR (COLOUR)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(vertical: 6),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        // BRAND & CATEGORY & RATING CHIPS
-                        Wrap(
-                          spacing: 8,
-                          runSpacing: 6,
-                          crossAxisAlignment: WrapCrossAlignment.center,
-                          children: [
-                            if (brandName.isNotEmpty)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? AppColors.primaryBrown.withValues(alpha: 0.25)
-                                      : AppColors.beigeSurface,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  brandName.toUpperCase(),
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: GoogleFonts.fraunces(
-                                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                                    fontSize: 11.5,
+                        Text(
+                          'Colour',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w500,
+                            color: textMuted,
+                          ),
+                        ),
+                        const SizedBox(height: 2),
+                        InkWell(
+                          onTap: () => _showColorSelectorModal(context, isDark),
+                          borderRadius: BorderRadius.circular(6),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 4),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  _selectedColor,
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 14,
                                     fontWeight: FontWeight.w700,
-                                    letterSpacing: 0.5,
+                                    color: textDark,
                                   ),
                                 ),
-                              ),
-                            if (category.isNotEmpty)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 10,
-                                  vertical: 4,
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.arrow_drop_down,
+                                  size: 20,
+                                  color: primaryAccent,
                                 ),
-                                decoration: BoxDecoration(
-                                  color: isDark
-                                      ? AppColors.darkSurface
-                                      : AppColors.beigeSurface.withValues(alpha: 0.5),
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Text(
-                                  category,
-                                  maxLines: 1,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: AppTextStyles.caption(
-                                    color: isDark
-                                        ? AppColors.darkTextSecondary
-                                        : AppColors.textSecondary,
-                                  ),
-                                ),
-                              ),
-                            if (rating != null)
-                              Container(
-                                padding: const EdgeInsets.symmetric(
-                                  horizontal: 8,
-                                  vertical: 4,
-                                ),
-                                decoration: BoxDecoration(
-                                  color: AppColors.pending,
-                                  borderRadius: BorderRadius.circular(8),
-                                ),
-                                child: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    const Icon(
-                                      Icons.star,
-                                      size: 14,
-                                      color: Colors.white,
-                                    ),
-                                    const SizedBox(width: 4),
-                                    Text(
-                                      rating.toStringAsFixed(1),
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 12,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                          ],
-                        ),
-
-                        const SizedBox(height: 12),
-
-                        // PRODUCT TITLE (Fraunces Typography)
-                        Text(
-                          title,
-                          style: GoogleFonts.fraunces(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w700,
-                            height: 1.3,
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-
-                  const SizedBox(height: 10),
-
-                  // 3. PRICING & CASHBACK DETAILS CARD
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
-                      border: Border.all(
-                        color: isDark ? AppColors.darkBorder : AppColors.border,
-                      ),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Pricing & Offer Details',
-                          style: AppTextStyles.sectionHeading(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                          ).copyWith(fontSize: 14),
-                        ),
-                        const SizedBox(height: 12),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.end,
-                          children: [
-                            if (discountedPrice != null)
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Deal Price',
-                                    style: AppTextStyles.caption(
-                                      color: isDark
-                                          ? AppColors.darkTextSecondary
-                                          : AppColors.textSecondary,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    discountedPrice,
-                                    style: GoogleFonts.fraunces(
-                                      fontSize: 26,
-                                      fontWeight: FontWeight.w700,
-                                      color: isDark
-                                          ? AppColors.darkTextPrimary
-                                          : AppColors.deepBrown,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            if (originalPrice != null) ...[
-                              const SizedBox(width: 16),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Original Price',
-                                    style: AppTextStyles.caption(
-                                      color: isDark
-                                          ? AppColors.darkTextSecondary
-                                          : AppColors.textMuted,
-                                    ),
-                                  ),
-                                  const SizedBox(height: 2),
-                                  Text(
-                                    originalPrice,
-                                    style: TextStyle(
-                                      fontSize: 16,
-                                      decoration: TextDecoration.lineThrough,
-                                      color: isDark
-                                          ? AppColors.darkTextSecondary
-                                          : AppColors.textMuted,
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ],
-                            const Spacer(),
-                            if (discountTag != null && discountTag.isNotEmpty)
-                              Flexible(
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                    horizontal: 10,
-                                    vertical: 6,
-                                  ),
-                                  decoration: BoxDecoration(
-                                    color: AppColors.successBackground,
-                                    borderRadius: BorderRadius.circular(10),
-                                    border: Border.all(color: AppColors.success.withValues(alpha: 0.3)),
-                                  ),
-                                  child: Text(
-                                    discountTag,
-                                    maxLines: 2,
-                                    overflow: TextOverflow.ellipsis,
-                                    textAlign: TextAlign.end,
-                                    style: AppTextStyles.smallLabel(
-                                      color: AppColors.success,
-                                    ).copyWith(fontSize: 12),
-                                  ),
-                                ),
-                              ),
-                          ],
-                        ),
-
-                        // CASHBACK HIGHLIGHT BANNER
-                        const SizedBox(height: 14),
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 14,
-                            vertical: 12,
-                          ),
-                          decoration: BoxDecoration(
-                            color: isDark
-                                ? AppColors.primaryBrown.withValues(alpha: 0.2)
-                                : AppColors.beigeSurface,
-                            borderRadius: BorderRadius.circular(12),
-                            border: Border.all(
-                              color: isDark
-                                  ? AppColors.darkBorder
-                                  : AppColors.border,
+                              ],
                             ),
                           ),
-                          child: Row(
-                            children: [
-                              Container(
-                                width: 36,
-                                height: 36,
-                                decoration: const BoxDecoration(
-                                  color: AppColors.primaryBrown,
-                                  shape: BoxShape.circle,
-                                ),
-                                child: const Icon(
-                                  Icons.account_balance_wallet_rounded,
-                                  color: Colors.white,
-                                  size: 20,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Text(
-                                      cashbackTag,
-                                      style: GoogleFonts.fraunces(
-                                        color: isDark
-                                            ? AppColors.darkTextPrimary
-                                            : AppColors.deepBrown,
-                                        fontWeight: FontWeight.w700,
-                                        fontSize: 14,
-                                      ),
-                                    ),
-                                    const SizedBox(height: 2),
-                                    Text(
-                                      isCard
-                                          ? 'Rewards track automatically on card application'
-                                          : (isLoan
-                                              ? 'Rewards track automatically on loan disbursal'
-                                              : 'Cashback tracks automatically on ${displayStoreName.toUpperCase()}'),
-                                      style: AppTextStyles.caption(
-                                        color: isDark
-                                            ? AppColors.darkTextSecondary
-                                            : AppColors.textSecondary,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          ),
                         ),
-
-                        if (finalPrice != null) ...[
-                          const SizedBox(height: 10),
-                          Wrap(
-                            crossAxisAlignment: WrapCrossAlignment.center,
-                            children: [
-                              Text(
-                                'Effective Price after Cashback: ',
-                                style: AppTextStyles.caption(
-                                  color: isDark
-                                      ? AppColors.darkTextSecondary
-                                      : AppColors.textSecondary,
-                                ).copyWith(fontWeight: FontWeight.w600),
-                              ),
-                              Text(
-                                finalPrice,
-                                style: GoogleFonts.fraunces(
-                                  fontSize: 14.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
                       ],
                     ),
                   ),
 
-                  const SizedBox(height: 10),
-
-                  // 4. DESCRIPTION & GUARANTEES CARD
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: isDark ? AppColors.darkCard : AppColors.cardBackground,
-                      border: Border.all(
-                        color: isDark ? AppColors.darkBorder : AppColors.border,
-                      ),
+                  // 4. "LOWEST AT" SECTION BAR & CARD
+                  if (lowestStore != null) ...[
+                    const SizedBox(height: 12),
+                    _buildSectionHeaderBar('Lowest At', isDark),
+                    _buildLowestAtCard(
+                      context: context,
+                      store: lowestStore,
+                      mrp: rawOriginalPrice > 0 ? rawOriginalPrice : (lowestStore.storePrice * 1.3),
+                      fallbackCouponCode: couponCode,
+                      storeDiscount: storeDiscount,
+                      productTitle: title,
+                      productImage: imageList.isNotEmpty ? imageList.first : '',
+                      isDark: isDark,
                     ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Product Overview & Details',
-                          style: AppTextStyles.sectionHeading(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                          ).copyWith(fontSize: 14),
-                        ),
-                        const SizedBox(height: 8),
-                        Text(
-                          description,
-                          style: AppTextStyles.body(
-                            color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                          ),
-                        ),
-                        if (stock != null) ...[
-                          const SizedBox(height: 14),
-                          Row(
-                            children: [
-                              Icon(
-                                Icons.inventory_2_outlined,
-                                size: 16,
-                                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-                              ),
-                              const SizedBox(width: 6),
-                              Text(
-                                'Availability: ',
-                                style: AppTextStyles.caption(
-                                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-                                ),
-                              ),
-                              Text(
-                                '$stock units in stock',
-                                style: TextStyle(
-                                  fontSize: 12.5,
-                                  fontWeight: FontWeight.bold,
-                                  color: stock < 10
-                                      ? AppColors.pending
-                                      : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ],
-                        const SizedBox(height: 16),
-                        Divider(color: isDark ? AppColors.darkBorder : AppColors.border),
-                        const SizedBox(height: 10),
+                  ],
 
-                        // How Cashback Works 3 Steps
-                        Text(
-                          'How to Earn Cashback:',
-                          style: AppTextStyles.sectionHeading(
-                            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                          ).copyWith(fontSize: 13.5),
-                        ),
-                        const SizedBox(height: 8),
-                        _buildCashbackStep(
-                          '1',
-                          isCard
-                              ? 'Tap "$buttonLabel" below to visit & apply for your card'
-                              : (isLoan
-                                  ? 'Tap "$buttonLabel" below to check eligibility & apply'
-                                  : 'Tap "Shop Now" below to visit $displayStoreName'),
-                          isDark,
-                        ),
-                        const SizedBox(height: 6),
-                        _buildCashbackStep(
-                          '2',
-                          'Place your order normally on the website/app',
-                          isDark,
-                        ),
-                        const SizedBox(height: 6),
-                        _buildCashbackStep(
-                          '3',
-                          'Cashback is tracked within 24-48 hrs & ready to withdraw',
-                          isDark,
-                        ),
-                      ],
+                  // 5. "OTHER BUYING OPTIONS" SECTION BAR & CARDS
+                  if (displayOtherStores.isNotEmpty) ...[
+                    const SizedBox(height: 12),
+                    _buildSectionHeaderBar('Other Buying Options', isDark),
+                    ...displayOtherStores.map((store) => _buildOtherOptionCard(
+                      context: context,
+                      store: store,
+                      mrp: rawOriginalPrice > 0 ? rawOriginalPrice : (store.storePrice * 1.3),
+                      isDark: isDark,
+                    )),
+                  ],
+
+                  // 6. EXPANDABLE ACCORDIONS
+                  const SizedBox(height: 14),
+
+                  // Key Features
+                  _buildAccordionTile(
+                    title: 'Key Features',
+                    isExpanded: _isKeyFeaturesExpanded,
+                    onToggle: () => setState(() => _isKeyFeaturesExpanded = !_isKeyFeaturesExpanded),
+                    isDark: isDark,
+                    content: _buildKeyFeaturesContent(
+                      description: description,
+                      brandName: brandName,
+                      category: category,
+                      stock: stock,
+                      rating: rating,
+                      displayStoreName: displayStoreName,
+                      isCard: isCard,
+                      isLoan: isLoan,
+                      isDark: isDark,
                     ),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // Similar Products
+                  _buildAccordionTile(
+                    title: 'Similar Products',
+                    isExpanded: _isSimilarExpanded,
+                    onToggle: () => setState(() => _isSimilarExpanded = !_isSimilarExpanded),
+                    isDark: isDark,
+                    content: _buildSimilarProductsContent(context, category, isDark),
+                  ),
+
+                  const SizedBox(height: 8),
+
+                  // Products You Might Like
+                  _buildAccordionTile(
+                    title: 'Products You Might Like',
+                    isExpanded: _isYouMightLikeExpanded,
+                    onToggle: () => setState(() => _isYouMightLikeExpanded = !_isYouMightLikeExpanded),
+                    isDark: isDark,
+                    content: _buildProductsYouMightLikeContent(context, isDark),
                   ),
 
                   const SizedBox(height: 24),
                 ],
               ),
             ),
-          ),
-
-          // 5. PROMINENT BOTTOM "SHOP NOW" BAR
-          Container(
-            padding: const EdgeInsets.all(16),
-            decoration: BoxDecoration(
-              color: isDark ? AppColors.darkCard : AppColors.cardBackground,
-              border: Border(
-                top: BorderSide(
-                  color: isDark ? AppColors.darkBorder : AppColors.border,
-                  width: 1,
-                ),
-              ),
-              boxShadow: [
-                BoxShadow(
-                  color: Colors.black.withValues(alpha: isDark ? 0.4 : 0.05),
-                  blurRadius: 10,
-                  offset: const Offset(0, -4),
-                ),
-              ],
-            ),
-            child: SafeArea(
-              child: ElevatedButton(
-                onPressed: () => _handleShopNow(websiteUrl, displayStoreName),
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBrown,
-                  foregroundColor: AppColors.cardBackground,
-                  minimumSize: const Size(double.infinity, 50),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-                  ),
-                  elevation: 2,
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(buttonIcon, size: 20),
-                    const SizedBox(width: 8),
-                    Flexible(
-                      child: Text(
-                        buttonLabel,
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14.5),
-                      ),
-                    ),
-                    const SizedBox(width: 6),
-                    const Icon(Icons.arrow_forward_rounded, size: 18),
-                  ],
-                ),
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
+          );
   }
 
   Widget _buildCashbackStep(String step, String text, bool isDark) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
     return Row(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
           width: 18,
           height: 18,
-          decoration: const BoxDecoration(
-            color: AppColors.primaryBrown,
+          decoration: BoxDecoration(
+            color: primaryAccent,
             shape: BoxShape.circle,
           ),
           child: Center(
             child: Text(
               step,
-              style: const TextStyle(
-                color: Colors.white,
+              style: TextStyle(
+                color: badgeTextColor,
                 fontSize: 10,
                 fontWeight: FontWeight.bold,
               ),
@@ -1059,12 +1872,2420 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         Expanded(
           child: Text(
             text,
-            style: AppTextStyles.caption(
-              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 12,
+              color: textMuted,
+              height: 1.35,
             ),
           ),
         ),
       ],
     );
   }
+
+  Widget _buildRosetteDiscountBadge(int percent, bool isDark) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+
+    return Container(
+      height: 28,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: primaryAccent, width: 1.5),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.black.withValues(alpha: 0.08),
+            blurRadius: 4,
+            offset: const Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Container(
+            width: 26,
+            height: 26,
+            decoration: BoxDecoration(
+              color: primaryAccent,
+              shape: BoxShape.circle,
+            ),
+            child: Center(
+              child: Icon(
+                Icons.percent_rounded,
+                color: badgeTextColor,
+                size: 14,
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8),
+            child: Text(
+              '$percent% off',
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 12,
+                fontWeight: FontWeight.w800,
+                color: primaryAccent,
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildDotIndicators(int count, int activeIndex, bool isDark) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: List.generate(count, (index) {
+        final isActive = index == activeIndex;
+        return Container(
+          margin: const EdgeInsets.symmetric(horizontal: 3),
+          width: 6.5,
+          height: 6.5,
+          decoration: BoxDecoration(
+            color: isActive
+                ? primaryAccent
+                : (isDark ? Colors.white24 : const Color(0xFFD8C5AF)),
+            shape: BoxShape.circle,
+          ),
+        );
+      }),
+    );
+  }
+
+  Widget _buildSectionHeaderBar(String title, bool isDark) {
+    final clean = ProductDetailScreen.cleanTitle(title);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+
+    return Container(
+      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+      decoration: BoxDecoration(
+        color: isDark ? const Color(0xFF132247) : const Color(0xFFF1F5F9),
+        borderRadius: BorderRadius.circular(8),
+        border: Border.all(color: borderColor),
+      ),
+      child: Text(
+        clean,
+        style: GoogleFonts.inter(
+          fontSize: 13.5,
+          fontWeight: FontWeight.w700,
+          letterSpacing: 0.2,
+          color: primaryAccent,
+        ),
+      ),
+    );
+  }
+
+  Widget _buildStoreLogoWidget(String storeName, bool isDark) {
+    final lower = storeName.toLowerCase();
+    if (lower.contains('amazon')) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        crossAxisAlignment: CrossAxisAlignment.baseline,
+        textBaseline: TextBaseline.alphabetic,
+        children: [
+          Text(
+            'amazon',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 19,
+              fontWeight: FontWeight.w900,
+              color: isDark ? Colors.white : const Color(0xFF111827),
+              letterSpacing: -0.5,
+            ),
+          ),
+          Text(
+            '.in',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 13.5,
+              fontWeight: FontWeight.w700,
+              color: const Color(0xFF2563EB),
+            ),
+          ),
+        ],
+      );
+    } else if (lower.contains('flipkart')) {
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            'Flipkart',
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 18,
+              fontWeight: FontWeight.w800,
+              fontStyle: FontStyle.italic,
+              color: const Color(0xFF2563EB),
+            ),
+          ),
+          const SizedBox(width: 4),
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              color: const Color(0xFFFFE500),
+              borderRadius: BorderRadius.circular(4),
+            ),
+            child: const Icon(
+              Icons.shopping_bag,
+              size: 13,
+              color: Color(0xFF2563EB),
+            ),
+          ),
+        ],
+      );
+    } else if (lower.contains('myntra')) {
+      return Text(
+        'Myntra',
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 18,
+          fontWeight: FontWeight.w900,
+          color: const Color(0xFFE11D48),
+        ),
+      );
+    } else if (lower.contains('ajio')) {
+      return Text(
+        'AJIO',
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 18,
+          fontWeight: FontWeight.w900,
+          color: isDark ? Colors.white : const Color(0xFF0F172A),
+          letterSpacing: 1.5,
+        ),
+      );
+    } else {
+      return Text(
+        storeName,
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 17,
+          fontWeight: FontWeight.w800,
+          color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        ),
+      );
+    }
+  }
+
+  Widget _buildStoreCouponToggle({
+    required String couponCode,
+    required double couponDiscount,
+    required bool isApplied,
+    required bool isDark,
+    required VoidCallback onToggle,
+  }) {
+    if (couponDiscount <= 0 && couponCode.isEmpty) {
+      return const SizedBox.shrink();
+    }
+
+    final code = couponCode.isNotEmpty ? couponCode : 'COUPON';
+
+    return GestureDetector(
+      onTap: onToggle,
+      behavior: HitTestBehavior.opaque,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        padding: const EdgeInsets.only(left: 8, right: 3, top: 2, bottom: 2),
+        decoration: BoxDecoration(
+          color: isApplied
+              ? (isDark ? const Color(0xFF14532D).withValues(alpha: 0.45) : const Color(0xFFDCFCE7))
+              : (isDark ? Colors.white.withValues(alpha: 0.08) : const Color(0xFFF1F5F9)),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: isApplied
+                ? (isDark ? const Color(0xFF22C55E) : const Color(0xFF16A34A))
+                : (isDark ? Colors.white24 : const Color(0xFFCBD5E1)),
+            width: 1,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              Icons.confirmation_num_outlined,
+              size: 13,
+              color: isApplied
+                  ? (isDark ? const Color(0xFF86EFAC) : const Color(0xFF15803D))
+                  : (isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B)),
+            ),
+            const SizedBox(width: 4),
+            Text(
+              code,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 11,
+                fontWeight: FontWeight.w800,
+                color: isApplied
+                    ? (isDark ? const Color(0xFF86EFAC) : const Color(0xFF15803D))
+                    : (isDark ? AppColors.darkTextPrimary : const Color(0xFF334155)),
+              ),
+            ),
+            if (couponDiscount > 0) ...[
+              const SizedBox(width: 4),
+              Text(
+                '(-₹${couponDiscount.toInt()})',
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 10,
+                  fontWeight: FontWeight.w700,
+                  color: isApplied
+                      ? (isDark ? const Color(0xFF86EFAC) : const Color(0xFF16A34A))
+                      : (isDark ? AppColors.darkTextMuted : const Color(0xFF64748B)),
+                ),
+              ),
+            ],
+            const SizedBox(width: 3),
+            Transform.scale(
+              scale: 0.6,
+              child: CupertinoSwitch(
+                value: isApplied,
+                activeTrackColor: const Color(0xFF16A34A),
+                onChanged: (_) => onToggle(),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Widget _buildLowestAtCard({
+    required BuildContext context,
+    required StoreDealOption store,
+    required double mrp,
+    String fallbackCouponCode = 'EXTRA10',
+    double storeDiscount = 0.0,
+    required String productTitle,
+    required String productImage,
+    required bool isDark,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+
+    final effectiveMrp = (mrp > store.storePrice ? mrp : (store.storePrice * 1.35)).roundToDouble();
+    final storeDiscountAmount = (effectiveMrp - store.storePrice).clamp(0.0, effectiveMrp);
+    final storeDiscountPercent = effectiveMrp > 0 ? ((storeDiscountAmount / effectiveMrp) * 100).round() : 0;
+
+    final effectiveCouponDiscount = store.couponDiscount > 0
+        ? store.couponDiscount
+        : (store.storePrice * 0.08).roundToDouble().clamp(50.0, 500.0);
+    final effectiveCouponCode = store.couponCode.isNotEmpty
+        ? store.couponCode
+        : (fallbackCouponCode.isNotEmpty ? fallbackCouponCode : 'SAVE${effectiveCouponDiscount.toInt()}');
+
+    final isEligible = store.storePrice >= minSpendThreshold;
+    final isCouponActive = _isCouponActiveForStore(store.storeName);
+    final couponSavings = (isCouponActive && isEligible) ? effectiveCouponDiscount : 0.0;
+    final payNow = (store.storePrice - couponSavings).clamp(0.0, store.storePrice);
+    final cashback = isEligible
+        ? (store.exactCashbackAmount ?? (payNow * (store.cashbackRate / 100)).roundToDouble())
+        : 0.0;
+    final effectivePrice = (payNow - cashback).clamp(0.0, payNow);
+
+
+    final isReward = store.storeName.toLowerCase().contains('amazon');
+    final cashbackTag = isReward
+        ? 'After Rewards of ₹${cashback.toStringAsFixed(0)}'
+        : 'After Cashback of ₹${cashback.toStringAsFixed(0)}';
+
+    return Container(
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Store Header with Store Name & Toggleable Coupon Switch beside it!
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 7,
+                  runSpacing: 5,
+                  children: [
+                    _buildStoreLogoWidget(store.storeName, isDark),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: AppColors.successBackground,
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Lowest',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w800,
+                          color: AppColors.success,
+                        ),
+                      ),
+                    ),
+                    _buildStoreCouponToggle(
+                      couponCode: effectiveCouponCode,
+                      couponDiscount: effectiveCouponDiscount,
+                      isApplied: isCouponActive,
+                      isDark: isDark,
+                      onToggle: () => _toggleCouponForStore(store.storeName),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: Icon(
+                  Icons.info_outline_rounded,
+                  size: 19,
+                  color: textMuted,
+                ),
+                onPressed: () => _showStoreInfoModal(context, store.storeName, isDark),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // Clean, Compact Price Breakdown (No verbose text, no unnecessary lines)
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: primaryAccent.withValues(alpha: 0.2),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                // Actual Price & % Off
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Actual Price',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w500,
+                            color: textMuted,
+                          ),
+                        ),
+                        if (storeDiscountPercent > 0) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: AppColors.successBackground,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '$storeDiscountPercent% OFF',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.success,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    Text(
+                      '₹${effectiveMrp.toInt()}',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: textMuted,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Coupon
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.confirmation_num_outlined,
+                          size: 13,
+                          color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Coupon ($effectiveCouponCode)',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      isCouponActive ? '-₹${couponSavings.toInt()}' : 'Disabled',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w700,
+                        color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // You Pay
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'You Pay',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: textDark,
+                      ),
+                    ),
+                    Text(
+                      '₹${payNow.toInt()}',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w800,
+                        color: textDark,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Cashback
+                if (cashback > 0) ...[
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.card_giftcard_rounded,
+                            size: 13,
+                            color: AppColors.success,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Cashback',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.success,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '-₹${cashback.toInt()}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.success,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+
+                // Divider & Effective Price
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Divider(
+                    height: 1,
+                    thickness: 0.8,
+                    color: borderColor,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Effective Price',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: primaryAccent,
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '₹${effectivePrice.toInt()}',
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: primaryAccent,
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          'ONLY',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w800,
+                            color: primaryAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Price Display & Grab Deal Row
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '₹${effectivePrice.toInt()}',
+                          style: GoogleFonts.inter(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w800,
+                            color: textDark,
+                          ),
+                        ),
+                        const SizedBox(width: 7),
+                        Text(
+                          '₹${payNow.toInt()} at store',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            color: textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                          decoration: BoxDecoration(
+                            color: surfaceBeige,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: borderColor, width: 0.8),
+                          ),
+                          child: Text(
+                            cashbackTag,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              color: primaryAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              OutlinedButton(
+                onPressed: () => _showGrabDealSliderModal(
+                  context: context,
+                  store: store,
+                  productTitle: productTitle,
+                  productImage: productImage,
+                  effectivePrice: effectivePrice,
+                  cashbackTag: cashbackTag,
+                  couponCode: effectiveCouponCode,
+                  isDark: isDark,
+                ),
+                style: OutlinedButton.styleFrom(
+                  side: BorderSide(color: primaryAccent, width: 1.5),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 9),
+                  backgroundColor: primaryAccent.withValues(alpha: 0.08),
+                ),
+                child: Text(
+                  'Grab Deal',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: primaryAccent,
+                    fontWeight: FontWeight.w700,
+                    fontSize: 13,
+                  ),
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 10),
+
+          // View Full Breakdown
+          InkWell(
+            onTap: () => _showPriceBreakdownModal(
+              context: context,
+              storeName: store.storeName,
+              isDark: isDark,
+              mrp: effectiveMrp,
+              storePrice: store.storePrice,
+              couponDiscount: couponSavings,
+              couponCode: effectiveCouponCode,
+              cashbackAmount: cashback,
+              cashbackRate: store.cashbackRate,
+              effectivePrice: effectivePrice,
+              targetUrl: store.targetUrl,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'View Breakdown',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: primaryAccent,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  Icon(
+                    Icons.arrow_right_alt_rounded,
+                    size: 18,
+                    color: primaryAccent,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildOtherOptionCard({
+    required BuildContext context,
+    required StoreDealOption store,
+    required double mrp,
+    required bool isDark,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+
+    final effectiveMrp = (mrp > store.storePrice ? mrp : (store.storePrice * 1.35)).roundToDouble();
+    final storeDiscountAmount = (effectiveMrp - store.storePrice).clamp(0.0, effectiveMrp);
+    final storeDiscountPercent = effectiveMrp > 0 ? ((storeDiscountAmount / effectiveMrp) * 100).round() : 0;
+
+    final effectiveCouponDiscount = store.couponDiscount > 0
+        ? store.couponDiscount
+        : (store.storePrice * 0.08).roundToDouble().clamp(50.0, 500.0);
+    final effectiveCouponCode = store.couponCode.isNotEmpty
+        ? store.couponCode
+        : 'SAVE${effectiveCouponDiscount.toInt()}';
+
+    final isEligible = store.storePrice >= minSpendThreshold;
+    final isCouponActive = _isCouponActiveForStore(store.storeName);
+    final couponSavings = (isCouponActive && isEligible) ? effectiveCouponDiscount : 0.0;
+    final payNow = (store.storePrice - couponSavings).clamp(0.0, store.storePrice);
+    final cashback = isEligible
+        ? (store.exactCashbackAmount ?? (payNow * (store.cashbackRate / 100)).roundToDouble())
+        : 0.0;
+    final effectivePrice = (payNow - cashback).clamp(0.0, payNow);
+
+
+    final isReward = store.storeName.toLowerCase().contains('amazon');
+    final cashbackTag = isReward
+        ? 'After Rewards of ₹${cashback.toStringAsFixed(0)}'
+        : 'After Cashback of ₹${cashback.toStringAsFixed(0)}';
+
+    return Container(
+      margin: const EdgeInsets.only(top: 10),
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor),
+      ),
+      padding: const EdgeInsets.all(16),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Store Header with Store Name, Inactive Tag, and Toggleable Coupon Switch
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Wrap(
+                  crossAxisAlignment: WrapCrossAlignment.center,
+                  spacing: 7,
+                  runSpacing: 5,
+                  children: [
+                    _buildStoreLogoWidget(store.storeName, isDark),
+                    Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      decoration: BoxDecoration(
+                        color: isDark ? Colors.white10 : const Color(0xFFF1F5F9),
+                        borderRadius: BorderRadius.circular(4),
+                      ),
+                      child: Text(
+                        'Higher Price',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w700,
+                          color: isDark ? AppColors.darkTextMuted : const Color(0xFF64748B),
+                        ),
+                      ),
+                    ),
+                    _buildStoreCouponToggle(
+                      couponCode: effectiveCouponCode,
+                      couponDiscount: effectiveCouponDiscount,
+                      isApplied: isCouponActive,
+                      isDark: isDark,
+                      onToggle: () => _toggleCouponForStore(store.storeName),
+                    ),
+                  ],
+                ),
+              ),
+              IconButton(
+                padding: EdgeInsets.zero,
+                constraints: const BoxConstraints(),
+                icon: Icon(
+                  Icons.info_outline_rounded,
+                  size: 19,
+                  color: textMuted,
+                ),
+                onPressed: () => _showStoreInfoModal(context, store.storeName, isDark),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 12),
+
+          // Clean, Compact Price Breakdown
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 11),
+            decoration: BoxDecoration(
+              color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(
+                color: primaryAccent.withValues(alpha: 0.15),
+                width: 1,
+              ),
+            ),
+            child: Column(
+              children: [
+                // Actual Price & % Off
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Actual Price',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w500,
+                            color: textMuted,
+                          ),
+                        ),
+                        if (storeDiscountPercent > 0) ...[
+                          const SizedBox(width: 6),
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+                            decoration: BoxDecoration(
+                              color: AppColors.successBackground,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
+                            child: Text(
+                              '$storeDiscountPercent% OFF',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w800,
+                                color: AppColors.success,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ],
+                    ),
+                    Text(
+                      '₹${effectiveMrp.toInt()}',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w600,
+                        color: textMuted,
+                        decoration: TextDecoration.lineThrough,
+                        decorationColor: textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Coupon
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(
+                          Icons.confirmation_num_outlined,
+                          size: 13,
+                          color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                        ),
+                        const SizedBox(width: 4),
+                        Text(
+                          'Coupon ($effectiveCouponCode)',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 12.5,
+                            fontWeight: FontWeight.w600,
+                            color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Text(
+                      isCouponActive ? '-₹${couponSavings.toInt()}' : 'Disabled',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12.5,
+                        fontWeight: FontWeight.w700,
+                        color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // You Pay
+                const SizedBox(height: 6),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'You Pay',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w700,
+                        color: textDark,
+                      ),
+                    ),
+                    Text(
+                      '₹${payNow.toInt()}',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w800,
+                        color: textDark,
+                      ),
+                    ),
+                  ],
+                ),
+
+                // Cashback
+                if (cashback > 0) ...[
+                  const SizedBox(height: 6),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Row(
+                        children: [
+                          const Icon(
+                            Icons.card_giftcard_rounded,
+                            size: 13,
+                            color: AppColors.success,
+                          ),
+                          const SizedBox(width: 4),
+                          Text(
+                            'Cashback',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 12.5,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.success,
+                            ),
+                          ),
+                        ],
+                      ),
+                      Text(
+                        '-₹${cashback.toInt()}',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w700,
+                          color: AppColors.success,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+
+                // Divider & Effective Price
+                Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 6),
+                  child: Divider(
+                    height: 1,
+                    thickness: 0.8,
+                    color: borderColor,
+                  ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      'Effective Price',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 13,
+                        fontWeight: FontWeight.w800,
+                        color: primaryAccent,
+                      ),
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '₹${effectivePrice.toInt()}',
+                          style: GoogleFonts.inter(
+                            fontSize: 20,
+                            fontWeight: FontWeight.w800,
+                            color: primaryAccent,
+                          ),
+                        ),
+                        const SizedBox(width: 3),
+                        Text(
+                          'ONLY',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w800,
+                            color: primaryAccent,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          const SizedBox(height: 14),
+
+          // Price Display & Disabled Button Row
+          Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.baseline,
+                      textBaseline: TextBaseline.alphabetic,
+                      children: [
+                        Text(
+                          '₹${effectivePrice.toInt()}',
+                          style: GoogleFonts.inter(
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            color: textDark,
+                          ),
+                        ),
+                        const SizedBox(width: 7),
+                        Text(
+                          '₹${payNow.toInt()} at store',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w600,
+                            color: textMuted,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 4),
+                    Wrap(
+                      spacing: 6,
+                      runSpacing: 4,
+                      children: [
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                          decoration: BoxDecoration(
+                            color: surfaceBeige,
+                            borderRadius: BorderRadius.circular(4),
+                            border: Border.all(color: borderColor, width: 0.8),
+                          ),
+                          child: Text(
+                            cashbackTag,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10.5,
+                              fontWeight: FontWeight.w700,
+                              color: primaryAccent,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+              // Disabled Grab Deal button
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+                decoration: BoxDecoration(
+                  color: isDark ? Colors.white10 : const Color(0xFFF1F5F9),
+                  borderRadius: BorderRadius.circular(10),
+                  border: Border.all(
+                    color: isDark ? Colors.white12 : const Color(0xFFCBD5E1),
+                    width: 1,
+                  ),
+                ),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Icon(
+                      Icons.lock_outline_rounded,
+                      size: 13,
+                      color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                    ),
+                    const SizedBox(width: 4),
+                    Text(
+                      'Higher Price',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                        fontWeight: FontWeight.w700,
+                        fontSize: 12,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+
+          const SizedBox(height: 10),
+
+          // View Full Breakdown
+          InkWell(
+            onTap: () => _showPriceBreakdownModal(
+              context: context,
+              storeName: store.storeName,
+              isDark: isDark,
+              mrp: effectiveMrp,
+              storePrice: store.storePrice,
+              couponDiscount: couponSavings,
+              couponCode: effectiveCouponCode,
+              cashbackAmount: cashback,
+              cashbackRate: store.cashbackRate,
+              effectivePrice: effectivePrice,
+              targetUrl: store.targetUrl,
+              isStoreAvailable: false,
+            ),
+            child: Padding(
+              padding: const EdgeInsets.symmetric(vertical: 4),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    'View Breakdown',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12.5,
+                      fontWeight: FontWeight.w700,
+                      color: primaryAccent,
+                    ),
+                  ),
+                  const SizedBox(width: 3),
+                  Icon(
+                    Icons.arrow_right_alt_rounded,
+                    size: 18,
+                    color: primaryAccent,
+                  ),
+                ],
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  void _showColorSelectorModal(BuildContext context, bool isDark) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkCard : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFCBD5E1),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Text(
+                  'Select Colour',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                  ),
+                ),
+                const SizedBox(height: 12),
+                ..._availableColors.map((col) {
+                  final isSelected = _selectedColor == col;
+                  return ListTile(
+                    contentPadding: EdgeInsets.zero,
+                    leading: Container(
+                      width: 22,
+                      height: 22,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: _getColorValue(col),
+                        border: Border.all(color: Colors.grey.shade400),
+                      ),
+                    ),
+                    title: Text(
+                      col,
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 14.5,
+                        fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
+                        color: isSelected
+                            ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                            : (isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A)),
+                      ),
+                    ),
+                    trailing: isSelected
+                        ? const Icon(Icons.check_circle_rounded, color: AppColors.primaryBrown, size: 20)
+                        : null,
+                    onTap: () {
+                      setState(() {
+                        _selectedColor = col;
+                      });
+                      Navigator.pop(ctx);
+                    },
+                  );
+                }),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Color _getColorValue(String name) {
+    switch (name.toLowerCase()) {
+      case 'blue':
+        return const Color(0xFF1E3A8A);
+      case 'black':
+        return Colors.black;
+      case 'olive':
+        return const Color(0xFF556B2F);
+      case 'navy':
+        return const Color(0xFF0F172A);
+      case 'white':
+        return Colors.white;
+      case 'red':
+        return const Color(0xFFDC2626);
+      default:
+        return Colors.grey;
+    }
+  }
+
+  void _showStoreInfoModal(BuildContext context, String storeName, bool isDark) {
+    showModalBottomSheet(
+      context: context,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkCard : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+          ),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFD8C5AF),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(
+                      '$storeName Cashback Policy',
+                      style: GoogleFonts.inter(
+                        fontSize: 17,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                      ),
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded, size: 20),
+                      onPressed: () => Navigator.pop(ctx),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                _buildInfoRow(Icons.timer_outlined, 'Tracking Speed', 'Cashback is tracked within 24 to 48 hours of order confirmation.', isDark),
+                const SizedBox(height: 10),
+                _buildInfoRow(Icons.verified_outlined, 'Confirmation Period', 'Confirmed within 60 to 90 days after return window expires.', isDark),
+                const SizedBox(height: 10),
+                _buildInfoRow(Icons.cancel_outlined, 'Cancellations / Returns', 'Cashback will be void if the order is returned or cancelled.', isDark),
+                const SizedBox(height: 10),
+                _buildInfoRow(Icons.account_balance_wallet_outlined, 'Payout', 'Transfer directly to your Bank Account or UPI once confirmed.', isDark),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildInfoRow(IconData icon, String title, String subtitle, bool isDark) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Icon(icon, size: 18, color: primaryAccent),
+        const SizedBox(width: 10),
+        Expanded(
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                title,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w700,
+                  color: textDark,
+                ),
+              ),
+              const SizedBox(height: 2),
+              Text(
+                subtitle,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 11.5,
+                  color: textMuted,
+                  height: 1.3,
+                ),
+              ),
+            ],
+          ),
+        ),
+      ],
+    );
+  }
+
+  void _showPriceBreakdownModal({
+    required BuildContext context,
+    required String storeName,
+    required bool isDark,
+    required double mrp,
+    required double storePrice,
+    required double couponDiscount,
+    required String couponCode,
+    required double cashbackAmount,
+    required double cashbackRate,
+    required double effectivePrice,
+    required String targetUrl,
+    bool isStoreAvailable = true,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return StatefulBuilder(
+          builder: (modalContext, setModalState) {
+            final isEligible = storePrice >= minSpendThreshold;
+            final isCouponActive = _isCouponActiveForStore(storeName);
+            final currentCoupon = (isCouponActive && isEligible && couponDiscount > 0)
+                ? couponDiscount
+                : 0.0;
+            final payNow = (storePrice - currentCoupon).clamp(0.0, storePrice);
+            final currentCashback = isEligible
+                ? (cashbackAmount > 0
+                    ? cashbackAmount
+                    : (payNow * (cashbackRate / 100)).roundToDouble())
+                : 0.0;
+            final currentEffective = (payNow - currentCashback).clamp(0.0, payNow);
+            final currentSavings = (mrp - currentEffective).clamp(0.0, double.infinity);
+            final storeDiscount = mrp > storePrice ? mrp - storePrice : 0.0;
+
+            return Container(
+              decoration: BoxDecoration(
+                color: isDark ? AppColors.darkCard : Colors.white,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+              ),
+              padding: const EdgeInsets.fromLTRB(20, 14, 20, 28),
+              child: SafeArea(
+                child: SingleChildScrollView(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Center(
+                        child: Container(
+                          width: 40,
+                          height: 4,
+                          decoration: BoxDecoration(
+                            color: isDark ? AppColors.darkBorder : const Color(0xFFD8C5AF),
+                            borderRadius: BorderRadius.circular(2),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Price Breakdown',
+                                style: GoogleFonts.inter(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                                ),
+                              ),
+                              Text(
+                                'Verified live on $storeName',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 11.5,
+                                  color: textMuted,
+                                ),
+                              ),
+                            ],
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.close_rounded, size: 22),
+                            onPressed: () => Navigator.pop(ctx),
+                            padding: EdgeInsets.zero,
+                            constraints: const BoxConstraints(),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      if (couponDiscount > 0) ...[
+                        Container(
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: isCouponActive
+                                ? primaryAccent.withValues(alpha: isDark ? 0.2 : 0.08)
+                                : surfaceBeige,
+                            borderRadius: BorderRadius.circular(12),
+                            border: Border.all(
+                              color: isCouponActive ? primaryAccent : borderColor,
+                            ),
+                          ),
+                          child: Row(
+                            children: [
+                              Icon(
+                                Icons.local_offer_rounded,
+                                size: 20,
+                                color: isCouponActive ? primaryAccent : textMuted,
+                              ),
+                              const SizedBox(width: 10),
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Row(
+                                      children: [
+                                        Text(
+                                          'Code: $couponCode',
+                                          style: GoogleFonts.plusJakartaSans(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.w700,
+                                            color: textDark,
+                                          ),
+                                        ),
+                                        const SizedBox(width: 6),
+                                        Container(
+                                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                                          decoration: BoxDecoration(
+                                            color: AppColors.successBackground,
+                                            borderRadius: BorderRadius.circular(4),
+                                          ),
+                                          child: Text(
+                                            'Save ₹${couponDiscount.toInt()}',
+                                            style: GoogleFonts.plusJakartaSans(
+                                              fontSize: 10,
+                                              fontWeight: FontWeight.w700,
+                                              color: AppColors.success,
+                                            ),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      isCouponActive ? 'Coupon applied to effective price' : 'Tap switch to apply coupon',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 11,
+                                        color: textMuted,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                              Switch.adaptive(
+                                value: isCouponActive,
+                                activeThumbColor: primaryAccent,
+                                onChanged: (val) {
+                                  setModalState(() {
+                                    _storeCouponApplied[storeName] = val;
+                                    _isCouponApplied = val;
+                                  });
+                                  setState(() {});
+                                },
+                              ),
+                            ],
+                          ),
+                        ),
+                        const SizedBox(height: 16),
+                      ],
+
+                      Container(
+                        padding: const EdgeInsets.all(14),
+                        decoration: BoxDecoration(
+                          color: surfaceBeige,
+                          borderRadius: BorderRadius.circular(12),
+                          border: Border.all(color: borderColor),
+                        ),
+                        child: Column(
+                          children: [
+                            _buildBreakdownRow('Maximum Retail Price (MRP)', '₹${mrp.toStringAsFixed(0)}', false, isDark),
+                            if (storeDiscount > 0) ...[
+                              const SizedBox(height: 8),
+                              _buildBreakdownRow('$storeName Discount', '- ₹${storeDiscount.toStringAsFixed(0)}', true, isDark),
+                            ],
+                            const SizedBox(height: 8),
+                            _buildBreakdownRow('$storeName Listed Price', '₹${storePrice.toStringAsFixed(0)}', false, isDark, isBold: true),
+                            if (currentCoupon > 0) ...[
+                              const SizedBox(height: 8),
+                              _buildBreakdownRow('Coupon Discount ($couponCode)', '- ₹${currentCoupon.toStringAsFixed(0)}', true, isDark),
+                            ],
+                            const SizedBox(height: 9),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+                              decoration: BoxDecoration(
+                                color: isDark ? const Color(0xFF1E293B) : const Color(0xFFEFF6FF),
+                                borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: isDark ? const Color(0xFF3B82F6).withValues(alpha: 0.4) : const Color(0xFF93C5FD),
+                                ),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Row(
+                                    children: [
+                                      const Icon(
+                                        Icons.shopping_bag_outlined,
+                                        size: 14,
+                                        color: Color(0xFF2563EB),
+                                      ),
+                                      const SizedBox(width: 5),
+                                      Text(
+                                        'You Pay at $storeName:',
+                                        style: GoogleFonts.plusJakartaSans(
+                                          fontSize: 12.5,
+                                          fontWeight: FontWeight.w800,
+                                          color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  Text(
+                                    '₹${payNow.toStringAsFixed(0)}',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.w800,
+                                      color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            if (currentCashback > 0) ...[
+                              const SizedBox(height: 9),
+                              _buildBreakdownRow('KashIQ Extra Cashback / Rewards', '- ₹${currentCashback.toStringAsFixed(0)}', true, isDark),
+                            ],
+                            Padding(
+                              padding: const EdgeInsets.symmetric(vertical: 10),
+                              child: Divider(height: 1, color: borderColor),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      'Effective Net Price',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w800,
+                                        color: textDark,
+                                      ),
+                                    ),
+                                    Text(
+                                      'Total Savings: ₹${currentSavings.toStringAsFixed(1)}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 11,
+                                        fontWeight: FontWeight.w600,
+                                        color: AppColors.success,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                                Text(
+                                  '₹${currentEffective.toStringAsFixed(1)}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900,
+                                    color: AppColors.success,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 18),
+
+                      SizedBox(
+                        width: double.infinity,
+                        height: 48,
+                        child: isStoreAvailable
+                            ? ElevatedButton(
+                                onPressed: () {
+                                  Navigator.pop(ctx);
+                                  _handleShopNow(targetUrl, storeName);
+                                },
+                                style: ElevatedButton.styleFrom(
+                                  backgroundColor: primaryAccent,
+                                  foregroundColor: buttonTextColor,
+                                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                                  elevation: 0,
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  children: [
+                                    Text(
+                                      'Grab Deal on ${storeName.toUpperCase()}',
+                                      style: GoogleFonts.plusJakartaSans(
+                                        fontSize: 14,
+                                        fontWeight: FontWeight.w800,
+                                      ),
+                                    ),
+                                    const SizedBox(width: 6),
+                                    Icon(Icons.arrow_forward_rounded, size: 16, color: buttonTextColor),
+                                  ],
+                                ),
+                              )
+                            : Container(
+                                decoration: BoxDecoration(
+                                  color: isDark ? const Color(0xFF262626) : const Color(0xFFF1F5F9),
+                                  borderRadius: BorderRadius.circular(12),
+                                  border: Border.all(
+                                    color: isDark ? Colors.white12 : borderColor,
+                                    width: 1,
+                                  ),
+                                ),
+                                alignment: Alignment.center,
+                                child: Text(
+                                  'Currently Out Of Stock on ${storeName.toUpperCase()}',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 13.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                                  ),
+                                ),
+                              ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+
+  Widget _buildBreakdownRow(String label, String value, bool isNegative, bool isDark, {bool isBold = false}) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 12.5,
+            fontWeight: isBold ? FontWeight.w700 : FontWeight.w500,
+            color: isBold ? textDark : textMuted,
+          ),
+        ),
+        Text(
+          value,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 13,
+            fontWeight: isBold ? FontWeight.w800 : FontWeight.w600,
+            color: isNegative ? AppColors.success : textDark,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildAccordionTile({
+    required String title,
+    required bool isExpanded,
+    required VoidCallback onToggle,
+    required bool isDark,
+    required Widget content,
+    double titleFontSize = 16.5,
+    FontWeight titleFontWeight = FontWeight.w800,
+  }) {
+    final clean = ProductDetailScreen.cleanTitle(title);
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+
+    return Container(
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: isDark ? AppColors.darkCard : Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          InkWell(
+            onTap: onToggle,
+            child: Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    clean,
+                    style: GoogleFonts.inter(
+                      fontSize: titleFontSize,
+                      fontWeight: titleFontWeight,
+                      color: textDark,
+                    ),
+                  ),
+                  Icon(
+                    isExpanded ? Icons.keyboard_arrow_up_rounded : Icons.keyboard_arrow_down_rounded,
+                    color: textMuted,
+                    size: 22,
+                  ),
+                ],
+              ),
+            ),
+          ),
+          if (isExpanded) ...[
+            Divider(
+              height: 1,
+              color: borderColor,
+            ),
+            Padding(
+              padding: const EdgeInsets.all(16),
+              child: content,
+            ),
+          ],
+        ],
+      ),
+    );
+  }
+
+  Widget _buildKeyFeaturesContent({
+    required String description,
+    required String brandName,
+    required String category,
+    required int? stock,
+    double? rating,
+    required String displayStoreName,
+    required bool isCard,
+    required bool isLoan,
+    required bool isDark,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        if (brandName.isNotEmpty) _buildSpecRow('Brand', brandName, isDark),
+        if (rating != null) ...[
+          const SizedBox(height: 6),
+          _buildSpecRow('Rating', '${rating.toStringAsFixed(1)} ★', isDark),
+        ],
+        if (category.isNotEmpty) ...[
+          const SizedBox(height: 6),
+          _buildSpecRow('Category', category, isDark),
+        ],
+        const SizedBox(height: 6),
+        _buildSpecRow('Condition', '100% Original & Brand New', isDark),
+        if (stock != null) ...[
+          const SizedBox(height: 6),
+          _buildSpecRow('Stock', '$stock units available', isDark),
+        ],
+        const SizedBox(height: 12),
+        Divider(color: borderColor),
+        const SizedBox(height: 10),
+        Text(
+          'Product Overview',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: textDark,
+          ),
+        ),
+        const SizedBox(height: 6),
+        Text(
+          description,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 12.5,
+            color: textMuted,
+            height: 1.4,
+          ),
+        ),
+        const SizedBox(height: 14),
+        Divider(color: borderColor),
+        const SizedBox(height: 10),
+        Text(
+          'How to Earn Cashback:',
+          style: GoogleFonts.inter(
+            fontSize: 14,
+            fontWeight: FontWeight.w700,
+            color: textDark,
+          ),
+        ),
+        const SizedBox(height: 8),
+        _buildCashbackStep('1', 'Tap "Grab Deal" to visit $displayStoreName', isDark),
+        const SizedBox(height: 6),
+        _buildCashbackStep('2', 'Place your order normally on their website/app', isDark),
+        const SizedBox(height: 6),
+        _buildCashbackStep('3', 'Cashback is tracked within 24-48 hrs & ready to withdraw', isDark),
+      ],
+    );
+  }
+
+  Widget _buildSpecRow(String label, String value, bool isDark) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Text(
+          label,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 12,
+            color: textMuted,
+          ),
+        ),
+        Text(
+          value,
+          style: GoogleFonts.plusJakartaSans(
+            fontSize: 12,
+            fontWeight: FontWeight.w600,
+            color: textDark,
+          ),
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSimilarProductsContent(BuildContext context, String currentCategory, bool isDark) {
+    final homeProvider = context.watch<HomeProvider>();
+    final allDeals = homeProvider.bestDeals;
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    // Smart category matching: filter products matching the current product's category
+    final cleanCategory = currentCategory.trim().toLowerCase();
+    final matchingDeals = cleanCategory.isNotEmpty
+        ? allDeals.where((d) =>
+            d.category.trim().toLowerCase() == cleanCategory ||
+            d.category.toLowerCase().contains(cleanCategory) ||
+            cleanCategory.contains(d.category.toLowerCase())
+          ).toList()
+        : <BestDealModel>[];
+
+    final deals = matchingDeals.isNotEmpty ? matchingDeals : allDeals;
+
+    if (deals.isEmpty) {
+      return Text(
+        'No similar deals found at the moment.',
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 12,
+          color: textMuted,
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 180,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: deals.length > 8 ? 8 : deals.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
+        itemBuilder: (ctx, index) {
+          final deal = deals[index];
+          return _buildMiniDealCard(
+            title: deal.title,
+            imageUrl: deal.imageUrl,
+            price: deal.discountedPrice,
+            cashbackText: '₹${deal.cashbackAmount.toInt()} Cashback',
+            isDark: isDark,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductDetailScreen.fromBestDeal(deal),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildProductsYouMightLikeContent(BuildContext context, bool isDark) {
+    final homeProvider = context.watch<HomeProvider>();
+    final deals = homeProvider.trendingDeals;
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    if (deals.isEmpty) {
+      return Text(
+        'Discovering personalized recommendations for you...',
+        style: GoogleFonts.plusJakartaSans(
+          fontSize: 12,
+          color: textMuted,
+        ),
+      );
+    }
+
+    return SizedBox(
+      height: 180,
+      child: ListView.separated(
+        scrollDirection: Axis.horizontal,
+        physics: const BouncingScrollPhysics(),
+        itemCount: deals.length > 8 ? 8 : deals.length,
+        separatorBuilder: (_, _) => const SizedBox(width: 12),
+        itemBuilder: (ctx, index) {
+          final deal = deals[index];
+          return _buildMiniDealCard(
+            title: deal.productName,
+            imageUrl: deal.imageUrl,
+            price: deal.price,
+            cashbackText: deal.cashback.isNotEmpty ? deal.cashback : '₹${deal.cashbackAmount.toInt()} Cashback',
+            isDark: isDark,
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => ProductDetailScreen.fromTrendingDeal(deal),
+                ),
+              );
+            },
+          );
+        },
+      ),
+    );
+  }
+
+  Widget _buildMiniDealCard({
+    required String title,
+    required String imageUrl,
+    required double price,
+    required String cashbackText,
+    required bool isDark,
+    required VoidCallback onTap,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+
+    return InkWell(
+      onTap: onTap,
+      borderRadius: BorderRadius.circular(10),
+      child: Container(
+        width: 130,
+        padding: const EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          color: isDark ? AppColors.darkCard : Colors.white,
+          borderRadius: BorderRadius.circular(10),
+          border: Border.all(
+            color: borderColor,
+          ),
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Center(
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(6),
+                  child: NetworkImageWithSkeleton(
+                    imageUrl: imageUrl,
+                    fit: BoxFit.contain,
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 6),
+            Text(
+              ProductDetailScreen.cleanTitle(title),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: 11.5,
+                fontWeight: FontWeight.w600,
+                color: textDark,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Text(
+              '₹${price.toInt()}',
+              style: GoogleFonts.inter(
+                fontSize: 12.5,
+                fontWeight: FontWeight.w800,
+                color: textDark,
+              ),
+            ),
+            const SizedBox(height: 2),
+            Container(
+              padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
+              decoration: BoxDecoration(
+                color: AppColors.successBackground,
+                borderRadius: BorderRadius.circular(3),
+              ),
+              child: Text(
+                cashbackText,
+                style: GoogleFonts.plusJakartaSans(
+                  fontSize: 9,
+                  fontWeight: FontWeight.w700,
+                  color: AppColors.success,
+                ),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  void _showGrabDealSliderModal({
+    required BuildContext context,
+    required StoreDealOption store,
+    required String productTitle,
+    required String productImage,
+    required double effectivePrice,
+    required String cashbackTag,
+    required String couponCode,
+    required bool isDark,
+  }) {
+    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: Colors.transparent,
+      builder: (ctx) {
+        return Container(
+          decoration: BoxDecoration(
+            color: isDark ? AppColors.darkCard : Colors.white,
+            borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.2),
+                blurRadius: 16,
+                offset: const Offset(0, -4),
+              ),
+            ],
+          ),
+          padding: const EdgeInsets.fromLTRB(20, 14, 20, 28),
+          child: SafeArea(
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Center(
+                  child: Container(
+                    width: 40,
+                    height: 4,
+                    decoration: BoxDecoration(
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFD8C5AF),
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisSize: MainAxisSize.min,
+                      children: [
+                        _buildStoreLogoWidget(store.storeName, isDark),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2.5),
+                          decoration: BoxDecoration(
+                            color: AppColors.successBackground,
+                            borderRadius: BorderRadius.circular(5),
+                          ),
+                          child: Text(
+                            'Verified Partner',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 10,
+                              fontWeight: FontWeight.w700,
+                              color: AppColors.success,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    IconButton(
+                      icon: const Icon(Icons.close_rounded, size: 22),
+                      onPressed: () => Navigator.pop(ctx),
+                      padding: EdgeInsets.zero,
+                      constraints: const BoxConstraints(),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 14),
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: surfaceBeige,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: borderColor,
+                    ),
+                  ),
+                  child: Row(
+                    children: [
+                      if (productImage.isNotEmpty)
+                        ClipRRect(
+                          borderRadius: BorderRadius.circular(8),
+                          child: SizedBox(
+                            width: 52,
+                            height: 52,
+                            child: NetworkImageWithSkeleton(
+                              imageUrl: productImage,
+                              fit: BoxFit.contain,
+                            ),
+                          ),
+                        )
+                      else
+                        Container(
+                          width: 52,
+                          height: 52,
+                          decoration: BoxDecoration(
+                            color: isDark ? AppColors.darkCard : const Color(0xFFF1F5F9),
+                            borderRadius: BorderRadius.circular(8),
+                          ),
+                          child: const Icon(Icons.shopping_bag_outlined, size: 28),
+                        ),
+                      const SizedBox(width: 12),
+                      Expanded(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              ProductDetailScreen.cleanTitle(productTitle),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700,
+                                color: textDark,
+                              ),
+                            ),
+                            const SizedBox(height: 3),
+                            Row(
+                              children: [
+                                Text(
+                                  '₹${effectivePrice.toStringAsFixed(1)}',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 14,
+                                    fontWeight: FontWeight.w800,
+                                    color: primaryAccent,
+                                  ),
+                                ),
+                                const SizedBox(width: 6),
+                                Flexible(
+                                  child: Text(
+                                    cashbackTag,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 11,
+                                      fontWeight: FontWeight.w600,
+                                      color: AppColors.success,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Container(
+                  padding: const EdgeInsets.all(14),
+                  decoration: BoxDecoration(
+                    color: surfaceBeige,
+                    borderRadius: BorderRadius.circular(12),
+                    border: Border.all(
+                      color: borderColor,
+                    ),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        children: [
+                          Icon(Icons.radar_rounded, size: 18, color: primaryAccent),
+                          const SizedBox(width: 6),
+                          Text(
+                            'KashIQ Auto-Tracking Enabled',
+                            style: GoogleFonts.inter(
+                              fontSize: 13.5,
+                              fontWeight: FontWeight.w700,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      _buildTrackingStepItem(
+                        '1',
+                        'We will safely redirect you to ${store.storeName}',
+                        isDark,
+                      ),
+                      const SizedBox(height: 6),
+                      _buildTrackingStepItem(
+                        '2',
+                        'Complete your purchase normally on their official site/app',
+                        isDark,
+                      ),
+                      const SizedBox(height: 6),
+                      _buildTrackingStepItem(
+                        '3',
+                        'Cashback is tracked within 24-48 hrs & added to your KashIQ wallet',
+                        isDark,
+                      ),
+                    ],
+                  ),
+                ),
+                if (couponCode.isNotEmpty) ...[
+                  const SizedBox(height: 12),
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    decoration: BoxDecoration(
+                      color: AppColors.pendingBackground,
+                      borderRadius: BorderRadius.circular(8),
+                      border: Border.all(color: AppColors.warning.withValues(alpha: 0.3)),
+                    ),
+                    child: Row(
+                      children: [
+                        const Icon(Icons.content_copy_rounded, size: 16, color: AppColors.warning),
+                        const SizedBox(width: 8),
+                        Expanded(
+                          child: Text(
+                            'Coupon code "$couponCode" will be copied automatically!',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 11.5,
+                              fontWeight: FontWeight.w600,
+                              color: AppColors.warning,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+                const SizedBox(height: 20),
+                SizedBox(
+                  width: double.infinity,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () async {
+                      Navigator.pop(ctx);
+                      if (couponCode.isNotEmpty) {
+                        await Clipboard.setData(ClipboardData(text: couponCode));
+                      }
+                      if (context.mounted) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text(
+                              couponCode.isNotEmpty
+                                  ? 'Coupon $couponCode copied! Redirecting to ${store.storeName}...'
+                                  : 'Redirecting to ${store.storeName}... Cashback tracking active!',
+                            ),
+                            backgroundColor: AppColors.primaryBrown,
+                            duration: const Duration(seconds: 2),
+                          ),
+                        );
+                      }
+                      await _handleShopNow(store.targetUrl, store.storeName);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: primaryAccent,
+                      foregroundColor: buttonTextColor,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                      elevation: 0,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.launch_rounded, size: 18, color: buttonTextColor),
+                        const SizedBox(width: 8),
+                        Flexible(
+                          child: Text(
+                            'Visit ${store.storeName.toUpperCase()} & Track Deal',
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 14.5,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 0.2,
+                              color: buttonTextColor,
+                            ),
+                          ),
+                        ),
+                        const SizedBox(width: 6),
+                        Icon(Icons.arrow_forward_rounded, size: 16, color: buttonTextColor),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildTrackingStepItem(String number, String title, bool isDark) {
+    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Container(
+          width: 17,
+          height: 17,
+          decoration: BoxDecoration(
+            color: primaryAccent,
+            shape: BoxShape.circle,
+          ),
+          child: Center(
+            child: Text(
+              number,
+              style: TextStyle(
+                color: badgeTextColor,
+                fontSize: 9.5,
+                fontWeight: FontWeight.w800,
+              ),
+            ),
+          ),
+        ),
+        const SizedBox(width: 8),
+        Expanded(
+          child: Text(
+            title,
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: 11.5,
+              fontWeight: FontWeight.w500,
+              color: textMuted,
+              height: 1.3,
+            ),
+          ),
+        ),
+      ],
+    );
+  }
+
 }

@@ -15,10 +15,12 @@ class CategoryService {
 
   /// Fetches raw categories list from DummyJSON
   Future<List<String>> fetchCategories() async {
-    final response = await _client.get(
-      Uri.parse(_categoriesEndpoint),
-      headers: {'User-Agent': 'Mozilla/5.0'},
-    );
+    final response = await _client
+        .get(
+          Uri.parse(_categoriesEndpoint),
+          headers: {'User-Agent': 'Mozilla/5.0'},
+        )
+        .timeout(const Duration(seconds: 4));
 
     if (response.statusCode != 200) {
       throw Exception('Failed to load categories');
@@ -46,10 +48,12 @@ class CategoryService {
       return _cache[encodedCategory]!;
     }
 
-    final response = await _client.get(
-      Uri.parse('https://dummyjson.com/products/category/$encodedCategory'),
-      headers: {'User-Agent': 'Mozilla/5.0'},
-    );
+    final response = await _client
+        .get(
+          Uri.parse('https://dummyjson.com/products/category/$encodedCategory'),
+          headers: {'User-Agent': 'Mozilla/5.0'},
+        )
+        .timeout(const Duration(seconds: 4));
 
     if (response.statusCode != 200) {
       if (_cache.containsKey(encodedCategory)) {

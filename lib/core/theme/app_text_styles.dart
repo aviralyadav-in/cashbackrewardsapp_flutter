@@ -3,69 +3,69 @@ import 'package:google_fonts/google_fonts.dart';
 import 'app_colors.dart';
 
 class AppTextStyles {
-  // Screen Heading: Fraunces 24px 700 #351C15
-  static TextStyle screenHeading({Color color = AppColors.deepBrown}) =>
-      GoogleFonts.fraunces(
+  // Screen Heading: Inter 24px 700
+  static TextStyle screenHeading({Color color = AppColors.textPrimary}) =>
+      GoogleFonts.inter(
         fontSize: 24,
         fontWeight: FontWeight.w700,
         color: color,
         letterSpacing: -0.3,
       );
 
-  static TextStyle screenTitle({Color color = AppColors.deepBrown}) =>
+  static TextStyle screenTitle({Color color = AppColors.textPrimary}) =>
       screenHeading(color: color);
 
-  // Large Financial Amount: Fraunces 30px 700 #351C15
-  static TextStyle largeFinancialAmount({Color color = AppColors.deepBrown}) =>
-      GoogleFonts.fraunces(
+  // Large Financial Amount: Inter 30px 700
+  static TextStyle largeFinancialAmount({Color color = AppColors.textPrimary}) =>
+      GoogleFonts.inter(
         fontSize: 30,
         fontWeight: FontWeight.w700,
         color: color,
         letterSpacing: -0.5,
       );
 
-  static TextStyle amount({Color color = AppColors.deepBrown}) =>
+  static TextStyle amount({Color color = AppColors.textPrimary}) =>
       largeFinancialAmount(color: color);
 
-  // Section Heading: Fraunces 16px 700 #351C15
-  static TextStyle sectionHeading({Color color = AppColors.deepBrown}) =>
-      GoogleFonts.fraunces(
+  // Section Heading: Inter 16px 700
+  static TextStyle sectionHeading({Color color = AppColors.textPrimary}) =>
+      GoogleFonts.inter(
         fontSize: 16,
         fontWeight: FontWeight.w700,
         color: color,
       );
 
-  static TextStyle sectionTitle({Color color = AppColors.deepBrown}) =>
+  static TextStyle sectionTitle({Color color = AppColors.textPrimary}) =>
       sectionHeading(color: color);
 
-  // Card Title: Fraunces 14px 700 #2B1B16
+  // Card Title: Inter 14px 700
   static TextStyle cardTitle({Color color = AppColors.textPrimary}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 14,
         fontWeight: FontWeight.w700,
         color: color,
       );
 
-  // Card Subtitle: Fraunces 12px 400 #765F52
+  // Card Subtitle: Inter 12px 400
   static TextStyle cardSubtitle({Color color = AppColors.textSecondary}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
       );
 
-  // Body Text: Fraunces 13.5px 400 #765F52
+  // Body Text: Inter 13.5px 400
   static TextStyle body({Color color = AppColors.textSecondary}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 13.5,
         fontWeight: FontWeight.w400,
         color: color,
         height: 1.4,
       );
 
-  // Small Description: Fraunces 12px 400 #9A887C
+  // Small Description: Inter 12px 400
   static TextStyle smallDescription({Color color = AppColors.textMuted}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 12,
         fontWeight: FontWeight.w400,
         color: color,
@@ -74,37 +74,37 @@ class AppTextStyles {
   static TextStyle caption({Color color = AppColors.textMuted}) =>
       smallDescription(color: color);
 
-  // Button Text: Fraunces 13px 700
-  static TextStyle buttonText({Color color = AppColors.cardBackground}) =>
-      GoogleFonts.fraunces(
+  // Button Text: Inter 13px 700
+  static TextStyle buttonText({Color color = Colors.white}) =>
+      GoogleFonts.inter(
         fontSize: 13,
         fontWeight: FontWeight.w700,
         color: color,
         letterSpacing: 0.2,
       );
 
-  static TextStyle button({Color color = AppColors.cardBackground}) =>
+  static TextStyle button({Color color = Colors.white}) =>
       buttonText(color: color);
 
-  // Navigation Text: Fraunces 10.5px 600
-  static TextStyle navLabel({Color color = AppColors.deepBrown}) =>
-      GoogleFonts.fraunces(
+  // Navigation Text: Inter 10.5px 600
+  static TextStyle navLabel({Color color = AppColors.textPrimary}) =>
+      GoogleFonts.inter(
         fontSize: 10.5,
         fontWeight: FontWeight.w600,
         color: color,
       );
 
-  // Small Labels: Fraunces 11px 600 #9A887C
+  // Small Labels: Inter 11px 600
   static TextStyle smallLabel({Color color = AppColors.textMuted}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 11,
         fontWeight: FontWeight.w600,
         color: color,
       );
 
-  // Input Text: Fraunces 13px #2B1B16
+  // Input Text: Inter 13px
   static TextStyle input({Color color = AppColors.textPrimary}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 13,
         fontWeight: FontWeight.w400,
         color: color,
@@ -113,9 +113,9 @@ class AppTextStyles {
   static TextStyle inputText({Color color = AppColors.textPrimary}) =>
       input(color: color);
 
-  // Hint Text: Fraunces 12-13px #9A887C
+  // Hint Text: Inter 12.5px
   static TextStyle hint({Color color = AppColors.textMuted}) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: 12.5,
         fontWeight: FontWeight.w400,
         color: color,
@@ -124,26 +124,26 @@ class AppTextStyles {
   static TextStyle hintText({Color color = AppColors.textMuted}) =>
       hint(color: color);
 
-  // Important Percentage: Fraunces 20–24px 700 #351C15
+  // Important Percentage: Inter 20–24px 700
   static TextStyle importantPercentage({
     double fontSize = 22,
-    Color color = AppColors.deepBrown,
+    Color color = AppColors.accentBlue,
   }) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: fontSize,
         fontWeight: FontWeight.w700,
         color: color,
       );
 
-  static TextStyle percentage({Color color = AppColors.deepBrown}) =>
-      importantPercentage(color: color);
+  static TextStyle percentage({Color color = AppColors.accentBlue}) =>
+    importantPercentage(color: color);
 
-  // Important Cashback Amount: Fraunces 18–22px 700 #351C15
+  // Important Cashback Amount: Inter 18–22px 700
   static TextStyle cashbackAmount({
     double fontSize = 20,
-    Color color = AppColors.deepBrown,
+    Color color = AppColors.accentBlue,
   }) =>
-      GoogleFonts.fraunces(
+      GoogleFonts.inter(
         fontSize: fontSize,
         fontWeight: FontWeight.w700,
         color: color,

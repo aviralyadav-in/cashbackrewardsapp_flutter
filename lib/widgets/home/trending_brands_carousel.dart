@@ -150,7 +150,7 @@ class _TrendingBrandsCarouselWidgetState
                                       errorBuilder: (ctx, err, stack) => Center(
                                         child: Text(
                                           item.brand.name.substring(0, 1),
-                                          style: GoogleFonts.fraunces(
+                                          style: GoogleFonts.inter(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: widget.isDark
@@ -217,7 +217,7 @@ class _TrendingBrandsCarouselWidgetState
                                 item.brand.cashbackPercentage,
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   fontSize: 11,
                                   fontWeight: FontWeight.bold,
                                   color: widget.isDark

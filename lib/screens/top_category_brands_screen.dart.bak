@@ -56,7 +56,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
 
               // Title
               Text(
-                'You’re leaving CashKaro',
+                'You’re leaving KashIQ',
                 style: AppTextStyles.screenHeading(
                   color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                 ).copyWith(fontSize: 18),
@@ -262,7 +262,7 @@ class TopCategoryBrandsScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 4),
                         Text(
-                          'Shop via CashKaro to earn extra guaranteed cashback rewards!',
+                          'Shop via KashIQ to earn extra guaranteed cashback rewards!',
                           style: AppTextStyles.caption(
                             color: Colors.white.withValues(alpha: 0.8),
                           ),

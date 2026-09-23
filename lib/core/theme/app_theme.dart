@@ -14,31 +14,31 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.light,
       scaffoldBackgroundColor: AppColors.mainBackground,
-      textTheme: GoogleFonts.frauncesTextTheme(ThemeData.light().textTheme),
+      textTheme: GoogleFonts.interTextTheme(ThemeData.light().textTheme),
       colorScheme: const ColorScheme.light(
-        primary: AppColors.primaryBrown,
-        secondary: AppColors.deepBrown,
+        primary: AppColors.accentBlue,
+        secondary: AppColors.navyMedium,
         surface: AppColors.cardBackground,
         onSurface: AppColors.textPrimary,
-        onPrimary: AppColors.cardBackground,
+        onPrimary: Colors.white,
       ),
       useMaterial3: true,
       iconTheme: const IconThemeData(
-        color: AppColors.primaryBrown,
+        color: AppColors.navyDark,
         size: 24,
       ),
       primaryIconTheme: const IconThemeData(
-        color: AppColors.primaryBrown,
+        color: AppColors.accentBlue,
         size: 24,
       ),
       appBarTheme: AppBarTheme(
         backgroundColor: AppColors.mainBackground,
-        foregroundColor: AppColors.deepBrown,
+        foregroundColor: AppColors.textPrimary,
         elevation: 0,
         centerTitle: false,
-        titleTextStyle: AppTextStyles.screenHeading(),
+        titleTextStyle: AppTextStyles.screenHeading(color: AppColors.textPrimary),
         iconTheme: const IconThemeData(
-          color: AppColors.primaryBrown,
+          color: AppColors.navyDark,
           size: 24,
         ),
       ),
@@ -55,18 +55,18 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.primaryBrown,
-          foregroundColor: AppColors.cardBackground,
+          backgroundColor: AppColors.accentBlue,
+          foregroundColor: Colors.white,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
           ),
-          textStyle: AppTextStyles.buttonText(),
+          textStyle: AppTextStyles.buttonText(color: Colors.white),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(
         filled: true,
-        fillColor: AppColors.cardBackground,
+        fillColor: AppColors.surfaceSubtle,
         hintStyle: AppTextStyles.smallDescription(color: AppColors.textMuted),
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
@@ -79,7 +79,7 @@ class AppTheme {
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
           borderSide: const BorderSide(
-            color: AppColors.primaryBrown,
+            color: AppColors.accentBlue,
             width: 1.5,
           ),
         ),
@@ -91,13 +91,13 @@ class AppTheme {
     return ThemeData(
       brightness: Brightness.dark,
       scaffoldBackgroundColor: AppColors.darkBackground,
-      textTheme: GoogleFonts.frauncesTextTheme(ThemeData.dark().textTheme),
+      textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
       colorScheme: const ColorScheme.dark(
         primary: AppColors.darkPrimary,
-        secondary: AppColors.deepBrown,
+        secondary: AppColors.navyMedium,
         surface: AppColors.darkCard,
         onSurface: AppColors.darkTextPrimary,
-        onPrimary: AppColors.cardBackground,
+        onPrimary: AppColors.darkBackground,
       ),
       useMaterial3: true,
       iconTheme: const IconThemeData(
@@ -127,6 +127,37 @@ class AppTheme {
           side: const BorderSide(
             color: AppColors.darkBorder,
             width: 1,
+          ),
+        ),
+      ),
+      elevatedButtonTheme: ElevatedButtonThemeData(
+        style: ElevatedButton.styleFrom(
+          backgroundColor: AppColors.accentBlue,
+          foregroundColor: Colors.white,
+          elevation: 0,
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+          ),
+          textStyle: AppTextStyles.buttonText(color: Colors.white),
+        ),
+      ),
+      inputDecorationTheme: InputDecorationTheme(
+        filled: true,
+        fillColor: AppColors.darkSurface,
+        hintStyle: AppTextStyles.smallDescription(color: AppColors.darkTextMuted),
+        border: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+          borderSide: const BorderSide(color: AppColors.darkBorder),
+        ),
+        enabledBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+          borderSide: const BorderSide(color: AppColors.darkBorder),
+        ),
+        focusedBorder: OutlineInputBorder(
+          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+          borderSide: const BorderSide(
+            color: AppColors.darkPrimary,
+            width: 1.5,
           ),
         ),
       ),

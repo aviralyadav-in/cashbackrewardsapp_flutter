@@ -1,0 +1,5 @@
+{
+  "dart.flutterHotReloadOnSave": "always",
+  "dart.flutterHotRestartOnSave": "never",
+  "dart.openDevTools": "never"
+}

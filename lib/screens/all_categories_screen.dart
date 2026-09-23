@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
-import '../models/category_group_model.dart';
 import '../providers/category_provider.dart';
 import '../theme/app_theme.dart';
-import 'categories_screen.dart';
+import 'category_detail_screen.dart';
+import 'subcategory_detail_screen.dart';
 
 /// Data model representing a category display item
 class CategoryDisplayItem {
@@ -30,8 +30,9 @@ class CategoryDisplayItem {
 
 class AllCategoriesScreen extends StatefulWidget {
   static const String routeName = '/all-categories';
+  final VoidCallback? onBack;
 
-  const AllCategoriesScreen({super.key});
+  const AllCategoriesScreen({super.key, this.onBack});
 
   @override
   State<AllCategoriesScreen> createState() => _AllCategoriesScreenState();
@@ -272,17 +273,41 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
   }
 
   void _onCategoryTap(CategoryDisplayItem item) {
-    final provider = context.read<CategoryProvider>();
-    final group = CategoryGroup.findById(item.groupId);
-    final subcat = item.subcategorySlug ?? 'all';
+    if (item.subcategorySlug != null && item.subcategorySlug != 'all') {
+      Navigator.of(context).push(
+        MaterialPageRoute(
+          builder: (_) => SubcategoryDetailScreen(
+            categoryId: item.groupId,
+            subcategoryId: item.subcategorySlug!,
+            subcategoryTitle: item.title,
+            parentCategoryTitle: item.title,
+          ),
+        ),
+      );
+      return;
+    }
 
-    provider.selectCategoryGroup(group, subcategorySlug: subcat);
-    Navigator.of(context).pushNamed(
-      CategoriesScreen.routeName,
-      arguments: {
-        'groupId': item.groupId,
-        'subcategorySlug': subcat,
-      },
+    Navigator.of(context).push(
+      PageRouteBuilder(
+        pageBuilder: (context, animation, secondaryAnimation) => CategoryDetailScreen(
+          categoryId: item.groupId,
+          categoryTitle: item.title,
+        ),
+        transitionsBuilder: (context, animation, secondaryAnimation, child) {
+          final curve = CurvedAnimation(parent: animation, curve: Curves.easeOutCubic);
+          return FadeTransition(
+            opacity: curve,
+            child: SlideTransition(
+              position: Tween<Offset>(
+                begin: const Offset(0.04, 0),
+                end: Offset.zero,
+              ).animate(curve),
+              child: child,
+            ),
+          );
+        },
+        transitionDuration: const Duration(milliseconds: 220),
+      ),
     );
   }
 
@@ -328,7 +353,13 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               child: Row(
                 children: [
                   IconButton(
-                    onPressed: () => Navigator.of(context).pop(),
+                    onPressed: () {
+                      if (widget.onBack != null) {
+                        widget.onBack!();
+                      } else {
+                        Navigator.of(context).pop();
+                      }
+                    },
                     icon: Icon(
                       Icons.arrow_back_ios_new_rounded,
                       size: 20,
@@ -353,68 +384,94 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
               ),
             ),
 
-            // Search Bar
+            // Search Bar (Unified Pill Styling matching Home & Best Deals)
             Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
+              padding: const EdgeInsets.fromLTRB(16, 4, 16, 8),
               child: Container(
                 height: 48,
+                padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
-                  color: cardBgColor,
+                  color: isDark ? const Color(0xFF132247) : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: borderColor,
-                    width: 1,
+                    color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                    width: 1.2,
                   ),
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
+                      color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
                       blurRadius: 6,
                       offset: const Offset(0, 2),
                     ),
                   ],
                 ),
-                child: TextField(
-                  controller: _searchController,
-                  onChanged: (val) {
-                    setState(() {
-                      _searchQuery = val;
-                    });
-                  },
-                  style: GoogleFonts.fraunces(
-                    fontSize: 14,
-                    color: primaryTextColor,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  decoration: InputDecoration(
-                    hintText: 'Search categories...',
-                    hintStyle: GoogleFonts.fraunces(
-                      fontSize: 14,
-                      color: AppColors.textMuted,
-                      fontWeight: FontWeight.w400,
-                    ),
-                    prefixIcon: const Icon(
+                child: Row(
+                  children: [
+                    Icon(
                       Icons.search_rounded,
-                      color: AppColors.textMuted,
-                      size: 20,
+                      color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                      size: 22,
                     ),
-                    suffixIcon: _searchQuery.isNotEmpty
-                        ? IconButton(
-                            icon: const Icon(
-                              Icons.clear_rounded,
-                              color: AppColors.textMuted,
-                              size: 18,
-                            ),
-                            onPressed: () {
-                              _searchController.clear();
-                              setState(() {
-                                _searchQuery = '';
-                              });
-                            },
-                          )
-                        : null,
-                    border: InputBorder.none,
-                    contentPadding: const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
-                  ),
+                    const SizedBox(width: 10),
+                    Expanded(
+                      child: TextField(
+                        controller: _searchController,
+                        onChanged: (val) {
+                          setState(() {
+                            _searchQuery = val;
+                          });
+                        },
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 13,
+                          fontWeight: FontWeight.w500,
+                          color: primaryTextColor,
+                        ),
+                        cursorColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                        decoration: InputDecoration(
+                          hintText: 'Search products, stores, categories, offers...',
+                          hintStyle: GoogleFonts.plusJakartaSans(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w500,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          ),
+                          isDense: true,
+                          filled: false,
+                          fillColor: Colors.transparent,
+                          hoverColor: Colors.transparent,
+                          border: InputBorder.none,
+                          enabledBorder: InputBorder.none,
+                          focusedBorder: InputBorder.none,
+                          disabledBorder: InputBorder.none,
+                          errorBorder: InputBorder.none,
+                          focusedErrorBorder: InputBorder.none,
+                          contentPadding: const EdgeInsets.symmetric(vertical: 12),
+                        ),
+                      ),
+                    ),
+                    if (_searchQuery.isNotEmpty)
+                      GestureDetector(
+                        onTap: () {
+                          _searchController.clear();
+                          setState(() {
+                            _searchQuery = '';
+                          });
+                        },
+                        child: Padding(
+                          padding: const EdgeInsets.all(4),
+                          child: Icon(
+                            Icons.close_rounded,
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                            size: 19,
+                          ),
+                        ),
+                      )
+                    else
+                      Icon(
+                        Icons.mic_none_rounded,
+                        color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                        size: 19,
+                      ),
+                  ],
                 ),
               ),
             ),
@@ -497,7 +554,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                                   const SizedBox(width: 8),
                                   Text(
                                     'Popular Categories',
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 16.5,
                                       fontWeight: FontWeight.w700,
                                       color: titleColor,
@@ -548,7 +605,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                                   const SizedBox(width: 8),
                                   Text(
                                     'All Categories',
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 16.5,
                                       fontWeight: FontWeight.w700,
                                       color: titleColor,
@@ -673,7 +730,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 textAlign: TextAlign.center,
                 maxLines: 2,
                 overflow: TextOverflow.ellipsis,
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 12.0,
                   fontWeight: FontWeight.w700,
                   color: titleColor,
@@ -728,7 +785,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                   children: [
                     Text(
                       item.title,
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 15,
                         fontWeight: FontWeight.w700,
                         color: primaryTextColor,

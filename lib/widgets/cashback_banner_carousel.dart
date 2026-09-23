@@ -151,87 +151,251 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
     return rawUrl;
   }
 
-  String _get3DProductAsset(BrandModel brand) {
+  String _get3DBannerAsset(BrandModel brand) {
     final nameLower = brand.name.toLowerCase();
     final catLower = brand.category.toLowerCase();
 
-    // 1. Health & Supplements / HyugaLife / Nutrition / Vitamins
-    if (nameLower.contains('hyuga') ||
-        catLower.contains('health') ||
-        catLower.contains('supplement') ||
-        catLower.contains('nutrition') ||
-        catLower.contains('vitamin') ||
-        nameLower.contains('healthkart') ||
-        nameLower.contains('kapiva')) {
-      return 'assets/banners/supplements_3d.jpg';
+    // 1. MCaffeine: Amber Glass Coffee Face Serum on Stone Podium (Matches user reference)
+    if (nameLower.contains('mcaffeine') || nameLower.contains('caffeine')) {
+      return 'assets/banners/mcaffeine_banner_16_9.jpg';
     }
 
-    // 2. Electronics & Shopping / Amazon / Watches
-    if (nameLower.contains('amazon') || catLower.contains('electronic') || (catLower.contains('shopping') && !catLower.contains('budget'))) {
-      return 'assets/banners/watch_3d.jpg';
+    // 2. Dot & Key: Pastel Fruit Cream Jar on Stone Podium
+    if (nameLower.contains('dot') || nameLower.contains('key')) {
+      return 'assets/banners/dotkey_banner_16_9.jpg';
     }
 
-    // 3. Mobiles / Tech / Flipkart
+    // 3. Aqualogica: Aqua Dew Sunscreen on Stone Podium
+    if (nameLower.contains('aqua')) {
+      return 'assets/banners/aqualogica_banner_16_9.jpg';
+    }
+
+    // 4. Shopsy / Meesho: Luxury Shopping Bags & Gift Boxes with Gold Coins
+    if (nameLower.contains('meesho') || nameLower.contains('shopsy') || nameLower.contains('shopsy')) {
+      return 'assets/banners/shopsy_banner_16_9.jpg';
+    }
+
+    // 5. Reliance Digital: Ultra-Slim 4K TV & Tech on Stone Podium
+    if (nameLower.contains('reliance') || nameLower.contains('digital')) {
+      return 'assets/banners/reliance_banner_16_9.jpg';
+    }
+
+    // 6. AJIO: Wireless Over-Ear Studio Headphones
+    if (nameLower.contains('ajio') || nameLower.contains('boat') || nameLower.contains('noise') || catLower.contains('audio')) {
+      return 'assets/banners/headphone_banner_16_9.jpg';
+    }
+
+    // 7. Myntra: Designer Sneaker on Stone Podium
+    if (nameLower.contains('myntra') || catLower.contains('fashion') || catLower.contains('lifestyle')) {
+      return 'assets/banners/sneaker_banner_16_9.jpg';
+    }
+
+    // 8. Flipkart: Flagship Smartphone on Stone Stand
     if (nameLower.contains('flipkart') || catLower.contains('mobile') || nameLower.contains('phone')) {
-      return 'assets/banners/phone_3d.jpg';
+      return 'assets/banners/phone_banner_16_9.jpg';
     }
 
-    // 4. Fashion & Lifestyle / Footwear / Myntra / Budget Shopping
-    if (nameLower.contains('myntra') ||
-        catLower.contains('fashion') ||
-        catLower.contains('lifestyle') ||
-        catLower.contains('budget')) {
-      return 'assets/banners/sneaker_3d.jpg';
+    // 9. HyugaLife: Whey Protein & Supplement Jar on Stone Podium
+    if (nameLower.contains('hyuga') || catLower.contains('health') || catLower.contains('supplement') || catLower.contains('nutrition')) {
+      return 'assets/banners/supplements_banner_16_9.jpg';
     }
 
-    // 5. Skincare & Beauty / Dot & Key / Nykaa / MCaffeine / Aqualogica
-    if (nameLower.contains('nykaa') ||
-        nameLower.contains('caffeine') ||
-        nameLower.contains('dot') ||
-        nameLower.contains('aqua') ||
-        catLower.contains('beauty') ||
-        catLower.contains('skin') ||
-        catLower.contains('care')) {
-      return 'assets/banners/skincare_3d.jpg';
+    // 10. Amazon / Electronics: Luxury 3D Smartwatch on Stone Podium
+    if (nameLower.contains('amazon') || catLower.contains('electronic')) {
+      return 'assets/banners/watch_banner_16_9.jpg';
     }
 
-    // 6. Audio / Gadgets / boAt / AJIO / Tech
-    if (nameLower.contains('boat') ||
-        nameLower.contains('ajio') ||
-        nameLower.contains('noise') ||
-        catLower.contains('tech') ||
-        catLower.contains('gadget') ||
-        catLower.contains('trendy')) {
-      return 'assets/banners/headphone_3d.jpg';
+    // 11. Skincare / Nykaa fallback
+    if (nameLower.contains('nykaa') || catLower.contains('beauty') || catLower.contains('skincare')) {
+      return 'assets/banners/dotkey_banner_16_9.jpg';
     }
 
-    // Default fallback to 3D Watch matching reference image
-    return 'assets/banners/watch_3d.jpg';
+    return 'assets/banners/watch_banner_16_9.jpg';
   }
 
-  String _getTitleText(BrandModel brand) {
-    if (brand.category.isNotEmpty) {
-      if (brand.category.contains('&')) {
-        final parts = brand.category.split('&');
-        return '${parts[0].trim()} &\n${parts[1].trim()}';
+  Widget _buildCashbackBadge(BrandModel brand, bool isDark) {
+    final rawText = brand.cashbackPercentage.trim();
+    if (rawText.isEmpty) return const SizedBox.shrink();
+
+    String prefix = '';
+    String rate = '';
+    String suffix = '';
+
+    final lower = rawText.toLowerCase();
+    if (lower.startsWith('up to')) {
+      prefix = 'Up to ';
+      final rest = rawText.substring(5).trim();
+      final spaceIndex = rest.indexOf(' ');
+      if (spaceIndex != -1) {
+        rate = rest.substring(0, spaceIndex).trim();
+        suffix = rest.substring(spaceIndex).trim();
+      } else {
+        rate = rest;
       }
-      return brand.category;
+    } else if (lower.startsWith('flat')) {
+      prefix = 'Flat ';
+      final rest = rawText.substring(4).trim();
+      final spaceIndex = rest.indexOf(' ');
+      if (spaceIndex != -1) {
+        rate = rest.substring(0, spaceIndex).trim();
+        suffix = rest.substring(spaceIndex).trim();
+      } else {
+        rate = rest;
+      }
+    } else {
+      final match = RegExp(r'(\d+(?:\.\d+)?%)').firstMatch(rawText);
+      if (match != null) {
+        rate = match.group(1)!;
+        prefix = rawText.substring(0, match.start).trim();
+        if (prefix.isNotEmpty) prefix = '$prefix ';
+        suffix = rawText.substring(match.end).trim();
+      } else {
+        prefix = '';
+        rate = rawText;
+        suffix = '';
+      }
     }
-    return brand.name;
+
+    return FittedBox(
+      fit: BoxFit.scaleDown,
+      alignment: Alignment.centerLeft,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4.5),
+        decoration: BoxDecoration(
+          color: const Color(0xFF281910),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: const Color(0xFFCBA563),
+            width: 1.15,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: 0.45),
+              blurRadius: 6,
+              offset: const Offset(0, 1.5),
+            ),
+          ],
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Container(
+              width: 18,
+              height: 18,
+              decoration: BoxDecoration(
+                shape: BoxShape.circle,
+                color: const Color(0xFF452B1B),
+                border: Border.all(
+                  color: const Color(0xFFCBA563).withValues(alpha: 0.6),
+                  width: 0.8,
+                ),
+              ),
+              child: const Center(
+                child: Icon(
+                  Icons.bolt_rounded,
+                  size: 13,
+                  color: Color(0xFFF3C77D),
+                ),
+              ),
+            ),
+            const SizedBox(width: 6),
+            RichText(
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
+              text: TextSpan(
+                children: [
+                  if (prefix.isNotEmpty)
+                    TextSpan(
+                      text: prefix,
+                      style: GoogleFonts.inter(
+                        fontSize: 13.5,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFFE5CEB5),
+                        letterSpacing: -0.1,
+                      ),
+                    ),
+                  TextSpan(
+                    text: rate,
+                    style: GoogleFonts.inter(
+                      fontSize: 15.5,
+                      fontWeight: FontWeight.w600,
+                      color: const Color(0xFFF3C77D),
+                      letterSpacing: -0.2,
+                    ),
+                  ),
+                  if (suffix.isNotEmpty)
+                    TextSpan(
+                      text: ' $suffix',
+                      style: GoogleFonts.inter(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                        color: const Color(0xFFE5CEB5),
+                        letterSpacing: -0.1,
+                      ),
+                    ),
+                ],
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 
-  String _getSubtitleText(BrandModel brand) {
-    if (brand.name.toLowerCase().contains('amazon')) {
-      return 'On thousands of items across Electronics, Fashion, Home, and Appliances. No hidden fees.';
-    }
-    if (brand.offerText.isNotEmpty) {
-      final text = brand.offerText.trim();
-      if (!text.toLowerCase().contains('hidden')) {
-        return '$text. No hidden fees.';
-      }
-      return text;
-    }
-    return 'On thousands of items across ${brand.category}. No hidden fees.';
+  Widget _buildCheckBullet({required String text, required bool isDark}) {
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        Container(
+          width: 14,
+          height: 14,
+          decoration: BoxDecoration(
+            shape: BoxShape.circle,
+            color: const Color(0xFF1B803D),
+            border: Border.all(
+              color: Colors.white.withValues(alpha: 0.4),
+              width: 0.8,
+            ),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black.withValues(alpha: 0.3),
+                blurRadius: 3,
+                offset: const Offset(0, 1),
+              ),
+            ],
+          ),
+          child: const Center(
+            child: Icon(
+              Icons.check_rounded,
+              size: 9.5,
+              color: Colors.white,
+            ),
+          ),
+        ),
+        const SizedBox(width: 5),
+        Flexible(
+          child: Text(
+            text,
+            style: GoogleFonts.inter(
+              fontSize: 12.0,
+              fontWeight: FontWeight.w400,
+              color: Colors.white,
+              height: 1.15,
+              shadows: [
+                Shadow(
+                  color: Colors.black.withValues(alpha: 0.4),
+                  offset: const Offset(0, 1),
+                  blurRadius: 2,
+                ),
+              ],
+            ),
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+          ),
+        ),
+      ],
+    );
   }
 
   void _onBannerTap(BrandModel brand) {
@@ -260,7 +424,7 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
 
     if (_isLoading) {
       return SizedBox(
-        height: 215,
+        height: 168,
         child: Center(
           child: CircularProgressIndicator(
             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
@@ -277,9 +441,9 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
 
     return Column(
       children: [
-        // HORIZONTAL SWIPEABLE CAROUSEL
+        // HORIZONTAL SWIPEABLE CAROUSEL (Compact 168px height)
         SizedBox(
-          height: 215,
+          height: 168,
           child: Listener(
             onPointerDown: (_) => _pauseAutoScroll(),
             onPointerUp: (_) => _resumeAutoScroll(),
@@ -291,293 +455,268 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
                   _currentPage = index;
                 });
               },
-            itemBuilder: (context, index) {
-              final actualIndex = ((index % _brands.length) + _brands.length) % _brands.length;
-              final brand = _brands[actualIndex];
+              itemBuilder: (context, index) {
+                final actualIndex = ((index % _brands.length) + _brands.length) % _brands.length;
+                final brand = _brands[actualIndex];
 
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 4.0),
-                child: GestureDetector(
-                  onTap: () => _onBannerTap(brand),
-                  child: Container(
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(22),
-                      border: Border.all(
-                        color: isDark ? const Color(0xFF3F3730) : const Color(0xFFDCD0C2),
-                        width: 1,
-                      ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
-                          blurRadius: 14,
-                          offset: const Offset(0, 4),
+                return Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 4.0),
+                  child: GestureDetector(
+                    onTap: () => _onBannerTap(brand),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        border: Border.all(
+                          color: isDark ? const Color(0xFF3F3730) : const Color(0xFFE4D8CA),
+                          width: 1.1,
                         ),
-                      ],
-                      gradient: LinearGradient(
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                        colors: isDark
-                            ? const [
-                                Color(0xFF2C2520),
-                                Color(0xFF221D19),
-                                Color(0xFF181512),
-                              ]
-                            : const [
-                                Color(0xFFEDE4DA),
-                                Color(0xFFE2D5C6),
-                                Color(0xFFD6C6B3),
-                              ],
-                      ),
-                    ),
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(22),
-                      child: Stack(
-                        children: [
-                          // 1. RIGHT SIDE: 3D REAL PRODUCT IMAGE WITH SMOOTH EDGE DISSOLVE
-                          Positioned(
-                            top: -6,
-                            right: -2,
-                            bottom: 24,
-                            width: 138,
-                            child: ShaderMask(
-                              shaderCallback: (rect) {
-                                return const LinearGradient(
-                                  begin: Alignment.centerLeft,
-                                  end: Alignment.centerRight,
-                                  colors: [
-                                    Colors.transparent,
-                                    Color(0x99FFFFFF),
-                                    Colors.white,
-                                    Colors.white,
-                                  ],
-                                  stops: [0.0, 0.20, 0.45, 1.0],
-                                ).createShader(rect);
-                              },
-                              blendMode: BlendMode.dstIn,
-                              child: Image.asset(
-                                _get3DProductAsset(brand),
-                                fit: BoxFit.cover,
-                              ),
-                            ),
-                          ),
-
-                          // 2. FLOATING RUPEE BADGE (₹) near bottom-left of 3D product
-                          Positioned(
-                            bottom: 42,
-                            right: 108,
-                            child: Container(
-                              width: 26,
-                              height: 26,
-                              decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                gradient: LinearGradient(
-                                  begin: Alignment.topLeft,
-                                  end: Alignment.bottomRight,
-                                  colors: isDark
-                                      ? const [Color(0xFF3D332A), Color(0xFF26201A)]
-                                      : const [Color(0xFFFFFBF6), Color(0xFFE4D5C5)],
-                                ),
-                                border: Border.all(
-                                  color: Colors.white.withValues(alpha: isDark ? 0.2 : 0.7),
-                                  width: 1,
-                                ),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: 0.12),
-                                    blurRadius: 6,
-                                    offset: const Offset(0, 2),
-                                  ),
-                                ],
-                              ),
-                              child: Center(
-                                child: Text(
-                                  '₹',
-                                  style: GoogleFonts.fraunces(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w800,
-                                    color: isDark ? const Color(0xFFF3E7D7) : const Color(0xFF332215),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ),
-
-                          // 3. BOTTOM-RIGHT CTA BUTTON ("Shop Now to Earn →")
-                          Positioned(
-                            bottom: 10,
-                            right: 10,
-                            child: Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6.5),
-                              decoration: BoxDecoration(
-                                color: isDark ? const Color(0xFFF7F2EB) : Colors.white,
-                                borderRadius: BorderRadius.circular(24),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
-                                    blurRadius: 8,
-                                    offset: const Offset(0, 3),
-                                  ),
-                                ],
-                              ),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    'Shop Now to Earn',
-                                    style: GoogleFonts.poppins(
-                                      fontSize: 11.5,
-                                      fontWeight: FontWeight.w700,
-                                      color: const Color(0xFF181818),
-                                      letterSpacing: -0.1,
-                                    ),
-                                  ),
-                                  const SizedBox(width: 4),
-                                  const Icon(
-                                    Icons.arrow_forward_rounded,
-                                    size: 13,
-                                    color: Color(0xFF181818),
-                                  ),
-                                ],
-                              ),
-                            ),
-                          ),
-
-                          // 4. LEFT CONTENT: LOGO & TITLE, CASHBACK PILL, SUBTITLE
-                          Positioned(
-                            top: 14,
-                            left: 14,
-                            bottom: 12,
-                            right: 122,
-                            child: Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                // TOP: LOGO CIRCLE + CATEGORY TITLE
-                                Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  children: [
-                                    Container(
-                                      width: 40,
-                                      height: 40,
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.white,
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color: Colors.black.withValues(alpha: 0.08),
-                                            blurRadius: 8,
-                                            offset: const Offset(0, 2),
-                                          ),
-                                        ],
-                                      ),
-                                      child: ClipOval(
-                                        child: NetworkImageWithSkeleton(
-                                          imageUrl: _getCardLogoUrl(brand),
-                                          fit: BoxFit.contain,
-                                          shape: BoxShape.circle,
-                                          errorBuilder: (context, error, stackTrace) {
-                                            return Center(
-                                              child: Text(
-                                                brand.name.isNotEmpty
-                                                    ? brand.name.substring(0, 1).toUpperCase()
-                                                    : '',
-                                                style: GoogleFonts.fraunces(
-                                                  color: AppColors.primaryBrown,
-                                                  fontWeight: FontWeight.bold,
-                                                  fontSize: 18,
-                                                ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ),
-                                    ),
-                                    const SizedBox(width: 8),
-                                    Expanded(
-                                      child: Text(
-                                        _getTitleText(brand),
-                                        style: GoogleFonts.poppins(
-                                          fontSize: 14.5,
-                                          fontWeight: FontWeight.w800,
-                                          color: isDark ? AppColors.darkTextPrimary : const Color(0xFF1F2429),
-                                          height: 1.15,
-                                          letterSpacing: -0.3,
-                                        ),
-                                        maxLines: 3,
-                                        overflow: TextOverflow.ellipsis,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                // MIDDLE: PROMINENT CASHBACK PILL BADGE
-                                Container(
-                                  padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6),
-                                  decoration: BoxDecoration(
-                                    color: isDark
-                                        ? const Color(0xFF332B24)
-                                        : const Color(0xFFF9F5EE),
-                                    borderRadius: BorderRadius.circular(24),
-                                    border: Border.all(
-                                      color: isDark
-                                          ? const Color(0xFF4D4036)
-                                          : const Color(0xFFE4D7C8),
-                                      width: 1,
-                                    ),
-                                    boxShadow: [
-                                      BoxShadow(
-                                        color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.06),
-                                        blurRadius: 8,
-                                        offset: const Offset(0, 2),
-                                      ),
-                                    ],
-                                  ),
-                                  child: Text(
-                                    brand.cashbackPercentage,
-                                    style: GoogleFonts.fraunces(
-                                      color: isDark ? const Color(0xFFF8E9D6) : const Color(0xFF271A10),
-                                      fontSize: 15.5,
-                                      fontWeight: FontWeight.w800,
-                                      letterSpacing: -0.2,
-                                    ),
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-
-                                // BOTTOM-LEFT: SUBTITLE / DESCRIPTION
-                                Padding(
-                                  padding: const EdgeInsets.only(right: 4.0),
-                                  child: Text(
-                                    _getSubtitleText(brand),
-                                    style: GoogleFonts.poppins(
-                                      color: isDark
-                                          ? const Color(0xFFCCC2B7)
-                                          : const Color(0xFF363636),
-                                      fontSize: 11,
-                                      fontWeight: FontWeight.w500,
-                                      height: 1.25,
-                                    ),
-                                    maxLines: 3,
-                                    overflow: TextOverflow.ellipsis,
-                                  ),
-                                ),
-                              ],
-                            ),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
+                            blurRadius: 12,
+                            offset: const Offset(0, 3),
                           ),
                         ],
                       ),
+                      child: ClipRRect(
+                        borderRadius: BorderRadius.circular(20),
+                        child: LayoutBuilder(
+                          builder: (context, constraints) {
+                            final cardWidth = constraints.maxWidth;
+                            final cardHeight = constraints.maxHeight;
+                            final contentRight = (cardWidth * 0.44).clamp(130.0, 175.0);
+
+                            return Stack(
+                              children: [
+                                // 1. FULL-BLEED 16:9 SEAMLESS PRODUCT & STUDIO BACKGROUND (NO BLUR, 100% SHARP & CLEAN)
+                                Positioned.fill(
+                                  child: Image.asset(
+                                    _get3DBannerAsset(brand),
+                                    fit: BoxFit.cover,
+                                    alignment: Alignment.centerRight,
+                                  ),
+                                ),
+
+                                // Soft luxury dark chocolate bronze gradient scrim on the left side
+                                Positioned(
+                                  top: 0,
+                                  left: 0,
+                                  bottom: 0,
+                                  width: cardWidth * 0.65,
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      gradient: LinearGradient(
+                                        begin: Alignment.centerLeft,
+                                        end: Alignment.centerRight,
+                                        colors: [
+                                          const Color(0xFF261811).withValues(alpha: 0.85),
+                                          const Color(0xFF2E1D15).withValues(alpha: 0.65),
+                                          Colors.transparent,
+                                        ],
+                                        stops: const [0.0, 0.60, 1.0],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+
+                                // 2. LEFT CONTENT COLUMN (Clean typography & interactive elements matching reference image)
+                                Positioned(
+                                  top: 8,
+                                  left: 10,
+                                  bottom: 8,
+                                  right: contentRight,
+                                  child: FittedBox(
+                                    fit: BoxFit.scaleDown,
+                                    alignment: Alignment.centerLeft,
+                                    child: SizedBox(
+                                      width: cardWidth - 10 - contentRight,
+                                      height: cardHeight - 16,
+                                      child: Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          // ROW 1: BRAND LOGO CARD (CREAM PILL) + VERTICAL GOLD DIVIDER + NAME & CATEGORY
+                                          Row(
+                                            crossAxisAlignment: CrossAxisAlignment.center,
+                                            children: [
+                                              Container(
+                                                width: 72,
+                                                height: 31,
+                                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                                decoration: BoxDecoration(
+                                                  color: const Color(0xFFF7EEDA),
+                                                  borderRadius: BorderRadius.circular(8),
+                                                  border: Border.all(
+                                                    color: const Color(0xFFC8A97E).withValues(alpha: 0.7),
+                                                    width: 0.9,
+                                                  ),
+                                                  boxShadow: [
+                                                    BoxShadow(
+                                                      color: Colors.black.withValues(alpha: 0.25),
+                                                      blurRadius: 4,
+                                                      offset: const Offset(0, 1),
+                                                    ),
+                                                  ],
+                                                ),
+                                                child: ClipRRect(
+                                                  borderRadius: BorderRadius.circular(5),
+                                                  child: NetworkImageWithSkeleton(
+                                                    imageUrl: _getCardLogoUrl(brand),
+                                                    fit: BoxFit.contain,
+                                                    shape: BoxShape.rectangle,
+                                                    errorBuilder: (context, error, stackTrace) {
+                                                      return Center(
+                                                        child: Text(
+                                                          brand.name,
+                                                          style: GoogleFonts.inter(
+                                                            color: const Color(0xFF24160E),
+                                                            fontWeight: FontWeight.w600,
+                                                            fontSize: 9.5,
+                                                          ),
+                                                          maxLines: 1,
+                                                          overflow: TextOverflow.ellipsis,
+                                                        ),
+                                                      );
+                                                    },
+                                                  ),
+                                                ),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Container(
+                                                width: 1.2,
+                                                height: 22,
+                                                color: const Color(0xFFC8A97E),
+                                              ),
+                                              const SizedBox(width: 6),
+                                              Expanded(
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  mainAxisSize: MainAxisSize.min,
+                                                  children: [
+                                                    Text(
+                                                      brand.name,
+                                                      style: GoogleFonts.inter(
+                                                        fontSize: 16.0,
+                                                        fontWeight: FontWeight.w500,
+                                                        color: const Color(0xFFF7EBDC),
+                                                        letterSpacing: 0,
+                                                        shadows: [
+                                                          Shadow(
+                                                            color: Colors.black.withValues(alpha: 0.5),
+                                                            offset: const Offset(0, 1),
+                                                            blurRadius: 2,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                      maxLines: 1,
+                                                      overflow: TextOverflow.ellipsis,
+                                                    ),
+                                                    if (brand.category.isNotEmpty)
+                                                      Text(
+                                                        brand.category,
+                                                        style: GoogleFonts.inter(
+                                                          fontSize: 11.0,
+                                                          fontWeight: FontWeight.w400,
+                                                          color: const Color(0xFFD6C3AE),
+                                                          shadows: [
+                                                            Shadow(
+                                                              color: Colors.black.withValues(alpha: 0.4),
+                                                              offset: const Offset(0, 1),
+                                                              blurRadius: 1.5,
+                                                            ),
+                                                          ],
+                                                        ),
+                                                        maxLines: 1,
+                                                        overflow: TextOverflow.ellipsis,
+                                                      ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ],
+                                          ),
+
+                                          // ROW 2: ELEVATED CAPSULE PILL ("⚡ Flat 12% Cashback" IN BRONZE & GOLD)
+                                          _buildCashbackBadge(brand, isDark),
+
+                                          // ROW 3: VALUE BULLETS (WITH GREEN CHECK CIRCLES)
+                                          Column(
+                                            crossAxisAlignment: CrossAxisAlignment.start,
+                                            mainAxisSize: MainAxisSize.min,
+                                            children: [
+                                              _buildCheckBullet(
+                                                text: 'Lowest Prices Guaranteed',
+                                                isDark: isDark,
+                                              ),
+                                              const SizedBox(height: 2.5),
+                                              _buildCheckBullet(
+                                                text: 'Extra Savings Over Store Deals',
+                                                isDark: isDark,
+                                              ),
+                                            ],
+                                          ),
+
+                                          // ROW 4: "Shop Now to Earn →" DARK CHOCOLATE & GOLD OUTLINE PILL BUTTON
+                                          FittedBox(
+                                            fit: BoxFit.scaleDown,
+                                            alignment: Alignment.centerLeft,
+                                            child: Container(
+                                              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6.5),
+                                              decoration: BoxDecoration(
+                                                color: const Color(0xFF1E130B),
+                                                borderRadius: BorderRadius.circular(22),
+                                                border: Border.all(
+                                                  color: const Color(0xFFA07E4B),
+                                                  width: 1.0,
+                                                ),
+                                                boxShadow: [
+                                                  BoxShadow(
+                                                    color: Colors.black.withValues(alpha: 0.4),
+                                                    blurRadius: 5,
+                                                    offset: const Offset(0, 2),
+                                                  ),
+                                                ],
+                                              ),
+                                              child: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Text(
+                                                    'Shop Now to Earn',
+                                                    style: GoogleFonts.inter(
+                                                      fontSize: 13.5,
+                                                      fontWeight: FontWeight.w500,
+                                                      color: const Color(0xFFF7EBDC),
+                                                      letterSpacing: -0.1,
+                                                    ),
+                                                  ),
+                                                  const SizedBox(width: 5),
+                                                  const Icon(
+                                                    Icons.arrow_forward_rounded,
+                                                    size: 14,
+                                                    color: Color(0xFFF7EBDC),
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            );
+                          },
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ),
-      ),
 
-        const SizedBox(height: 12),
+        const SizedBox(height: 8),
 
         // CAROUSEL DOT INDICATORS
         Row(
@@ -587,8 +726,8 @@ class _CashbackBannerCarouselState extends State<CashbackBannerCarousel> {
             return AnimatedContainer(
               duration: const Duration(milliseconds: 250),
               margin: const EdgeInsets.symmetric(horizontal: 3),
-              width: isActive ? 20 : 6,
-              height: 6,
+              width: isActive ? 18 : 5,
+              height: 5,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(3),
                 color: isActive

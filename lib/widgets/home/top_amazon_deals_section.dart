@@ -55,7 +55,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                   'Top Amazon Deals',
                   maxLines: 2,
                   softWrap: true,
-                  style: GoogleFonts.fraunces(
+                  style: GoogleFonts.inter(
                     fontSize: 18.5,
                     fontWeight: FontWeight.w700,
                     letterSpacing: -0.2,
@@ -148,7 +148,7 @@ class _TopAmazonDealsSectionState extends State<TopAmazonDealsSection> {
                     children: [
                       Text(
                         'View All',
-                        style: GoogleFonts.fraunces(
+                        style: GoogleFonts.inter(
                           fontSize: 13,
                           fontWeight: FontWeight.w700,
                           color: isDark

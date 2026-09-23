@@ -117,14 +117,14 @@ class GetHelpScreen extends StatelessWidget {
             _ContactTile(
               icon: Icons.email_outlined,
               title: 'Email Support',
-              subtitle: 'support@CashKaro.com',
+              subtitle: 'support@KashIQ.com',
               isDark: isDark,
               onTap: () {
                 Navigator.of(ctx).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Support request sent to support@CashKaro.com',
+                      'Support request sent to support@KashIQ.com',
                       style: AppTextStyles.body(color: AppColors.cardBackground),
                     ),
                     backgroundColor: AppColors.primaryBrown,
@@ -138,14 +138,14 @@ class GetHelpScreen extends StatelessWidget {
             _ContactTile(
               icon: Icons.call_outlined,
               title: 'Toll-Free Helpline',
-              subtitle: '1800-CashKaro (1800-227-4828)',
+              subtitle: '1800-KashIQ (1800-227-4828)',
               isDark: isDark,
               onTap: () {
                 Navigator.of(ctx).pop();
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
-                      'Helpline: 1800-CashKaro (Mon-Sat 10AM-7PM)',
+                      'Helpline: 1800-KashIQ (Mon-Sat 10AM-7PM)',
                       style: AppTextStyles.body(color: AppColors.cardBackground),
                     ),
                     backgroundColor: AppColors.primaryBrown,
@@ -267,7 +267,7 @@ class GetHelpScreen extends StatelessWidget {
                 onTap: () => _showHelpDetailModal(
                   context,
                   'Frequently Asked Questions',
-                  '1. How do I earn Cashback?\nAlways start your shopping by clicking store links inside CashKaro. Shop normally and complete your payment.\n\n2. How long does Cashback tracking take?\nCashback usually tracks within 24 to 72 hours of placing an order.\n\n3. When can I withdraw my earnings?\nOnce your store returns/exchange window closes, your cashback changes from Pending to Confirmed and can be withdrawn to your bank account.',
+                  '1. How do I earn Cashback?\nAlways start your shopping by clicking store links inside KashIQ. Shop normally and complete your payment.\n\n2. How long does Cashback tracking take?\nCashback usually tracks within 24 to 72 hours of placing an order.\n\n3. When can I withdraw my earnings?\nOnce your store returns/exchange window closes, your cashback changes from Pending to Confirmed and can be withdrawn to your bank account.',
                 ),
               ),
 

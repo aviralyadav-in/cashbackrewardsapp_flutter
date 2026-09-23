@@ -219,7 +219,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                     ),
                     const SizedBox(height: 16),
                     Text(
-                      'Loving CashKaro?',
+                      'Loving KashIQ?',
                       style: AppTextStyles.sectionHeading(
                         color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                       ).copyWith(fontSize: 19),
@@ -273,7 +273,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                       width: double.infinity,
                       child: ElevatedButton.icon(
                         onPressed: () => UrlLauncherService.openUrl(
-                          'https://play.google.com/store/apps/details?id=com.cashkaro',
+                          'https://play.google.com/store/apps/details?id=com.KashIQ',
                         ),
                         icon: const Icon(Icons.open_in_new_rounded, size: 16),
                         label: const Text('Rate on Google Play Store'),
@@ -310,7 +310,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                   children: [
                     Text(
                       'SHARE YOUR FEEDBACK',
-                      style: GoogleFonts.fraunces(
+                      style: GoogleFonts.inter(
                         fontSize: 11.5,
                         fontWeight: FontWeight.w800,
                         letterSpacing: 0.8,
@@ -387,7 +387,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                 children: [
                   Text(
                     'COMMUNITY REVIEWS',
-                    style: GoogleFonts.fraunces(
+                    style: GoogleFonts.inter(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w800,
                       letterSpacing: 0.8,
@@ -403,7 +403,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                       const SizedBox(width: 4),
                       Text(
                         '4.9 (48.5K Reviews)',
-                        style: GoogleFonts.fraunces(
+                        style: GoogleFonts.inter(
                           fontSize: 11.5,
                           fontWeight: FontWeight.bold,
                           color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
@@ -462,7 +462,7 @@ class _ReviewUsScreenState extends State<ReviewUsScreen> {
                             child: Center(
                               child: Text(
                                 rev['initials'] as String,
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   fontSize: 13,
                                   fontWeight: FontWeight.bold,
                                   color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,

@@ -146,7 +146,7 @@ class HomeMockData {
 
   static const SubcategoryBannerData amazonDealsBanner = SubcategoryBannerData(
     brandName: 'Amazon Deals',
-    headline: 'CashKaroBACK DEALS',
+    headline: 'KashIQBACK DEALS',
     subText: 'Extra Cashback on Daily Essentials, Electronics & Appliances',
     offerTag: 'SUPER CASHBACK',
     buttonText: 'Shop Amazon',

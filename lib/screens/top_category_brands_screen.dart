@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../data/home_mock_data.dart';
 import '../models/amazon_deal_model.dart';
 import '../models/brand_model.dart';
+import '../models/subcategory_banner_data.dart';
 import '../theme/app_theme.dart';
 import '../widgets/home/amazon_deal_card.dart';
 import '../widgets/home/grid_brand_card.dart';
+import '../widgets/home/subcategory_promotional_banner.dart';
 import 'product_detail_screen.dart';
 
 class TopCategoryBrandsScreen extends StatelessWidget {
@@ -14,27 +17,41 @@ class TopCategoryBrandsScreen extends StatelessWidget {
   final String categoryTitle;
   final List<BrandModel> brands;
   final List<AmazonDealItemData>? deals;
+  final Color? accentColor;
+  final Color? backgroundColor;
+  final IconData? categoryIcon;
+  final SubcategoryBannerData? bannerData;
 
   const TopCategoryBrandsScreen({
     super.key,
     required this.categoryTitle,
     this.brands = const [],
     this.deals,
+    this.accentColor,
+    this.backgroundColor,
+    this.categoryIcon,
+    this.bannerData,
   });
 
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final isDealsMode = deals != null && deals!.isNotEmpty;
+    final primaryAccent = accentColor ??
+        (isDark ? AppColors.darkPrimary : AppColors.primaryBrown);
+    final effectiveBanner =
+        bannerData ?? HomeMockData.getBannerForCategory(categoryTitle);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         title: Text(
-          isDealsMode ? categoryTitle : '$categoryTitle Websites & Brands',
-          style: AppTextStyles.screenHeading(
+          isDealsMode ? categoryTitle : '$categoryTitle Stores',
+          style: GoogleFonts.plusJakartaSans(
             color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-          ).copyWith(fontSize: 17),
+            fontSize: 17,
+            fontWeight: FontWeight.w700,
+          ),
         ),
         centerTitle: true,
         backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
@@ -51,108 +68,65 @@ class TopCategoryBrandsScreen extends StatelessWidget {
       ),
       body: SafeArea(
         child: ListView(
-          physics: const BouncingScrollPhysics(),
-          padding: const EdgeInsets.all(16),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
           children: [
-            // Category Header Banner
-            Container(
-              padding: const EdgeInsets.all(18),
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-                gradient: LinearGradient(
-                  colors: isDark
-                      ? const [AppColors.darkSurface, AppColors.darkCard]
-                      : const [AppColors.primaryBrown, AppColors.deepBrown],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-                boxShadow: [
-                  BoxShadow(
-                    color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.08),
-                    blurRadius: 10,
-                    offset: const Offset(0, 4),
-                  ),
-                ],
-              ),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          categoryTitle.toUpperCase(),
-                          style: GoogleFonts.fraunces(
-                            color: Colors.white70,
-                            fontSize: 11,
-                            fontWeight: FontWeight.w800,
-                            letterSpacing: 1.2,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          isDealsMode
-                              ? 'Exclusive $categoryTitle'
-                              : 'Top $categoryTitle Partners',
-                          style: GoogleFonts.fraunces(
-                            color: Colors.white,
-                            fontSize: 19,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        const SizedBox(height: 4),
-                        Text(
-                          isDealsMode
-                              ? 'Shop top Amazon deals and earn extra guaranteed cashback rewards!'
-                              : 'Shop via CashKaro to earn extra guaranteed cashback rewards!',
-                          style: AppTextStyles.caption(
-                            color: Colors.white.withValues(alpha: 0.8),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(width: 12),
-                  Container(
-                    width: 52,
-                    height: 52,
-                    decoration: BoxDecoration(
-                      color: Colors.white.withValues(alpha: 0.2),
-                      shape: BoxShape.circle,
-                    ),
-                    child: Icon(
-                      isDealsMode
-                          ? Icons.local_offer_rounded
-                          : Icons.storefront_rounded,
-                      color: Colors.white,
-                      size: 28,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 20),
+            // 1. FEATURED CAMPAIGN HERO BANNER
+            if (isDealsMode)
+              _buildGenericHeader(primaryAccent, isDark, isDealsMode)
+            else if (effectiveBanner != null)
+              SubcategoryPromotionalBannerWidget(
+                bannerData: effectiveBanner,
+                isDark: isDark,
+              )
+            else
+              _buildGenericHeader(primaryAccent, isDark, isDealsMode),
+
+            const SizedBox(height: 18),
 
             // Websites & Brands / Deals List Header
             Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Container(
-                  width: 4,
-                  height: 18,
-                  decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-                    borderRadius: BorderRadius.circular(2),
+                Row(
+                  children: [
+                    Container(
+                      width: 4,
+                      height: 18,
+                      decoration: BoxDecoration(
+                        color: primaryAccent,
+                        borderRadius: BorderRadius.circular(2),
+                      ),
+                    ),
+                    const SizedBox(width: 8),
+                    Text(
+                      isDealsMode
+                          ? 'Featured Deals & Products'
+                          : 'Featured Stores & Brands',
+                      style: GoogleFonts.plusJakartaSans(
+                        color: isDark ? Colors.white : const Color(0xFF1E1E24),
+                        fontSize: 16,
+                        fontWeight: FontWeight.w800,
+                        letterSpacing: -0.2,
+                      ),
+                    ),
+                  ],
+                ),
+                if (!isDealsMode && brands.isNotEmpty)
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                    decoration: BoxDecoration(
+                      color: primaryAccent.withValues(alpha: 0.12),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Text(
+                      '${brands.length} Stores',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w700,
+                        color: primaryAccent,
+                      ),
+                    ),
                   ),
-                ),
-                const SizedBox(width: 8),
-                Text(
-                  isDealsMode
-                      ? 'Featured Deals & Products'
-                      : 'Featured Websites & Brands',
-                  style: AppTextStyles.sectionHeading(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                  ).copyWith(fontSize: 15),
-                ),
               ],
             ),
             const SizedBox(height: 14),
@@ -179,46 +153,175 @@ class TopCategoryBrandsScreen extends StatelessWidget {
               )
             else if (brands.isEmpty)
               Padding(
-                padding: const EdgeInsets.symmetric(vertical: 40),
+                padding: const EdgeInsets.symmetric(vertical: 48),
                 child: Center(
-                  child: Text(
-                    'No websites available for this category yet.',
-                    style: AppTextStyles.body(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-                    ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Icon(
+                        Icons.storefront_outlined,
+                        size: 40,
+                        color: primaryAccent.withValues(alpha: 0.5),
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        'No stores available for this category yet.',
+                        style: GoogleFonts.plusJakartaSans(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          fontSize: 13.5,
+                          fontWeight: FontWeight.w500,
+                        ),
+                      ),
+                    ],
                   ),
                 ),
               )
             else
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: brands.length,
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2,
-                  crossAxisSpacing: 12,
-                  mainAxisSpacing: 12,
-                  mainAxisExtent: 160,
-                ),
-                itemBuilder: (context, index) {
-                  final brand = brands[index];
-                  return GridBrandCard(
-                    brand: brand,
-                    isDark: isDark,
-                    columnIndex: index % 3,
-                    onTap: () {
-                      Navigator.of(context).push(
-                        MaterialPageRoute(
-                          builder: (_) => ProductDetailScreen.fromBrand(brand),
-                        ),
+              LayoutBuilder(
+                builder: (context, constraints) {
+                  final crossAxisCount = constraints.maxWidth > 600 ? 3 : 2;
+                  return GridView.builder(
+                    shrinkWrap: true,
+                    physics: const NeverScrollableScrollPhysics(),
+                    itemCount: brands.length,
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: crossAxisCount,
+                      crossAxisSpacing: 12,
+                      mainAxisSpacing: 12,
+                      mainAxisExtent: 250,
+                    ),
+                    itemBuilder: (context, index) {
+                      final brand = brands[index];
+                      return GridBrandCard(
+                        brand: brand,
+                        isDark: isDark,
+                        columnIndex: index % crossAxisCount,
+                        onTap: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (_) => ProductDetailScreen.fromBrand(brand),
+                            ),
+                          );
+                        },
                       );
                     },
                   );
                 },
               ),
-            const SizedBox(height: 20),
+
+            const SizedBox(height: 24),
           ],
         ),
+      ),
+    );
+  }
+
+  Widget _buildGenericHeader(Color primaryAccent, bool isDark, bool isDealsMode) {
+    return Container(
+      padding: const EdgeInsets.all(18),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(18),
+        gradient: LinearGradient(
+          colors: isDark
+              ? [
+                  primaryAccent.withValues(alpha: 0.35),
+                  const Color(0xFF1E1E22),
+                ]
+              : [
+                  primaryAccent,
+                  primaryAccent.withValues(alpha: 0.84),
+                ],
+          begin: Alignment.topLeft,
+          end: Alignment.bottomRight,
+        ),
+        border: Border.all(
+          color: isDark
+              ? primaryAccent.withValues(alpha: 0.25)
+              : Colors.transparent,
+          width: 1,
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: primaryAccent.withValues(alpha: isDark ? 0.25 : 0.16),
+            blurRadius: 14,
+            offset: const Offset(0, 4),
+          ),
+        ],
+      ),
+      child: Row(
+        children: [
+          Expanded(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 8,
+                    vertical: 3,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white.withValues(alpha: 0.2),
+                    borderRadius: BorderRadius.circular(6),
+                  ),
+                  child: Text(
+                    categoryTitle.toUpperCase(),
+                    style: GoogleFonts.plusJakartaSans(
+                      color: Colors.white,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      letterSpacing: 1.1,
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 8),
+                Text(
+                  isDealsMode
+                      ? 'Exclusive $categoryTitle'
+                      : 'Top $categoryTitle Stores',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white,
+                    fontSize: 19,
+                    fontWeight: FontWeight.w800,
+                    letterSpacing: -0.3,
+                  ),
+                ),
+                const SizedBox(height: 4),
+                Text(
+                  isDealsMode
+                      ? 'Shop top Amazon deals and earn extra guaranteed cashback rewards!'
+                      : 'Shop via verified partner stores & earn highest cashback rewards!',
+                  style: GoogleFonts.plusJakartaSans(
+                    color: Colors.white.withValues(alpha: 0.9),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w500,
+                    height: 1.3,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(width: 12),
+          Container(
+            width: 52,
+            height: 52,
+            decoration: BoxDecoration(
+              color: Colors.white.withValues(alpha: 0.22),
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: Colors.white.withValues(alpha: 0.3),
+                width: 1.5,
+              ),
+            ),
+            child: Icon(
+              categoryIcon ??
+                  (isDealsMode
+                      ? Icons.local_offer_rounded
+                      : Icons.storefront_rounded),
+              color: Colors.white,
+              size: 26,
+            ),
+          ),
+        ],
       ),
     );
   }

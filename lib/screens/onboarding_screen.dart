@@ -117,8 +117,8 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                       ),
                       const SizedBox(width: 8),
                       Text(
-                        'CashKaro',
-                        style: GoogleFonts.fraunces(
+                        'KashIQ',
+                        style: GoogleFonts.inter(
                           color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                           fontSize: 16,
                           fontWeight: FontWeight.w700,
@@ -187,7 +187,7 @@ class _OnboardingScreenState extends State<OnboardingScreen> {
                         Text(
                           page.title,
                           textAlign: TextAlign.center,
-                          style: GoogleFonts.fraunces(
+                          style: GoogleFonts.inter(
                             color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
                             fontSize: 24,
                             fontWeight: FontWeight.w700,

@@ -630,7 +630,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                 ),
                                 child: Text(
                                   '$totalTempCount',
-                                  style: GoogleFonts.fraunces(
+                                  style: GoogleFonts.inter(
                                     fontSize: 11,
                                     fontWeight: FontWeight.bold,
                                     color: AppColors.cardBackground,
@@ -742,7 +742,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                           ),
                                           child: Text(
                                             '$count',
-                                            style: GoogleFonts.fraunces(
+                                            style: GoogleFonts.inter(
                                               fontSize: 10,
                                               fontWeight: FontWeight.bold,
                                               color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
@@ -997,7 +997,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                               ),
                               child: Text(
                                 '$_activeFiltersCount',
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   color: AppColors.cardBackground,
                                   fontSize: 11,
                                   fontWeight: FontWeight.w900,
@@ -1201,7 +1201,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   const SizedBox(width: 6),
                                   Text(
                                     group.title,
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 13,
                                       fontWeight: isGroupSelected ? FontWeight.w700 : FontWeight.w600,
                                       color: isGroupSelected
@@ -1276,7 +1276,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                     const SizedBox(width: 6),
                                     Text(
                                       totalCount > 0 ? 'View All ($totalCount)' : 'View All',
-                                      style: GoogleFonts.fraunces(
+                                      style: GoogleFonts.inter(
                                         fontSize: 12,
                                         fontWeight: isAllActive ? FontWeight.w700 : FontWeight.w500,
                                         color: isAllActive
@@ -1336,7 +1336,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                                   const SizedBox(width: 5),
                                   Text(
                                     subcatCount > 0 ? '${subcat.title} ($subcatCount)' : subcat.title,
-                                    style: GoogleFonts.fraunces(
+                                    style: GoogleFonts.inter(
                                       fontSize: 12,
                                       fontWeight: isSubcatActive ? FontWeight.w700 : FontWeight.w500,
                                       color: isSubcatActive
@@ -1362,7 +1362,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                         children: [
                           Text(
                             '${displayedProducts.length} ${displayedProducts.length == 1 ? "Product" : "Products"}',
-                            style: GoogleFonts.fraunces(
+                            style: GoogleFonts.inter(
                               fontSize: 13,
                               fontWeight: FontWeight.w700,
                               color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
@@ -1706,7 +1706,7 @@ class _CategoriesScreenState extends State<CategoriesScreen> {
                       children: [
                         Text(
                           '\$${product.finalPrice.toStringAsFixed(2)}',
-                          style: GoogleFonts.fraunces(
+                          style: GoogleFonts.inter(
                             fontSize: 14.5,
                             fontWeight: FontWeight.bold,
                             color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,

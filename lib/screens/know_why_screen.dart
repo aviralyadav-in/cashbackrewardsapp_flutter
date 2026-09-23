@@ -112,7 +112,7 @@ class KnowWhyScreen extends StatelessWidget {
               // Step-by-Step Lifecycle Section
               Text(
                 'CASHBACK LIFECYCLE',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -180,7 +180,7 @@ class KnowWhyScreen extends StatelessWidget {
               // Key Reasons Section
               Text(
                 'TOP REASONS FOR PENDING STATUS',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,
@@ -223,7 +223,7 @@ class KnowWhyScreen extends StatelessWidget {
               // Frequently Asked Questions
               Text(
                 'FREQUENTLY ASKED QUESTIONS',
-                style: GoogleFonts.fraunces(
+                style: GoogleFonts.inter(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w800,
                   letterSpacing: 0.8,

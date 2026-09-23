@@ -173,7 +173,7 @@ class HomeDrawer extends StatelessWidget {
                                       ),
                                       child: Text(
                                         'SPECIAL OFFER',
-                                        style: GoogleFonts.fraunces(
+                                        style: GoogleFonts.inter(
                                           color: Colors.white,
                                           fontSize: 9.5,
                                           fontWeight: FontWeight.w800,
@@ -184,7 +184,7 @@ class HomeDrawer extends StatelessWidget {
                                     const SizedBox(height: 8),
                                     Text(
                                       'Flat Cashback on Top Brands',
-                                      style: GoogleFonts.fraunces(
+                                      style: GoogleFonts.inter(
                                         color: Colors.white,
                                         fontSize: 14.5,
                                         fontWeight: FontWeight.bold,
@@ -216,7 +216,7 @@ class HomeDrawer extends StatelessWidget {
                                           children: [
                                             Text(
                                               'Explore Now',
-                                              style: GoogleFonts.fraunces(
+                                              style: GoogleFonts.inter(
                                                 color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                                                 fontSize: 11.5,
                                                 fontWeight: FontWeight.bold,
@@ -316,7 +316,7 @@ class HomeDrawer extends StatelessWidget {
                               const SizedBox(width: 8),
                               Text(
                                 'BROWSE CATEGORIES',
-                                style: GoogleFonts.fraunces(
+                                style: GoogleFonts.inter(
                                   fontSize: 11,
                                   fontWeight: FontWeight.w800,
                                   letterSpacing: 1.1,
