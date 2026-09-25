@@ -90,6 +90,7 @@ class AffiliateService {
     required String targetUrl,
     String? storeId,
     String network = 'generic',
+    String linkType = 'SELF_SHOPPING',
   }) async {
     final cleanUrl = targetUrl.trim();
     if (cleanUrl.isEmpty) {
@@ -127,6 +128,7 @@ class AffiliateService {
               'storeId': storeId?.trim(),
               'targetUrl': cleanUrl,
               'network': network,
+              'linkType': linkType,
             }),
           )
           .timeout(const Duration(seconds: 4));

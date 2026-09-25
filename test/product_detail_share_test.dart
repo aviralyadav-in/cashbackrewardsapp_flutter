@@ -1,11 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cashback_reward_app/models/product.dart';
 import 'package:cashback_reward_app/providers/home_provider.dart';
-import 'package:cashback_reward_app/screens/product_detail_screen.dart';
+import 'package:cashback_reward_app/providers/user_provider.dart';
+import 'package:cashback_reward_app/screens/products/product_detail_screen.dart';
+
+/// ProductDetailScreen reads both HomeProvider and UserProvider.
+Widget _wrap(Widget child) {
+  return MultiProvider(
+    providers: [
+      ChangeNotifierProvider<HomeProvider>(create: (_) => HomeProvider()),
+      ChangeNotifierProvider<UserProvider>(create: (_) => UserProvider()),
+    ],
+    child: MaterialApp(home: child),
+  );
+}
 
 void main() {
+  setUp(() {
+    SharedPreferences.setMockInitialValues({});
+  });
+
   group('Product Model affiliate & original URL Tests', () {
     test('Product.fromJson parses originalUrl and affiliateUrl correctly', () {
       final json = {
@@ -95,14 +112,7 @@ void main() {
         affiliateUrl: 'https://track.affiliate.com/sony/1',
       );
 
-      await tester.pumpWidget(
-        ChangeNotifierProvider<HomeProvider>(
-          create: (_) => HomeProvider(),
-          child: MaterialApp(
-            home: ProductDetailScreen(product: product),
-          ),
-        ),
-      );
+      await tester.pumpWidget(_wrap(ProductDetailScreen(product: product)));
 
       // Verify both buttons are present
       expect(find.text('Shop Now'), findsOneWidget);
@@ -111,7 +121,7 @@ void main() {
       expect(find.byIcon(Icons.share_outlined), findsWidgets);
     });
 
-    testWidgets('Tapping Share & Earn without affiliateUrl shows graceful SnackBar', (tester) async {
+    testWidgets('Tapping Share & Earn without affiliateUrl still shares a store deal link', (tester) async {
       final product = Product(
         id: 2,
         title: 'Basic T-Shirt',
@@ -125,24 +135,17 @@ void main() {
         affiliateUrl: null, // No affiliate link
       );
 
-      await tester.pumpWidget(
-        ChangeNotifierProvider<HomeProvider>(
-          create: (_) => HomeProvider(),
-          child: MaterialApp(
-            home: ProductDetailScreen(product: product),
-          ),
-        ),
-      );
+      await tester.pumpWidget(_wrap(ProductDetailScreen(product: product)));
 
-      // Tap Share & Earn
-      await tester.tap(find.text('Share & Earn'));
+      // No affiliate link: the app falls back to the store URL and still shares.
+      // Tests have no native share sheet, so it copies the link instead.
+      await tester.runAsync(() async {
+        await tester.tap(find.text('Share & Earn'));
+        await Future<void>.delayed(const Duration(milliseconds: 200));
+      });
       await tester.pump();
 
-      // Verify graceful notification is shown without crashing or generating a fake link
-      expect(
-        find.text('Affiliate link is currently unavailable for this product.'),
-        findsOneWidget,
-      );
+      expect(find.text('Deal link copied to clipboard!'), findsOneWidget);
     });
   });
 }

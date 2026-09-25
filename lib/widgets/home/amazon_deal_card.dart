@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 import '../../models/amazon_deal_model.dart';
-import '../../screens/product_detail_screen.dart';
+import '../../screens/products/product_detail_screen.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 import 'dashed_line_painter.dart';
 
 class AmazonDealCard extends StatelessWidget {

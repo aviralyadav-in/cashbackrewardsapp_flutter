@@ -1,5 +1,8 @@
 
 import '../core/utils/brand_asset_helper.dart';
+import 'best_deals_page_models.dart';
+
+export 'best_deals_page_models.dart';
 
 /// Model representing user cashback summary for home screen
 class CashbackSummaryModel {
@@ -556,6 +559,7 @@ class HomeDataModel {
   final List<TrendingDealModel> trendingDeals;
   final List<PriceDropModel> priceDrops;
   final List<CashbackIncreaseModel> cashbackIncreases;
+  final BestDealsPageModel bestDealsPage;
 
   const HomeDataModel({
     required this.cashbackSummary,
@@ -567,6 +571,7 @@ class HomeDataModel {
     required this.trendingDeals,
     required this.priceDrops,
     required this.cashbackIncreases,
+    this.bestDealsPage = BestDealsPageModel.fallback,
   });
 
   factory HomeDataModel.fromJson(Map<String, dynamic> json) {
@@ -607,6 +612,9 @@ class HomeDataModel {
                   CashbackIncreaseModel.fromJson(e as Map<String, dynamic>))
               .toList() ??
           [],
+      bestDealsPage: BestDealsPageModel.fromJson(
+        json['bestDealsPage'] as Map<String, dynamic>?,
+      ),
     );
   }
 }

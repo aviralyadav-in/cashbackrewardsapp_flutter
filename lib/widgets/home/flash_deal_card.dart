@@ -3,7 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 import '../../models/brand_model.dart';
 import '../../models/flash_deal_model.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 import 'brand_confirmation_dialog.dart';
 
 class FlashDealCard extends StatefulWidget {

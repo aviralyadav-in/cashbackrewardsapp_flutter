@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/home_discovery_models.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class PriceDropsSection extends StatelessWidget {
   final bool isDark;
@@ -160,24 +160,33 @@ class PriceDropsSection extends StatelessWidget {
                   ),
                   const SizedBox(height: 4),
 
-                  // Pricing: Was -> Now
+                  // Pricing: Effective Price & Store Price
                   Row(
                     children: [
                       Text(
-                        'Now: ₹${item.nowPrice.toInt()}',
+                        '₹${item.cashbackAmount > 0 ? (item.nowPrice - item.cashbackAmount).toInt() : item.nowPrice.toInt()}',
                         style: GoogleFonts.inter(
-                          fontSize: 13.5,
-                          fontWeight: FontWeight.w700,
-                          color: textDark,
+                          fontSize: 14,
+                          fontWeight: FontWeight.w800,
+                          color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1E3A8A),
                         ),
                       ),
-                      const SizedBox(width: 5),
+                      const SizedBox(width: 4),
                       Text(
                         '₹${item.wasPrice.toInt()}',
                         style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11,
+                          fontSize: 10.5,
                           color: textMuted,
                           decoration: TextDecoration.lineThrough,
+                        ),
+                      ),
+                      const SizedBox(width: 4),
+                      Text(
+                        '(Now ₹${item.nowPrice.toInt()})',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 9.5,
+                          fontWeight: FontWeight.w600,
+                          color: textMuted,
                         ),
                       ),
                     ],

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../screens/all_categories_screen.dart';
-import '../../screens/category_detail_screen.dart';
+import '../../screens/categories/all_categories_screen.dart';
+import '../../screens/categories/category_detail_screen.dart';
 import '../../theme/app_theme.dart';
 
 /// Category definition model for the Explore Categories section
@@ -161,14 +161,14 @@ class _TopCategoriesSectionState extends State<TopCategoriesSection> {
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
-                        color: primaryAccent,
+                        color: isDark ? AppColors.darkTextPrimary : Colors.black,
                       ),
                     ),
-                    const SizedBox(width: 3),
+                    const SizedBox(width: 4),
                     Icon(
-                      Icons.arrow_forward_rounded,
-                      size: 13.5,
-                      color: primaryAccent,
+                      Icons.arrow_forward_ios_rounded,
+                      size: 11.0,
+                      color: isDark ? AppColors.darkTextPrimary : Colors.black,
                     ),
                   ],
                 ),
@@ -181,7 +181,7 @@ class _TopCategoriesSectionState extends State<TopCategoriesSection> {
 
         // 2. COMPACT HORIZONTAL CATEGORY ITEMS
         SizedBox(
-          height: 82,
+          height: 86,
           child: ListView.separated(
             scrollDirection: Axis.horizontal,
             physics: const BouncingScrollPhysics(),
@@ -364,7 +364,7 @@ class _CategoryCardItemState extends State<_CategoryCardItem> {
         duration: const Duration(milliseconds: 120),
         curve: Curves.easeOutCubic,
         child: SizedBox(
-          width: 68,
+          width: 74,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
@@ -396,10 +396,10 @@ class _CategoryCardItemState extends State<_CategoryCardItem> {
               Text(
                 item.title,
                 style: GoogleFonts.plusJakartaSans(
-                  fontSize: 12,
-                  fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
+                  fontSize: 13.5,
+                  fontWeight: isSelected ? FontWeight.w800 : FontWeight.w700,
                   color: labelColor,
-                  letterSpacing: -0.15,
+                  letterSpacing: -0.2,
                 ),
                 maxLines: 1,
                 overflow: TextOverflow.ellipsis,

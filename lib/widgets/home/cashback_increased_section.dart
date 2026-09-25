@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/home_discovery_models.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class CashbackIncreasedSection extends StatelessWidget {
   final bool isDark;

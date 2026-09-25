@@ -5,7 +5,7 @@ import '../models/discovery_section_model.dart';
 import '../models/subcategory_banner_data.dart';
 import '../models/top_category_model.dart';
 import '../models/trending_brand_model.dart';
-import '../screens/offer_section_screen.dart';
+import '../screens/deals/offer_section_screen.dart';
 
 class HomeMockData {
   // =========================================================================

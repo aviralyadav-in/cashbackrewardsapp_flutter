@@ -19,35 +19,83 @@ class AuthService {
     }
   }
 
+  static String? _cachedBaseUrl;
+
   /// Default Wi-Fi / Local Area Network IP of the host PC.
-  /// Run 'ipconfig' in your PC terminal to check/update your IPv4 address if your Wi-Fi changes.
-  static const String defaultLocalIp = '192.168.29.221';
+  static const String defaultLocalIp = '192.168.1.61';
+  static const String secondaryLocalIp = '192.168.29.221';
   static const int defaultPort = 5000;
 
-  /// Resolves the backend base URL dynamically:
-  /// 1. If passed via '--dart-define=API_URL=http://...', uses that directly.
-  /// 2. If passed via '--dart-define=BACKEND_IP=192.168.x.x', uses that IP.
-  /// 3. On Windows / macOS / Linux / Web (running on PC): connects to 127.0.0.1:5000.
-  /// 4. On physical Android phone / mobile: connects to PC's LAN IP (default: 192.168.29.221:5000).
-  static String get baseUrl {
+  /// Fast asynchronous probe to select the best reachable backend endpoint.
+  static Future<String> getWorkingBaseUrl() async {
+    if (_cachedBaseUrl != null) return _cachedBaseUrl!;
+
     const customUrl = String.fromEnvironment('API_URL');
     if (customUrl.isNotEmpty) {
-      return customUrl;
+      _cachedBaseUrl = customUrl;
+      return _cachedBaseUrl!;
     }
 
     const customIp = String.fromEnvironment('BACKEND_IP');
-    final host = customIp.isNotEmpty ? customIp : defaultLocalIp;
+    if (customIp.isNotEmpty) {
+      _cachedBaseUrl = 'http://$customIp:$defaultPort/api';
+      return _cachedBaseUrl!;
+    }
 
-    // Running on PC / Desktop / Web: connect to local loopback
+    if (kIsWeb ||
+        defaultTargetPlatform == TargetPlatform.windows ||
+        defaultTargetPlatform == TargetPlatform.linux ||
+        defaultTargetPlatform == TargetPlatform.macOS) {
+      _cachedBaseUrl = 'http://127.0.0.1:$defaultPort/api';
+      return _cachedBaseUrl!;
+    }
+
+    // Probe 127.0.0.1 (USB adb reverse) first, then live host LAN Wi-Fi IPs, then Emulator
+    final candidates = [
+      'http://127.0.0.1:$defaultPort/api',
+      'http://$defaultLocalIp:$defaultPort/api',
+      'http://$secondaryLocalIp:$defaultPort/api',
+      'http://192.168.1.40:$defaultPort/api',
+      'http://10.0.2.2:$defaultPort/api',
+    ];
+
+    // Probe all candidate endpoints simultaneously in parallel for instant response
+    final probeFutures = candidates.map((candidate) async {
+      try {
+        final res = await http
+            .get(Uri.parse('$candidate/health'))
+            .timeout(const Duration(milliseconds: 1500));
+        if (res.statusCode == 200) {
+          return candidate;
+        }
+      } catch (_) {}
+      return null;
+    });
+
+    final results = await Future.wait(probeFutures);
+    for (final candidate in candidates) {
+      if (results.contains(candidate)) {
+        debugPrint('[AuthService] Connected to backend at: $candidate');
+        _cachedBaseUrl = candidate;
+        return candidate;
+      }
+    }
+
+    // Fallback to local Wi-Fi IP rather than loopback on mobile
+    _cachedBaseUrl = 'http://$defaultLocalIp:$defaultPort/api';
+    return _cachedBaseUrl!;
+  }
+
+  /// Synchronous fallback for baseUrl
+  static String get baseUrl {
+    if (_cachedBaseUrl != null) return _cachedBaseUrl!;
     if (kIsWeb ||
         defaultTargetPlatform == TargetPlatform.windows ||
         defaultTargetPlatform == TargetPlatform.linux ||
         defaultTargetPlatform == TargetPlatform.macOS) {
       return 'http://127.0.0.1:$defaultPort/api';
     }
-
-    // Running on Android / iOS (Physical device or network testing)
-    return 'http://$host:$defaultPort/api';
+    return 'http://$defaultLocalIp:$defaultPort/api';
   }
 
   /// Public HTTPS domain used for sharing deals so WhatsApp makes it clickable
@@ -70,9 +118,10 @@ class AuthService {
     try {
       final clean = identifier.trim();
       final isEmail = clean.contains('@');
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/check-phone'),
+            Uri.parse('$host/auth/check-phone'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               if (isEmail) 'email': clean.toLowerCase() else 'phoneNumber': clean,
@@ -84,9 +133,16 @@ class AuthService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return data;
     } catch (e) {
+      debugPrint('[AuthService] checkIdentifier error: $e');
+      _cachedBaseUrl = null;
+      final errStr = e.toString();
+      String friendlyMessage = 'Failed to check account: $errStr';
+      if (errStr.contains('Connection refused') || errStr.contains('SocketException')) {
+        friendlyMessage = 'Server unreachable. Please verify backend is running on port 5000 or reconnect USB.';
+      }
       return {
         'success': false,
-        'message': 'Failed to check account: ${e.toString()}',
+        'message': friendlyMessage,
       };
     }
   }
@@ -96,9 +152,10 @@ class AuthService {
     try {
       final clean = identifier.trim();
       final isEmail = clean.contains('@');
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/send-otp'),
+            Uri.parse('$host/auth/send-otp'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               if (isEmail) 'email': clean.toLowerCase() else 'phoneNumber': clean,
@@ -110,6 +167,7 @@ class AuthService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return data;
     } catch (e) {
+      _cachedBaseUrl = null;
       return {
         'success': false,
         'message': 'Failed to connect to backend: ${e.toString()}',
@@ -126,9 +184,10 @@ class AuthService {
     final target = (identifier ?? phoneNumber ?? '').trim();
     try {
       final isEmail = target.contains('@');
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/verify-otp'),
+            Uri.parse('$host/auth/verify-otp'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               if (isEmail) 'email': target.toLowerCase() else 'phoneNumber': target,
@@ -141,6 +200,7 @@ class AuthService {
       final data = jsonDecode(response.body) as Map<String, dynamic>;
       return data;
     } catch (e) {
+      _cachedBaseUrl = null;
       return {
         'success': false,
         'message': 'Failed to verify OTP: ${e.toString()}',
@@ -156,9 +216,10 @@ class AuthService {
     String? referralCode,
   }) async {
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/signup'),
+            Uri.parse('$host/auth/signup'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               'name': name.trim(),
@@ -191,6 +252,7 @@ class AuthService {
         'message': data['message'] ?? 'Failed to sign up',
       };
     } catch (e) {
+      _cachedBaseUrl = null;
       return {
         'success': false,
         'message': 'Error signing up: ${e.toString()}',
@@ -208,9 +270,10 @@ class AuthService {
     final isEmail = target.contains('@');
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/login'),
+            Uri.parse('$host/auth/login'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               if (isEmail) 'email': target.toLowerCase() else 'phoneNumber': target,
@@ -228,7 +291,6 @@ class AuthService {
         await _storageService.saveUserProfileCache(user.toJson());
         return {
           'success': true,
-          'isRegistered': true,
           'message': data['message'] ?? 'Login successful',
           'user': user,
         };
@@ -236,13 +298,12 @@ class AuthService {
 
       return {
         'success': false,
-        'isRegistered': data['isRegistered'] ?? false,
-        'message': data['message'] ?? 'User not found. Please complete signup.',
+        'message': data['message'] ?? 'Login failed',
       };
     } catch (e) {
+      _cachedBaseUrl = null;
       return {
         'success': false,
-        'isRegistered': false,
         'message': 'Error logging in: ${e.toString()}',
       };
     }
@@ -257,9 +318,10 @@ class AuthService {
     String? referralCode,
   }) async {
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/auth/google'),
+            Uri.parse('$host/auth/google'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               'email': email.trim().toLowerCase(),
@@ -334,9 +396,10 @@ class AuthService {
     if (userId.trim().isEmpty) return null;
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .get(
-            Uri.parse('$baseUrl/users/${userId.trim()}'),
+            Uri.parse('$host/users/${userId.trim()}'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 3));
@@ -365,9 +428,10 @@ class AuthService {
     if (userId.trim().isEmpty) return null;
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .put(
-            Uri.parse('$baseUrl/users/${userId.trim()}'),
+            Uri.parse('$host/users/${userId.trim()}'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               if (name != null) 'name': name.trim(),
@@ -396,9 +460,10 @@ class AuthService {
     if (userId.trim().isEmpty) return null;
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .get(
-            Uri.parse('$baseUrl/users/${userId.trim()}/referrals'),
+            Uri.parse('$host/users/${userId.trim()}/referrals'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 3));
@@ -420,9 +485,10 @@ class AuthService {
     if (userId.trim().isEmpty) return null;
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .get(
-            Uri.parse('$baseUrl/users/${userId.trim()}/wallet'),
+            Uri.parse('$host/users/${userId.trim()}/wallet'),
             headers: {'Content-Type': 'application/json'},
           )
           .timeout(const Duration(seconds: 3));
@@ -451,9 +517,10 @@ class AuthService {
     }
 
     try {
+      final host = await getWorkingBaseUrl();
       final response = await http
           .post(
-            Uri.parse('$baseUrl/users/${userId.trim()}/withdraw'),
+            Uri.parse('$host/users/${userId.trim()}/withdraw'),
             headers: {'Content-Type': 'application/json'},
             body: jsonEncode({
               'amount': amount,
@@ -483,4 +550,3 @@ class AuthService {
     await _storageService.clearUserProfileCache();
   }
 }
-

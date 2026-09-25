@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-import '../../screens/withdraw_screen.dart';
+import '../../screens/wallet/withdraw_screen.dart';
 import '../../theme/app_theme.dart';
 
 /// A simplified, focused Home Wallet Card that highlights the user's

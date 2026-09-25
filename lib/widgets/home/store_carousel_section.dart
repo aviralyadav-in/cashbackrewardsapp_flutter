@@ -1,11 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
+import '../../core/utils/brand_asset_helper.dart';
 import '../../models/brand_model.dart';
-import '../../screens/all_stores_screen.dart';
-import '../../screens/store_detail_screen.dart';
+import '../../screens/stores/all_stores_screen.dart';
+import '../../screens/stores/store_detail_screen.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 /// Reusable horizontal brand/store carousel section for themed subcategories
 /// (e.g. Travel & Hotels, Personal Loans, Pharmacy & Health, Highest Cashback).
@@ -125,10 +126,11 @@ class StoreCarouselSection extends StatelessWidget {
 
         // Horizontal Brand Cards
         SizedBox(
-          height: 194,
+          height: 182,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
             itemCount: stores.length,
             separatorBuilder: (context, index) => const SizedBox(width: 12),
             itemBuilder: (context, index) {
@@ -144,6 +146,9 @@ class StoreCarouselSection extends StatelessWidget {
   Widget _buildStoreCard(BuildContext context, BrandModel store) {
     final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
     final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final offerLabel = store.offerText.isNotEmpty
+        ? store.offerText
+        : (store.category.isNotEmpty ? store.category : 'Hot Offer');
 
     return Container(
       width: 154,
@@ -164,118 +169,174 @@ class StoreCarouselSection extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(16),
-          onTap: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (_) => StoreDetailScreen(
-                  brand: store,
-                  storeName: store.name,
-                  cashbackRate: store.cashbackPercentage,
-                  logoUrl: store.logoUrl,
-                  category: store.category,
-                  websiteUrl: store.websiteUrl,
+          onTap: () => _navigateToStoreDetail(context, store),
+          child: Padding(
+            padding: const EdgeInsets.all(8),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // 1. TOP OFFER PILL (Positioned above the image)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF1E3A8A).withValues(alpha: 0.35) : const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: isDark ? const Color(0xFF3B82F6).withValues(alpha: 0.3) : const Color(0xFFBFDBFE),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Text(
+                    offerLabel,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 11.5,
+                      fontWeight: FontWeight.w700,
+                      color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
                 ),
-              ),
-            );
-          },
-          child: Column(
-            children: [
-              // Upper half
-              Expanded(
-                flex: 1,
-                child: SizedBox(
+                const SizedBox(height: 5),
+
+                // 2. STORE/BRAND LOGO / IMAGE
+                SizedBox(
+                  height: 54,
                   width: double.infinity,
                   child: Center(
-                    child: Container(
-                      width: double.infinity,
-                      height: 54,
-                      decoration: BoxDecoration(
+                    child: _buildStoreLogo(store.logoUrl, store.name),
+                  ),
+                ),
+                const Spacer(),
+
+                // 3. CASHBACK PILL (Positioned below the image)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF143823) : const Color(0xFFECFDF5),
+                    borderRadius: BorderRadius.circular(6),
+                    border: Border.all(
+                      color: isDark ? const Color(0xFF059669).withValues(alpha: 0.35) : const Color(0xFFA7F3D0),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Text(
+                    store.cashbackPercentage,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 12,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 5),
+
+                // 4. "SHOP NOW" CTA BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  height: 30,
+                  child: ElevatedButton(
+                    onPressed: () => _navigateToStoreDetail(context, store),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
+                      foregroundColor: isDark ? const Color(0xFF1E1712) : Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: _buildStoreLogo(store.logoUrl, store.name),
-                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Shop Now',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 13,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 13.5,
+                        ),
+                      ],
                     ),
                   ),
                 ),
-              ),
-
-              // Lower half
-              Expanded(
-                flex: 1,
-                child: Container(
-                  width: double.infinity,
-                  padding: const EdgeInsets.fromLTRB(10, 8, 10, 6),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.start,
-                    children: [
-
-                      // Offer Tag / Description
-                      Text(
-                        store.offerText.isNotEmpty ? store.offerText : store.category,
-                        style: GoogleFonts.plusJakartaSans(
-                          fontSize: 11.5,
-                          fontWeight: FontWeight.w700,
-                          color: isDark ? const Color(0xFF2563EB) : const Color(0xFF2563EB),
-                        ),
-                        maxLines: 1,
-                        overflow: TextOverflow.ellipsis,
-                        textAlign: TextAlign.left,
-                      ),
-
-                      const Spacer(),
-
-                      // Cashback Rate Highlight Pill
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
-                        decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFE0F2FE),
-                          borderRadius: BorderRadius.circular(8),
-                          border: Border.all(
-                            color: isDark ? const Color(0xFF7A4A28) : const Color(0xFFFBD7B3),
-                            width: 1,
-                          ),
-                        ),
-                        child: Text(
-                          store.cashbackPercentage,
-                          style: GoogleFonts.plusJakartaSans(
-                            fontSize: 12.5,
-                            fontWeight: FontWeight.w800,
-                            color: const Color(0xFF2563EB),
-                          ),
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          textAlign: TextAlign.center,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
       ),
     );
   }
 
+  void _navigateToStoreDetail(BuildContext context, BrandModel store) {
+    Navigator.of(context).push(
+      MaterialPageRoute(
+        builder: (_) => StoreDetailScreen(
+          brand: store,
+          storeName: store.name,
+          cashbackRate: store.cashbackPercentage,
+          logoUrl: store.logoUrl,
+          category: store.category,
+          websiteUrl: store.websiteUrl,
+        ),
+      ),
+    );
+  }
+
   Widget _buildStoreLogo(String logoUrl, String name) {
-    if (logoUrl.startsWith('assets/')) {
+    String effectiveUrl = logoUrl.trim();
+    if (effectiveUrl.isEmpty) {
+      effectiveUrl = BrandAssetHelper.getBrandLogo(name);
+    } else if (!effectiveUrl.startsWith('assets/')) {
+      final local = BrandAssetHelper.findLocalAssetForUrl(effectiveUrl);
+      if (local != null) effectiveUrl = local;
+    }
+
+    final fallbackAsset = BrandAssetHelper.getBrandLogo(name);
+
+    if (effectiveUrl.startsWith('assets/')) {
       return Image.asset(
-        logoUrl,
+        effectiveUrl,
         fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) => _fallbackText(name),
+        errorBuilder: (context, error, stackTrace) {
+          if (fallbackAsset != effectiveUrl && fallbackAsset.startsWith('assets/')) {
+            return Image.asset(
+              fallbackAsset,
+              fit: BoxFit.contain,
+              errorBuilder: (_, _, _) => _fallbackText(name),
+            );
+          }
+          return _fallbackText(name);
+        },
       );
-    } else if (logoUrl.startsWith('http')) {
+    } else if (effectiveUrl.startsWith('http')) {
       return NetworkImageWithSkeleton(
-        imageUrl: logoUrl,
+        imageUrl: effectiveUrl,
         fit: BoxFit.contain,
-        errorBuilder: (context, error, stackTrace) => _fallbackText(name),
+        errorBuilder: (context, error, stackTrace) {
+          if (fallbackAsset.startsWith('assets/')) {
+            return Image.asset(
+              fallbackAsset,
+              fit: BoxFit.contain,
+              errorBuilder: (_, _, _) => _fallbackText(name),
+            );
+          }
+          return _fallbackText(name);
+        },
       );
     }
+
     return _fallbackText(name);
   }
 

@@ -2,6 +2,7 @@ import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 import '../models/home_discovery_models.dart';
+import 'app_cashback_engine.dart';
 import 'auth_service.dart';
 
 class HomeService {
@@ -32,8 +33,109 @@ class HomeService {
     return getFallbackHomeData();
   }
 
-  /// High quality offline discovery dataset using local assets in assets/cards/, assets/banners/, assets/logos/
+  /// Offline discovery dataset. Best deals go through the same cashback
+  /// stacking and ranking as the backend smart deal engine, so offline cards
+  /// show the cashback KashIQ actually pays (brand prices/offers unchanged).
   static HomeDataModel getFallbackHomeData() {
+    final raw = _rawFallbackHomeData();
+    final deals = raw.bestDeals.map(_withAppCashback).toList()
+      ..sort((a, b) {
+        final bySavings = _savingsPercent(b).compareTo(_savingsPercent(a));
+        return bySavings != 0 ? bySavings : a.effectivePrice.compareTo(b.effectivePrice);
+      });
+
+    return HomeDataModel(
+      cashbackSummary: raw.cashbackSummary,
+      bestDeals: deals,
+      offers: raw.offers,
+      coupons: raw.coupons,
+      smartSavings: raw.smartSavings,
+      featuredStores: raw.featuredStores,
+      trendingDeals: raw.trendingDeals,
+      priceDrops: raw.priceDrops,
+      cashbackIncreases: raw.cashbackIncreases,
+      bestDealsPage: raw.bestDealsPage,
+    );
+  }
+
+  static double _savingsPercent(BestDealModel d) =>
+      d.originalPrice > 0 ? (d.effectiveSavings / d.originalPrice * 100).roundToDouble() : 0;
+
+  static BestDealModel _withAppCashback(BestDealModel deal) {
+    var stores = deal.stores.map((st) {
+      final r = AppCashbackEngine.calculate(
+        store: st.store,
+        originalPrice: deal.originalPrice,
+        storePrice: st.price,
+        couponDiscount: st.coupon,
+      );
+      return StoreDealComparison(
+        store: st.store,
+        price: st.price,
+        storeDiscount: st.storeDiscount,
+        cashback: r.cashbackAmount,
+        coupon: st.coupon,
+        effectivePrice: r.effectivePrice,
+        savings: r.effectiveSavings,
+        isBest: false,
+      );
+    }).toList();
+
+    // Lowest effective price wins, like compareAndPickBestStore()
+    stores.sort((a, b) => a.effectivePrice.compareTo(b.effectivePrice));
+    stores = [
+      for (var i = 0; i < stores.length; i++)
+        i == 0
+            ? StoreDealComparison(
+                store: stores[i].store,
+                price: stores[i].price,
+                storeDiscount: stores[i].storeDiscount,
+                cashback: stores[i].cashback,
+                coupon: stores[i].coupon,
+                effectivePrice: stores[i].effectivePrice,
+                savings: stores[i].savings,
+                isBest: true,
+              )
+            : stores[i],
+    ];
+
+    final bestStore = stores.isNotEmpty ? stores.first.store : deal.store;
+    final price = stores.isNotEmpty ? stores.first.price : deal.discountedPrice;
+    final coupon = stores.isNotEmpty ? stores.first.coupon : deal.couponDiscount;
+    final r = AppCashbackEngine.calculate(
+      store: bestStore,
+      originalPrice: deal.originalPrice,
+      storePrice: price,
+      couponDiscount: coupon,
+    );
+
+    return BestDealModel(
+      id: deal.id,
+      title: deal.title,
+      brand: deal.brand,
+      store: bestStore,
+      imageUrl: deal.imageUrl,
+      originalPrice: deal.originalPrice,
+      discountedPrice: price,
+      discountPercentage: deal.originalPrice > 0
+          ? ((deal.originalPrice - price) / deal.originalPrice * 100).roundToDouble()
+          : 0,
+      cashbackPercentage: r.cashbackPercentage,
+      cashbackAmount: r.cashbackAmount,
+      couponCode: deal.couponCode,
+      couponDiscount: coupon,
+      effectiveSavings: r.effectiveSavings,
+      effectivePrice: r.effectivePrice,
+      isBestDeal: deal.isBestDeal,
+      badge: deal.badge,
+      category: deal.category,
+      storesAvailable: deal.storesAvailable,
+      stores: stores,
+    );
+  }
+
+  /// High quality offline discovery dataset using local assets in assets/cards/, assets/banners/, assets/logos/
+  static HomeDataModel _rawFallbackHomeData() {
     return HomeDataModel(
       cashbackSummary: const CashbackSummaryModel(
         availableCashback: 1540.0,
@@ -266,7 +368,7 @@ class HomeService {
           effectivePrice: 1179,
           isBestDeal: true,
           badge: '🏆 Top Value',
-          category: 'Electronics',
+          category: 'Audio',
           storesAvailable: ['Flipkart', 'Amazon'],
         ),
         BestDealModel(
@@ -346,8 +448,28 @@ class HomeService {
           effectivePrice: 2989,
           isBestDeal: true,
           badge: '🏆 Best Deal',
-          category: 'Electronics',
+          category: 'Wearables',
           storesAvailable: ['Amazon', 'Flipkart'],
+        ),
+        BestDealModel(
+          id: 'prod-5',
+          title: 'Sony WH-1000XM5',
+          brand: 'Sony',
+          store: 'Amazon',
+          imageUrl: 'assets/banners/headphone_3d.jpg',
+          originalPrice: 29990,
+          discountedPrice: 24990,
+          discountPercentage: 17,
+          cashbackPercentage: 7,
+          cashbackAmount: 1800,
+          couponCode: 'SONY1500',
+          couponDiscount: 1500,
+          effectiveSavings: 8300,
+          effectivePrice: 21690,
+          isBestDeal: true,
+          badge: '🏆 Best Deal',
+          category: 'Audio',
+          storesAvailable: ['Amazon', 'Croma', 'Flipkart'],
         ),
       ],
       offers: const [
@@ -536,10 +658,10 @@ class HomeService {
           productPrice: 29990,
           storeDiscount: 4000,
           couponDiscount: 1500,
-          bankDiscount: 1000,
+          bankDiscount: 0,
           cashback: 1800,
-          totalSavings: 8300,
-          effectivePrice: 21690,
+          totalSavings: 7300,
+          effectivePrice: 22690,
           isBestDeal: true,
           bestStore: 'Amazon',
           stores: [
@@ -549,8 +671,8 @@ class HomeService {
               storeDiscount: 4000,
               cashback: 1800,
               coupon: 1500,
-              effectivePrice: 21690,
-              savings: 8300,
+              effectivePrice: 22690,
+              savings: 7300,
               isBest: true,
             ),
             StoreDealComparison(
@@ -573,10 +695,10 @@ class HomeService {
           productPrice: 39900,
           storeDiscount: 6000,
           couponDiscount: 2000,
-          bankDiscount: 1500,
+          bankDiscount: 0,
           cashback: 2400,
-          totalSavings: 11900,
-          effectivePrice: 28000,
+          totalSavings: 10400,
+          effectivePrice: 29500,
           isBestDeal: true,
           bestStore: 'Dyson',
           stores: [
@@ -586,8 +708,8 @@ class HomeService {
               storeDiscount: 6000,
               cashback: 2400,
               coupon: 2000,
-              effectivePrice: 28000,
-              savings: 11900,
+              effectivePrice: 29500,
+              savings: 10400,
               isBest: true,
             ),
             StoreDealComparison(
@@ -839,30 +961,30 @@ class HomeService {
       ],
       priceDrops: const [
         PriceDropModel(
-          id: 'pd-1',
-          brand: 'LG OLED',
-          productName: 'LG 55" 4K Smart OLED TV',
-          wasPrice: 119990,
-          nowPrice: 79990,
-          priceDropAmount: 40000,
-          priceDropBadge: '₹40,000 Price Drop',
-          cashback: '₹3,200 Cashback',
-          cashbackAmount: 3200,
+          id: 'pd-ipad-10',
+          brand: 'Apple',
+          productName: 'Apple iPad 10th Gen (64GB, Wi-Fi)',
+          wasPrice: 44900,
+          nowPrice: 32900,
+          priceDropAmount: 12000,
+          priceDropBadge: '₹12,000 Price Drop',
+          cashback: '₹990 Cashback',
+          cashbackAmount: 990,
           store: 'Amazon',
-          imageUrl: 'assets/cards/col_electronics.jpg',
+          imageUrl: 'assets/banners/phone_banner_16_9.jpg',
         ),
         PriceDropModel(
-          id: 'pd-2',
-          brand: 'Apple',
-          productName: 'Apple Watch Series 9 GPS 45mm',
-          wasPrice: 44900,
-          nowPrice: 34999,
-          priceDropAmount: 9901,
-          priceDropBadge: '₹9,901 Price Drop',
-          cashback: '₹1,400 Cashback',
-          cashbackAmount: 1400,
-          store: 'Flipkart',
-          imageUrl: 'assets/banners/watch_banner_16_9.jpg',
+          id: 'pd-bose-qc45',
+          brand: 'Bose',
+          productName: 'Bose QuietComfort 45',
+          wasPrice: 29900,
+          nowPrice: 17900,
+          priceDropAmount: 12000,
+          priceDropBadge: '₹12,000 Price Drop',
+          cashback: '₹540 Cashback',
+          cashbackAmount: 540,
+          store: 'Amazon',
+          imageUrl: 'assets/banners/headphone_3d.jpg',
         ),
       ],
       cashbackIncreases: const [

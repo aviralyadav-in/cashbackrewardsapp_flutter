@@ -21,13 +21,13 @@ class BrandService {
 
   static final List<BrandModel> _fallbackBrands = [
     const BrandModel(
-      name: 'Amazon.in',
-      logoUrl: 'assets/cards/amazon.jpg',
-      bannerUrl: 'assets/cards/col_amazon.jpg',
-      cashbackPercentage: 'Up to 8% Cashback',
-      category: 'Electronics & Shopping',
-      offerText: 'Earn rewards on Electronics, Fashion, Appliances & More',
-      websiteUrl: 'https://www.amazon.in',
+      name: 'Dot & Key',
+      logoUrl: 'assets/cards/dotandkey-coupons.png',
+      bannerUrl: 'assets/banners/dotkey_showcase_banner.png',
+      cashbackPercentage: 'Flat 15% Cashback',
+      category: 'Beauty & Skincare',
+      offerText: 'Fruit-forward Skincare Essentials + Highest Cashback',
+      websiteUrl: 'https://www.dotandkey.com',
     ),
     const BrandModel(
       name: 'Myntra',
@@ -73,15 +73,6 @@ class BrandService {
       category: 'Personal Care & Skincare',
       offerText: 'Caffeinated Skincare & Body Products with Bonus Cashback',
       websiteUrl: 'https://www.mcaffeine.com',
-    ),
-    const BrandModel(
-      name: 'Dot & Key',
-      logoUrl: 'assets/cards/dotandkey-coupons.png',
-      bannerUrl: 'assets/cards/col_dotkey.jpg',
-      cashbackPercentage: 'Up to 15% Cashback',
-      category: 'Beauty & Skincare',
-      offerText: 'Fruit-forward Skincare Essentials + Highest Cashback',
-      websiteUrl: 'https://www.dotandkey.com',
     ),
     const BrandModel(
       name: 'HyugaLife',

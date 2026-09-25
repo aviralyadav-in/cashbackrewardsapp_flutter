@@ -1,9 +1,9 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import '../../core/utils/brand_asset_helper.dart';
 import '../../models/home_discovery_models.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class BestDealsSection extends StatelessWidget {
   final bool isDark;
@@ -79,7 +79,7 @@ class BestDealsSection extends StatelessWidget {
 
         // Horizontal Carousel of Showcase Best Deals Cards (Top 4-5 Deals)
         SizedBox(
-          height: 216,
+          height: 195,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
@@ -112,16 +112,25 @@ class BestDealsSection extends StatelessWidget {
     final savings = deal.effectiveSavings > 0
         ? deal.effectiveSavings.toInt()
         : (originalPrice > effectivePrice ? originalPrice - effectivePrice : 0);
-    final cashbackPct = deal.cashbackPercentage.toInt() > 0 ? deal.cashbackPercentage.toInt() : 10;
-    final storeName = deal.store.isNotEmpty ? deal.store : 'Store';
-    final brandName = deal.brand.isNotEmpty ? deal.brand.toUpperCase() : 'BRAND';
+
+    // OFF / Discount percentage above image
+    final offText = deal.discountPercentage > 0
+        ? '${deal.discountPercentage.toInt()}% OFF'
+        : (savings > 0 ? '₹$savings OFF' : 'BEST DEAL');
+
+    // Cashback text just above Shop Now button
+    final cashbackText = deal.cashbackAmount > 0
+        ? '+₹${deal.cashbackAmount.toInt()} Cashback'
+        : (deal.cashbackPercentage > 0
+            ? '+${deal.cashbackPercentage.toInt()}% Cashback'
+            : 'Bonus Cashback');
 
     return Container(
-      width: 164,
+      width: 156,
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: cardBg,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(14),
         border: Border.all(color: borderColor, width: 1),
         boxShadow: [
           BoxShadow(
@@ -134,269 +143,250 @@ class BestDealsSection extends StatelessWidget {
       child: Material(
         color: Colors.transparent,
         child: InkWell(
-          borderRadius: BorderRadius.circular(16),
+          borderRadius: BorderRadius.circular(14),
           onTap: () => onShopNow(deal),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              // 1. TOP IMAGE CONTAINER WITH BADGES
-              SizedBox(
-                height: 76,
-                width: 164,
-                child: Stack(
+          child: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 6),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // 1. TOP: DISCOUNT / OFF BADGE (Image ke upar kitna off hai)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: isDark ? const Color(0xFF143823) : const Color(0xFFECFDF5),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0xFF059669).withValues(alpha: 0.35)
+                          : const Color(0xFFA7F3D0),
+                      width: 0.8,
+                    ),
+                  ),
+                  child: Text(
+                    offText,
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w800,
+                      color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
+                      letterSpacing: 0.2,
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    textAlign: TextAlign.center,
+                  ),
+                ),
+                const SizedBox(height: 3),
+
+                // 2. PRODUCT IMAGE
+                SizedBox(
+                  height: 50,
+                  width: double.infinity,
+                  child: Center(
+                    child: _buildProductImage(deal),
+                  ),
+                ),
+                const SizedBox(height: 3),
+
+                // 3. PRODUCT NAME (Full width, Brand naam hataya gaya)
+                Text(
+                  _cleanTitle(deal.title),
+                  style: GoogleFonts.inter(
+                    fontSize: 11.5,
+                    fontWeight: FontWeight.w700,
+                    letterSpacing: -0.2,
+                    color: textDark,
+                  ),
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                const SizedBox(height: 2),
+
+                // 4. PRICE SECTION: Effective Price + Store Selling Price
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.baseline,
+                  textBaseline: TextBaseline.alphabetic,
                   children: [
-                    Positioned.fill(
-                      child: ClipRRect(
-                        borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
-                        child: Container(
-                          decoration: BoxDecoration(
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: isDark
-                                  ? [const Color(0xFF2E1317), const Color(0xFF4A181E)]
-                                  : [const Color(0xFF6E101A), const Color(0xFF941B26), const Color(0xFF5A0D15)],
-                            ),
-                          ),
-                          child: NetworkImageWithSkeleton(
-                            imageUrl: deal.imageUrl,
-                            height: 76,
-                            width: 164,
-                            fit: BoxFit.cover,
-                            errorBuilder: (context, error, stackTrace) => Center(
-                              child: Icon(
-                                Icons.local_mall_outlined,
-                                size: 26,
-                                color: Colors.white.withValues(alpha: 0.6),
-                              ),
-                            ),
-                          ),
-                        ),
+                    Text(
+                      '₹$effectivePrice',
+                      style: GoogleFonts.inter(
+                        fontSize: 14.5,
+                        fontWeight: FontWeight.w900,
+                        letterSpacing: -0.3,
+                        color: textDark,
                       ),
                     ),
-
-                    // Top Left Badge: ★ Cashback Pill with Frosted Blurred Background
-                    Positioned(
-                      top: 6,
-                      left: 6,
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: BackdropFilter(
-                          filter: ImageFilter.blur(sigmaX: 8, sigmaY: 8),
-                          child: Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6.5, vertical: 3),
-                            decoration: BoxDecoration(
-                              color: const Color(0xFFE11D48).withValues(alpha: 0.68),
-                              borderRadius: BorderRadius.circular(8),
-                              border: Border.all(
-                                color: Colors.white.withValues(alpha: 0.3),
-                                width: 0.8,
-                              ),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.black.withValues(alpha: 0.2),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
-                                ),
-                              ],
-                            ),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: [
-                                const Text(
-                                  '★',
-                                  style: TextStyle(
-                                    fontSize: 10,
-                                    color: Colors.white,
-                                  ),
-                                ),
-                                const SizedBox(width: 3),
-                                Text(
-                                  '$cashbackPct% Cashback',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w800,
-                                    color: Colors.white,
-                                    letterSpacing: -0.1,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-
-                    // Top Right Badge: Store Name (Solid White Pill)
-                    Positioned(
-                      top: 6,
-                      right: 6,
-                      child: Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
-                        constraints: const BoxConstraints(maxWidth: 72),
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black.withValues(alpha: 0.15),
-                              blurRadius: 4,
-                              offset: const Offset(0, 1),
-                            ),
-                          ],
-                        ),
+                    if (deal.discountedPrice > effectivePrice) ...[
+                      const SizedBox(width: 4),
+                      Flexible(
                         child: Text(
-                          storeName,
+                          '₹${deal.discountedPrice.toInt()}',
                           style: GoogleFonts.plusJakartaSans(
-                            fontSize: 9,
-                            fontWeight: FontWeight.w700,
-                            color: const Color(0xFF1E1E24),
+                            fontSize: 10,
+                            fontWeight: FontWeight.w500,
+                            color: textMuted,
+                            decoration: TextDecoration.lineThrough,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
-              ),
+                if (deal.discountedPrice > effectivePrice)
+                  Text(
+                    '₹${deal.discountedPrice.toInt()} at ${deal.store.isNotEmpty ? deal.store : "store"}',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 9.5,
+                      fontWeight: FontWeight.w600,
+                      color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                    ),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                  ),
+                const Spacer(),
 
-              // 2. BOTTOM DETAILS AREA
-              Expanded(
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(8, 6, 8, 7),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                // 5. CASHBACK BADGE (Shop Now button ke just upar cashback kitna milega)
+                Container(
+                  width: double.infinity,
+                  padding: const EdgeInsets.symmetric(vertical: 2.5),
+                  decoration: BoxDecoration(
+                    color: isDark
+                        ? const Color(0xFF1E3A8A).withValues(alpha: 0.35)
+                        : const Color(0xFFEFF6FF),
+                    borderRadius: BorderRadius.circular(5),
+                    border: Border.all(
+                      color: isDark
+                          ? const Color(0xFF2563EB).withValues(alpha: 0.3)
+                          : const Color(0xFFBFDBFE),
+                      width: 0.6,
+                    ),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // BRAND NAME & TITLE (Cleaned main product name)
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Text(
-                            brandName,
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 9,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.5,
-                              color: isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B),
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                          const SizedBox(height: 1),
-                          Text(
-                            _cleanTitle(deal.title),
-                            style: GoogleFonts.inter(
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700,
-                              letterSpacing: -0.2,
-                              color: textDark,
-                            ),
-                            maxLines: 1,
-                            overflow: TextOverflow.ellipsis,
-                          ),
-                        ],
+                      Icon(
+                        Icons.bolt_rounded,
+                        size: 13.5,
+                        color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1D4ED8),
                       ),
-
-                      // PRICING ROW: [₹3,740] [₹5,999]
-                      Row(
-                        crossAxisAlignment: CrossAxisAlignment.baseline,
-                        textBaseline: TextBaseline.alphabetic,
-                        children: [
-                          Text(
-                            '₹$effectivePrice',
-                            style: GoogleFonts.inter(
-                              fontSize: 15.5,
-                              fontWeight: FontWeight.w900,
-                              letterSpacing: -0.3,
-                              color: textDark,
-                            ),
+                      const SizedBox(width: 3),
+                      Flexible(
+                        child: Text(
+                          cashbackText,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w800,
+                            color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                            letterSpacing: -0.1,
                           ),
-                          if (originalPrice > effectivePrice) ...[
-                            const SizedBox(width: 5),
-                            Text(
-                              '₹$originalPrice',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 10,
-                                fontWeight: FontWeight.w500,
-                                color: isDark ? AppColors.darkTextSecondary : const Color(0xFF9E9E9E),
-                                decoration: TextDecoration.lineThrough,
-                              ),
-                            ),
-                          ],
-                        ],
-                      ),
-
-                      // GREEN SAVINGS PILL: [Save ₹$savings] (Just above Shop Best Deal button)
-                      if (savings > 0)
-                        Container(
-                          width: double.infinity,
-                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3.5),
-                          decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF133E2B) : const Color(0xFFE6F7EE),
-                            borderRadius: BorderRadius.circular(6),
-                            border: Border.all(
-                              color: isDark ? const Color(0xFF1E6B47) : const Color(0xFFA3E6C5),
-                              width: 0.8,
-                            ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              'Save ₹$savings',
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 11.5,
-                                fontWeight: FontWeight.w800,
-                                color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ),
-
-                      // ACTION BUTTON: [Shop Best Deal →]
-                      SizedBox(
-                        width: double.infinity,
-                        height: 30,
-                        child: ElevatedButton(
-                          onPressed: () => onShopNow(deal),
-                          style: ElevatedButton.styleFrom(
-                            backgroundColor: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
-                            foregroundColor: isDark ? const Color(0xFF1E1712) : Colors.white,
-                            elevation: 0,
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(8),
-                            ),
-                            padding: EdgeInsets.zero,
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text(
-                                'Shop Best Deal',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 12,
-                                  fontWeight: FontWeight.w700,
-                                ),
-                              ),
-                              const SizedBox(width: 4),
-                              const Icon(
-                                Icons.arrow_forward_rounded,
-                                size: 13.5,
-                              ),
-                            ],
-                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
                         ),
                       ),
                     ],
                   ),
                 ),
-              ),
-            ],
+                const SizedBox(height: 4),
+
+                // 6. "SHOP NOW" CTA PILL BUTTON
+                SizedBox(
+                  width: double.infinity,
+                  height: 26,
+                  child: ElevatedButton(
+                    onPressed: () => onShopNow(deal),
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
+                      foregroundColor: isDark ? const Color(0xFF1E1712) : Colors.white,
+                      elevation: 0,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(7),
+                      ),
+                      padding: EdgeInsets.zero,
+                    ),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          'Shop Now',
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 11.5,
+                            fontWeight: FontWeight.w700,
+                          ),
+                        ),
+                        const SizedBox(width: 4),
+                        const Icon(
+                          Icons.arrow_forward_rounded,
+                          size: 12,
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
         ),
+      ),
+    );
+  }
+
+  /// Builds the product image properly fitted without container box
+  Widget _buildProductImage(BestDealModel deal) {
+    String resolvedUrl = deal.imageUrl.trim();
+    if (resolvedUrl.isEmpty) {
+      resolvedUrl = BrandAssetHelper.getProductImage(deal.title, category: deal.category);
+    } else if (!resolvedUrl.startsWith('assets/')) {
+      final local = BrandAssetHelper.findLocalAssetForUrl(resolvedUrl);
+      if (local != null) resolvedUrl = local;
+    }
+
+    final fallbackAsset = BrandAssetHelper.getProductImage(deal.title, category: deal.category);
+
+    if (resolvedUrl.startsWith('assets/')) {
+      return Image.asset(
+        resolvedUrl,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          if (fallbackAsset != resolvedUrl && fallbackAsset.startsWith('assets/')) {
+            return Image.asset(
+              fallbackAsset,
+              fit: BoxFit.contain,
+              errorBuilder: (_, _, _) => _fallbackIcon(),
+            );
+          }
+          return _fallbackIcon();
+        },
+      );
+    } else if (resolvedUrl.startsWith('http')) {
+      return NetworkImageWithSkeleton(
+        imageUrl: resolvedUrl,
+        fit: BoxFit.contain,
+        errorBuilder: (context, error, stackTrace) {
+          return Image.asset(
+            fallbackAsset,
+            fit: BoxFit.contain,
+            errorBuilder: (_, _, _) => _fallbackIcon(),
+          );
+        },
+      );
+    }
+
+    return Image.asset(
+      fallbackAsset,
+      fit: BoxFit.contain,
+      errorBuilder: (_, _, _) => _fallbackIcon(),
+    );
+  }
+
+  Widget _fallbackIcon() {
+    return Center(
+      child: Icon(
+        Icons.local_mall_outlined,
+        size: 26,
+        color: isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8),
       ),
     );
   }

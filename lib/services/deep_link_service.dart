@@ -2,13 +2,13 @@ import 'dart:async';
 import 'package:app_links/app_links.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../screens/category_detail_screen.dart';
-import '../screens/my_earnings_screen.dart';
-import '../screens/my_order_details_screen.dart';
-import '../screens/payments_screen.dart';
-import '../screens/product_detail_screen.dart';
-import '../screens/signup_screen.dart';
-import '../screens/store_detail_screen.dart';
+import '../screens/categories/category_detail_screen.dart';
+import '../screens/wallet/my_earnings_screen.dart';
+import '../screens/wallet/my_order_details_screen.dart';
+import '../screens/wallet/payments_screen.dart';
+import '../screens/products/product_detail_screen.dart';
+import '../screens/auth/signup_screen.dart';
+import '../screens/stores/store_detail_screen.dart';
 
 class DeepLinkService {
   static final DeepLinkService _instance = DeepLinkService._internal();

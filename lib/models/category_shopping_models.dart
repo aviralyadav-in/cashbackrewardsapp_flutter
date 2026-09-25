@@ -2,6 +2,8 @@
 /// Category -> Subcategory -> Brands/Stores -> Products -> Smart Price Comparison
 library;
 
+import '../services/app_cashback_engine.dart';
+
 class CategoryOverviewModel {
   final String id;
   final String name;
@@ -108,6 +110,12 @@ class CategoryDealModel {
   final String? gender;
   final String? style;
 
+  /// Subcategory the product belongs to (e.g. 'clothing', 'laptops').
+  final String? subcategoryId;
+
+  /// Product type used by subcategory filter chips (e.g. 'Shirts', 'Jeans').
+  final String? productType;
+
   const CategoryDealModel({
     required this.id,
     required this.title,
@@ -128,7 +136,43 @@ class CategoryDealModel {
     this.storesAvailable = const [],
     this.gender,
     this.style,
+    this.subcategoryId,
+    this.productType,
   });
+
+  /// Returns this deal with KashIQ cashback from the smart deal engine rates.
+  /// The brand offer (prices, % OFF, coupon) is kept exactly as provided.
+  CategoryDealModel withAppCashback() {
+    final result = AppCashbackEngine.calculate(
+      store: store,
+      originalPrice: originalPrice,
+      storePrice: discountedPrice,
+      couponDiscount: couponDiscount,
+    );
+    return CategoryDealModel(
+      id: id,
+      title: title,
+      brand: brand,
+      store: store,
+      imageUrl: imageUrl,
+      originalPrice: originalPrice,
+      discountedPrice: discountedPrice,
+      discountPercentage: discountPercentage,
+      cashbackPercentage: result.cashbackPercentage,
+      cashbackAmount: result.cashbackAmount,
+      couponCode: couponCode,
+      couponDiscount: couponDiscount,
+      effectiveSavings: result.effectiveSavings,
+      effectivePrice: result.effectivePrice,
+      isBestDeal: isBestDeal,
+      badge: badge,
+      storesAvailable: storesAvailable,
+      gender: gender,
+      style: style,
+      subcategoryId: subcategoryId,
+      productType: productType,
+    );
+  }
 
   factory CategoryDealModel.fromJson(Map<String, dynamic> json) {
     double parse(dynamic val) {
@@ -162,6 +206,8 @@ class CategoryDealModel {
       storesAvailable: stores,
       gender: json['gender'] as String?,
       style: json['style'] as String?,
+      subcategoryId: json['subcategoryId'] as String?,
+      productType: json['productType'] as String?,
     );
   }
 }

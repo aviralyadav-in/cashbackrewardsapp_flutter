@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../data/home_mock_data.dart';
 import '../../models/amazon_deal_model.dart';
 import '../../models/brand_model.dart';
-import '../../screens/top_category_brands_screen.dart';
+import '../../screens/categories/top_category_brands_screen.dart';
 import '../../theme/app_theme.dart';
 import 'amazon_deal_card.dart';
 

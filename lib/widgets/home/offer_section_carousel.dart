@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import '../../screens/offer_section_screen.dart';
-import '../../screens/product_detail_screen.dart';
-import '../network_image_with_skeleton.dart';
+import '../../screens/deals/offer_section_screen.dart';
+import '../../screens/products/product_detail_screen.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class OfferSectionCarouselWidget extends StatelessWidget {
   final String title;

@@ -5,7 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../models/country.dart';
 import '../../providers/user_provider.dart';
-import '../../screens/home_screen.dart';
+import '../../screens/home/home_screen.dart';
 import '../../services/auth_service.dart';
 import '../../theme/app_theme.dart';
 

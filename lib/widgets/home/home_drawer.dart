@@ -4,8 +4,8 @@ import 'package:provider/provider.dart';
 
 import '../../models/category_group_model.dart';
 import '../../providers/category_provider.dart';
-import '../../screens/all_categories_screen.dart';
-import '../../screens/categories_screen.dart';
+import '../../screens/categories/all_categories_screen.dart';
+import '../../screens/categories/categories_screen.dart';
 import '../../theme/app_theme.dart';
 
 class HomeDrawer extends StatelessWidget {

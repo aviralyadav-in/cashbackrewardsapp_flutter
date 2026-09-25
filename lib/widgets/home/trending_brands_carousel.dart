@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../models/brand_model.dart';
 import '../../models/trending_brand_model.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class TrendingBrandsCarouselWidget extends StatefulWidget {
   final List<TrendingBannerItemData> items;

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../../models/home_discovery_models.dart';
 import '../../theme/app_theme.dart';
-import '../network_image_with_skeleton.dart';
+import '../common/network_image_with_skeleton.dart';
 
 class TrendingDealsSection extends StatelessWidget {
   final bool isDark;
@@ -77,7 +77,7 @@ class TrendingDealsSection extends StatelessWidget {
 
         // Horizontal List
         SizedBox(
-          height: 226,
+          height: 242,
           child: ListView.separated(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             scrollDirection: Axis.horizontal,
@@ -102,6 +102,9 @@ class TrendingDealsSection extends StatelessWidget {
   ) {
     final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
     final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final effectivePrice = deal.cashbackAmount > 0
+        ? (deal.price - deal.cashbackAmount).toInt()
+        : deal.price.toInt();
 
     return Container(
       width: 168,
@@ -215,30 +218,49 @@ class TrendingDealsSection extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
 
-                    // Price
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.baseline,
-                      textBaseline: TextBaseline.alphabetic,
+                    // Price Block: Effective Price + Store Price
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          '₹${deal.price.toInt()}',
-                          style: GoogleFonts.inter(
-                            fontSize: 14.5,
-                            fontWeight: FontWeight.w800,
-                            color: primaryAccent,
-                          ),
+                        Row(
+                          crossAxisAlignment: CrossAxisAlignment.baseline,
+                          textBaseline: TextBaseline.alphabetic,
+                          children: [
+                            Text(
+                              '₹$effectivePrice',
+                              style: GoogleFonts.inter(
+                                fontSize: 14.5,
+                                fontWeight: FontWeight.w800,
+                                color: primaryAccent,
+                              ),
+                            ),
+                            if (deal.originalPrice > 0) ...[
+                              const SizedBox(width: 4),
+                              Text(
+                                '₹${deal.originalPrice.toInt()}',
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 10,
+                                  color: textMuted,
+                                  decoration: TextDecoration.lineThrough,
+                                ),
+                              ),
+                            ],
+                          ],
                         ),
-                        if (deal.originalPrice > 0) ...[
-                          const SizedBox(width: 4),
-                          Text(
-                            '₹${deal.originalPrice.toInt()}',
-                            style: GoogleFonts.plusJakartaSans(
-                              fontSize: 10,
-                              color: textMuted,
-                              decoration: TextDecoration.lineThrough,
+                        if (deal.cashbackAmount > 0)
+                          Padding(
+                            padding: const EdgeInsets.only(top: 1),
+                            child: Text(
+                              '₹${deal.price.toInt()} at ${deal.store}',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 9.5,
+                                fontWeight: FontWeight.w500,
+                                color: textMuted,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
-                        ],
                       ],
                     ),
                     const SizedBox(height: 4),

@@ -5,7 +5,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../../data/flash_deals_data.dart';
 import '../../models/brand_model.dart';
 import '../../models/flash_deal_model.dart';
-import '../../screens/top_category_brands_screen.dart';
+import '../../screens/categories/top_category_brands_screen.dart';
 import 'flash_deal_card.dart';
 
 class FlashDealsSection extends StatefulWidget {
