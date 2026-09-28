@@ -94,18 +94,23 @@ class _HomeScreenState extends State<HomeScreen> {
                   ? rawEmail
                   : (rawPhone.isNotEmpty ? rawPhone : 'No email registered');
 
-              final initial = displayName.isNotEmpty
-                  ? displayName[0].toUpperCase()
-                  : 'U';
+              final avatarUrl = userProvider.avatarUrl.isNotEmpty
+                  ? userProvider.avatarUrl
+                  : 'assets/avatars/avatar.png';
+
+              final ImageProvider avatarImage =
+                  (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://'))
+                      ? NetworkImage(avatarUrl)
+                      : AssetImage(avatarUrl) as ImageProvider;
 
               return Container(
-                width: 275,
+                width: 280,
                 padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF241E1A) : Colors.white,
+                  color: isDark ? AppColors.darkCard : Colors.white,
                   borderRadius: BorderRadius.circular(16),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF45392F) : const Color(0xFFE2E8F0),
+                    color: isDark ? AppColors.darkBorder : AppColors.border,
                     width: 1,
                   ),
                   boxShadow: [
@@ -124,27 +129,29 @@ class _HomeScreenState extends State<HomeScreen> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Container(
-                          width: 38,
-                          height: 38,
+                          width: 42,
+                          height: 42,
                           decoration: BoxDecoration(
                             shape: BoxShape.circle,
-                            gradient: LinearGradient(
-                              begin: Alignment.topLeft,
-                              end: Alignment.bottomRight,
-                              colors: isDark
-                                  ? const [Color(0xFF1E3A8A), Color(0xFF132247)]
-                                  : const [AppColors.primaryBrown, AppColors.deepBrown],
+                            border: Border.all(
+                              color: isDark
+                                  ? AppColors.darkPrimary.withValues(alpha: 0.6)
+                                  : AppColors.accentBlue.withValues(alpha: 0.45),
+                              width: 1.5,
                             ),
-                          ),
-                          child: Center(
-                            child: Text(
-                              initial,
-                              style: GoogleFonts.inter(
-                                color: Colors.white,
-                                fontWeight: FontWeight.w700,
-                                fontSize: 17,
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
+                                blurRadius: 4,
+                                offset: const Offset(0, 1),
                               ),
-                            ),
+                            ],
+                          ),
+                          child: CircleAvatar(
+                            radius: 20,
+                            backgroundColor: isDark ? const Color(0xFF1E1A33) : const Color(0xFFF3F6FE),
+                            backgroundImage: avatarImage,
+                            onBackgroundImageError: (error, stackTrace) {},
                           ),
                         ),
                         const SizedBox(width: 10),
@@ -160,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   fontWeight: FontWeight.w700,
                                   color: isDark
                                       ? AppColors.darkTextPrimary
-                                      : const Color(0xFF221A15),
+                                      : AppColors.textPrimary,
                                 ),
                                 maxLines: 1,
                                 overflow: TextOverflow.ellipsis,
@@ -187,8 +194,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               color: isDark
-                                  ? const Color(0xFF332922)
-                                  : const Color(0xFFF3ECE4),
+                                  ? AppColors.darkBackground
+                                  : const Color(0xFFF1F5F9),
                             ),
                             child: Icon(
                               Icons.close_rounded,
@@ -208,11 +215,11 @@ class _HomeScreenState extends State<HomeScreen> {
                       color: isDark ? AppColors.darkBorder : AppColors.border,
                     ),
                     const SizedBox(height: 8),
-                      InkWell(
-                        onTap: () {
-                          Navigator.of(dialogContext).pop();
-                          _onBottomNavigationTap(4);
-                        },
+                    InkWell(
+                      onTap: () {
+                        Navigator.of(dialogContext).pop();
+                        _onBottomNavigationTap(4);
+                      },
                       borderRadius: BorderRadius.circular(8),
                       child: Padding(
                         padding:
@@ -223,8 +230,8 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icons.account_circle_outlined,
                               size: 17,
                               color: isDark
-                                  ? AppColors.darkTextPrimary
-                                  : AppColors.primaryBrown,
+                                  ? AppColors.darkPrimary
+                                  : AppColors.accentBlue,
                             ),
                             const SizedBox(width: 8),
                             Text(
@@ -234,7 +241,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 fontWeight: FontWeight.w600,
                                 color: isDark
                                   ? AppColors.darkTextPrimary
-                                  : AppColors.primaryBrown,
+                                  : AppColors.accentBlue,
                               ),
                             ),
                             const Spacer(),
@@ -324,18 +331,47 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   tooltip: 'Notifications',
                 ),
-                const SizedBox(width: 2),
-                IconButton(
-                  padding: EdgeInsets.zero,
-                  visualDensity: VisualDensity.compact,
-                  constraints: const BoxConstraints(minWidth: 30, minHeight: 32),
-                  icon: Icon(
-                    Icons.person_outline_rounded,
-                    size: 25,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
-                  ),
-                  onPressed: () => _showProfilePopup(context, isDark),
-                  tooltip: 'Profile',
+                const SizedBox(width: 6),
+                Consumer<UserProvider>(
+                  builder: (context, userProv, _) {
+                    final avatarUrl = userProv.avatarUrl.isNotEmpty
+                        ? userProv.avatarUrl
+                        : 'assets/avatars/avatar.png';
+                    final ImageProvider headerAvatar =
+                        (avatarUrl.startsWith('http://') || avatarUrl.startsWith('https://'))
+                            ? NetworkImage(avatarUrl)
+                            : AssetImage(avatarUrl) as ImageProvider;
+
+                    return GestureDetector(
+                      onTap: () => _showProfilePopup(context, isDark),
+                      child: Container(
+                        width: 32,
+                        height: 32,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          border: Border.all(
+                            color: isDark
+                                ? AppColors.darkPrimary.withValues(alpha: 0.6)
+                                : AppColors.accentBlue.withValues(alpha: 0.5),
+                            width: 1.5,
+                          ),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withValues(alpha: isDark ? 0.25 : 0.08),
+                              blurRadius: 4,
+                              offset: const Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: CircleAvatar(
+                          radius: 15,
+                          backgroundColor: isDark ? const Color(0xFF1E1A33) : const Color(0xFFF3F6FE),
+                          backgroundImage: headerAvatar,
+                          onBackgroundImageError: (error, stackTrace) {},
+                        ),
+                      ),
+                    );
+                  },
                 ),
               ],
             ),

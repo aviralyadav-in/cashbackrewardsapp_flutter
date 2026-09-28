@@ -1,7 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/foundation.dart';
 import '../models/user_model.dart';
 import '../services/auth_service.dart';
 import '../services/storage_service.dart';
+import '../widgets/wallet/wallet_spending_graph_card.dart';
 
 class UserProvider extends ChangeNotifier {
   final AuthService _authService = AuthService();
@@ -9,25 +11,49 @@ class UserProvider extends ChangeNotifier {
 
   UserModel? _user;
   bool _isLoading = false;
+  bool _isLoadingWallet = false;
   String? _errorMessage;
   List<Map<String, dynamic>> _walletTransactions = [];
+  List<SpendingDataPoint> _dailySpending = [];
+  List<SpendingDataPoint> _monthlySpending = [];
+  double _totalSpendAllTime = 0.0;
+  double _totalCashbackAllTime = 0.0;
+  int _totalOrdersCount = 0;
+  int _totalReferred = 0;
+  int _purchasedUsersCount = 0;
+  int _pendingPurchaseCount = 0;
+  List<Map<String, dynamic>> _referredUsers = [];
 
   UserModel? get user => _user;
   String get uid => _user?.uid ?? '';
   String get fullName => _user?.fullName ?? '';
   String get email => _user?.email ?? '';
   String get phoneNumber => _user?.phoneNumber ?? '';
+  String get avatarUrl => (_user?.avatarUrl != null && _user!.avatarUrl!.trim().isNotEmpty)
+      ? _user!.avatarUrl!.trim()
+      : 'assets/avatars/avatar.png';
   String get referralCode => _user?.referralCode ?? '';
   int get coins => _user?.coins ?? 0;
   double get walletBalance => _user?.walletBalance ?? 0.0;
+  double get remainingBalance => _user?.remainingBalance ?? _user?.walletBalance ?? 0.0;
   bool get hasShopped => _user?.hasShopped ?? false;
   double get confirmedCashback => _user?.confirmedCashback ?? 0.0;
   double get pendingCashback => _user?.pendingCashback ?? 0.0;
   double get referralEarnings => _user?.referralEarnings ?? 0.0;
   double get affiliateEarnings => _user?.affiliateEarnings ?? 0.0;
   List<Map<String, dynamic>> get walletTransactions => _walletTransactions;
+  List<SpendingDataPoint> get dailySpending => _dailySpending;
+  List<SpendingDataPoint> get monthlySpending => _monthlySpending;
+  double get totalSpendAllTime => _totalSpendAllTime;
+  double get totalCashbackAllTime => _totalCashbackAllTime;
+  int get totalOrdersCount => _totalOrdersCount;
+  int get totalReferred => _totalReferred;
+  int get purchasedUsersCount => _purchasedUsersCount;
+  int get pendingPurchaseCount => _pendingPurchaseCount;
+  List<Map<String, dynamic>> get referredUsers => _referredUsers;
 
   bool get isLoading => _isLoading;
+  bool get isLoadingWallet => _isLoadingWallet;
   String? get errorMessage => _errorMessage;
   bool get isAuthenticated => _user != null && _user!.uid.isNotEmpty;
 
@@ -89,6 +115,7 @@ class UserProvider extends ChangeNotifier {
           notifyListeners();
         }
         await loadWalletData();
+        await getUserReferrals();
       }
     } catch (e) {
       debugPrint('UserProvider: Background sync error: $e');
@@ -98,7 +125,23 @@ class UserProvider extends ChangeNotifier {
   /// Loads dynamic wallet balance, shopping stats, and transaction history from backend
   Future<void> loadWalletData() async {
     final targetId = _user?.uid ?? await _storageService.getUserId();
-    if (targetId == null || targetId.isEmpty) return;
+    if (targetId == null || targetId.isEmpty) {
+      final cachedProfile = await _storageService.getUserProfileCache();
+      if (cachedProfile != null && cachedProfile.isNotEmpty) {
+        try {
+          final map = jsonDecode(cachedProfile);
+          final cachedId = map['uid']?.toString();
+          if (cachedId != null && cachedId.isNotEmpty) {
+            _user = UserModel.fromJson(map);
+            return loadWalletData();
+          }
+        } catch (_) {}
+      }
+      return;
+    }
+
+    _isLoadingWallet = true;
+    notifyListeners();
 
     try {
       final walletData = await _authService.getUserWallet(targetId);
@@ -110,7 +153,8 @@ class UserProvider extends ChangeNotifier {
           return double.tryParse(v.toString()) ?? 0.0;
         }
 
-        final balance = parseDouble(walletData['balance']);
+        final balance = parseDouble(walletData['balance'] ?? walletData['walletBalance']);
+        final remaining = parseDouble(walletData['remainingBalance'] ?? walletData['remaining_balance'] ?? balance);
         final confirmed = parseDouble(walletData['confirmedCashback']);
         final pending = parseDouble(walletData['pendingCashback']);
         final referral = parseDouble(walletData['referralEarnings']);
@@ -120,6 +164,23 @@ class UserProvider extends ChangeNotifier {
         if (_user != null) {
           _user = _user!.copyWith(
             walletBalance: balance,
+            remainingBalance: remaining,
+            confirmedCashback: confirmed,
+            pendingCashback: pending,
+            referralEarnings: referral,
+            affiliateEarnings: affiliate,
+            hasShopped: shopped,
+            coins: balance.round(),
+          );
+          await _storageService.saveUserProfileCache(_user!.toJson());
+        } else {
+          _user = UserModel(
+            uid: targetId,
+            fullName: '',
+            email: '',
+            phoneNumber: '',
+            walletBalance: balance,
+            remainingBalance: remaining,
             confirmedCashback: confirmed,
             pendingCashback: pending,
             referralEarnings: referral,
@@ -135,10 +196,50 @@ class UserProvider extends ChangeNotifier {
               .map((e) => Map<String, dynamic>.from(e as Map))
               .toList();
         }
-        notifyListeners();
+
+        if (walletData['spendingAnalytics'] is Map) {
+          final analytics = walletData['spendingAnalytics'] as Map;
+          if (analytics['daily'] is List) {
+            _dailySpending = (analytics['daily'] as List)
+                .map((e) => SpendingDataPoint.fromMap(Map<String, dynamic>.from(e as Map)))
+                .toList();
+          }
+          if (analytics['monthly'] is List) {
+            _monthlySpending = (analytics['monthly'] as List)
+                .map((e) => SpendingDataPoint.fromMap(Map<String, dynamic>.from(e as Map)))
+                .toList();
+          }
+          _totalSpendAllTime = parseDouble(analytics['totalSpend']);
+          _totalCashbackAllTime = parseDouble(analytics['totalCashback']);
+          _totalOrdersCount = analytics['totalOrders'] is int
+              ? analytics['totalOrders'] as int
+              : int.tryParse(analytics['totalOrders']?.toString() ?? '0') ?? 0;
+        } else {
+          final analyticsData = await _authService.getSpendingAnalytics(targetId);
+          if (analyticsData != null) {
+            if (analyticsData['daily'] is List) {
+              _dailySpending = (analyticsData['daily'] as List)
+                  .map((e) => SpendingDataPoint.fromMap(Map<String, dynamic>.from(e as Map)))
+                  .toList();
+            }
+            if (analyticsData['monthly'] is List) {
+              _monthlySpending = (analyticsData['monthly'] as List)
+                  .map((e) => SpendingDataPoint.fromMap(Map<String, dynamic>.from(e as Map)))
+                  .toList();
+            }
+            _totalSpendAllTime = parseDouble(analyticsData['totalSpend']);
+            _totalCashbackAllTime = parseDouble(analyticsData['totalCashback']);
+            _totalOrdersCount = analyticsData['totalOrders'] is int
+                ? analyticsData['totalOrders'] as int
+                : int.tryParse(analyticsData['totalOrders']?.toString() ?? '0') ?? 0;
+          }
+        }
       }
     } catch (e) {
       debugPrint('Error loading wallet data: $e');
+    } finally {
+      _isLoadingWallet = false;
+      notifyListeners();
     }
   }
 
@@ -248,7 +349,24 @@ class UserProvider extends ChangeNotifier {
   Future<Map<String, dynamic>?> getUserReferrals() async {
     final targetId = _user?.uid ?? await _storageService.getUserId();
     if (targetId == null || targetId.isEmpty) return null;
-    return await _authService.getUserReferrals(targetId);
+    final res = await _authService.getUserReferrals(targetId);
+    if (res != null && res['success'] == true) {
+      _totalReferred = res['totalReferred'] is int
+          ? res['totalReferred'] as int
+          : int.tryParse(res['totalReferred']?.toString() ?? '0') ?? 0;
+      _purchasedUsersCount = res['purchasedUsersCount'] is int
+          ? res['purchasedUsersCount'] as int
+          : int.tryParse(res['purchasedUsersCount']?.toString() ?? '0') ?? 0;
+      _pendingPurchaseCount = res['pendingPurchaseCount'] is int
+          ? res['pendingPurchaseCount'] as int
+          : int.tryParse(res['pendingPurchaseCount']?.toString() ?? '0') ?? 0;
+      _referredUsers = (res['referredUsers'] as List<dynamic>?)
+              ?.map((e) => Map<String, dynamic>.from(e as Map))
+              .toList() ??
+          [];
+      notifyListeners();
+    }
+    return res;
   }
 
   /// Saves or updates the user profile data
@@ -256,6 +374,7 @@ class UserProvider extends ChangeNotifier {
     required String fullName,
     required String email,
     required String phoneNumber,
+    String? avatarUrl,
   }) async {
     _isLoading = true;
     _errorMessage = null;
@@ -274,6 +393,7 @@ class UserProvider extends ChangeNotifier {
           name: cleanName,
           email: cleanEmail,
           phoneNumber: cleanPhone,
+          avatarUrl: avatarUrl,
         );
         if (updatedRemote != null) {
           _user = updatedRemote;
@@ -290,6 +410,7 @@ class UserProvider extends ChangeNotifier {
         fullName: cleanName,
         email: cleanEmail,
         phoneNumber: cleanPhone,
+        avatarUrl: avatarUrl ?? _user?.avatarUrl,
       );
 
       // Save to local cache
@@ -305,6 +426,48 @@ class UserProvider extends ChangeNotifier {
       return false;
     }
   }
+
+  /// Uploads a new profile photo and updates avatar_url in DB.
+  /// Caller passes pre-read [imageBytes] (from XFile.readAsBytes()) and [fileName].
+  /// Returns the uploaded avatar URL on success, or null on failure.
+  Future<String?> uploadAvatarImage({
+    required List<int> imageBytes,
+    required String mimeType,
+    required String fileName,
+  }) async {
+    final currentUid = _user?.uid ?? await _storageService.getUserId() ?? '';
+    if (currentUid.isEmpty) return null;
+
+    _isLoading = true;
+    _errorMessage = null;
+    notifyListeners();
+
+    try {
+      final url = await _authService.uploadAvatarImage(
+        userId: currentUid,
+        imageBytes: imageBytes,
+        mimeType: mimeType,
+        fileName: fileName,
+      );
+      if (url != null && url.isNotEmpty) {
+        // Update local in-memory user with new avatar URL
+        _user = _user?.copyWith(avatarUrl: url);
+        if (_user != null) {
+          await _storageService.saveUserProfileCache(_user!.toJson());
+        }
+        _isLoading = false;
+        notifyListeners();
+        return url;
+      }
+      _errorMessage = 'Avatar upload failed. Please try again.';
+    } catch (e) {
+      _errorMessage = 'Error uploading photo: ${e.toString()}';
+    }
+    _isLoading = false;
+    notifyListeners();
+    return null;
+  }
+
 
   /// Sets initial user profile data
   Future<void> setInitialUserProfile({
@@ -331,6 +494,11 @@ class UserProvider extends ChangeNotifier {
   Future<void> clearUser() async {
     _user = null;
     _walletTransactions = [];
+    _dailySpending = [];
+    _monthlySpending = [];
+    _totalSpendAllTime = 0.0;
+    _totalCashbackAllTime = 0.0;
+    _totalOrdersCount = 0;
     _errorMessage = null;
     await _authService.signOut();
     notifyListeners();

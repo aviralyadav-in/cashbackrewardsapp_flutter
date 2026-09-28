@@ -10,6 +10,7 @@ class UserModel {
   final String? referredBy;
   final int coins;
   final double walletBalance;
+  final double remainingBalance;
   final bool hasShopped;
   final double confirmedCashback;
   final double pendingCashback;
@@ -26,6 +27,7 @@ class UserModel {
     this.referredBy,
     this.coins = 0,
     this.walletBalance = 0.0,
+    this.remainingBalance = 0.0,
     this.hasShopped = false,
     this.confirmedCashback = 0.0,
     this.pendingCashback = 0.0,
@@ -43,6 +45,7 @@ class UserModel {
     String? referredBy,
     int? coins,
     double? walletBalance,
+    double? remainingBalance,
     bool? hasShopped,
     double? confirmedCashback,
     double? pendingCashback,
@@ -59,6 +62,7 @@ class UserModel {
       referredBy: referredBy ?? this.referredBy,
       coins: coins ?? this.coins,
       walletBalance: walletBalance ?? this.walletBalance,
+      remainingBalance: remainingBalance ?? this.remainingBalance,
       hasShopped: hasShopped ?? this.hasShopped,
       confirmedCashback: confirmedCashback ?? this.confirmedCashback,
       pendingCashback: pendingCashback ?? this.pendingCashback,
@@ -78,6 +82,7 @@ class UserModel {
       'referredBy': referredBy,
       'coins': coins,
       'walletBalance': walletBalance,
+      'remainingBalance': remainingBalance > 0.0 ? remainingBalance : walletBalance,
       'hasShopped': hasShopped,
       'confirmedCashback': confirmedCashback,
       'pendingCashback': pendingCashback,
@@ -103,7 +108,8 @@ class UserModel {
       return double.tryParse(val.toString()) ?? 0.0;
     }
 
-    final parsedWalletBalance = parseDouble(map['walletBalance'] ?? map['wallet_balance']);
+    final parsedWalletBalance = parseDouble(map['walletBalance'] ?? map['wallet_balance'] ?? map['balance']);
+    final parsedRemainingBalance = parseDouble(map['remainingBalance'] ?? map['remaining_balance'] ?? map['remaining_amount'] ?? parsedWalletBalance);
     final parsedConfirmed = parseDouble(map['confirmedCashback'] ?? map['confirmed_cashback']);
     final parsedPending = parseDouble(map['pendingCashback'] ?? map['pending_cashback']);
     final parsedReferralEarnings = parseDouble(map['referralEarnings'] ?? map['referral_earnings']);
@@ -131,6 +137,7 @@ class UserModel {
       referredBy: map['referredBy'] as String? ?? map['referred_by'] as String?,
       coins: parsedCoins > 0 ? parsedCoins : parsedWalletBalance.round(),
       walletBalance: parsedWalletBalance,
+      remainingBalance: parsedRemainingBalance,
       hasShopped: parsedHasShopped,
       confirmedCashback: parsedConfirmed,
       pendingCashback: parsedPending,

@@ -41,10 +41,10 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
       builder: (ctx) => Container(
         padding: const EdgeInsets.fromLTRB(20, 16, 20, 28),
         decoration: BoxDecoration(
-          color: isDark ? const Color(0xFF132247) : Colors.white,
+          color: isDark ? AppColors.darkCard : AppColors.cardBackground,
           borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
           border: Border.all(
-            color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+            color: isDark ? AppColors.darkBorder : AppColors.border,
           ),
         ),
         child: Column(
@@ -56,7 +56,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
                 width: 42,
                 height: 4.5,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF5A483C) : const Color(0xFFD5C7B8),
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
                   borderRadius: BorderRadius.circular(3),
                 ),
               ),
@@ -67,7 +67,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
               style: GoogleFonts.inter(
                 fontSize: 18,
                 fontWeight: FontWeight.w700,
-                color: isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A),
+                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
               ),
             ),
             const SizedBox(height: 16),
@@ -84,9 +84,9 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
               isDark: isDark,
               icon: Icons.share_rounded,
               iconColor: const Color(0xFF3B82F6),
-              title: '2. Affiliate Link Earnings (Share & Earn)',
+              title: '2. Share & Earn (Shared Deals)',
               description:
-                  'When you share a product link with friends or on social media and someone makes a purchase through your shared link, the full affiliate commission is credited straight to your wallet.',
+                  'When you share a product deal with friends or on social media and someone makes a purchase through your link, the commission is credited straight to your wallet.',
             ),
             const SizedBox(height: 14),
             _buildSourceExplainer(
@@ -113,10 +113,10 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2E241E) : const Color(0xFFFBF8F5),
+        color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(
-          color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
         ),
       ),
       child: Row(
@@ -140,7 +140,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A),
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -148,7 +148,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
                   description,
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 11.5,
-                    color: isDark ? AppColors.darkTextSecondary : const Color(0xFF6B5E55),
+                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
                     height: 1.4,
                   ),
                 ),
@@ -165,66 +165,43 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final userProvider = Provider.of<UserProvider>(context);
 
-    final walletBalance = userProvider.walletBalance;
+    final remainingBalance = userProvider.remainingBalance;
     final confirmed = userProvider.confirmedCashback;
     final pending = userProvider.pendingCashback;
     final referral = userProvider.referralEarnings;
     final affiliate = userProvider.affiliateEarnings;
     final hasShopped = userProvider.hasShopped;
-    final allTimeEarnings = confirmed + affiliate + referral + pending;
+    final allTimeEarnings = confirmed + affiliate + referral;
 
-    // Transaction list with fallback sample data showing all 3 streams
-    final allTxs = userProvider.walletTransactions.isNotEmpty
-        ? userProvider.walletTransactions
-        : [
-            {
-              'id': 'tx-ref-1',
-              'amount': referral > 0 ? referral : 20.0,
-              'type': 'REFERRAL',
-              'status': 'CONFIRMED',
-              'description': 'Referral Bonus: Friend completed 1st shopping order',
-              'createdAt': DateTime.now().subtract(const Duration(hours: 4)).toIso8601String(),
-            },
-            {
-              'id': 'tx-cb-1',
-              'amount': confirmed > 0 ? confirmed : 150.0,
-              'type': 'CASHBACK',
-              'status': 'CONFIRMED',
-              'description': 'Store Cashback from Myntra verified',
-              'createdAt': DateTime.now().subtract(const Duration(days: 1)).toIso8601String(),
-            },
-            {
-              'id': 'tx-aff-1',
-              'amount': affiliate > 0 ? affiliate : 45.0,
-              'type': 'AFFILIATE',
-              'status': 'CONFIRMED',
-              'description': 'Affiliate Commission: Friend bought Nike shoes via your link',
-              'createdAt': DateTime.now().subtract(const Duration(days: 2)).toIso8601String(),
-            },
-            {
-              'id': 'tx-cb-2',
-              'amount': pending > 0 ? pending : 85.0,
-              'type': 'CASHBACK',
-              'status': 'PENDING',
-              'description': 'Store Cashback from Amazon tracked',
-              'createdAt': DateTime.now().subtract(const Duration(days: 3)).toIso8601String(),
-            },
-          ];
+    // Real dynamic transactions purely from database
+    final allTxs = userProvider.walletTransactions;
 
     final filteredTxs = _selectedStreamFilter == 'ALL'
         ? allTxs
-        : allTxs.where((tx) => tx['type']?.toString().toUpperCase() == _selectedStreamFilter).toList();
+        : allTxs.where((tx) {
+            final t = tx['type']?.toString().toUpperCase() ?? '';
+            if (_selectedStreamFilter == 'CASHBACK') {
+              return t.contains('CASHBACK');
+            } else if (_selectedStreamFilter == 'AFFILIATE') {
+              return t.contains('AFFILIATE');
+            } else if (_selectedStreamFilter == 'REFERRAL') {
+              return t.contains('REFERRAL') || t.contains('BONUS') || t.contains('SIGNUP');
+            } else if (_selectedStreamFilter == 'WITHDRAWAL') {
+              return t.contains('WITHDRAW');
+            }
+            return t == _selectedStreamFilter;
+          }).toList();
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
-        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.navyDark,
             size: 20,
           ),
           onPressed: () {
@@ -238,7 +215,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
         title: Text(
           'Wallet & Earnings',
           style: AppTextStyles.screenHeading(
-            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
           ),
         ),
         centerTitle: true,
@@ -248,7 +225,7 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
           onRefresh: () async {
             await userProvider.loadWalletData();
           },
-          color: AppColors.primaryBrown,
+          color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
           child: SingleChildScrollView(
             physics: const AlwaysScrollableScrollPhysics(
               parent: BouncingScrollPhysics(),
@@ -257,39 +234,38 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // 1. ALL-TIME EARNINGS CARD WITH 3 STREAMS (Cashback, Affiliate, Referral)
+                // 1. ALL-TIME EARNINGS CARD (2 PARTS: REMAINING BALANCE + TOTAL LIFETIME EARNINGS & 3 STREAMS)
                 _AllTimeEarningsCard(
                   isDark: isDark,
+                  remainingBalance: remainingBalance,
                   totalEarnings: allTimeEarnings,
                   cashback: confirmed,
                   affiliate: affiliate,
                   referral: referral,
                   hasShopped: hasShopped,
+                  onWithdrawTap: () async {
+                    await Navigator.of(context).pushNamed(WithdrawScreen.routeName);
+                    if (mounted) {
+                      userProvider.loadWalletData();
+                    }
+                  },
                   onInfoTap: () => _showSourcesInfoModal(context, isDark),
                 ),
 
                 const SizedBox(height: 18),
 
-                // 2. SPENDING & CASHBACK GRAPH ANALYTICS
+                // 2. SPENDING & CASHBACK GRAPH ANALYTICS (Purely from Database)
                 WalletSpendingGraphCard(
                   isDark: isDark,
                   hasShopped: hasShopped,
+                  isLoading: userProvider.isLoadingWallet,
+                  dailyData: userProvider.dailySpending,
+                  monthlyData: userProvider.monthlySpending,
                 ),
 
                 const SizedBox(height: 18),
 
-                // 4. CONFIRMED EARNINGS CARD (Spendable / Withdrawable Balance)
-                _ConfirmedEarningsCard(
-                  isDark: isDark,
-                  confirmedAmount: walletBalance,
-                  onWithdrawTap: () {
-                    Navigator.of(context).pushNamed(WithdrawScreen.routeName);
-                  },
-                ),
-
-                const SizedBox(height: 14),
-
-                // 5. PENDING EARNINGS CARD
+                // 3. PENDING EARNINGS CARD
                 _PendingEarningsCard(
                   isDark: isDark,
                   pendingAmount: pending,
@@ -351,57 +327,204 @@ class _MyEarningsScreenState extends State<MyEarningsScreen> {
 }
 
 // ==========================================
-// 1. ALL-TIME EARNINGS CARD (3 STREAMS)
+// 1. ALL-TIME EARNINGS CARD (2 PARTS: REMAINING BALANCE + TOTAL LIFETIME EARNINGS & 3 STREAMS)
 // ==========================================
 class _AllTimeEarningsCard extends StatelessWidget {
   final bool isDark;
+  final double remainingBalance;
   final double totalEarnings;
   final double cashback;
   final double affiliate;
   final double referral;
   final bool hasShopped;
+  final VoidCallback onWithdrawTap;
   final VoidCallback onInfoTap;
 
   const _AllTimeEarningsCard({
     required this.isDark,
+    required this.remainingBalance,
     required this.totalEarnings,
     required this.cashback,
     required this.affiliate,
     required this.referral,
     required this.hasShopped,
+    required this.onWithdrawTap,
     required this.onInfoTap,
   });
 
   @override
   Widget build(BuildContext context) {
+    final cardBg = isDark ? AppColors.darkCard : AppColors.cardBackground;
+    final cardBorder = isDark ? AppColors.darkBorder : AppColors.border;
+    final textPrimary = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+    final textSecondary = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final textMuted = isDark ? AppColors.darkTextMuted : AppColors.textMuted;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
+
     return Container(
       decoration: BoxDecoration(
-        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
+        color: cardBg,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
-        ),
+        border: Border.all(color: cardBorder),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.05),
+            blurRadius: 10,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Card Header Row
+          // =================================================================
+          // PART 1: REMAINING BALANCE (WITHDRAWABLE CASH) + WITHDRAW BUTTON
+          // =================================================================
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                colors: isDark
+                    ? [const Color(0xFF25203F), const Color(0xFF1E1A33)]
+                    : [const Color(0xFFF3F6FE), const Color(0xFFE8EEFD)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: const BorderRadius.vertical(
+                top: Radius.circular(AppDimensions.radiusCard),
+              ),
+              border: Border(
+                bottom: BorderSide(
+                  color: isDark ? AppColors.darkBorder : AppColors.border,
+                  width: 1,
+                ),
+              ),
+            ),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                // Left Column: Icon + Label + Amount + Helper
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Row(
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.all(4.5),
+                            decoration: BoxDecoration(
+                              color: (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
+                                  .withValues(alpha: 0.16),
+                              shape: BoxShape.circle,
+                            ),
+                            child: Icon(
+                              Icons.account_balance_wallet_rounded,
+                              size: 14,
+                              color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
+                            ),
+                          ),
+                          const SizedBox(width: 7),
+                          Flexible(
+                            child: Text(
+                              'Remaining Balance',
+                              style: GoogleFonts.plusJakartaSans(
+                                fontSize: 12.5,
+                                fontWeight: FontWeight.w700,
+                                color: textSecondary,
+                              ),
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      FittedBox(
+                        fit: BoxFit.scaleDown,
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          '₹${remainingBalance.toStringAsFixed(2)}',
+                          style: GoogleFonts.inter(
+                            fontSize: 26,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.5,
+                            color: textPrimary,
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                      Text(
+                        'Available to withdraw instantly',
+                        style: GoogleFonts.plusJakartaSans(
+                          fontSize: 10.5,
+                          fontWeight: FontWeight.w500,
+                          color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                const SizedBox(width: 12),
+
+                // Right Column: Tactile "Withdraw" Button
+                ElevatedButton.icon(
+                  onPressed: onWithdrawTap,
+                  icon: const Icon(
+                    Icons.payments_outlined,
+                    size: 15,
+                  ),
+                  label: Text(
+                    'Withdraw',
+                    style: GoogleFonts.plusJakartaSans(
+                      fontSize: 13,
+                      fontWeight: FontWeight.w700,
+                      letterSpacing: 0.2,
+                    ),
+                  ),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
+                    foregroundColor: Colors.white,
+                    elevation: 2,
+                    shadowColor: (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.35),
+                    padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          ),
+
+          // =================================================================
+          // PART 2: TOTAL LIFETIME EARNINGS (ALL-TIME ACCUMULATED)
+          // =================================================================
           Padding(
-            padding: const EdgeInsets.only(left: 18, right: 14, top: 18, bottom: 8),
+            padding: const EdgeInsets.only(left: 18, right: 14, top: 16, bottom: 6),
             child: Row(
               children: [
+                Container(
+                  padding: const EdgeInsets.all(4.5),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFD97706).withValues(alpha: 0.15),
+                    shape: BoxShape.circle,
+                  ),
+                  child: const Icon(
+                    Icons.emoji_events_rounded,
+                    size: 14,
+                    color: Color(0xFFD97706),
+                  ),
+                ),
+                const SizedBox(width: 8),
                 Text(
                   'Total Lifetime Earnings',
-                  style: AppTextStyles.cardSubtitle(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                  ).copyWith(fontWeight: FontWeight.w600),
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 13.5,
+                    fontWeight: FontWeight.w700,
+                    color: textSecondary,
+                  ),
                 ),
                 const SizedBox(width: 6),
                 InkWell(
@@ -411,8 +534,8 @@ class _AllTimeEarningsCard extends StatelessWidget {
                     padding: const EdgeInsets.all(4.0),
                     child: Icon(
                       Icons.info_outline_rounded,
-                      size: 16,
-                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                      size: 15,
+                      color: primaryAccent,
                     ),
                   ),
                 ),
@@ -420,24 +543,53 @@ class _AllTimeEarningsCard extends StatelessWidget {
             ),
           ),
 
-          // Main Amount Display (Fraunces Display Typography)
+          // Main Lifetime Amount
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 18),
-            child: Text(
-              '₹${totalEarnings.toStringAsFixed(2)}',
-              style: AppTextStyles.largeFinancialAmount(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-              ).copyWith(fontSize: 34),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.baseline,
+              textBaseline: TextBaseline.alphabetic,
+              children: [
+                Flexible(
+                  child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      '₹${totalEarnings.toStringAsFixed(2)}',
+                      style: AppTextStyles.largeFinancialAmount(
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                      ).copyWith(fontSize: 32),
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  'All-time Total',
+                  style: GoogleFonts.plusJakartaSans(
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                    color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                  ),
+                ),
+              ],
             ),
           ),
 
-          const SizedBox(height: 18),
+          const SizedBox(height: 14),
 
-          // Three Horizontally Arranged Breakdown Sections: Cashback, Affiliate, Referral
+          // =================================================================
+          // 3 HORIZONTALLY ARRANGED BREAKDOWN SECTIONS (Kept Intact)
+          // 1. Cashback | 2. Share & Earn (renamed from Affiliate) | 3. Referral
+          // =================================================================
           Container(
+            margin: const EdgeInsets.symmetric(horizontal: 14),
             padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 8),
             decoration: BoxDecoration(
-              color: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+              color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
+              borderRadius: BorderRadius.circular(14),
+              border: Border.all(
+                color: isDark ? AppColors.darkBorder : AppColors.border,
+              ),
             ),
             child: Row(
               children: [
@@ -452,21 +604,21 @@ class _AllTimeEarningsCard extends StatelessWidget {
                 ),
                 Container(
                   width: 1,
-                  height: 36,
+                  height: 38,
                   color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
                 Expanded(
                   child: _buildBreakdownItem(
-                    title: 'Affiliate',
+                    title: 'Share & Earn',
                     subtitle: 'Shared links',
                     amount: '₹${affiliate.toStringAsFixed(2)}',
-                    icon: Icons.link_rounded,
+                    icon: Icons.share_rounded,
                     iconColor: const Color(0xFF3B82F6),
                   ),
                 ),
                 Container(
                   width: 1,
-                  height: 36,
+                  height: 38,
                   color: isDark ? AppColors.darkBorder : AppColors.border,
                 ),
                 Expanded(
@@ -484,22 +636,22 @@ class _AllTimeEarningsCard extends StatelessWidget {
 
           // Footer Note
           Padding(
-            padding: const EdgeInsets.all(16),
+            padding: const EdgeInsets.fromLTRB(16, 12, 16, 16),
             child: Row(
               children: [
                 Icon(
                   Icons.verified_user_outlined,
                   size: 14,
-                  color: isDark ? AppColors.darkTextMuted : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkTextMuted : AppColors.accentBlue,
                 ),
                 const SizedBox(width: 8),
                 Expanded(
                   child: Text(
                     hasShopped
                         ? '100% Guaranteed Payouts: Cashback tracks within 72h • Referral credits on friend\'s 1st order.'
-                        : 'Tap the (i) icon above to learn how Cashback, Affiliate links, and Referral bonus are credited.',
+                        : 'Tap the (i) icon above to learn how Cashback, Share & Earn, and Referral bonus are credited.',
                     style: AppTextStyles.smallDescription(
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                      color: isDark ? AppColors.darkTextSecondary : textMuted,
                     ),
                   ),
                 ),
@@ -525,21 +677,28 @@ class _AllTimeEarningsCard extends StatelessWidget {
           children: [
             Icon(icon, size: 13, color: iconColor),
             const SizedBox(width: 4),
-            Text(
-              title,
-              style: AppTextStyles.smallLabel(
-                color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-              ).copyWith(fontWeight: FontWeight.w700),
+            Flexible(
+              child: Text(
+                title,
+                style: AppTextStyles.smallLabel(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                ).copyWith(fontWeight: FontWeight.w700),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+              ),
             ),
           ],
         ),
         const SizedBox(height: 5),
-        Text(
-          amount,
-          style: GoogleFonts.inter(
-            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-            fontSize: 15,
-            fontWeight: FontWeight.w700,
+        FittedBox(
+          fit: BoxFit.scaleDown,
+          child: Text(
+            amount,
+            style: GoogleFonts.inter(
+              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+              fontSize: 15,
+              fontWeight: FontWeight.w700,
+            ),
           ),
         ),
         const SizedBox(height: 2),
@@ -551,6 +710,8 @@ class _AllTimeEarningsCard extends StatelessWidget {
             fontWeight: FontWeight.w500,
           ),
           textAlign: TextAlign.center,
+          maxLines: 1,
+          overflow: TextOverflow.ellipsis,
         ),
       ],
     );
@@ -601,7 +762,7 @@ class _WalletActivitySection extends StatelessWidget {
                 Icon(
                   Icons.receipt_long_rounded,
                   size: 18,
-                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                 ),
                 const SizedBox(width: 8),
                 Text(
@@ -609,7 +770,7 @@ class _WalletActivitySection extends StatelessWidget {
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                   ),
                 ),
               ],
@@ -628,9 +789,11 @@ class _WalletActivitySection extends StatelessWidget {
                   const SizedBox(width: 6),
                   _buildFilterChip('CASHBACK', '🛍️ Cashback'),
                   const SizedBox(width: 6),
-                  _buildFilterChip('AFFILIATE', '🔗 Affiliate'),
+                  _buildFilterChip('AFFILIATE', '🔗 Share & Earn'),
                   const SizedBox(width: 6),
                   _buildFilterChip('REFERRAL', '👥 Referral'),
+                  const SizedBox(width: 6),
+                  _buildFilterChip('WITHDRAWAL', '💸 Withdrawals'),
                 ],
               ),
             ),
@@ -659,7 +822,7 @@ class _WalletActivitySection extends StatelessWidget {
                     ),
                     const SizedBox(height: 4),
                     Text(
-                      'Activity for $selectedFilter will appear here.',
+                      'Activity for $selectedFilter will appear here from the database.',
                       style: AppTextStyles.smallDescription(
                         color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
                       ),
@@ -701,12 +864,12 @@ class _WalletActivitySection extends StatelessWidget {
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
         decoration: BoxDecoration(
           color: isSelected
-              ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
-              : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
+              ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
+              : (isDark ? AppColors.darkSurface : AppColors.surfaceSubtle),
           borderRadius: BorderRadius.circular(20),
           border: Border.all(
             color: isSelected
-                ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                 : (isDark ? AppColors.darkBorder : AppColors.border),
           ),
         ),
@@ -724,40 +887,67 @@ class _WalletActivitySection extends StatelessWidget {
     );
   }
 
+  String _formatTxDate(dynamic raw) {
+    if (raw == null) return '';
+    try {
+      final dt = DateTime.tryParse(raw.toString())?.toLocal();
+      if (dt == null) return '';
+      final months = ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'];
+      final hour = dt.hour == 0 ? 12 : (dt.hour > 12 ? dt.hour - 12 : dt.hour);
+      final period = dt.hour >= 12 ? 'PM' : 'AM';
+      final minute = dt.minute.toString().padLeft(2, '0');
+      return '${dt.day} ${months[dt.month - 1]} ${dt.year} • $hour:$minute $period';
+    } catch (_) {
+      return '';
+    }
+  }
+
   Widget _buildTransactionItem(dynamic tx) {
     final type = (tx['type'] ?? 'CASHBACK').toString().toUpperCase();
     final status = (tx['status'] ?? 'CONFIRMED').toString().toUpperCase();
     final description = tx['description'] ?? 'Earning credited';
     final amount = double.tryParse(tx['amount']?.toString() ?? '0') ?? 0.0;
+    final dateString = _formatTxDate(tx['createdAt'] ?? tx['created_at']);
+
+    final isWithdrawal = type.contains('WITHDRAW') || amount < 0;
+    final isBonus = type.contains('BONUS') || type.contains('SIGNUP');
+    final isAffiliate = type.contains('AFFILIATE');
+    final isReferral = type.contains('REFERRAL');
 
     IconData icon;
     Color iconColor;
     Color iconBg;
     String streamBadge;
 
-    switch (type) {
-      case 'AFFILIATE':
-        icon = Icons.link_rounded;
-        iconColor = const Color(0xFF2563EB);
-        iconBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFDBEAFE);
-        streamBadge = 'AFFILIATE';
-        break;
-      case 'REFERRAL':
-        icon = Icons.people_alt_rounded;
-        iconColor = const Color(0xFF059669);
-        iconBg = isDark ? const Color(0xFF064E3B) : const Color(0xFFD1FAE5);
-        streamBadge = 'REFERRAL';
-        break;
-      case 'CASHBACK':
-      default:
-        icon = Icons.shopping_bag_rounded;
-        iconColor = const Color(0xFFD97706);
-        iconBg = isDark ? const Color(0xFF451A03) : const Color(0xFFFEF3C7);
-        streamBadge = 'CASHBACK';
-        break;
+    if (isWithdrawal) {
+      icon = Icons.outbox_rounded;
+      iconColor = const Color(0xFFEF4444);
+      iconBg = isDark ? const Color(0xFF450A0A) : const Color(0xFFFEE2E2);
+      streamBadge = 'WITHDRAWAL';
+    } else if (isBonus) {
+      icon = Icons.card_giftcard_rounded;
+      iconColor = const Color(0xFF8B5CF6);
+      iconBg = isDark ? const Color(0xFF2E1065) : const Color(0xFFEDE9FE);
+      streamBadge = 'WELCOME BONUS';
+    } else if (isAffiliate) {
+      icon = Icons.link_rounded;
+      iconColor = const Color(0xFF2563EB);
+      iconBg = isDark ? const Color(0xFF1E293B) : const Color(0xFFDBEAFE);
+      streamBadge = 'SHARE & EARN';
+    } else if (isReferral) {
+      icon = Icons.people_alt_rounded;
+      iconColor = const Color(0xFF059669);
+      iconBg = isDark ? const Color(0xFF064E3B) : const Color(0xFFD1FAE5);
+      streamBadge = 'REFERRAL';
+    } else {
+      icon = Icons.shopping_bag_rounded;
+      iconColor = const Color(0xFFD97706);
+      iconBg = isDark ? const Color(0xFF451A03) : const Color(0xFFFEF3C7);
+      streamBadge = 'STORE CASHBACK';
     }
 
     final isConfirmed = status == 'CONFIRMED';
+    final isPending = status == 'PENDING';
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 12),
@@ -765,13 +955,13 @@ class _WalletActivitySection extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           Container(
-            width: 38,
-            height: 38,
+            width: 40,
+            height: 40,
             decoration: BoxDecoration(
               color: iconBg,
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, size: 19, color: iconColor),
+            child: Icon(icon, size: 20, color: iconColor),
           ),
           const SizedBox(width: 12),
           Expanded(
@@ -801,41 +991,60 @@ class _WalletActivitySection extends StatelessWidget {
                       decoration: BoxDecoration(
                         color: isConfirmed
                             ? (isDark ? AppColors.darkSuccess.withValues(alpha: 0.15) : AppColors.successBackground)
-                            : (isDark ? AppColors.darkWarning.withValues(alpha: 0.15) : AppColors.pendingBackground),
+                            : (isPending
+                                ? (isDark ? AppColors.darkWarning.withValues(alpha: 0.15) : AppColors.pendingBackground)
+                                : Colors.red.withValues(alpha: 0.15)),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
-                        isConfirmed ? 'CONFIRMED' : 'PENDING',
+                        status,
                         style: TextStyle(
                           fontSize: 8.5,
                           fontWeight: FontWeight.w700,
                           color: isConfirmed
                               ? (isDark ? AppColors.darkSuccess : AppColors.success)
-                              : (isDark ? AppColors.darkWarning : AppColors.pending),
+                              : (isPending
+                                  ? (isDark ? AppColors.darkWarning : AppColors.pending)
+                                  : Colors.red),
                         ),
                       ),
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
+                const SizedBox(height: 5),
                 Text(
                   description,
                   style: AppTextStyles.body(
                     color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                  ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w500),
+                  ).copyWith(fontSize: 12.5, fontWeight: FontWeight.w600),
                   maxLines: 2,
                   overflow: TextOverflow.ellipsis,
                 ),
+                if (dateString.isNotEmpty) ...[
+                  const SizedBox(height: 3),
+                  Text(
+                    dateString,
+                    style: TextStyle(
+                      fontSize: 10,
+                      fontWeight: FontWeight.w500,
+                      color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
+                    ),
+                  ),
+                ],
               ],
             ),
           ),
           const SizedBox(width: 8),
           Text(
-            '+₹${amount.toStringAsFixed(2)}',
+            isWithdrawal
+                ? '-₹${amount.abs().toStringAsFixed(2)}'
+                : '+₹${amount.toStringAsFixed(2)}',
             style: GoogleFonts.inter(
-              color: isConfirmed
-                  ? (isDark ? AppColors.darkSuccess : AppColors.success)
-                  : (isDark ? AppColors.darkWarning : AppColors.pending),
+              color: isWithdrawal
+                  ? const Color(0xFFEF4444)
+                  : (isConfirmed
+                      ? (isDark ? AppColors.darkSuccess : AppColors.success)
+                      : (isDark ? AppColors.darkWarning : AppColors.pending)),
               fontSize: 15,
               fontWeight: FontWeight.w700,
             ),
@@ -846,104 +1055,6 @@ class _WalletActivitySection extends StatelessWidget {
   }
 }
 
-// ==========================================
-// 2. CONFIRMED EARNINGS CARD
-// ==========================================
-class _ConfirmedEarningsCard extends StatelessWidget {
-  final bool isDark;
-  final double confirmedAmount;
-  final VoidCallback onWithdrawTap;
-
-  const _ConfirmedEarningsCard({
-    required this.isDark,
-    required this.confirmedAmount,
-    required this.onWithdrawTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: isDark ? AppColors.darkCard : AppColors.cardBackground,
-        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        border: Border.all(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        children: [
-          // Left Icon & Details
-          Container(
-            width: 42,
-            height: 42,
-            decoration: BoxDecoration(
-              color: isDark
-                  ? AppColors.darkSuccess.withValues(alpha: 0.22)
-                  : AppColors.successBackground,
-              shape: BoxShape.circle,
-            ),
-            child: Icon(
-              Icons.check_circle_rounded,
-              color: isDark ? AppColors.darkSuccess : AppColors.success,
-              size: 24,
-            ),
-          ),
-          const SizedBox(width: 14),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  'Confirmed Balance',
-                  style: AppTextStyles.cardSubtitle(
-                    color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                  ).copyWith(fontWeight: FontWeight.w600),
-                ),
-                const SizedBox(height: 2),
-                Text(
-                  '₹${confirmedAmount.toStringAsFixed(2)}',
-                  style: GoogleFonts.inter(
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
-                    fontSize: 20,
-                    fontWeight: FontWeight.w700,
-                  ),
-                ),
-              ],
-            ),
-          ),
-
-          // Withdraw Button
-          ElevatedButton(
-            onPressed: onWithdrawTap,
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBrown,
-              foregroundColor: AppColors.cardBackground,
-              padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
-              elevation: 2,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
-              ),
-            ),
-            child: Text(
-              'Withdraw',
-              style: AppTextStyles.buttonText(
-                color: AppColors.cardBackground,
-              ),
-            ),
-          ),
-        ],
-      ),
-    );
-  }
-}
 
 // ==========================================
 // 3. PENDING EARNINGS CARD
@@ -1033,7 +1144,7 @@ class _PendingEarningsCard extends StatelessWidget {
             child: Text(
               'Know Why?',
               style: AppTextStyles.buttonText(
-                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
               ),
             ),
           ),
@@ -1060,10 +1171,10 @@ class _NewUserShoppingNudge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF2A201A) : const Color(0xFFF9F5EF),
+        color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         border: Border.all(
-          color: isDark ? const Color(0xFF4A3A2E) : const Color(0xFFE5DCD0),
+          color: isDark ? AppColors.darkBorder : AppColors.border,
           width: 1.2,
         ),
       ),
@@ -1075,12 +1186,12 @@ class _NewUserShoppingNudge extends StatelessWidget {
               Container(
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF3D2C20) : const Color(0xFFEFE6D9),
+                  color: (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.12),
                   shape: BoxShape.circle,
                 ),
                 child: Icon(
                   Icons.shopping_bag_outlined,
-                  color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                   size: 20,
                 ),
               ),
@@ -1091,7 +1202,7 @@ class _NewUserShoppingNudge extends StatelessWidget {
                   style: GoogleFonts.inter(
                     fontSize: 15,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                   ),
                 ),
               ),
@@ -1112,7 +1223,7 @@ class _NewUserShoppingNudge extends StatelessWidget {
               icon: const Icon(Icons.storefront_rounded, size: 16),
               label: const Text('Explore Stores & Start Shopping'),
               style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.primaryBrown,
+                backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                 foregroundColor: Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shape: RoundedRectangleBorder(
@@ -1165,7 +1276,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.receipt_long_rounded,
-                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                       size: 20,
                     ),
                     const SizedBox(width: 14),
@@ -1206,7 +1317,7 @@ class _AdditionalOptionsCard extends StatelessWidget {
                   children: [
                     Icon(
                       Icons.help_outline_rounded,
-                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                       size: 20,
                     ),
                     const SizedBox(width: 14),

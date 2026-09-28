@@ -19,6 +19,8 @@ class MyReferralsScreen extends StatefulWidget {
 class _MyReferralsScreenState extends State<MyReferralsScreen> {
   bool _isLoading = true;
   int _totalReferred = 0;
+  int _purchasedUsersCount = 0;
+  int _pendingPurchaseCount = 0;
   double _referralEarnings = 0.0;
   List<Map<String, dynamic>> _referredUsers = [];
   List<Map<String, dynamic>> _transactions = [];
@@ -37,7 +39,13 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
         setState(() {
           _totalReferred = res['totalReferred'] is int
               ? res['totalReferred'] as int
-              : int.tryParse(res['totalReferred'].toString()) ?? 0;
+              : int.tryParse(res['totalReferred']?.toString() ?? '0') ?? 0;
+          _purchasedUsersCount = res['purchasedUsersCount'] is int
+              ? res['purchasedUsersCount'] as int
+              : int.tryParse(res['purchasedUsersCount']?.toString() ?? '0') ?? 0;
+          _pendingPurchaseCount = res['pendingPurchaseCount'] is int
+              ? res['pendingPurchaseCount'] as int
+              : int.tryParse(res['pendingPurchaseCount']?.toString() ?? '0') ?? 0;
           _referralEarnings = res['referralEarnings'] != null
               ? double.tryParse(res['referralEarnings'].toString()) ?? 0.0
               : (res['totalCoins'] != null
@@ -129,7 +137,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
-                // Referral Stats Summary Cards
+                // Referral Stats Summary Cards (3 Columns: Total, Purchased, Earnings)
                 Row(
                   children: [
                     Expanded(
@@ -141,7 +149,17 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                         subtext: 'Friends joined',
                       ),
                     ),
-                    const SizedBox(width: 12),
+                    const SizedBox(width: 8),
+                    Expanded(
+                      child: _buildStatCard(
+                        isDark: isDark,
+                        icon: Icons.shopping_bag_rounded,
+                        title: 'Purchased',
+                        value: _isLoading ? '...' : '$_purchasedUsersCount',
+                        subtext: '$_pendingPurchaseCount pending',
+                      ),
+                    ),
+                    const SizedBox(width: 8),
                     Expanded(
                       child: _buildStatCard(
                         isDark: isDark,
@@ -150,7 +168,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                         value: _isLoading
                             ? '...'
                             : '₹${(userProvider.referralEarnings > 0 ? userProvider.referralEarnings : _referralEarnings).toStringAsFixed(0)}',
-                        subtext: '₹20 / invite',
+                        subtext: '₹20 / order',
                       ),
                     ),
                   ],
@@ -410,6 +428,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                       final item = _referredUsers[index];
                       final name = item['name'] as String? ?? 'Friend';
                       final phone = item['phoneNumber'] as String? ?? '';
+                      final hasShopped = item['hasShopped'] == true;
 
                       return Container(
                         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -423,14 +442,18 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                         child: Row(
                           children: [
                             CircleAvatar(
-                              backgroundColor: isDark
-                                  ? AppColors.darkPrimary.withValues(alpha: 0.2)
-                                  : AppColors.beigeSurface,
+                              backgroundColor: hasShopped
+                                  ? const Color(0xFF10B981).withValues(alpha: 0.15)
+                                  : (isDark
+                                      ? AppColors.darkPrimary.withValues(alpha: 0.2)
+                                      : AppColors.beigeSurface),
                               child: Text(
                                 name.isNotEmpty ? name[0].toUpperCase() : 'U',
                                 style: GoogleFonts.inter(
                                   fontWeight: FontWeight.bold,
-                                  color: isDark ? AppColors.darkPrimary : AppColors.deepBrown,
+                                  color: hasShopped
+                                      ? const Color(0xFF10B981)
+                                      : (isDark ? AppColors.darkPrimary : AppColors.deepBrown),
                                 ),
                               ),
                             ),
@@ -456,22 +479,34 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                               ),
                             ),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
                               decoration: BoxDecoration(
-                                color: Colors.green.withValues(alpha: 0.12),
+                                color: hasShopped
+                                    ? const Color(0xFF10B981).withValues(alpha: 0.12)
+                                    : const Color(0xFFF59E0B).withValues(alpha: 0.12),
                                 borderRadius: BorderRadius.circular(8),
+                                border: Border.all(
+                                  color: hasShopped
+                                      ? const Color(0xFF10B981).withValues(alpha: 0.3)
+                                      : const Color(0xFFF59E0B).withValues(alpha: 0.3),
+                                  width: 0.8,
+                                ),
                               ),
-                              child: const Row(
+                              child: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  Icon(Icons.monetization_on, color: Colors.green, size: 14),
-                                  SizedBox(width: 4),
+                                  Icon(
+                                    hasShopped ? Icons.check_circle_rounded : Icons.hourglass_top_rounded,
+                                    color: hasShopped ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
+                                    size: 13,
+                                  ),
+                                  const SizedBox(width: 4),
                                   Text(
-                                    '+50',
+                                    hasShopped ? 'Purchased (+₹20)' : 'Pending Order',
                                     style: TextStyle(
-                                      color: Colors.green,
+                                      color: hasShopped ? const Color(0xFF10B981) : const Color(0xFFF59E0B),
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 12,
+                                      fontSize: 11.5,
                                     ),
                                   ),
                                 ],

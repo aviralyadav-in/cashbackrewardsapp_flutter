@@ -22,8 +22,8 @@ class AuthService {
   static String? _cachedBaseUrl;
 
   /// Default Wi-Fi / Local Area Network IP of the host PC.
-  static const String defaultLocalIp = '192.168.1.61';
-  static const String secondaryLocalIp = '192.168.29.221';
+  static const String defaultLocalIp = '192.168.29.221';
+  static const String secondaryLocalIp = '192.168.1.61';
   static const int defaultPort = 5000;
 
   /// Fast asynchronous probe to select the best reachable backend endpoint.
@@ -424,6 +424,7 @@ class AuthService {
     String? name,
     String? email,
     String? phoneNumber,
+    String? avatarUrl,
   }) async {
     if (userId.trim().isEmpty) return null;
 
@@ -437,6 +438,7 @@ class AuthService {
               if (name != null) 'name': name.trim(),
               if (email != null) 'email': email.trim().toLowerCase(),
               if (phoneNumber != null) 'phoneNumber': phoneNumber.trim(),
+              if (avatarUrl != null) 'avatarUrl': avatarUrl.trim(),
             }),
           )
           .timeout(const Duration(seconds: 4));
@@ -454,6 +456,57 @@ class AuthService {
     }
     return null;
   }
+
+  /// Uploads a profile photo via POST /api/users/:id/upload-avatar (multipart).
+  /// Accepts pre-read [imageBytes] so dart:io is not required by this service.
+  /// Returns the public URL string of the saved avatar, or null on failure.
+  Future<String?> uploadAvatarImage({
+    required String userId,
+    required List<int> imageBytes,
+    required String mimeType,
+    required String fileName,
+  }) async {
+    if (userId.trim().isEmpty || imageBytes.isEmpty) return null;
+
+    try {
+      final host = await getWorkingBaseUrl();
+      final uri = Uri.parse('$host/users/${userId.trim()}/upload-avatar');
+
+      final request = http.MultipartRequest('POST', uri);
+      request.files.add(
+        http.MultipartFile.fromBytes(
+          'avatar',
+          imageBytes,
+          filename: fileName,
+          contentType: _parseMimeType(mimeType),
+        ),
+      );
+
+      final streamedResponse =
+          await request.send().timeout(const Duration(seconds: 15));
+      final response = await http.Response.fromStream(streamedResponse);
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        if (data['success'] == true && data['avatarUrl'] != null) {
+          return data['avatarUrl'] as String;
+        }
+      }
+      debugPrint('Avatar upload failed (${response.statusCode}): ${response.body}');
+    } catch (e) {
+      debugPrint('Error uploading avatar image: $e');
+    }
+    return null;
+  }
+
+  static http.MediaType _parseMimeType(String mime) {
+    final parts = mime.split('/');
+    return http.MediaType(
+      parts.isNotEmpty ? parts[0] : 'image',
+      parts.length > 1 ? parts[1] : 'jpeg',
+    );
+  }
+
 
   /// Fetches referral details & friend list via GET /api/users/:id/referrals
   Future<Map<String, dynamic>?> getUserReferrals(String userId) async {
@@ -491,7 +544,7 @@ class AuthService {
             Uri.parse('$host/users/${userId.trim()}/wallet'),
             headers: {'Content-Type': 'application/json'},
           )
-          .timeout(const Duration(seconds: 3));
+          .timeout(const Duration(seconds: 8));
 
       if (response.statusCode == 200) {
         final data = jsonDecode(response.body) as Map<String, dynamic>;
@@ -501,6 +554,31 @@ class AuthService {
       }
     } catch (e) {
       debugPrint('Error fetching user wallet: $e');
+    }
+    return null;
+  }
+
+  /// Fetches live spending & cashback graph analytics via GET /api/users/:id/spending-analytics
+  Future<Map<String, dynamic>?> getSpendingAnalytics(String userId) async {
+    if (userId.trim().isEmpty) return null;
+
+    try {
+      final host = await getWorkingBaseUrl();
+      final response = await http
+          .get(
+            Uri.parse('$host/users/${userId.trim()}/spending-analytics'),
+            headers: {'Content-Type': 'application/json'},
+          )
+          .timeout(const Duration(seconds: 8));
+
+      if (response.statusCode == 200) {
+        final data = jsonDecode(response.body) as Map<String, dynamic>;
+        if (data['success'] == true && data['analytics'] != null) {
+          return data['analytics'] as Map<String, dynamic>;
+        }
+      }
+    } catch (e) {
+      debugPrint('Error fetching spending analytics: $e');
     }
     return null;
   }

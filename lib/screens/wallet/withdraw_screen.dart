@@ -181,7 +181,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Text(
                 'Withdrawal Request Placed!',
                 style: AppTextStyles.cardTitle(
-                  color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                 ).copyWith(fontSize: 18),
               ),
               const SizedBox(height: 8),
@@ -200,8 +200,8 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     Navigator.of(ctx).pop();
                   },
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: AppColors.primaryBrown,
-                    foregroundColor: AppColors.cardBackground,
+                    backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -209,7 +209,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ),
                   child: Text(
                     'Done',
-                    style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 15),
+                    style: AppTextStyles.buttonText(color: Colors.white).copyWith(fontSize: 15),
                   ),
                 ),
               ),
@@ -240,12 +240,12 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
         backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
-        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+        foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.navyDark,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -253,7 +253,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
         title: Text(
           'Withdraw Earnings',
           style: AppTextStyles.screenHeading(
-            color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
           ),
         ),
         centerTitle: true,
@@ -269,15 +269,17 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               Container(
                 padding: const EdgeInsets.all(20),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [AppColors.primaryBrown, AppColors.deepBrown],
+                  gradient: LinearGradient(
+                    colors: isDark
+                        ? const [Color(0xFF25203F), Color(0xFF1E1A33)]
+                        : const [AppColors.navyDark, Color(0xFF3F3765)],
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                   ),
                   borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   boxShadow: [
                     BoxShadow(
-                      color: AppColors.primaryBrown.withValues(alpha: 0.3),
+                      color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.12),
                       blurRadius: 10,
                       offset: const Offset(0, 4),
                     ),
@@ -375,7 +377,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                       style: GoogleFonts.inter(
                         fontSize: 22,
                         fontWeight: FontWeight.w700,
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                       ),
                       decoration: InputDecoration(
                         prefixIcon: Padding(
@@ -385,7 +387,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                             style: GoogleFonts.inter(
                               fontSize: 22,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                              color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                             ),
                           ),
                         ),
@@ -400,7 +402,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         filled: true,
                         fillColor: isDark
                             ? AppColors.darkSurface
-                            : AppColors.beigeSurface,
+                            : AppColors.surfaceSubtle,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,
@@ -489,7 +491,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                     color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
                   ),
                   filled: true,
-                  fillColor: isDark ? AppColors.darkSurface : AppColors.beigeSurface,
+                  fillColor: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(12),
                     borderSide: BorderSide(
@@ -513,10 +515,10 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
               ElevatedButton(
                 onPressed: _isSubmitting ? null : _handleWithdrawalSubmit,
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBrown,
-                  foregroundColor: AppColors.cardBackground,
-                  disabledBackgroundColor: AppColors.primaryBrown.withValues(alpha: 0.6),
-                  disabledForegroundColor: AppColors.cardBackground.withValues(alpha: 0.7),
+                  backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
+                  foregroundColor: Colors.white,
+                  disabledBackgroundColor: (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.6),
+                  disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -537,7 +539,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         children: [
                           Text(
                             'Proceed to Withdraw',
-                            style: AppTextStyles.buttonText(color: AppColors.cardBackground).copyWith(fontSize: 14),
+                            style: AppTextStyles.buttonText(color: Colors.white).copyWith(fontSize: 14),
                           ),
                           const SizedBox(width: 8),
                           const Icon(Icons.arrow_forward_rounded, size: 18),
@@ -561,7 +563,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   Text(
                     '${_recentWithdrawals.length} Records',
                     style: AppTextStyles.smallLabel(
-                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
                     ),
                   ),
                 ],
@@ -625,7 +627,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                             style: GoogleFonts.inter(
                               fontSize: 14.5,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                             ),
                           ),
                           const SizedBox(height: 2),
@@ -666,12 +668,12 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           padding: const EdgeInsets.symmetric(vertical: 8),
           decoration: BoxDecoration(
             color: isSelected
-                ? AppColors.primaryBrown
-                : (isDark ? AppColors.darkSurface : AppColors.beigeSurface),
+                ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
+                : (isDark ? AppColors.darkSurface : AppColors.surfaceSubtle),
             borderRadius: BorderRadius.circular(10),
             border: Border.all(
               color: isSelected
-                  ? AppColors.primaryBrown
+                  ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                   : (isDark
                       ? AppColors.darkBorder
                       : AppColors.border),
@@ -716,7 +718,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
           border: Border.all(
             color: isSelected
-                ? AppColors.primaryBrown
+                ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                 : (isDark
                     ? AppColors.darkBorder
                     : AppColors.border),
@@ -725,7 +727,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
           boxShadow: [
             BoxShadow(
               color: isSelected
-                  ? AppColors.primaryBrown.withValues(alpha: 0.15)
+                  ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.15)
                   : Colors.black.withValues(alpha: isDark ? 0.2 : 0.03),
               blurRadius: 6,
               offset: const Offset(0, 2),
@@ -737,11 +739,11 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
             Container(
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
-                color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                color: (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                     .withValues(alpha: isDark ? 0.18 : 0.10),
                 borderRadius: BorderRadius.circular(12),
               ),
-              child: Icon(icon, size: 22, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
+              child: Icon(icon, size: 22, color: isDark ? AppColors.darkPrimary : AppColors.accentBlue),
             ),
             const SizedBox(width: 12),
             Expanded(
@@ -790,7 +792,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ? Icons.radio_button_checked_rounded
                   : Icons.radio_button_off_rounded,
               color: isSelected
-                  ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                  ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                   : (isDark ? AppColors.darkTextSecondary : AppColors.textMuted),
               size: 20,
             ),

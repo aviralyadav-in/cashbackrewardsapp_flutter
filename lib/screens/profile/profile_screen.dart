@@ -170,8 +170,10 @@ class _ProfileScreenState extends State<ProfileScreen> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Row(
-                          crossAxisAlignment: CrossAxisAlignment.start,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
+                            _buildUserAvatar(userProvider.avatarUrl, isDark),
+                            const SizedBox(width: 14),
                             Expanded(
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -437,18 +439,21 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _ProfileOptionTile(
                     icon: Icons.account_balance_wallet_outlined,
                     title: 'My Earnings',
+                    subtitle: 'Lifetime: ₹${(userProvider.confirmedCashback + userProvider.affiliateEarnings + userProvider.referralEarnings).toStringAsFixed(2)}',
                     isDark: isDark,
                     onTap: () => Navigator.of(context).pushNamed(MyEarningsScreen.routeName),
                   ),
                   _ProfileOptionTile(
                     icon: Icons.payment_outlined,
                     title: 'Payments',
+                    subtitle: 'Withdrawable: ₹${userProvider.walletBalance.toStringAsFixed(2)}',
                     isDark: isDark,
                     onTap: () => Navigator.of(context).pushNamed(PaymentsScreen.routeName),
                   ),
                   _ProfileOptionTile(
                     icon: Icons.history_rounded,
                     title: 'Payments History',
+                    subtitle: 'Payout status & transfer receipts',
                     isDark: isDark,
                     onTap: () => Navigator.of(context).pushNamed(PaymentsHistoryScreen.routeName),
                   ),
@@ -470,12 +475,18 @@ class _ProfileScreenState extends State<ProfileScreen> {
                   _ProfileOptionTile(
                     icon: Icons.card_giftcard_rounded,
                     title: 'Refer & Earn',
+                    subtitle: userProvider.totalReferred > 0
+                        ? '${userProvider.totalReferred} referred • ${userProvider.purchasedUsersCount} shopped'
+                        : 'Earn ₹20 per friend who shops',
                     isDark: isDark,
                     onTap: () => Navigator.of(context).pushNamed(ReferEarnScreen.routeName),
                   ),
                   _ProfileOptionTile(
                     icon: Icons.people_outline_rounded,
                     title: 'My Referrals',
+                    subtitle: userProvider.totalReferred > 0
+                        ? '₹${userProvider.referralEarnings.toStringAsFixed(0)} earned from ${userProvider.purchasedUsersCount} orders'
+                        : null,
                     isDark: isDark,
                     onTap: () => Navigator.of(context).pushNamed(MyReferralsScreen.routeName),
                   ),
@@ -575,6 +586,47 @@ class _ProfileScreenState extends State<ProfileScreen> {
       ),
     );
   }
+
+  Widget _buildUserAvatar(String? avatarUrl, bool isDark) {
+    final effectiveUrl = (avatarUrl != null && avatarUrl.trim().isNotEmpty)
+        ? avatarUrl.trim()
+        : 'assets/avatars/avatar.png';
+
+    final ImageProvider imageProvider =
+        (effectiveUrl.startsWith('http://') || effectiveUrl.startsWith('https://'))
+            ? NetworkImage(effectiveUrl)
+            : AssetImage(effectiveUrl) as ImageProvider;
+
+    return GestureDetector(
+      onTap: () => Navigator.of(context).pushNamed(AccountSettingsScreen.routeName),
+      child: Container(
+        width: 54,
+        height: 54,
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          border: Border.all(
+            color: isDark
+                ? AppColors.darkPrimary.withValues(alpha: 0.6)
+                : AppColors.accentBlue.withValues(alpha: 0.45),
+            width: 2,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black.withValues(alpha: isDark ? 0.35 : 0.08),
+              blurRadius: 6,
+              offset: const Offset(0, 2),
+            ),
+          ],
+        ),
+        child: CircleAvatar(
+          radius: 25,
+          backgroundColor: isDark ? const Color(0xFF1E1A33) : const Color(0xFFF3F6FE),
+          backgroundImage: imageProvider,
+          onBackgroundImageError: (error, stackTrace) {},
+        ),
+      ),
+    );
+  }
 }
 
 // ==========================================
@@ -619,6 +671,7 @@ class _ProfileSectionHeader extends StatelessWidget {
 class _ProfileOptionTile extends StatelessWidget {
   final IconData icon;
   final String title;
+  final String? subtitle;
   final bool isDark;
   final VoidCallback onTap;
   final bool isDestructive;
@@ -626,6 +679,7 @@ class _ProfileOptionTile extends StatelessWidget {
   const _ProfileOptionTile({
     required this.icon,
     required this.title,
+    this.subtitle,
     required this.isDark,
     required this.onTap,
     this.isDestructive = false,
@@ -648,7 +702,7 @@ class _ProfileOptionTile extends StatelessWidget {
           onTap: onTap,
           borderRadius: BorderRadius.circular(14),
           child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 13),
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
             child: Row(
               children: [
                 Icon(
@@ -660,13 +714,28 @@ class _ProfileOptionTile extends StatelessWidget {
                 ),
                 const SizedBox(width: 14),
                 Expanded(
-                  child: Text(
-                    title,
-                    style: AppTextStyles.cardTitle(
-                      color: isDestructive
-                          ? AppColors.error
-                          : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
-                    ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        title,
+                        style: AppTextStyles.cardTitle(
+                          color: isDestructive
+                              ? AppColors.error
+                              : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
+                        ),
+                      ),
+                      if (subtitle != null && subtitle!.isNotEmpty) ...[
+                        const SizedBox(height: 2),
+                        Text(
+                          subtitle!,
+                          style: AppTextStyles.caption(
+                            color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          ).copyWith(fontSize: 11.5),
+                        ),
+                      ],
+                    ],
                   ),
                 ),
                 Icon(
