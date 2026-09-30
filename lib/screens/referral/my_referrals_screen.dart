@@ -144,6 +144,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                       child: _buildStatCard(
                         isDark: isDark,
                         icon: Icons.people_alt_rounded,
+                        iconColor: const Color(0xFF3B82F6),
                         title: 'Total Referred',
                         value: _isLoading ? '...' : '$_totalReferred',
                         subtext: 'Friends joined',
@@ -154,6 +155,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                       child: _buildStatCard(
                         isDark: isDark,
                         icon: Icons.shopping_bag_rounded,
+                        iconColor: const Color(0xFF10B981),
                         title: 'Purchased',
                         value: _isLoading ? '...' : '$_purchasedUsersCount',
                         subtext: '$_pendingPurchaseCount pending',
@@ -164,6 +166,7 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                       child: _buildStatCard(
                         isDark: isDark,
                         icon: Icons.account_balance_wallet_rounded,
+                        iconColor: const Color(0xFFD97706),
                         title: 'Referral Cash',
                         value: _isLoading
                             ? '...'
@@ -255,18 +258,24 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            'YOUR REFERRAL CODE',
-                            style: GoogleFonts.inter(
-                              fontSize: 11,
-                              fontWeight: FontWeight.w800,
-                              letterSpacing: 0.8,
-                              color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          Expanded(
+                            child: Text(
+                              'YOUR REFERRAL CODE',
+                              maxLines: 1,
+                              overflow: TextOverflow.ellipsis,
+                              style: GoogleFonts.inter(
+                                fontSize: 11,
+                                fontWeight: FontWeight.w800,
+                                letterSpacing: 0.8,
+                                color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                              ),
                             ),
                           ),
+                          const SizedBox(width: 8),
                           GestureDetector(
                             onTap: () => _copyToClipboard(context, myCode, 'Referral code'),
                             child: Row(
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Icon(
                                   Icons.copy_rounded,
@@ -464,16 +473,20 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                                 children: [
                                   Text(
                                     name,
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
                                     style: AppTextStyles.cardTitle(
                                       color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                                    ),
+                                    ).copyWith(fontSize: 13.5),
                                   ),
                                   if (phone.isNotEmpty)
                                     Text(
                                       phone,
+                                      maxLines: 1,
+                                      overflow: TextOverflow.ellipsis,
                                       style: AppTextStyles.caption(
                                         color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-                                      ),
+                                      ).copyWith(fontSize: 11),
                                     ),
                                 ],
                               ),
@@ -559,6 +572,8 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
                             Expanded(
                               child: Text(
                                 desc,
+                                maxLines: 2,
+                                overflow: TextOverflow.ellipsis,
                                 style: AppTextStyles.body(
                                   color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
                                 ).copyWith(fontSize: 13),
@@ -594,9 +609,13 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
     required String title,
     required String value,
     required String subtext,
+    Color? iconColor,
   }) {
+    final effectiveIconColor = iconColor ?? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown);
+    final effectiveIconBg = effectiveIconColor.withValues(alpha: 0.12);
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 12),
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : AppColors.cardBackground,
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -613,34 +632,53 @@ class _MyReferralsScreenState extends State<MyReferralsScreen> {
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisSize: MainAxisSize.min,
         children: [
-          Row(
-            children: [
-              Icon(icon, size: 18, color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown),
-              const SizedBox(width: 6),
-              Text(
-                title,
-                style: AppTextStyles.caption(
-                  color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
-                ).copyWith(fontWeight: FontWeight.w600),
-              ),
-            ],
+          Container(
+            padding: const EdgeInsets.all(6),
+            decoration: BoxDecoration(
+              color: effectiveIconBg,
+              shape: BoxShape.circle,
+            ),
+            child: Icon(
+              icon,
+              size: 15,
+              color: effectiveIconColor,
+            ),
           ),
           const SizedBox(height: 8),
-          Text(
-            value,
-            style: GoogleFonts.inter(
-              fontSize: 22,
-              fontWeight: FontWeight.w700,
-              color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+          FittedBox(
+            fit: BoxFit.scaleDown,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              value,
+              style: GoogleFonts.inter(
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+                color: isDark ? AppColors.darkTextPrimary : AppColors.deepBrown,
+              ),
             ),
           ),
           const SizedBox(height: 2),
           Text(
+            title,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
+            style: AppTextStyles.caption(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+            ).copyWith(
+              fontWeight: FontWeight.w600,
+              fontSize: 11,
+            ),
+          ),
+          const SizedBox(height: 1),
+          Text(
             subtext,
+            maxLines: 1,
+            overflow: TextOverflow.ellipsis,
             style: AppTextStyles.smallLabel(
               color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
-            ),
+            ).copyWith(fontSize: 10),
           ),
         ],
       ),

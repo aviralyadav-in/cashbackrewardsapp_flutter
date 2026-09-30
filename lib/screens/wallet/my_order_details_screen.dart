@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 
+import '../../providers/home_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../services/affiliate_service.dart';
 import '../../theme/app_theme.dart';
@@ -84,6 +85,14 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
         setState(() {
           _orders = mapped;
         });
+
+        // Sync user orders into personalization engine for accurate recommendations
+        context.read<HomeProvider>().syncUserOrders(
+          remoteOrders.map((o) => {
+            'store_name': o.storeName,
+            'category': 'Shopping',
+          }).toList(),
+        );
       }
     } finally {
       if (mounted) {

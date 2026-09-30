@@ -4,6 +4,7 @@ import '../models/product.dart';
 import '../models/universal_search_models.dart';
 import '../services/recent_search_service.dart';
 import '../services/search_service.dart';
+import '../services/user_personalization_service.dart';
 
 enum SearchStatus { initial, loading, loaded, error }
 
@@ -98,10 +99,11 @@ class SearchProvider extends ChangeNotifier {
 
       status = SearchStatus.loaded;
 
-      // 3. Save to recent searches if requested
+      // 3. Save to recent searches & user personalization engine if requested
       if (saveToRecent && trimmedValue.length >= 2) {
         await _recentSearchService.addRecentSearch(trimmedValue);
         recentSearches = await _recentSearchService.getRecentSearches();
+        UserPersonalizationService().recordSearch(trimmedValue);
       }
     } catch (e) {
       debugPrint('Error searching products: $e');

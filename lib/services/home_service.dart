@@ -12,9 +12,12 @@ class HomeService {
 
   /// Fetches structured home discovery feed from Node.js backend
   /// (GET /api/home) with seamless offline fallback.
-  Future<HomeDataModel> fetchHomeData() async {
+  Future<HomeDataModel> fetchHomeData({String? userId}) async {
     try {
-      final uri = Uri.parse('${AuthService.baseUrl}/home');
+      final queryParam = (userId != null && userId.trim().isNotEmpty)
+          ? '?userId=${Uri.encodeComponent(userId.trim())}'
+          : '';
+      final uri = Uri.parse('${AuthService.baseUrl}/home$queryParam');
       final response = await _client.get(uri).timeout(
             const Duration(seconds: 3),
           );

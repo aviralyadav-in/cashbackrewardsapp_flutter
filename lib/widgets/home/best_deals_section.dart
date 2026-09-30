@@ -8,6 +8,7 @@ import '../common/network_image_with_skeleton.dart';
 class BestDealsSection extends StatelessWidget {
   final bool isDark;
   final List<BestDealModel> deals;
+  final bool isNewUser;
   final VoidCallback? onViewAllTap;
   final Function(BestDealModel deal) onShopNow;
 
@@ -15,6 +16,7 @@ class BestDealsSection extends StatelessWidget {
     super.key,
     required this.isDark,
     required this.deals,
+    this.isNewUser = true,
     this.onViewAllTap,
     required this.onShopNow,
   });
@@ -26,7 +28,7 @@ class BestDealsSection extends StatelessWidget {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
     final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
-    final displayDeals = deals.take(5).toList();
+    final displayDeals = deals.take(6).toList();
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -35,23 +37,75 @@ class BestDealsSection extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 16),
           child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Text(
-                'Best Deals For You',
-                style: GoogleFonts.inter(
-                  fontSize: 18,
-                  fontWeight: FontWeight.w700,
-                  color: textDark,
-                  letterSpacing: -0.3,
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        Text(
+                          'Best Deals For You',
+                          style: GoogleFonts.inter(
+                            fontSize: 17.5,
+                            fontWeight: FontWeight.w700,
+                            color: textDark,
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        const SizedBox(width: 8),
+                        Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: isNewUser
+                                ? (isDark
+                                    ? AppColors.darkPrimary.withValues(alpha: 0.15)
+                                    : const Color(0xFFFEF3C7))
+                                : (isDark
+                                    ? const Color(0xFF143823)
+                                    : const Color(0xFFECFDF5)),
+                            borderRadius: BorderRadius.circular(4),
+                          ),
+                          child: Text(
+                            isNewUser ? 'All Categories' : '✨ For You',
+                            style: GoogleFonts.plusJakartaSans(
+                              fontSize: 9.5,
+                              fontWeight: FontWeight.w700,
+                              color: isNewUser
+                                  ? (isDark
+                                      ? AppColors.darkPrimary
+                                      : const Color(0xFFB45309))
+                                  : (isDark
+                                      ? const Color(0xFF34D399)
+                                      : const Color(0xFF047857)),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 2),
+                    Text(
+                      isNewUser
+                          ? 'Top deal across every category to get you started'
+                          : 'Personalized based on your product clicks & orders',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 11,
+                        fontWeight: FontWeight.w500,
+                        color: textMuted,
+                      ),
+                      maxLines: 1,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                  ],
                 ),
               ),
-              const Spacer(),
               if (onViewAllTap != null)
                 InkWell(
                   onTap: onViewAllTap,
                   borderRadius: BorderRadius.circular(6),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                    padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
                     child: Row(
                       children: [
                         Text(
@@ -113,10 +167,12 @@ class BestDealsSection extends StatelessWidget {
         ? deal.effectiveSavings.toInt()
         : (originalPrice > effectivePrice ? originalPrice - effectivePrice : 0);
 
-    // OFF / Discount percentage above image
-    final offText = deal.discountPercentage > 0
-        ? '${deal.discountPercentage.toInt()}% OFF'
-        : (savings > 0 ? '₹$savings OFF' : 'BEST DEAL');
+    // OFF / Savings badge above image
+    final offText = savings > 0
+        ? 'Save ₹$savings'
+        : (deal.discountPercentage > 0
+            ? '${deal.discountPercentage.toInt()}% OFF'
+            : 'BEST DEAL');
 
     // Cashback text just above Shop Now button
     final cashbackText = deal.cashbackAmount > 0
@@ -150,7 +206,7 @@ class BestDealsSection extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                // 1. TOP: DISCOUNT / OFF BADGE (Image ke upar kitna off hai)
+                // 1. TOP: DISCOUNT / SAVINGS BADGE
                 Container(
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2),
@@ -181,7 +237,7 @@ class BestDealsSection extends StatelessWidget {
 
                 // 2. PRODUCT IMAGE
                 SizedBox(
-                  height: 50,
+                  height: 48,
                   width: double.infinity,
                   child: Center(
                     child: _buildProductImage(deal),
@@ -189,7 +245,43 @@ class BestDealsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 3),
 
-                // 3. PRODUCT NAME (Full width, Brand naam hataya gaya)
+                // 3. BRAND & CATEGORY TAG
+                Row(
+                  children: [
+                    if (deal.brand.isNotEmpty)
+                      Expanded(
+                        child: Text(
+                          deal.brand,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 9.5,
+                            fontWeight: FontWeight.w700,
+                            color: textMuted,
+                          ),
+                          maxLines: 1,
+                          overflow: TextOverflow.ellipsis,
+                        ),
+                      ),
+                    if (deal.category.isNotEmpty)
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 1),
+                        decoration: BoxDecoration(
+                          color: isDark ? Colors.white10 : const Color(0xFFF1F5F9),
+                          borderRadius: BorderRadius.circular(3),
+                        ),
+                        child: Text(
+                          deal.category,
+                          style: GoogleFonts.plusJakartaSans(
+                            fontSize: 8.5,
+                            fontWeight: FontWeight.w600,
+                            color: textMuted,
+                          ),
+                        ),
+                      ),
+                  ],
+                ),
+                const SizedBox(height: 1),
+
+                // 4. PRODUCT TITLE
                 Text(
                   _cleanTitle(deal.title),
                   style: GoogleFonts.inter(
@@ -203,7 +295,7 @@ class BestDealsSection extends StatelessWidget {
                 ),
                 const SizedBox(height: 2),
 
-                // 4. PRICE SECTION: Effective Price + Store Selling Price
+                // 5. PRICE SECTION: Effective Price + Original MRP
                 Row(
                   crossAxisAlignment: CrossAxisAlignment.baseline,
                   textBaseline: TextBaseline.alphabetic,
@@ -217,11 +309,11 @@ class BestDealsSection extends StatelessWidget {
                         color: textDark,
                       ),
                     ),
-                    if (deal.discountedPrice > effectivePrice) ...[
+                    if (originalPrice > effectivePrice) ...[
                       const SizedBox(width: 4),
                       Flexible(
                         child: Text(
-                          '₹${deal.discountedPrice.toInt()}',
+                          '₹$originalPrice',
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 10,
                             fontWeight: FontWeight.w500,
@@ -235,17 +327,6 @@ class BestDealsSection extends StatelessWidget {
                     ],
                   ],
                 ),
-                if (deal.discountedPrice > effectivePrice)
-                  Text(
-                    '₹${deal.discountedPrice.toInt()} at ${deal.store.isNotEmpty ? deal.store : "store"}',
-                    style: GoogleFonts.plusJakartaSans(
-                      fontSize: 9.5,
-                      fontWeight: FontWeight.w600,
-                      color: isDark ? AppColors.darkTextMuted : const Color(0xFF64748B),
-                    ),
-                    maxLines: 1,
-                    overflow: TextOverflow.ellipsis,
-                  ),
                 const Spacer(),
 
                 // 5. CASHBACK BADGE (Shop Now button ke just upar cashback kitna milega)

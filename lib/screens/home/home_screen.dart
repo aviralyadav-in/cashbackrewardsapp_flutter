@@ -9,6 +9,7 @@ import '../../providers/product_provider.dart';
 import '../../providers/user_provider.dart';
 import '../../theme/app_theme.dart';
 import '../../data/home_mock_data.dart';
+import '../../services/affiliate_service.dart';
 import '../../widgets/common/cashback_banner_carousel.dart';
 import '../../widgets/home/best_deals_section.dart';
 import '../../widgets/home/featured_stores_section.dart';
@@ -50,11 +51,26 @@ class _HomeScreenState extends State<HomeScreen> {
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
       if (!mounted) return;
+      final uid = context.read<UserProvider>().uid;
       Future.wait([
         context.read<ProductProvider>().fetchProducts(),
         context.read<CategoryProvider>().fetchCategories(),
-        context.read<HomeProvider>().fetchHomeData(),
+        context.read<HomeProvider>().fetchHomeData(userId: uid),
       ]);
+
+      if (uid.isNotEmpty) {
+        // Sync historical orders and affiliate clicks to train personalization engine
+        AffiliateService().getUserOrders(uid).then((orders) {
+          if (mounted && orders.isNotEmpty) {
+            context.read<HomeProvider>().syncUserOrders(orders.map((o) => o.toMap()).toList());
+          }
+        });
+        AffiliateService().getUserClicks(uid).then((clicks) {
+          if (mounted && clicks.isNotEmpty) {
+            context.read<HomeProvider>().syncUserClicks(clicks);
+          }
+        });
+      }
     });
   }
 
@@ -479,6 +495,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       BestDealsSection(
                         isDark: isDark,
                         deals: homeProvider.homeBestDeals,
+                        isNewUser: homeProvider.isNewUser,
                         onViewAllTap: () {
                           Navigator.of(context).push(
                             MaterialPageRoute(
@@ -487,6 +504,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           );
                         },
                         onShopNow: (deal) {
+                          // Record user product click in personalization engine
+                          homeProvider.recordProductClick(
+                            id: deal.id,
+                            category: deal.category,
+                            brand: deal.brand,
+                            store: deal.store,
+                          );
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (_) => ProductDetailScreen.fromBestDeal(deal),

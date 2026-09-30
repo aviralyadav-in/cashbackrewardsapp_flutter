@@ -72,6 +72,20 @@ class TrackedCashbackOrder {
       createdAt: parseDt(map['created_at']),
     );
   }
+
+  Map<String, dynamic> toMap() {
+    return {
+      'id': id,
+      'click_id': clickId,
+      'store_name': storeName,
+      'order_amount': orderAmount,
+      'commission_amount': commissionAmount,
+      'cashback_amount': cashbackAmount,
+      'status': status,
+      'network': network,
+      'created_at': createdAt.toIso8601String(),
+    };
+  }
 }
 
 class AffiliateService {

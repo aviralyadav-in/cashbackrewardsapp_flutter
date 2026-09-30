@@ -136,6 +136,62 @@ class ProductDetailScreen extends StatefulWidget {
     return 'Amazon';
   }
 
+  /// Incurs the clean semantic category from title and brand for recommendation engine
+  static String inferCategoryFromText(String title, String brand) {
+    final lower = '$title $brand'.toLowerCase();
+    if (lower.contains('shoe') ||
+        lower.contains('sneaker') ||
+        lower.contains('air max') ||
+        lower.contains('pegasus') ||
+        lower.contains('footwear')) {
+      return 'Footwear';
+    }
+    if (lower.contains('iphone') ||
+        lower.contains('galaxy') ||
+        lower.contains('smartphone') ||
+        lower.contains('phone')) {
+      return 'Smartphones';
+    }
+    if (lower.contains('macbook') ||
+        lower.contains('laptop') ||
+        lower.contains('dell') ||
+        lower.contains('thinkpad')) {
+      return 'Laptops';
+    }
+    if (lower.contains('audio') ||
+        lower.contains('airdopes') ||
+        lower.contains('headphone') ||
+        lower.contains('earbud') ||
+        lower.contains('rockerz') ||
+        lower.contains('sony') ||
+        lower.contains('bose')) {
+      return 'Audio';
+    }
+    if (lower.contains('serum') ||
+        lower.contains('cream') ||
+        lower.contains('skincare') ||
+        lower.contains('beauty') ||
+        lower.contains('derma') ||
+        lower.contains('dot & key')) {
+      return 'Beauty';
+    }
+    if (lower.contains('shirt') ||
+        lower.contains('denim') ||
+        lower.contains('t-shirt') ||
+        lower.contains('apparel') ||
+        lower.contains('fashion') ||
+        lower.contains('levi')) {
+      return 'Fashion';
+    }
+    if (lower.contains('watch') ||
+        lower.contains('colorfit') ||
+        lower.contains('wearable') ||
+        lower.contains('band')) {
+      return 'Wearables';
+    }
+    return 'Electronics';
+  }
+
   /// Resolves a verified coupon for any store deal based on the store name and cart value,
   /// matching the high-value deals shown in "Best Deals For You".
   static ({double discount, String code}) resolveStoreCoupon({
@@ -318,7 +374,7 @@ class ProductDetailScreen extends StatefulWidget {
       compareId: deal.id,
       customTitle: deal.productName,
       customBrandName: deal.brand.isNotEmpty ? deal.brand : deal.store,
-      customCategory: 'Trending Deals',
+      customCategory: inferCategoryFromText(deal.productName, deal.brand),
       customOriginalPrice: deal.originalPrice > 0 ? '₹${deal.originalPrice.toInt()}' : null,
       customDiscountedPrice: '₹${deal.price.toInt()}',
       customDiscountTag: deal.discount.isNotEmpty ? deal.discount : null,
@@ -374,7 +430,7 @@ class ProductDetailScreen extends StatefulWidget {
       compareId: item.id,
       customTitle: item.productName,
       customBrandName: item.brand.isNotEmpty ? item.brand : item.store,
-      customCategory: 'Price Drop Alert',
+      customCategory: inferCategoryFromText(item.productName, item.brand),
       customOriginalPrice: '₹${item.wasPrice.toInt()}',
       customDiscountedPrice: '₹${item.nowPrice.toInt()}',
       customDiscountTag: item.priceDropBadge.isNotEmpty
@@ -643,14 +699,21 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
   @override
   void initState() {
     super.initState();
-    // Feed on-device personalisation for "Best Deals For You" / "Top Deals For You".
-    final category = widget.customCategory;
-    if (category != null && category.isNotEmpty) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        if (!mounted) return;
-        context.read<HomeProvider>().recordCategoryInterest(category);
-      });
-    }
+    // Feed on-device personalization engine with rich product view signals
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      if (!mounted) return;
+      final hp = context.read<HomeProvider>();
+      final id = widget.compareId ?? widget.bestDeal?.id ?? widget.productId ?? '';
+      final category = widget.customCategory ?? widget.bestDeal?.category ?? '';
+      final brand = widget.customBrandName ?? widget.bestDeal?.brand ?? '';
+      final store = widget.customStoreName ?? widget.bestDeal?.store ?? '';
+      hp.recordProductView(
+        id: id,
+        category: category,
+        brand: brand,
+        store: store,
+      );
+    });
   }
 
   bool _isCouponActiveForStore(String storeName) {
@@ -1068,6 +1131,15 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
     final activeUid = userProvider.uid;
+
+    // Record high conversion intent in personalization engine
+    final category = widget.customCategory ?? widget.bestDeal?.category ?? '';
+    final brand = widget.customBrandName ?? widget.bestDeal?.brand ?? '';
+    context.read<HomeProvider>().recordOrder(
+      store: storeName,
+      category: category,
+      brand: brand,
+    );
 
     try {
       final tracked = await AffiliateService().generateTrackedLink(
@@ -2113,7 +2185,7 @@ $shareLink
                     isExpanded: _isSimilarExpanded,
                     onToggle: () => setState(() => _isSimilarExpanded = !_isSimilarExpanded),
                     isDark: isDark,
-                    content: _buildSimilarProductsContent(context, category, isDark),
+                    content: _buildSimilarProductsContent(context, category, brandName, rawStorePrice, isDark),
                   ),
 
                   const SizedBox(height: 8),
@@ -2124,7 +2196,7 @@ $shareLink
                     isExpanded: _isYouMightLikeExpanded,
                     onToggle: () => setState(() => _isYouMightLikeExpanded = !_isYouMightLikeExpanded),
                     isDark: isDark,
-                    content: _buildProductsYouMightLikeContent(context, isDark),
+                    content: _buildProductsYouMightLikeContent(context, category, isDark),
                   ),
 
                   const SizedBox(height: 24),
@@ -4425,22 +4497,25 @@ $shareLink
     );
   }
 
-  Widget _buildSimilarProductsContent(BuildContext context, String currentCategory, bool isDark) {
+  Widget _buildSimilarProductsContent(
+    BuildContext context,
+    String currentCategory,
+    String currentBrand,
+    double currentPrice,
+    bool isDark,
+  ) {
     final homeProvider = context.watch<HomeProvider>();
     final allDeals = homeProvider.bestDeals;
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
-    // Smart category matching: filter products matching the current product's category
-    final cleanCategory = currentCategory.trim().toLowerCase();
-    final matchingDeals = cleanCategory.isNotEmpty
-        ? allDeals.where((d) =>
-            d.category.trim().toLowerCase() == cleanCategory ||
-            d.category.toLowerCase().contains(cleanCategory) ||
-            cleanCategory.contains(d.category.toLowerCase())
-          ).toList()
-        : <BestDealModel>[];
-
-    final deals = matchingDeals.isNotEmpty ? matchingDeals : allDeals;
+    final currentId = widget.compareId ?? widget.bestDeal?.id ?? widget.productId ?? '';
+    final deals = homeProvider.personalizationService.getSimilarProducts(
+      currentId: currentId,
+      currentCategory: currentCategory,
+      currentBrand: currentBrand,
+      currentPrice: currentPrice,
+      allDeals: allDeals,
+    );
 
     if (deals.isEmpty) {
       return Text(
@@ -4481,10 +4556,34 @@ $shareLink
     );
   }
 
-  Widget _buildProductsYouMightLikeContent(BuildContext context, bool isDark) {
+  Widget _buildProductsYouMightLikeContent(
+    BuildContext context,
+    String currentCategory,
+    bool isDark,
+  ) {
     final homeProvider = context.watch<HomeProvider>();
-    final deals = homeProvider.trendingDeals;
+    final allDeals = homeProvider.bestDeals;
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+
+    final currentId = widget.compareId ?? widget.bestDeal?.id ?? widget.productId ?? '';
+    final currentBrand = widget.customBrandName ?? widget.bestDeal?.brand ?? '';
+
+    // Calculate similar deals first to exclude them and avoid duplicates
+    final similarDeals = homeProvider.personalizationService.getSimilarProducts(
+      currentId: currentId,
+      currentCategory: currentCategory,
+      currentBrand: currentBrand,
+      currentPrice: 0.0,
+      allDeals: allDeals,
+    );
+    final excludedIds = {currentId, ...similarDeals.map((d) => d.id)};
+
+    final deals = homeProvider.personalizationService.getProductsYouMightLike(
+      currentId: currentId,
+      currentCategory: currentCategory,
+      excludedProductIds: excludedIds,
+      allDeals: allDeals,
+    );
 
     if (deals.isEmpty) {
       return Text(
@@ -4506,16 +4605,16 @@ $shareLink
         itemBuilder: (ctx, index) {
           final deal = deals[index];
           return _buildMiniDealCard(
-            title: deal.productName,
+            title: deal.title,
             imageUrl: deal.imageUrl,
-            price: deal.price,
-            cashbackText: deal.cashback.isNotEmpty ? deal.cashback : '₹${deal.cashbackAmount.toInt()} Cashback',
+            price: deal.discountedPrice,
+            cashbackText: '₹${deal.cashbackAmount.toInt()} Cashback',
             isDark: isDark,
             onTap: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (_) => ProductDetailScreen.fromTrendingDeal(deal),
+                  builder: (_) => ProductDetailScreen.fromBestDeal(deal),
                 ),
               );
             },

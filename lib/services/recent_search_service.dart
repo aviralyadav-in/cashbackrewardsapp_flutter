@@ -8,20 +8,9 @@ class RecentSearchService {
   Future<List<String>> getRecentSearches() async {
     try {
       final prefs = await SharedPreferences.getInstance();
-      return prefs.getStringList(_recentSearchesKey) ??
-          [
-            'Nike Air Max',
-            'Myntra',
-            'Smartphones',
-            'Running Shoes',
-          ];
+      return prefs.getStringList(_recentSearchesKey) ?? [];
     } catch (_) {
-      return [
-        'Nike Air Max',
-        'Myntra',
-        'Smartphones',
-        'Running Shoes',
-      ];
+      return [];
     }
   }
 
@@ -31,13 +20,7 @@ class RecentSearchService {
 
     try {
       final prefs = await SharedPreferences.getInstance();
-      List<String> current = prefs.getStringList(_recentSearchesKey) ??
-          [
-            'Nike Air Max',
-            'Myntra',
-            'Smartphones',
-            'Running Shoes',
-          ];
+      List<String> current = prefs.getStringList(_recentSearchesKey) ?? [];
 
       // Remove existing case-insensitively
       current.removeWhere((item) => item.toLowerCase() == trimmed.toLowerCase());
