@@ -423,7 +423,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
                 onPressed: () => Navigator.of(ctx).pop(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                  foregroundColor: Colors.white,
+                  foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
@@ -511,7 +511,7 @@ class _PaymentsHistoryScreenState extends State<PaymentsHistoryScreen> {
               label: const Text('Request Payout'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                foregroundColor: Colors.white,
+                foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                 padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 12),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

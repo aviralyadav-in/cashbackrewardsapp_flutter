@@ -185,8 +185,8 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
@@ -199,7 +199,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
             color: textDark,
           ),
         ),
-        backgroundColor: isDark ? AppColors.darkSurface : AppColors.cardBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.cardBackground,
         elevation: 0,
         iconTheme: IconThemeData(color: textDark),
       ),
@@ -212,7 +212,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark
-                    ? [const Color(0xFF132247), const Color(0xFF1C2D5A)]
+                    ? [AppColors.darkCard, AppColors.darkSurface]
                     : [const Color(0xFFFAF2E9), const Color(0xFFF1F5F9)],
               ),
               borderRadius: BorderRadius.circular(14),
@@ -223,12 +223,13 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: AppColors.primaryBrown.withValues(alpha: 0.15),
+                    color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
+                        .withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.layers_rounded,
-                    color: AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     size: 20,
                   ),
                 ),
@@ -291,17 +292,17 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                           _applyPreset(p);
                         }
                       },
-                      selectedColor: AppColors.primaryBrown,
+                      selectedColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       labelStyle: GoogleFonts.plusJakartaSans(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
                         color: isSelected
-                            ? Colors.white
+                            ? (isDark ? AppColors.darkButtonText : Colors.white)
                             : (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown),
                       ),
                       backgroundColor: cardBg,
                       side: BorderSide(
-                        color: isSelected ? AppColors.primaryBrown : borderColor,
+                        color: isSelected ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown) : borderColor,
                       ),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -362,7 +363,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                   min: 1000,
                   max: 100000,
                   divisions: 99,
-                  activeColor: AppColors.primaryBrown,
+                  activeColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                   inactiveColor: borderColor,
                   onChanged: (val) {
                     setState(() {
@@ -381,7 +382,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12,
                         fontWeight: FontWeight.w600,
-                        color: AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ),
                     const Spacer(),
@@ -424,7 +425,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                 // Bank selector
                 Row(
                   children: [
-                    const Icon(Icons.credit_card_rounded, size: 18, color: AppColors.primaryBrown),
+                    Icon(Icons.credit_card_rounded, size: 18, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
                     const SizedBox(width: 8),
                     Text(
                       'Bank Card Offer:',
@@ -457,7 +458,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                 // KashIQ Coins Toggle
                 Row(
                   children: [
-                    const Icon(Icons.monetization_on_rounded, size: 18, color: Color(0xFF2563EB)),
+                    Icon(Icons.monetization_on_rounded, size: 18, color: isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)),
                     const SizedBox(width: 8),
                     Expanded(
                       child: Column(
@@ -480,7 +481,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                     ),
                     Switch(
                       value: _useCoins,
-                      activeThumbColor: AppColors.primaryBrown,
+                      activeThumbColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       onChanged: (val) {
                         setState(() => _useCoins = val);
                       },
@@ -516,8 +517,8 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
               );
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: AppColors.primaryBrown,
-              foregroundColor: Colors.white,
+              backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+              foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
               padding: const EdgeInsets.symmetric(vertical: 14),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(14),
@@ -549,14 +550,14 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
       decoration: BoxDecoration(
         gradient: LinearGradient(
           colors: isDark
-              ? [const Color(0xFF2B2017), const Color(0xFF33261C)]
-              : [const Color(0xFFFFF9F2), const Color(0xFFF9EFE4)],
+              ? const [AppColors.darkCard, AppColors.darkCardElevated]
+              : const [Color(0xFFFFF9F2), Color(0xFFF9EFE4)],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
         ),
         borderRadius: BorderRadius.circular(18),
         border: Border.all(
-          color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+          color: isDark ? AppColors.darkBorder : AppColors.primaryBrown,
           width: 1.5,
         ),
         boxShadow: [
@@ -594,7 +595,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 11.5,
                   fontWeight: FontWeight.w600,
-                  color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                 ),
               ),
             ],
@@ -631,7 +632,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
             _buildWaterfallRow(
               '5. KashIQ Coins Redemption',
               '-₹${_coinDiscount.toInt()}',
-              const Color(0xFF2563EB),
+              isDark ? AppColors.darkPrimary : const Color(0xFF2563EB),
               true,
             ),
           ],
@@ -639,7 +640,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
           _buildWaterfallRow(
             '6. KashIQ Real Cashback (${_cashbackPct.toInt()}%)',
             '-₹${_cashbackAmount.toInt()}',
-            isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+            isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
             true,
           ),
 
@@ -686,7 +687,7 @@ class _SmartSavingsEngineScreenState extends State<SmartSavingsEngineScreen> {
                     style: GoogleFonts.inter(
                       fontSize: 24,
                       fontWeight: FontWeight.w700,
-                      color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     ),
                   ),
                 ],

@@ -165,11 +165,11 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
     }).toList();
 
     final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
-    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.border;
+    final textDark = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+    final textMuted = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
     return Scaffold(
       backgroundColor: bgColor,
@@ -217,7 +217,7 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
               child: Container(
                 height: 46,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1712) : Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: borderColor, width: 1),
                 ),
@@ -283,12 +283,12 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
                       decoration: BoxDecoration(
                         color: isSelected
                             ? primaryAccent
-                            : (isDark ? const Color(0xFF281F19) : const Color(0xFFF3ECE4)),
+                            : (isDark ? AppColors.darkSurface : AppColors.surfaceSubtle),
                         borderRadius: BorderRadius.circular(20),
                         border: Border.all(
                           color: isSelected
                               ? primaryAccent
-                              : (isDark ? const Color(0xFF453528) : const Color(0xFFE2D4C6)),
+                              : borderColor,
                         ),
                       ),
                       child: Center(
@@ -299,7 +299,7 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
                             fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                             color: isSelected
                                 ? Colors.white
-                                : (isDark ? AppColors.darkTextPrimary : const Color(0xFF1E3A8A)),
+                                : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
                           ),
                         ),
                       ),
@@ -452,7 +452,7 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
                         store.offerText.isNotEmpty ? store.offerText : store.category,
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 11,
-                          color: isDark ? const Color(0xFF2563EB) : const Color(0xFF2563EB),
+                          color: primaryAccent,
                           fontWeight: FontWeight.w700,
                         ),
                         maxLines: 1,
@@ -467,10 +467,10 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 7),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF7EFE6),
+                          color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: isDark ? const Color(0xFF5E4332) : const Color(0xFFE2D1C0),
+                            color: borderColor,
                           ),
                         ),
                         child: Text(
@@ -558,14 +558,14 @@ class _AllStoresScreenState extends State<AllStoresScreen> {
   Widget _buildFallbackInitial(String name, bool isDark) {
     final initial = name.isNotEmpty ? name[0].toUpperCase() : 'S';
     return Container(
-      color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFE2E8F0),
+      color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
       child: Center(
         child: Text(
           initial,
           style: GoogleFonts.inter(
             fontSize: 20,
             fontWeight: FontWeight.w800,
-            color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+            color: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
           ),
         ),
       ),

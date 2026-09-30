@@ -23,11 +23,11 @@ class NewUserRewardCard extends StatelessWidget {
     final cardBorder = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textSubtitle = isDark ? AppColors.darkTextMuted : const Color(0xFF64748B);
-    final badgeBg = isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF1F5F9);
-    final badgeText = isDark ? const Color(0xFF2563EB) : const Color(0xFF8A4E1B);
-    final iconBoxBg = isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF1F5F9);
-    final buttonBg = isDark ? const Color(0xFF2563EB) : const Color(0xFF0F172A);
-    final buttonText = isDark ? const Color(0xFF0F172A) : const Color(0xFFFFFFFF);
+    final badgeBg = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+    final badgeText = isDark ? AppColors.darkPrimary : const Color(0xFF8A4E1B);
+    final iconBoxBg = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
+    final buttonBg = isDark ? AppColors.darkPrimary : const Color(0xFF0F172A);
+    final buttonText = isDark ? AppColors.darkButtonText : const Color(0xFFFFFFFF);
     final amberColor = isDark ? const Color(0xFFFFB74D) : const Color(0xFFA57022);
 
     return Material(
@@ -139,7 +139,7 @@ class NewUserRewardCard extends StatelessWidget {
                     child: Icon(
                       Icons.shopping_bag_rounded,
                       size: 28,
-                      color: isDark ? const Color(0xFF2563EB) : const Color(0xFF0F172A),
+                      color: isDark ? AppColors.darkPrimary : const Color(0xFF0F172A),
                     ),
                   ),
                 ),

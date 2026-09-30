@@ -272,10 +272,10 @@ class _LoginScreenState extends State<LoginScreen> {
         fontSize: 13,
       ),
       filled: true,
-      fillColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
+      fillColor: isDark ? AppColors.darkSurface : AppColors.cardBackground,
       prefixIcon: Icon(
         icon,
-        color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
+        color: isDark ? AppColors.darkIconNormal : AppColors.primaryBrown,
         size: 19,
       ),
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
@@ -293,20 +293,20 @@ class _LoginScreenState extends State<LoginScreen> {
       ),
       focusedBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
-        borderSide: const BorderSide(
-          color: AppColors.primaryBrown,
+        borderSide: BorderSide(
+          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
           width: 1.5,
         ),
       ),
     );
   }
 
-  ButtonStyle _buildButtonStyle() {
+  ButtonStyle _buildButtonStyle(bool isDark) {
     return ElevatedButton.styleFrom(
-      backgroundColor: AppColors.primaryBrown,
-      foregroundColor: AppColors.cardBackground,
+      backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+      foregroundColor: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
       elevation: 1.5,
-      shadowColor: AppColors.primaryBrown.withValues(alpha: 0.3),
+      shadowColor: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown).withValues(alpha: 0.3),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
       ),
@@ -475,7 +475,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ElevatedButton(
                                 key: const ValueKey('main_continue_btn'),
                                 onPressed: _isLoading ? null : _handleLoginSubmit,
-                                style: _buildButtonStyle(),
+                                style: _buildButtonStyle(isDark),
                                 child: _isLoading
                                     ? const SizedBox(
                                         width: 22,
@@ -491,14 +491,14 @@ class _LoginScreenState extends State<LoginScreen> {
                                           Text(
                                             'Continue',
                                             style: AppTextStyles.buttonText(
-                                              color: AppColors.cardBackground,
+                                              color: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
                                             ).copyWith(fontSize: 15),
                                           ),
                                           const SizedBox(width: 8),
-                                          const Icon(
+                                          Icon(
                                             Icons.arrow_forward_rounded,
                                             size: 18,
-                                            color: AppColors.cardBackground,
+                                            color: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
                                           ),
                                         ],
                                       ),
@@ -559,7 +559,7 @@ class _LoginScreenState extends State<LoginScreen> {
                               child: ElevatedButton(
                                 key: const ValueKey('main_verify_otp_btn'),
                                 onPressed: _isLoading ? null : _verifyEnteredOtp,
-                                style: _buildButtonStyle(),
+                                style: _buildButtonStyle(isDark),
                                 child: _isLoading
                                     ? const SizedBox(
                                         width: 22,
@@ -572,16 +572,16 @@ class _LoginScreenState extends State<LoginScreen> {
                                     : Row(
                                         mainAxisAlignment: MainAxisAlignment.center,
                                         children: [
-                                          const Icon(
+                                          Icon(
                                             Icons.verified_user_rounded,
                                             size: 18,
-                                            color: AppColors.cardBackground,
+                                            color: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
                                           ),
                                           const SizedBox(width: 8),
                                           Text(
                                             'Verify Code & Log In',
                                             style: AppTextStyles.buttonText(
-                                              color: AppColors.cardBackground,
+                                              color: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
                                             ).copyWith(fontSize: 15),
                                           ),
                                         ],
@@ -634,7 +634,7 @@ class _LoginScreenState extends State<LoginScreen> {
   Widget _buildTrustCard(bool isDark) {
     final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final cardBg = isDark
-        ? const Color(0xFF132247)
+        ? AppColors.darkCard
         : const Color(0xFFFAF6F2);
 
     return Container(
@@ -734,7 +734,7 @@ class _LoginScreenState extends State<LoginScreen> {
           // Benefit 3: Free & Real Money
           _buildAssuranceRow(
             icon: Icons.account_balance_wallet_outlined,
-            iconBg: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF1F5F9),
+            iconBg: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
             iconColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
             title: 'Free Forever & Real Cash',
             subtitle: 'Zero fees, transfer directly to UPI or Bank',

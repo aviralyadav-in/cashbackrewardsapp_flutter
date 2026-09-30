@@ -920,6 +920,7 @@ class _BestDealsScreenState extends State<BestDealsScreen> {
                                   builder: (_) => ProductDetailScreen(
                                     customTitle: item.title,
                                     customBrandName: item.brand,
+                                    customStoreName: item.store,
                                     customCategory: 'Highest Cashback',
                                     customOriginalPrice:
                                         '₹${item.originalPrice.toInt()}',
@@ -2846,6 +2847,7 @@ class _BestDealsScreenState extends State<BestDealsScreen> {
         builder: (_) => ProductDetailScreen(
           customTitle: item.title,
           customBrandName: item.brand,
+          customStoreName: item.store,
           customCategory: 'Best Deals',
           customOriginalPrice: '₹${item.originalPrice.toInt()}',
           customDiscountedPrice: '₹${item.currentPrice.toInt()}',

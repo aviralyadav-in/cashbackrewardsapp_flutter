@@ -56,14 +56,14 @@ class FeaturedStoresSection extends StatelessWidget {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                         ),
                       ),
                       const SizedBox(width: 2),
                       Icon(
                         Icons.chevron_right_rounded,
                         size: 16,
-                        color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ],
                   ),
@@ -94,8 +94,8 @@ class FeaturedStoresSection extends StatelessWidget {
   }
 
   Widget _buildStoreCard(BuildContext context, FeaturedStoreModel store) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final offerLabel = storeOfferLabel(store.cashbackRate);
     final cashbackLabel = AppCashbackEngine.cashbackLabel(store.name);
 
@@ -129,10 +129,10 @@ class FeaturedStoresSection extends StatelessWidget {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E3A8A).withValues(alpha: 0.35) : const Color(0xFFEFF6FF),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFEFF6FF),
                     borderRadius: BorderRadius.circular(6),
                     border: Border.all(
-                      color: isDark ? const Color(0xFF3B82F6).withValues(alpha: 0.3) : const Color(0xFFBFDBFE),
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFBFDBFE),
                       width: 0.8,
                     ),
                   ),
@@ -141,7 +141,7 @@ class FeaturedStoresSection extends StatelessWidget {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w700,
-                      color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                      color: isDark ? AppColors.darkTextSecondary : const Color(0xFF1D4ED8),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -194,7 +194,7 @@ class FeaturedStoresSection extends StatelessWidget {
                     onPressed: () => onStoreTap(store),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
-                      foregroundColor: isDark ? const Color(0xFF1E1712) : Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),
@@ -281,7 +281,7 @@ class FeaturedStoresSection extends StatelessWidget {
         style: GoogleFonts.plusJakartaSans(
           fontSize: 18,
           fontWeight: FontWeight.w800,
-          color: const Color(0xFF2563EB),
+          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
         ),
       ),
     );

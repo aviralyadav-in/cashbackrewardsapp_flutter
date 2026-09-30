@@ -105,7 +105,7 @@ class AuthService {
     if (customDealUrl.isNotEmpty) {
       return customDealUrl;
     }
-    return 'https://literature-shake-cure-helmet.trycloudflare.com';
+    return 'https://ecological-contest-tested-valve.trycloudflare.com';
   }
 
   /// Checks whether a phone number already exists in PostgreSQL.
@@ -615,6 +615,55 @@ class AuthService {
       return {
         'success': false,
         'message': 'Failed to submit withdrawal: ${e.toString()}',
+      };
+    }
+  }
+
+  /// Permanently deletes user account from PostgreSQL via DELETE /api/users/:id
+  Future<Map<String, dynamic>> deleteAccount({
+    required String userId,
+    String? reason,
+    String? feedback,
+  }) async {
+    if (userId.trim().isEmpty) {
+      return {'success': false, 'message': 'User ID is missing.'};
+    }
+
+    try {
+      final host = await getWorkingBaseUrl();
+      final response = await http
+          .delete(
+            Uri.parse('$host/users/${userId.trim()}'),
+            headers: {'Content-Type': 'application/json'},
+            body: jsonEncode({
+              if (reason != null && reason.trim().isNotEmpty) 'reason': reason.trim(),
+              if (feedback != null && feedback.trim().isNotEmpty) 'feedback': feedback.trim(),
+            }),
+          )
+          .timeout(const Duration(seconds: 12));
+
+      if (response.statusCode == 200 || response.statusCode == 204) {
+        await signOut();
+        return {'success': true, 'message': 'Account deleted successfully.'};
+      } else {
+        try {
+          final data = jsonDecode(response.body);
+          return {
+            'success': false,
+            'message': data['message'] ?? 'Failed to delete account.',
+          };
+        } catch (_) {
+          return {
+            'success': false,
+            'message': 'Server returned error (${response.statusCode})',
+          };
+        }
+      }
+    } catch (e) {
+      debugPrint('Error deleting user account: $e');
+      return {
+        'success': false,
+        'message': 'Failed to delete account: ${e.toString()}',
       };
     }
   }

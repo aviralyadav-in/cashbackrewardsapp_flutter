@@ -74,7 +74,7 @@ class _SearchScreenState extends State<SearchScreen> {
       context: context,
       backgroundColor: Colors.transparent,
       builder: (ctx) {
-        final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
+        final cardBg = isDark ? AppColors.darkCard : Colors.white;
         final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
         final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
@@ -84,7 +84,7 @@ class _SearchScreenState extends State<SearchScreen> {
             color: cardBg,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border.all(
-              color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+              color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
             ),
           ),
           child: Column(
@@ -104,7 +104,7 @@ class _SearchScreenState extends State<SearchScreen> {
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 14,
                   fontWeight: FontWeight.w700,
-                  color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                 ),
               ),
               const SizedBox(height: 6),
@@ -129,10 +129,10 @@ class _SearchScreenState extends State<SearchScreen> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 14),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFFAF2E7),
+                  color: isDark ? AppColors.darkSurface : const Color(0xFFFAF2E7),
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF6B4D36) : const Color(0xFFDCC8B3),
+                    color: isDark ? AppColors.darkBorder : const Color(0xFFDCC8B3),
                     width: 1.5,
                   ),
                 ),
@@ -172,7 +172,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 12,
                             fontWeight: FontWeight.w700,
-                            color: Colors.white,
+                            color: isDark ? AppColors.darkButtonText : Colors.white,
                           ),
                         ),
                       ),
@@ -218,19 +218,19 @@ class _SearchScreenState extends State<SearchScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+            color: isDark ? AppColors.darkIconNormal : AppColors.primaryBrown,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -250,13 +250,16 @@ class _SearchScreenState extends State<SearchScreen> {
           // 1. UNIVERSAL SEARCH INPUT BAR
           Container(
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
-            color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+            color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
             child: Container(
               height: 48,
               decoration: BoxDecoration(
-                color: cardBg,
+                color: isDark ? AppColors.darkSurface : cardBg,
                 borderRadius: BorderRadius.circular(24),
-                border: Border.all(color: borderColor, width: 1.2),
+                border: Border.all(
+                  color: isDark ? AppColors.darkBorder : borderColor,
+                  width: 1.2,
+                ),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.black.withValues(alpha: isDark ? 0.3 : 0.04),
@@ -294,7 +297,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   focusedErrorBorder: InputBorder.none,
                   prefixIcon: Icon(
                     Icons.search_rounded,
-                    color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     size: 22,
                   ),
                   suffixIcon: ValueListenableBuilder<TextEditingValue>(
@@ -343,12 +346,12 @@ class _SearchScreenState extends State<SearchScreen> {
                         decoration: BoxDecoration(
                           color: isSelected
                               ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
-                              : (isDark ? const Color(0xFF132247) : const Color(0xFFF3ECE4)),
+                              : (isDark ? AppColors.darkCard : const Color(0xFFF3ECE4)),
                           borderRadius: BorderRadius.circular(20),
                           border: Border.all(
                             color: isSelected
                                 ? Colors.transparent
-                                : (isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0)),
+                                : (isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0)),
                             width: 0.8,
                           ),
                         ),
@@ -359,7 +362,7 @@ class _SearchScreenState extends State<SearchScreen> {
                               fontSize: 12,
                               fontWeight: isSelected ? FontWeight.w700 : FontWeight.w600,
                               color: isSelected
-                                  ? Colors.white
+                                  ? (isDark ? AppColors.darkButtonText : Colors.white)
                                   : (isDark ? AppColors.darkTextSecondary : AppColors.deepBrown),
                             ),
                           ),
@@ -374,7 +377,7 @@ class _SearchScreenState extends State<SearchScreen> {
 
           Divider(
             height: 1,
-            color: isDark ? const Color(0xFF382A20) : const Color(0xFFEDE3D5),
+            color: isDark ? AppColors.darkBorder : const Color(0xFFEDE3D5),
           ),
 
           // 3. BODY: Recent Searches / Results / Empty State
@@ -566,11 +569,11 @@ class _SearchScreenState extends State<SearchScreen> {
                   color: isDark ? AppColors.darkTextPrimary : const Color(0xFF382316),
                 ),
               ),
-              backgroundColor: isDark ? const Color(0xFF132247) : const Color(0xFFF6EDE3),
+              backgroundColor: isDark ? AppColors.darkCard : const Color(0xFFF6EDE3),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(16),
                 side: BorderSide(
-                  color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                  color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                   width: 0.8,
                 ),
               ),
@@ -624,7 +627,7 @@ class _SearchScreenState extends State<SearchScreen> {
               runSpacing: 8,
               children: result.categories.map((cat) {
                 return ActionChip(
-                  avatar: const Icon(Icons.grid_view_rounded, size: 16, color: AppColors.primaryBrown),
+                  avatar: Icon(Icons.grid_view_rounded, size: 16, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
                   label: Text(
                     cat.name,
                     style: GoogleFonts.plusJakartaSans(
@@ -633,11 +636,11 @@ class _SearchScreenState extends State<SearchScreen> {
                       color: textDark,
                     ),
                   ),
-                  backgroundColor: isDark ? const Color(0xFF281D16) : const Color(0xFFF1F5F9),
+                  backgroundColor: isDark ? AppColors.darkCard : const Color(0xFFF1F5F9),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(10),
                     side: BorderSide(
-                      color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                     ),
                   ),
                   onPressed: () {
@@ -693,8 +696,8 @@ class _SearchScreenState extends State<SearchScreen> {
     Color textDark,
     Color textMuted,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -733,7 +736,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: const Color(0xFF2563EB),
+                        color: isDark ? AppColors.darkPrimary : const Color(0xFF2563EB),
                         borderRadius: BorderRadius.circular(4),
                       ),
                       child: Text(
@@ -741,7 +744,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 9.5,
                           fontWeight: FontWeight.w700,
-                          color: Colors.white,
+                          color: isDark ? AppColors.darkButtonText : Colors.white,
                         ),
                       ),
                     ),
@@ -808,7 +811,7 @@ class _SearchScreenState extends State<SearchScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-                      foregroundColor: Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       padding: const EdgeInsets.symmetric(horizontal: 14),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(6),
@@ -840,8 +843,8 @@ class _SearchScreenState extends State<SearchScreen> {
     Color textDark,
     Color textMuted,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -889,7 +892,7 @@ class _SearchScreenState extends State<SearchScreen> {
             onPressed: () => _onStoreTap(store),
             style: ElevatedButton.styleFrom(
               backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-              foregroundColor: Colors.white,
+              foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               visualDensity: VisualDensity.compact,
@@ -916,8 +919,8 @@ class _SearchScreenState extends State<SearchScreen> {
     Color textDark,
     Color textMuted,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -938,7 +941,7 @@ class _SearchScreenState extends State<SearchScreen> {
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 10,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                   ),
                 ),
                 const SizedBox(height: 2),
@@ -976,7 +979,7 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 10.5,
                         fontWeight: FontWeight.w600,
-                        color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ),
                   ],
@@ -1004,7 +1007,7 @@ class _SearchScreenState extends State<SearchScreen> {
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-              foregroundColor: Colors.white,
+              foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
               visualDensity: VisualDensity.compact,
@@ -1031,8 +1034,8 @@ class _SearchScreenState extends State<SearchScreen> {
     Color textDark,
     Color textMuted,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
@@ -1055,14 +1058,14 @@ class _SearchScreenState extends State<SearchScreen> {
                       style: GoogleFonts.inter(
                         fontSize: 16,
                         fontWeight: FontWeight.w800,
-                        color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ),
                     const SizedBox(width: 8),
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF4ECE3),
+                        color: isDark ? AppColors.darkSurface : const Color(0xFFF4ECE3),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(
@@ -1092,7 +1095,7 @@ class _SearchScreenState extends State<SearchScreen> {
             style: OutlinedButton.styleFrom(
               foregroundColor: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
               side: BorderSide(
-                color: isDark ? const Color(0xFF5A4435) : const Color(0xFFE2E8F0),
+                color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
               ),
               padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),

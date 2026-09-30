@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/user_provider.dart';
 import '../../theme/app_theme.dart';
+import '../auth/login_screen.dart';
 
 class AccountSettingsScreen extends StatefulWidget {
   static const String routeName = '/account-settings';
@@ -295,8 +295,8 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
     final userProvider = Provider.of<UserProvider>(context, listen: false);
 
-    final phoneDigits = _phoneController.text.replaceAll(RegExp(r'\D'), '');
-    final cleanPhone = phoneDigits.isNotEmpty ? '+91$phoneDigits' : '';
+    // Phone number cannot be changed by the user; preserve existing phone number
+    final existingPhone = userProvider.phoneNumber;
 
     // Avatar URL: if user removed it, pass null (or empty); otherwise the current URL
     final String? avatarToSave = _currentAvatarUrl;
@@ -304,7 +304,7 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     final success = await userProvider.updateUserProfile(
       fullName: _nameController.text.trim(),
       email: _emailController.text.trim(),
-      phoneNumber: cleanPhone,
+      phoneNumber: existingPhone,
       avatarUrl: avatarToSave,
     );
 
@@ -319,6 +319,18 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
         isError: true,
       );
     }
+  }
+
+  void _showDeleteAccountSheet(bool isDark) {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      backgroundColor: isDark ? AppColors.darkCard : Colors.white,
+      shape: const RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(24)),
+      ),
+      builder: (sheetCtx) => _DeleteAccountSheet(isDark: isDark),
+    );
   }
 
   @override
@@ -542,46 +554,63 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
 
                     const SizedBox(height: 20),
 
-                    // ── Phone Number Field ───────────────────────────────────
-                    Text(
-                      'Phone Number',
-                      style: AppTextStyles.cardTitle(
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
-                      ).copyWith(fontSize: 13.5),
+                    // ── Phone Number Field (Disabled / Read-only) ─────────────
+                    Row(
+                      children: [
+                        Text(
+                          'Phone Number',
+                          style: AppTextStyles.cardTitle(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                          ).copyWith(fontSize: 13.5),
+                        ),
+                        const SizedBox(width: 6),
+                        Icon(
+                          Icons.lock_rounded,
+                          size: 13,
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                        ),
+                      ],
                     ),
                     const SizedBox(height: 8),
-                    TextFormField(
-                      controller: _phoneController,
-                      keyboardType: TextInputType.phone,
-                      inputFormatters: [
-                        FilteringTextInputFormatter.digitsOnly,
-                        LengthLimitingTextInputFormatter(10),
-                      ],
-                      maxLength: 10,
-                      buildCounter: (context,
-                              {required currentLength,
-                              required isFocused,
-                              maxLength}) =>
-                          null,
-                      style: AppTextStyles.input(
-                        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                    IgnorePointer(
+                      ignoring: true,
+                      child: TextFormField(
+                        controller: _phoneController,
+                        readOnly: true,
+                        enableInteractiveSelection: false,
+                        keyboardType: TextInputType.phone,
+                        style: AppTextStyles.input(
+                          color: isDark
+                              ? AppColors.darkTextSecondary
+                              : AppColors.textSecondary,
+                        ),
+                        decoration: _buildInputDecoration(
+                          label: 'No phone number registered',
+                          icon: Icons.phone_outlined,
+                          isDark: isDark,
+                          prefixText: _phoneController.text.isNotEmpty ? '+91 ' : null,
+                          suffixIcon: Tooltip(
+                            message: 'Phone number cannot be changed',
+                            child: Icon(
+                              Icons.lock_outline_rounded,
+                              size: 18,
+                              color: isDark
+                                  ? AppColors.darkTextSecondary.withValues(alpha: 0.6)
+                                  : AppColors.textMuted,
+                            ),
+                          ),
+                          isEnabled: false,
+                        ),
                       ),
-                      decoration: _buildInputDecoration(
-                        label: 'Enter 10-digit phone number',
-                        icon: Icons.phone_outlined,
-                        isDark: isDark,
-                        prefixText: '+91 ',
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 6, left: 4),
+                      child: Text(
+                        'Phone number is linked to your account and cannot be changed.',
+                        style: AppTextStyles.caption(
+                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                        ).copyWith(fontSize: 11.5),
                       ),
-                      validator: (value) {
-                        if (value == null || value.trim().isEmpty) {
-                          return 'Please enter your phone number';
-                        }
-                        final clean = value.replaceAll(RegExp(r'\D'), '');
-                        if (clean.length != 10) {
-                          return 'Phone number must be exactly 10 digits';
-                        }
-                        return null;
-                      },
                     ),
 
                     const SizedBox(height: 32),
@@ -618,7 +647,73 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
                               ),
                       ),
                     ),
-                    const SizedBox(height: 16),
+
+                    const SizedBox(height: 28),
+
+                    // ── Danger Zone: Delete Account ──────────────────────────
+                    Container(
+                      width: double.infinity,
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: isDark
+                            ? AppColors.error.withValues(alpha: 0.06)
+                            : const Color(0xFFFFF5F5),
+                        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+                        border: Border.all(
+                          color: AppColors.error.withValues(alpha: isDark ? 0.3 : 0.2),
+                          width: 1,
+                        ),
+                      ),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Row(
+                            children: [
+                              const Icon(
+                                Icons.warning_amber_rounded,
+                                size: 18,
+                                color: AppColors.error,
+                              ),
+                              const SizedBox(width: 8),
+                              Text(
+                                'Danger Zone',
+                                style: AppTextStyles.cardTitle(
+                                  color: AppColors.error,
+                                ).copyWith(fontSize: 13.5),
+                              ),
+                            ],
+                          ),
+                          const SizedBox(height: 6),
+                          Text(
+                            'Permanently delete your account, wallet balance, and order history.',
+                            style: AppTextStyles.caption(
+                              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+                            ).copyWith(fontSize: 12),
+                          ),
+                          const SizedBox(height: 14),
+                          SizedBox(
+                            width: double.infinity,
+                            height: 44,
+                            child: OutlinedButton.icon(
+                              onPressed: () => _showDeleteAccountSheet(isDark),
+                              icon: const Icon(Icons.delete_forever_rounded, size: 18),
+                              label: const Text('Delete My Account'),
+                              style: OutlinedButton.styleFrom(
+                                foregroundColor: AppColors.error,
+                                side: BorderSide(
+                                  color: AppColors.error.withValues(alpha: 0.5),
+                                  width: 1.2,
+                                ),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 24),
                   ],
                 ),
               ),
@@ -686,35 +781,65 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
     required IconData icon,
     required bool isDark,
     String? prefixText,
+    Widget? suffixIcon,
+    bool isEnabled = true,
   }) {
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.border;
     return InputDecoration(
       hintText: label,
       hintStyle: AppTextStyles.hint(
         color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
       ),
       filled: true,
-      fillColor: isDark ? AppColors.darkCard : AppColors.cardBackground,
+      fillColor: !isEnabled
+          ? (isDark
+              ? AppColors.darkCard.withValues(alpha: 0.5)
+              : const Color(0xFFF3F4F6))
+          : (isDark ? AppColors.darkCard : AppColors.cardBackground),
       prefixText: prefixText,
       prefixStyle: AppTextStyles.input(
-        color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+        color: !isEnabled
+            ? (isDark ? AppColors.darkTextSecondary : AppColors.textSecondary)
+            : (isDark ? AppColors.darkTextPrimary : AppColors.textPrimary),
       ).copyWith(fontWeight: FontWeight.w600),
       prefixIcon: Icon(
         icon,
-        color: isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown,
+        color: !isEnabled
+            ? (isDark
+                ? AppColors.darkTextSecondary.withValues(alpha: 0.6)
+                : AppColors.textMuted)
+            : (isDark ? AppColors.darkTextSecondary : AppColors.primaryBrown),
         size: 20,
       ),
+      suffixIcon: suffixIcon,
       contentPadding:
           const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         borderSide: BorderSide(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
+          color: !isEnabled
+              ? (isDark
+                  ? AppColors.darkBorder.withValues(alpha: 0.5)
+                  : AppColors.border.withValues(alpha: 0.6))
+              : borderColor,
         ),
       ),
       enabledBorder: OutlineInputBorder(
         borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
         borderSide: BorderSide(
-          color: isDark ? AppColors.darkBorder : AppColors.border,
+          color: !isEnabled
+              ? (isDark
+                  ? AppColors.darkBorder.withValues(alpha: 0.5)
+                  : AppColors.border.withValues(alpha: 0.6))
+              : borderColor,
+        ),
+      ),
+      disabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
+        borderSide: BorderSide(
+          color: isDark
+              ? AppColors.darkBorder.withValues(alpha: 0.5)
+              : AppColors.border.withValues(alpha: 0.6),
         ),
       ),
       focusedBorder: OutlineInputBorder(
@@ -724,6 +849,415 @@ class _AccountSettingsScreenState extends State<AccountSettingsScreen> {
           width: 1.5,
         ),
       ),
+    );
+  }
+}
+
+/// Bottom Sheet for Account Deletion with reason selection and warnings
+class _DeleteAccountSheet extends StatefulWidget {
+  final bool isDark;
+
+  const _DeleteAccountSheet({required this.isDark});
+
+  @override
+  State<_DeleteAccountSheet> createState() => _DeleteAccountSheetState();
+}
+
+class _DeleteAccountSheetState extends State<_DeleteAccountSheet> {
+  final List<String> _reasons = const [
+    'I have another account',
+    'Not getting enough cashback / deals',
+    'Privacy or security concerns',
+    'Facing technical issues with the app',
+    'Too many notifications or messages',
+    'Other reason',
+  ];
+
+  String? _selectedReason = 'I have another account';
+  final _feedbackController = TextEditingController();
+  bool _confirmAcknowledge = false;
+  bool _isDeleting = false;
+
+  @override
+  void dispose() {
+    _feedbackController.dispose();
+    super.dispose();
+  }
+
+  Future<void> _handleDelete() async {
+    if (!_confirmAcknowledge) return;
+
+    setState(() => _isDeleting = true);
+    final userProvider = Provider.of<UserProvider>(context, listen: false);
+
+    final reasonText = _selectedReason ?? 'Other';
+    final feedbackText = _selectedReason == 'Other reason'
+        ? _feedbackController.text.trim()
+        : null;
+
+    final result = await userProvider.deleteAccount(
+      reason: reasonText,
+      feedback: feedbackText,
+    );
+
+    if (!mounted) return;
+
+    if (result['success'] == true) {
+      Navigator.of(context).pop(); // Close bottom sheet
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Your account has been permanently deleted.'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+      Navigator.of(context).pushAndRemoveUntil(
+        MaterialPageRoute(builder: (_) => const LoginScreen()),
+        (route) => false,
+      );
+    } else {
+      setState(() => _isDeleting = false);
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text(result['message'] ?? 'Failed to delete account. Please try again.'),
+          backgroundColor: AppColors.error,
+          behavior: SnackBarBehavior.floating,
+        ),
+      );
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final isDark = widget.isDark;
+
+    return Padding(
+      padding: EdgeInsets.only(
+        bottom: MediaQuery.of(context).viewInsets.bottom,
+      ),
+      child: SafeArea(
+        child: SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              // Drag handle
+              Center(
+                child: Container(
+                  width: 36,
+                  height: 4,
+                  decoration: BoxDecoration(
+                    color: Colors.grey.withValues(alpha: 0.3),
+                    borderRadius: BorderRadius.circular(2),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 18),
+
+              // Title Header
+              Row(
+                children: [
+                  Container(
+                    padding: const EdgeInsets.all(10),
+                    decoration: BoxDecoration(
+                      color: AppColors.error.withValues(alpha: 0.1),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(
+                      Icons.delete_forever_rounded,
+                      color: AppColors.error,
+                      size: 24,
+                    ),
+                  ),
+                  const SizedBox(width: 14),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Delete Account',
+                          style: AppTextStyles.cardTitle(
+                            color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                          ).copyWith(fontSize: 18),
+                        ),
+                        const SizedBox(height: 2),
+                        Text(
+                          'This action cannot be undone',
+                          style: AppTextStyles.caption(
+                            color: AppColors.error,
+                          ).copyWith(fontSize: 12, fontWeight: FontWeight.w500),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 20),
+
+              // Reason description
+              Text(
+                'Why do you want to delete your account?',
+                style: AppTextStyles.cardTitle(
+                  color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                ).copyWith(fontSize: 14),
+              ),
+              const SizedBox(height: 6),
+              Text(
+                'Please select a reason so we can improve our services:',
+                style: AppTextStyles.caption(
+                  color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                ).copyWith(fontSize: 12),
+              ),
+              const SizedBox(height: 12),
+
+              // Reasons Radio Tiles
+              ..._reasons.map((reason) {
+                final isSelected = _selectedReason == reason;
+                return InkWell(
+                  onTap: _isDeleting
+                      ? null
+                      : () => setState(() => _selectedReason = reason),
+                  borderRadius: BorderRadius.circular(10),
+                  child: Container(
+                    margin: const EdgeInsets.only(bottom: 6),
+                    padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+                    decoration: BoxDecoration(
+                      color: isSelected
+                          ? (isDark
+                              ? AppColors.error.withValues(alpha: 0.12)
+                              : const Color(0xFFFFF1F1))
+                          : (isDark ? AppColors.darkCard : Colors.grey.shade50),
+                      borderRadius: BorderRadius.circular(10),
+                      border: Border.all(
+                        color: isSelected
+                            ? AppColors.error.withValues(alpha: 0.6)
+                            : (isDark ? AppColors.darkBorder : AppColors.border),
+                        width: isSelected ? 1.2 : 0.8,
+                      ),
+                    ),
+                    child: Row(
+                      children: [
+                        Icon(
+                          isSelected
+                              ? Icons.radio_button_checked
+                              : Icons.radio_button_off,
+                          size: 18,
+                          color: isSelected ? AppColors.error : Colors.grey,
+                        ),
+                        const SizedBox(width: 10),
+                        Expanded(
+                          child: Text(
+                            reason,
+                            style: AppTextStyles.body(
+                              color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                            ).copyWith(
+                              fontSize: 13,
+                              fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                );
+              }),
+
+              // If 'Other reason' is selected, show optional feedback input
+              if (_selectedReason == 'Other reason') ...[
+                const SizedBox(height: 8),
+                TextField(
+                  controller: _feedbackController,
+                  enabled: !_isDeleting,
+                  maxLines: 2,
+                  style: AppTextStyles.input(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  ),
+                  decoration: InputDecoration(
+                    hintText: 'Tell us more (optional)...',
+                    hintStyle: AppTextStyles.hint(
+                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                    ),
+                    filled: true,
+                    fillColor: isDark ? const Color(0xFF1E1C2A) : Colors.white,
+                    contentPadding: const EdgeInsets.all(12),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                      ),
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(10),
+                      borderSide: BorderSide(
+                        color: isDark ? AppColors.darkBorder : AppColors.border,
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+
+              const SizedBox(height: 16),
+
+              // Consequences / Warning Box
+              Container(
+                width: double.infinity,
+                padding: const EdgeInsets.all(14),
+                decoration: BoxDecoration(
+                  color: isDark
+                      ? const Color(0xFF2A1515)
+                      : const Color(0xFFFFF0F0),
+                  borderRadius: BorderRadius.circular(12),
+                  border: Border.all(
+                    color: AppColors.error.withValues(alpha: 0.35),
+                  ),
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Row(
+                      children: [
+                        const Icon(
+                          Icons.warning_amber_rounded,
+                          color: AppColors.error,
+                          size: 18,
+                        ),
+                        const SizedBox(width: 6),
+                        Text(
+                          'Consequences of Deletion',
+                          style: AppTextStyles.cardTitle(
+                            color: AppColors.error,
+                          ).copyWith(fontSize: 13),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    _buildWarningBullet(
+                      'All wallet cashback and pending rewards will be forfeited.',
+                      isDark,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildWarningBullet(
+                      'Your order history, coupons, and referral bonuses will be deleted.',
+                      isDark,
+                    ),
+                    const SizedBox(height: 4),
+                    _buildWarningBullet(
+                      'You cannot recover or reactivate this account once deleted.',
+                      isDark,
+                    ),
+                  ],
+                ),
+              ),
+
+              const SizedBox(height: 14),
+
+              // Acknowledge Checkbox
+              CheckboxListTile(
+                contentPadding: EdgeInsets.zero,
+                dense: true,
+                value: _confirmAcknowledge,
+                activeColor: AppColors.error,
+                onChanged: _isDeleting
+                    ? null
+                    : (val) => setState(() => _confirmAcknowledge = val ?? false),
+                controlAffinity: ListTileControlAffinity.leading,
+                title: Text(
+                  'I understand that this action is permanent and all my cashback data will be lost.',
+                  style: AppTextStyles.caption(
+                    color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                  ).copyWith(fontSize: 12),
+                ),
+              ),
+
+              const SizedBox(height: 18),
+
+              // Action Buttons
+              Row(
+                children: [
+                  Expanded(
+                    child: OutlinedButton(
+                      onPressed: _isDeleting ? null : () => Navigator.of(context).pop(),
+                      style: OutlinedButton.styleFrom(
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                        ),
+                        side: BorderSide(
+                          color: isDark ? AppColors.darkBorder : AppColors.border,
+                        ),
+                      ),
+                      child: Text(
+                        'Keep Account',
+                        style: AppTextStyles.buttonText(
+                          color: isDark ? AppColors.darkTextPrimary : AppColors.textPrimary,
+                        ).copyWith(fontSize: 14),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(width: 12),
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: (_confirmAcknowledge && !_isDeleting)
+                          ? _handleDelete
+                          : null,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: AppColors.error,
+                        disabledBackgroundColor: AppColors.error.withValues(alpha: 0.3),
+                        foregroundColor: Colors.white,
+                        padding: const EdgeInsets.symmetric(vertical: 13),
+                        elevation: 0,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
+                        ),
+                      ),
+                      child: _isDeleting
+                          ? const SizedBox(
+                              width: 20,
+                              height: 20,
+                              child: CircularProgressIndicator(
+                                strokeWidth: 2,
+                                color: Colors.white,
+                              ),
+                            )
+                          : Text(
+                              'Delete Account',
+                              style: AppTextStyles.buttonText(
+                                color: Colors.white,
+                              ).copyWith(fontSize: 14),
+                            ),
+                    ),
+                  ),
+                ],
+              ),
+              const SizedBox(height: 10),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _buildWarningBullet(String text, bool isDark) {
+    return Row(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          '• ',
+          style: TextStyle(
+            color: AppColors.error.withValues(alpha: 0.8),
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        Expanded(
+          child: Text(
+            text,
+            style: AppTextStyles.caption(
+              color: isDark ? AppColors.darkTextSecondary : AppColors.textSecondary,
+            ).copyWith(fontSize: 11.5),
+          ),
+        ),
+      ],
     );
   }
 }

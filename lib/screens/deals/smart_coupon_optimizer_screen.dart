@@ -113,8 +113,8 @@ class _SmartCouponOptimizerScreenState
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
@@ -127,7 +127,7 @@ class _SmartCouponOptimizerScreenState
             color: textDark,
           ),
         ),
-        backgroundColor: isDark ? AppColors.darkSurface : AppColors.cardBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.cardBackground,
         elevation: 0,
         iconTheme: IconThemeData(color: textDark),
         actions: [
@@ -147,7 +147,7 @@ class _SmartCouponOptimizerScreenState
             decoration: BoxDecoration(
               gradient: LinearGradient(
                 colors: isDark
-                    ? [const Color(0xFF132247), const Color(0xFF1C2D5A)]
+                    ? [AppColors.darkCard, AppColors.darkSurface]
                     : [const Color(0xFFF9F1E8), const Color(0xFFF1F5F9)],
               ),
               borderRadius: BorderRadius.circular(14),
@@ -158,13 +158,13 @@ class _SmartCouponOptimizerScreenState
                 Container(
                   padding: const EdgeInsets.all(8),
                   decoration: BoxDecoration(
-                    color: (isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown)
+                    color: (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
                         .withValues(alpha: 0.15),
                     borderRadius: BorderRadius.circular(8),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.auto_awesome_rounded,
-                    color: AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     size: 20,
                   ),
                 ),
@@ -321,7 +321,7 @@ class _SmartCouponOptimizerScreenState
                     },
                     backgroundColor: isCurrent
                         ? AppColors.primaryBrown.withValues(alpha: 0.15)
-                        : (isDark ? const Color(0xFF132247) : const Color(0xFFF3EFE9)),
+                        : (isDark ? AppColors.darkCard : const Color(0xFFF3EFE9)),
                     labelStyle: GoogleFonts.plusJakartaSans(
                       fontSize: 11.5,
                       fontWeight: FontWeight.w600,
@@ -494,13 +494,13 @@ class _SmartCouponOptimizerScreenState
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF132247) : const Color(0xFFF1F5F9),
+              color: isDark ? AppColors.darkCard : const Color(0xFFF1F5F9),
               borderRadius: BorderRadius.circular(14),
               border: Border.all(color: borderColor),
             ),
             child: Column(
               children: [
-                const Icon(Icons.info_outline_rounded, color: AppColors.primaryBrown, size: 28),
+                Icon(Icons.info_outline_rounded, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown, size: 28),
                 const SizedBox(height: 8),
                 Text(
                   'No direct coupons eligible for ₹${summary.cartValue.toInt()} yet.',
@@ -627,10 +627,10 @@ class _SmartCouponOptimizerScreenState
                       child: Container(
                         padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1E1712) : Colors.white,
+                          color: isDark ? AppColors.darkSurface : Colors.white,
                           borderRadius: BorderRadius.circular(10),
                           border: Border.all(
-                            color: isDark ? const Color(0xFF5A4434) : const Color(0xFFE2E8F0),
+                            color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                             style: BorderStyle.solid,
                             width: 1.2,
                           ),
@@ -926,7 +926,7 @@ class _SmartCouponOptimizerScreenState
       margin: const EdgeInsets.only(bottom: 10),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF132247) : Colors.white,
+        color: isDark ? AppColors.darkCard : Colors.white,
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: borderColor, width: 0.8),
       ),
@@ -941,7 +941,7 @@ class _SmartCouponOptimizerScreenState
                     Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF33261D) : const Color(0xFFF5ECE2),
+                        color: isDark ? AppColors.darkSurface : const Color(0xFFF5ECE2),
                         borderRadius: BorderRadius.circular(6),
                       ),
                       child: Text(

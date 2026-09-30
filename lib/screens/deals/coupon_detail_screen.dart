@@ -37,15 +37,15 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
         behavior: SnackBarBehavior.floating,
-        backgroundColor: const Color(0xFF1E1712),
+        backgroundColor: Theme.of(context).brightness == Brightness.dark ? AppColors.darkCard : const Color(0xFF1E1712),
         duration: const Duration(seconds: 2),
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         content: Row(
           children: [
             Container(
               padding: const EdgeInsets.all(4),
-              decoration: const BoxDecoration(
-                color: Color(0xFF16A34A),
+              decoration: BoxDecoration(
+                color: Theme.of(context).brightness == Brightness.dark ? AppColors.darkSuccess : const Color(0xFF16A34A),
                 shape: BoxShape.circle,
               ),
               child: const Icon(Icons.check, color: Colors.white, size: 14),
@@ -143,7 +143,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
     return Scaffold(
       backgroundColor: bg,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
@@ -193,10 +193,10 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                           height: 84,
                           padding: const EdgeInsets.all(12),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF2C2018) : Colors.white,
+                            color: isDark ? AppColors.darkSurface : Colors.white,
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
-                              color: isDark ? const Color(0xFF5A4435) : const Color(0xFFE2E8F0),
+                              color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                               width: 1.2,
                             ),
                             boxShadow: [
@@ -322,10 +322,10 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.all(16),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF281C15) : const Color(0xFFFBF4EB),
+                      color: isDark ? AppColors.darkSurface : const Color(0xFFFBF4EB),
                       borderRadius: BorderRadius.circular(16),
                       border: Border.all(
-                        color: isDark ? const Color(0xFF6B4D36) : const Color(0xFFDFCABA),
+                        color: isDark ? AppColors.darkBorder : const Color(0xFFDFCABA),
                         width: 1.4,
                       ),
                     ),
@@ -351,10 +351,10 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                           decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF1E1510) : Colors.white,
+                            color: isDark ? AppColors.darkCard : Colors.white,
                             borderRadius: BorderRadius.circular(12),
                             border: Border.all(
-                              color: isDark ? const Color(0xFF7A5940) : const Color(0xFFD4BBA5),
+                              color: isDark ? AppColors.darkBorder : const Color(0xFFD4BBA5),
                               width: 1.5,
                             ),
                           ),
@@ -575,17 +575,17 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                         onPressed: _handleCopyCode,
                         style: OutlinedButton.styleFrom(
                           side: BorderSide(
-                            color: _isCopied ? const Color(0xFF16A34A) : primaryAccent,
+                            color: _isCopied ? (isDark ? AppColors.darkSuccess : const Color(0xFF16A34A)) : primaryAccent,
                             width: 1.4,
                           ),
-                          foregroundColor: _isCopied ? const Color(0xFF16A34A) : primaryAccent,
+                          foregroundColor: _isCopied ? (isDark ? AppColors.darkSuccess : const Color(0xFF16A34A)) : primaryAccent,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           padding: const EdgeInsets.symmetric(horizontal: 10),
                         ),
                         icon: Icon(
                           _isCopied ? Icons.check_circle_rounded : Icons.copy_rounded,
                           size: 16,
-                          color: _isCopied ? const Color(0xFF16A34A) : primaryAccent,
+                          color: _isCopied ? (isDark ? AppColors.darkSuccess : const Color(0xFF16A34A)) : primaryAccent,
                         ),
                         label: Text(
                           _isCopied ? 'COPIED!' : 'Copy Code',
@@ -608,7 +608,7 @@ class _CouponDetailScreenState extends State<CouponDetailScreen> {
                         onPressed: _handleGoToStore,
                         style: ElevatedButton.styleFrom(
                           backgroundColor: primaryAccent,
-                          foregroundColor: Colors.white,
+                          foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                           shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                           elevation: 0,
                           padding: const EdgeInsets.symmetric(horizontal: 10),

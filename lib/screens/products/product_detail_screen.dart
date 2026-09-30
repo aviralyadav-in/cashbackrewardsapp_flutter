@@ -54,6 +54,9 @@ class ProductDetailScreen extends StatefulWidget {
   final String? customAffiliateUrl;
   final double? customRating;
   final int? customStock;
+  final double? customCouponDiscount;
+  final String? customCouponCode;
+  final String? customStoreName;
 
   const ProductDetailScreen({
     super.key,
@@ -86,6 +89,9 @@ class ProductDetailScreen extends StatefulWidget {
     this.customAffiliateUrl,
     this.customRating,
     this.customStock,
+    this.customCouponDiscount,
+    this.customCouponCode,
+    this.customStoreName,
   });
 
   static final RegExp _emojiRegExp = RegExp(
@@ -96,6 +102,84 @@ class ProductDetailScreen extends StatefulWidget {
   /// Strips emojis from titles and section headings to ensure a clean theme appearance.
   static String cleanTitle(String text) {
     return text.replaceAll(_emojiRegExp, '').trim();
+  }
+
+  /// Maps category or brand keywords to a realistic top Indian e-commerce store.
+  static String resolveStoreFromCategory(String? category, String? brand) {
+    final cat = (category ?? '').toLowerCase();
+    final br = (brand ?? '').toLowerCase();
+    if (cat.contains('beauty') || cat.contains('fragrance') || cat.contains('skincare') || cat.contains('cosmetic')) {
+      return 'Nykaa';
+    }
+    if (cat.contains('shirt') ||
+        cat.contains('dress') ||
+        cat.contains('shoe') ||
+        cat.contains('top') ||
+        cat.contains('fashion') ||
+        cat.contains('cloth') ||
+        cat.contains('footwear') ||
+        cat.contains('bag') ||
+        br.contains('nike') ||
+        br.contains('adidas') ||
+        br.contains('puma') ||
+        br.contains('zara')) {
+      return 'Myntra';
+    }
+    if (cat.contains('phone') ||
+        cat.contains('smart') ||
+        cat.contains('mobile') ||
+        cat.contains('laptop') ||
+        br.contains('apple') ||
+        br.contains('samsung')) {
+      return 'Flipkart';
+    }
+    return 'Amazon';
+  }
+
+  /// Resolves a verified coupon for any store deal based on the store name and cart value,
+  /// matching the high-value deals shown in "Best Deals For You".
+  static ({double discount, String code}) resolveStoreCoupon({
+    required String store,
+    required double storePrice,
+    String? category,
+  }) {
+    if (storePrice < 300) {
+      return (discount: 0.0, code: '');
+    }
+    final s = store.toLowerCase();
+    if (s.contains('myntra')) {
+      if (storePrice >= 4000) return (discount: 500.0, code: 'MYNTRA500');
+      if (storePrice >= 2000) return (discount: 300.0, code: 'MYNTRANEW');
+      if (storePrice >= 1000) return (discount: 150.0, code: 'MYNTRA150');
+      return (discount: 50.0, code: 'MYNTRA50');
+    } else if (s.contains('ajio')) {
+      if (storePrice >= 3500) return (discount: 500.0, code: 'TRENDS500');
+      if (storePrice >= 2000) return (discount: 250.0, code: 'AJIOMAN10');
+      if (storePrice >= 1000) return (discount: 150.0, code: 'AJIO150');
+      return (discount: 50.0, code: 'AJIO50');
+    } else if (s.contains('flipkart')) {
+      if (storePrice >= 5000) return (discount: 500.0, code: 'FLIPKART500');
+      if (storePrice >= 2000) return (discount: 200.0, code: 'FKDEAL200');
+      if (storePrice >= 1000) return (discount: 100.0, code: 'FLIP100');
+      return (discount: 50.0, code: 'FK50');
+    } else if (s.contains('amazon')) {
+      if (storePrice >= 5000) return (discount: 500.0, code: 'PRIME500');
+      if (storePrice >= 2000) return (discount: 250.0, code: 'AMZTECH250');
+      if (storePrice >= 1000) return (discount: 100.0, code: 'AMAZON100');
+      return (discount: 50.0, code: 'AMZ50');
+    } else if (s.contains('nykaa')) {
+      if (storePrice >= 2000) return (discount: 300.0, code: 'NYKAA300');
+      return (discount: 100.0, code: 'NYKAA100');
+    } else if (s.contains('croma')) {
+      if (storePrice >= 5000) return (discount: 500.0, code: 'CROMA500');
+      return (discount: 200.0, code: 'CROMA200');
+    } else {
+      // General brand or store
+      if (storePrice >= 5000) return (discount: 500.0, code: 'SAVE500');
+      if (storePrice >= 2500) return (discount: 250.0, code: 'SAVE250');
+      if (storePrice >= 1200) return (discount: 150.0, code: 'SAVE150');
+      return (discount: 50.0, code: 'SAVE50');
+    }
   }
 
   /// Factory for CategoryDealModel (from Category/Subcategory shopping journey)
@@ -671,8 +755,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         StoreDealOption(
           storeName: 'Amazon',
           storePrice: (basePrice * 1.08).roundToDouble(),
-          couponDiscount: 0.0,
-          couponCode: '',
+          couponDiscount: coupon > 0 ? (coupon * 0.5).roundToDouble() : 100.0,
+          couponCode: coupon > 0 ? 'AMZ${(coupon * 0.5).toInt()}' : 'AMAZON100',
           cashbackRate: 5.0,
           exactCashbackAmount: null,
           storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
@@ -683,8 +767,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         StoreDealOption(
           storeName: 'Flipkart',
           storePrice: (basePrice * 1.10).roundToDouble(),
-          couponDiscount: 0.0,
-          couponCode: '',
+          couponDiscount: coupon > 0 ? (coupon * 0.6).roundToDouble() : 150.0,
+          couponCode: coupon > 0 ? 'FK${(coupon * 0.6).toInt()}' : 'FLIP150',
           cashbackRate: 4.0,
           exactCashbackAmount: null,
           storeDiscount: storeDisc > 0 ? (storeDisc * 0.4).roundToDouble() : 0.0,
@@ -836,8 +920,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         StoreDealOption(
           storeName: 'Amazon',
           storePrice: (basePrice * 1.12).roundToDouble(),
-          couponDiscount: 0.0,
-          couponCode: '',
+          couponDiscount: coupon > 0 ? (coupon * 0.5).roundToDouble() : 100.0,
+          couponCode: coupon > 0 ? 'AMZ${(coupon * 0.5).toInt()}' : 'AMAZON100',
           cashbackRate: 6.0,
           exactCashbackAmount: null,
           storeDiscount: storeDisc > 0 ? (storeDisc * 0.5).roundToDouble() : 0.0,
@@ -848,8 +932,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
         StoreDealOption(
           storeName: 'Flipkart',
           storePrice: (basePrice * 1.15).roundToDouble(),
-          couponDiscount: 0.0,
-          couponCode: '',
+          couponDiscount: coupon > 0 ? (coupon * 0.6).roundToDouble() : 150.0,
+          couponCode: coupon > 0 ? 'FK${(coupon * 0.6).toInt()}' : 'FLIP150',
           cashbackRate: 5.0,
           exactCashbackAmount: null,
           storeDiscount: storeDisc > 0 ? (storeDisc * 0.4).roundToDouble() : 0.0,
@@ -940,8 +1024,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       StoreDealOption(
         storeName: altStore,
         storePrice: (basePrice * 1.06).roundToDouble(),
-        couponDiscount: (defaultCoupon * 0.7).roundToDouble(),
-        couponCode: defaultCoupon > 0 ? 'SAVE${(defaultCoupon * 0.7).toInt()}' : '',
+        couponDiscount: defaultCoupon > 0 ? (defaultCoupon * 0.7).roundToDouble() : 150.0,
+        couponCode: defaultCoupon > 0 ? 'SAVE${(defaultCoupon * 0.7).toInt()}' : 'STORE150',
         cashbackRate: (defaultCbRate * 0.8).roundToDouble(),
         exactCashbackAmount: null,
         storeDiscount: null,
@@ -952,8 +1036,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       StoreDealOption(
         storeName: 'Amazon',
         storePrice: (basePrice * 1.12).roundToDouble(),
-        couponDiscount: 0.0,
-        couponCode: '',
+        couponDiscount: defaultCoupon > 0 ? (defaultCoupon * 0.5).roundToDouble() : 100.0,
+        couponCode: defaultCoupon > 0 ? 'AMZ${(defaultCoupon * 0.5).toInt()}' : 'AMAZON100',
         cashbackRate: 5.0,
         exactCashbackAmount: null,
         storeDiscount: null,
@@ -964,8 +1048,8 @@ class _ProductDetailScreenState extends State<ProductDetailScreen> {
       StoreDealOption(
         storeName: 'Flipkart',
         storePrice: (basePrice * 1.15).roundToDouble(),
-        couponDiscount: 0.0,
-        couponCode: '',
+        couponDiscount: defaultCoupon > 0 ? (defaultCoupon * 0.6).roundToDouble() : 150.0,
+        couponCode: defaultCoupon > 0 ? 'FK${(defaultCoupon * 0.6).toInt()}' : 'FLIP150',
         cashbackRate: 4.0,
         exactCashbackAmount: null,
         storeDiscount: null,
@@ -1134,15 +1218,15 @@ $shareLink
     String? productId,
     String? imageUrl,
   }) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final buttonTextColor = isDark ? AppColors.darkButtonText : Colors.white;
 
     return Container(
       decoration: BoxDecoration(
         color: isDark ? AppColors.darkCard : Colors.white,
         border: Border(
           top: BorderSide(
-            color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+            color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
             width: 1,
           ),
         ),
@@ -1447,9 +1531,17 @@ $shareLink
                                 ? '${amazonDeal.rewardPercentage.toStringAsFixed(0)}% OFF'
                                 : null))))));
 
-    final displayStoreName = brandName.isNotEmpty
-        ? brandName
-        : (category.isNotEmpty ? category : 'Store');
+    final displayStoreName = (widget.customStoreName != null && widget.customStoreName!.isNotEmpty)
+        ? widget.customStoreName!
+        : (bestDeal?.store ??
+            categoryDeal?.store ??
+            trendingDeal?.store ??
+            priceDrop?.store ??
+            homeOffer?.store ??
+            offerItem?.storeName ??
+            (product != null
+                ? ProductDetailScreen.resolveStoreFromCategory(product.category, product.brand)
+                : (brandName.isNotEmpty ? brandName : (category.isNotEmpty ? category : 'Store'))));
 
     final isCard = ProductDetailScreen.isCreditCard(displayStoreName, category);
     final isLoan = ProductDetailScreen.isLoan(displayStoreName, category);
@@ -1469,6 +1561,15 @@ $shareLink
       defaultCouponCode = bestDeal.couponCode.isNotEmpty
           ? bestDeal.couponCode
           : (defaultCouponDiscount > 0 ? 'SAVE${defaultCouponDiscount.toInt()}' : '');
+      if (defaultCouponDiscount <= 0 && baseStorePrice >= 300) {
+        final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+          store: bestDeal.store,
+          storePrice: baseStorePrice,
+          category: bestDeal.category,
+        );
+        defaultCouponDiscount = autoCoupon.discount;
+        defaultCouponCode = autoCoupon.code;
+      }
       defaultCashbackRate = bestDeal.cashbackPercentage > 0 ? bestDeal.cashbackPercentage : 10.0;
       exactCustomCashback = bestDeal.cashbackAmount > 0 ? bestDeal.cashbackAmount : null;
     } else if (categoryDeal != null) {
@@ -1478,6 +1579,15 @@ $shareLink
       defaultCouponCode = categoryDeal.couponCode.isNotEmpty
           ? categoryDeal.couponCode
           : (defaultCouponDiscount > 0 ? 'FASHION${defaultCouponDiscount.toInt()}' : '');
+      if (defaultCouponDiscount <= 0 && baseStorePrice >= 300) {
+        final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+          store: categoryDeal.store,
+          storePrice: baseStorePrice,
+          category: categoryDeal.subcategoryId ?? category,
+        );
+        defaultCouponDiscount = autoCoupon.discount;
+        defaultCouponCode = autoCoupon.code;
+      }
       defaultCashbackRate = categoryDeal.cashbackPercentage > 0 ? categoryDeal.cashbackPercentage : 10.0;
       if (categoryDeal.cashbackAmount > 0) {
         exactCustomCashback = categoryDeal.cashbackAmount;
@@ -1485,8 +1595,13 @@ $shareLink
     } else if (trendingDeal != null) {
       baseStorePrice = trendingDeal.price;
       rawOriginalPrice = trendingDeal.originalPrice > 0 ? trendingDeal.originalPrice : trendingDeal.price;
-      defaultCouponDiscount = 0.0;
-      defaultCouponCode = '';
+      final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+        store: displayStoreName,
+        storePrice: baseStorePrice,
+        category: category,
+      );
+      defaultCouponDiscount = autoCoupon.discount;
+      defaultCouponCode = autoCoupon.code;
       defaultCashbackRate = trendingDeal.cashbackAmount > 0 && trendingDeal.price > 0
           ? ((trendingDeal.cashbackAmount / trendingDeal.price) * 100).roundToDouble().clamp(1.0, 30.0)
           : 8.0;
@@ -1494,8 +1609,13 @@ $shareLink
     } else if (priceDrop != null) {
       baseStorePrice = priceDrop.nowPrice;
       rawOriginalPrice = priceDrop.wasPrice;
-      defaultCouponDiscount = 0.0;
-      defaultCouponCode = '';
+      final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+        store: displayStoreName,
+        storePrice: baseStorePrice,
+        category: category,
+      );
+      defaultCouponDiscount = autoCoupon.discount;
+      defaultCouponCode = autoCoupon.code;
       defaultCashbackRate = priceDrop.cashbackAmount > 0 && priceDrop.nowPrice > 0
           ? ((priceDrop.cashbackAmount / priceDrop.nowPrice) * 100).roundToDouble().clamp(1.0, 30.0)
           : 6.0;
@@ -1513,8 +1633,13 @@ $shareLink
     } else if (offerItem != null) {
       baseStorePrice = ProductDetailScreen._parseNumericPrice(discountedPrice, fallback: 999.0);
       rawOriginalPrice = ProductDetailScreen._parseNumericPrice(originalPrice, fallback: baseStorePrice);
-      defaultCouponDiscount = 0.0;
-      defaultCouponCode = '';
+      final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+        store: displayStoreName,
+        storePrice: baseStorePrice,
+        category: category,
+      );
+      defaultCouponDiscount = autoCoupon.discount;
+      defaultCouponCode = autoCoupon.code;
       final cbMatch = RegExp(r'(\d+)%').firstMatch(offerItem.cashbackTag);
       defaultCashbackRate = cbMatch != null ? (double.tryParse(cbMatch.group(1)!) ?? 8.0) : 8.0;
       final cbRupeeMatch = RegExp(r'₹(\d+)').firstMatch(offerItem.cashbackTag);
@@ -1524,8 +1649,13 @@ $shareLink
     } else if (product != null) {
       baseStorePrice = (product.finalPrice * 83).toDouble();
       rawOriginalPrice = (product.originalPrice * 83).toDouble();
-      defaultCouponDiscount = 0.0;
-      defaultCouponCode = '';
+      final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+        store: displayStoreName,
+        storePrice: baseStorePrice,
+        category: category,
+      );
+      defaultCouponDiscount = autoCoupon.discount;
+      defaultCouponCode = autoCoupon.code;
       defaultCashbackRate = product.discountPercentage > 0 ? product.discountPercentage : 10.0;
     } else if (amazonDeal != null) {
       baseStorePrice = amazonDeal.actualPrice.toDouble();
@@ -1537,8 +1667,21 @@ $shareLink
     } else {
       baseStorePrice = ProductDetailScreen._parseNumericPrice(discountedPrice, fallback: 999.0);
       rawOriginalPrice = ProductDetailScreen._parseNumericPrice(originalPrice, fallback: baseStorePrice);
-      defaultCouponDiscount = 0.0;
-      defaultCouponCode = '';
+      if (widget.customCouponDiscount != null && widget.customCouponDiscount! > 0) {
+        defaultCouponDiscount = widget.customCouponDiscount!;
+        defaultCouponCode = widget.customCouponCode ?? 'COUPON';
+      } else if (baseStorePrice >= 300) {
+        final autoCoupon = ProductDetailScreen.resolveStoreCoupon(
+          store: displayStoreName,
+          storePrice: baseStorePrice,
+          category: category,
+        );
+        defaultCouponDiscount = autoCoupon.discount;
+        defaultCouponCode = autoCoupon.code;
+      } else {
+        defaultCouponDiscount = 0.0;
+        defaultCouponCode = '';
+      }
       defaultCashbackRate = 10.0;
     }
 
@@ -1546,6 +1689,9 @@ $shareLink
       final customFinalNum = ProductDetailScreen._parseNumericPrice(widget.customFinalPrice, fallback: 0.0);
       if (customFinalNum > 0 && baseStorePrice > customFinalNum) {
         exactCustomCashback = (baseStorePrice - customFinalNum - defaultCouponDiscount).clamp(0.0, baseStorePrice);
+        if (exactCustomCashback == 0 && (baseStorePrice - customFinalNum) > 0) {
+          exactCustomCashback = (baseStorePrice - customFinalNum);
+        }
       }
     }
 
@@ -1632,8 +1778,8 @@ $shareLink
 
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final double activeStorePrice = lowestStore?.storePrice ?? rawStorePrice;
     final bool isLowestEligible = (lowestStore?.exactCashbackAmount != null && lowestStore!.exactCashbackAmount! > 0) ||
         (exactCustomCashback != null && exactCustomCashback > 0) ||
@@ -1681,7 +1827,7 @@ $shareLink
           ),
           onPressed: () => Navigator.of(context).pop(),
         ),
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
@@ -1844,6 +1990,8 @@ $shareLink
                       storePrice: activeStorePrice,
                       rawOriginalPrice: rawOriginalPrice,
                       cashback: activeCashback,
+                      couponSavings: activeCouponSavings,
+                      couponCode: (lowestStore?.couponCode.isNotEmpty ?? false) ? lowestStore!.couponCode : couponCode,
                       discountPercent: discountPercent,
                       storeName: displayStoreName,
                       isDark: isDark,
@@ -1991,6 +2139,8 @@ $shareLink
     required double storePrice,
     required double rawOriginalPrice,
     required double cashback,
+    double couponSavings = 0.0,
+    String couponCode = '',
     required int discountPercent,
     required String storeName,
     required bool isDark,
@@ -2110,10 +2260,10 @@ $shareLink
               width: double.infinity,
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1E3A8A).withValues(alpha: 0.35) : const Color(0xFFEFF6FF),
+                color: isDark ? AppColors.darkPrimary.withValues(alpha: 0.15) : const Color(0xFFEFF6FF),
                 borderRadius: BorderRadius.circular(8),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF2563EB).withValues(alpha: 0.3) : const Color(0xFFBFDBFE),
+                  color: isDark ? AppColors.darkPrimary.withValues(alpha: 0.3) : const Color(0xFFBFDBFE),
                   width: 0.8,
                 ),
               ),
@@ -2122,7 +2272,7 @@ $shareLink
                   Icon(
                     Icons.bolt_rounded,
                     size: 16,
-                    color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1D4ED8),
+                    color: isDark ? AppColors.darkPrimary : const Color(0xFF1D4ED8),
                   ),
                   const SizedBox(width: 6),
                   Expanded(
@@ -2132,6 +2282,43 @@ $shareLink
                         fontSize: 11.5,
                         fontWeight: FontWeight.w700,
                         color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ],
+
+          // 4. Coupon Applied Pill (Just like in Best Deals for You)
+          if (couponSavings > 0) ...[
+            const SizedBox(height: 6),
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+              decoration: BoxDecoration(
+                color: isDark ? const Color(0xFF143823) : const Color(0xFFECFDF5),
+                borderRadius: BorderRadius.circular(8),
+                border: Border.all(
+                  color: isDark ? const Color(0xFF059669).withValues(alpha: 0.35) : const Color(0xFFA7F3D0),
+                  width: 0.8,
+                ),
+              ),
+              child: Row(
+                children: [
+                  Icon(
+                    Icons.confirmation_num_outlined,
+                    size: 15,
+                    color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
+                  ),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Text(
+                      '₹${couponSavings.toInt()} Coupon discount applied (${couponCode.isNotEmpty ? couponCode : "ACTIVE"})',
+                      style: GoogleFonts.plusJakartaSans(
+                        fontSize: 11.5,
+                        fontWeight: FontWeight.w700,
+                        color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
                       ),
                     ),
                   ),
@@ -2150,8 +2337,8 @@ $shareLink
     bool isDark,
   ) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       width: double.infinity,
@@ -2305,8 +2492,8 @@ $shareLink
   }
 
   Widget _buildCashbackStep(String step, String text, bool isDark) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? AppColors.darkButtonText : Colors.white;
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
     return Row(
@@ -2346,8 +2533,8 @@ $shareLink
   }
 
   Widget _buildRosetteDiscountBadge(int percent, bool isDark) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? AppColors.darkButtonText : Colors.white;
 
     return Container(
       height: 28,
@@ -2398,7 +2585,7 @@ $shareLink
   }
 
   Widget _buildDotIndicators(int count, int activeIndex, bool isDark) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
@@ -2421,14 +2608,14 @@ $shareLink
 
   Widget _buildSectionHeaderBar(String title, bool isDark) {
     final clean = ProductDetailScreen.cleanTitle(title);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
       decoration: BoxDecoration(
-        color: isDark ? const Color(0xFF132247) : const Color(0xFFF1F5F9),
+        color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
         borderRadius: BorderRadius.circular(8),
         border: Border.all(color: borderColor),
       ),
@@ -2622,8 +2809,8 @@ $shareLink
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
 
     // Use real MRP only — don't inflate when unavailable
@@ -2787,7 +2974,7 @@ $shareLink
                         Icon(
                           Icons.confirmation_num_outlined,
                           size: 13,
-                          color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                          color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -2795,7 +2982,7 @@ $shareLink
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
-                            color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                            color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                           ),
                         ),
                       ],
@@ -2805,7 +2992,7 @@ $shareLink
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
-                        color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                        color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                       ),
                     ),
                   ],
@@ -3062,8 +3249,8 @@ $shareLink
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
 
     // Use real MRP only — don't inflate when unavailable
@@ -3228,7 +3415,7 @@ $shareLink
                         Icon(
                           Icons.confirmation_num_outlined,
                           size: 13,
-                          color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                          color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                         ),
                         const SizedBox(width: 4),
                         Text(
@@ -3236,7 +3423,7 @@ $shareLink
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 12.5,
                             fontWeight: FontWeight.w600,
-                            color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                            color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                           ),
                         ),
                       ],
@@ -3246,7 +3433,7 @@ $shareLink
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
-                        color: isCouponActive ? const Color(0xFF2563EB) : textMuted,
+                        color: isCouponActive ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB)) : textMuted,
                       ),
                     ),
                   ],
@@ -3561,7 +3748,7 @@ $shareLink
                       ),
                     ),
                     trailing: isSelected
-                        ? const Icon(Icons.check_circle_rounded, color: AppColors.primaryBrown, size: 20)
+                        ? Icon(Icons.check_circle_rounded, color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown, size: 20)
                         : null,
                     onTap: () {
                       setState(() {
@@ -3661,7 +3848,7 @@ $shareLink
   }
 
   Widget _buildInfoRow(IconData icon, String title, String subtitle, bool isDark) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
@@ -3714,10 +3901,10 @@ $shareLink
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
-    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final buttonTextColor = isDark ? AppColors.darkButtonText : Colors.white;
 
     showModalBottomSheet(
       context: context,
@@ -3845,7 +4032,7 @@ $shareLink
                                             style: GoogleFonts.plusJakartaSans(
                                               fontSize: 10,
                                               fontWeight: FontWeight.w700,
-                                              color: AppColors.success,
+                                              color: isDark ? AppColors.darkSuccess : AppColors.success,
                                             ),
                                           ),
                                         ),
@@ -3913,10 +4100,10 @@ $shareLink
                                 children: [
                                   Row(
                                     children: [
-                                      const Icon(
+                                      Icon(
                                         Icons.shopping_bag_outlined,
                                         size: 14,
-                                        color: Color(0xFF2563EB),
+                                        color: isDark ? AppColors.darkPrimary : const Color(0xFF2563EB),
                                       ),
                                       const SizedBox(width: 5),
                                       Text(
@@ -3924,7 +4111,7 @@ $shareLink
                                         style: GoogleFonts.plusJakartaSans(
                                           fontSize: 12.5,
                                           fontWeight: FontWeight.w800,
-                                          color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                                          color: isDark ? AppColors.darkPrimary : const Color(0xFF1D4ED8),
                                         ),
                                       ),
                                     ],
@@ -3934,7 +4121,7 @@ $shareLink
                                     style: GoogleFonts.plusJakartaSans(
                                       fontSize: 14,
                                       fontWeight: FontWeight.w800,
-                                      color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                                      color: isDark ? AppColors.darkPrimary : const Color(0xFF1D4ED8),
                                     ),
                                   ),
                                 ],
@@ -3967,7 +4154,7 @@ $shareLink
                                       style: GoogleFonts.plusJakartaSans(
                                         fontSize: 11,
                                         fontWeight: FontWeight.w600,
-                                        color: AppColors.success,
+                                        color: isDark ? AppColors.darkSuccess : AppColors.success,
                                       ),
                                     ),
                                   ],
@@ -3977,7 +4164,7 @@ $shareLink
                                   style: GoogleFonts.inter(
                                     fontSize: 20,
                                     fontWeight: FontWeight.w900,
-                                    color: AppColors.success,
+                                    color: isDark ? AppColors.darkSuccess : AppColors.success,
                                   ),
                                 ),
                               ],
@@ -4019,7 +4206,7 @@ $shareLink
                               )
                             : Container(
                                 decoration: BoxDecoration(
-                                  color: isDark ? const Color(0xFF262626) : const Color(0xFFF1F5F9),
+                                  color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
                                   borderRadius: BorderRadius.circular(12),
                                   border: Border.all(
                                     color: isDark ? Colors.white12 : borderColor,
@@ -4087,7 +4274,7 @@ $shareLink
     final clean = ProductDetailScreen.cleanTitle(title);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       clipBehavior: Clip.antiAlias,
@@ -4151,7 +4338,7 @@ $shareLink
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -4347,7 +4534,7 @@ $shareLink
     required VoidCallback onTap,
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return InkWell(
       onTap: onTap,
@@ -4400,7 +4587,7 @@ $shareLink
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
               decoration: BoxDecoration(
-                color: AppColors.successBackground,
+                color: (isDark ? AppColors.darkSuccess : AppColors.success).withValues(alpha: 0.12),
                 borderRadius: BorderRadius.circular(3),
               ),
               child: Text(
@@ -4408,7 +4595,7 @@ $shareLink
                 style: GoogleFonts.plusJakartaSans(
                   fontSize: 9,
                   fontWeight: FontWeight.w700,
-                  color: AppColors.success,
+                  color: isDark ? AppColors.darkSuccess : AppColors.success,
                 ),
               ),
             ),
@@ -4429,10 +4616,10 @@ $shareLink
     required bool isDark,
   }) {
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final surfaceBeige = isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9);
-    final buttonTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final buttonTextColor = isDark ? AppColors.darkButtonText : Colors.white;
 
     showModalBottomSheet(
       context: context,
@@ -4721,8 +4908,8 @@ $shareLink
   }
 
   Widget _buildTrackingStepItem(String number, String title, bool isDark) {
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
-    final badgeTextColor = isDark ? const Color(0xFF0F172A) : Colors.white;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
+    final badgeTextColor = isDark ? AppColors.darkButtonText : Colors.white;
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
     return Row(

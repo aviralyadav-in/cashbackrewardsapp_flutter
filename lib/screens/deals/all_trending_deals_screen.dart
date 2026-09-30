@@ -36,11 +36,11 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     final allDeals = widget.deals.isNotEmpty
         ? widget.deals
@@ -59,14 +59,14 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: primaryAccent,
+            color: isDark ? AppColors.darkIconNormal : primaryAccent,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -98,11 +98,11 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
             // Search Input Field matching AllStoresScreen
             Container(
               padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
-              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+              color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
               child: Container(
                 height: 46,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1712) : Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: borderColor, width: 1),
                 ),
@@ -254,10 +254,10 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
                   height: 58,
                   padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                     shape: BoxShape.circle,
                     border: Border.all(
-                      color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                       width: 1,
                     ),
                   ),
@@ -313,10 +313,10 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
                   width: double.infinity,
                   padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 4.5),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF7EFE6),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFF7EFE6),
                     borderRadius: BorderRadius.circular(8),
                     border: Border.all(
-                      color: isDark ? const Color(0xFF5E4332) : const Color(0xFFE2D1C0),
+                      color: isDark ? AppColors.darkBorder : const Color(0xFFE2D1C0),
                     ),
                   ),
                   child: Text(
@@ -341,7 +341,7 @@ class _AllTrendingDealsScreenState extends State<AllTrendingDealsScreen> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryAccent,
-                      foregroundColor: Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       padding: EdgeInsets.zero,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),

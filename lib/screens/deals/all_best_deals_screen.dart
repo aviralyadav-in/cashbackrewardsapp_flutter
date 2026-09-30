@@ -36,11 +36,11 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     final q = _searchQuery.trim().toLowerCase();
     final filteredDeals = widget.deals.where((d) {
@@ -54,14 +54,14 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
         leading: IconButton(
           icon: Icon(
             Icons.arrow_back_ios_new_rounded,
-            color: primaryAccent,
+            color: isDark ? AppColors.darkIconNormal : primaryAccent,
             size: 20,
           ),
           onPressed: () => Navigator.of(context).pop(),
@@ -93,11 +93,11 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
             // Search Input Field matching AllStoresScreen
             Container(
               padding: const EdgeInsets.fromLTRB(16, 10, 16, 8),
-              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+              color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
               child: Container(
                 height: 46,
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1712) : Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(12),
                   border: Border.all(color: borderColor, width: 1),
                 ),
@@ -238,7 +238,7 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
                   ClipRRect(
                     borderRadius: const BorderRadius.vertical(top: Radius.circular(15)),
                     child: Container(
-                      color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                      color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                       child: NetworkImageWithSkeleton(
                         imageUrl: deal.imageUrl,
                         height: 106,
@@ -247,7 +247,7 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
                         errorBuilder: (context, error, stackTrace) => Container(
                           height: 106,
                           width: double.infinity,
-                          color: isDark ? const Color(0xFF1E1712) : const Color(0xFFF5EFE6),
+                          color: isDark ? AppColors.darkSurface : const Color(0xFFF5EFE6),
                           child: Center(
                             child: Icon(
                               Icons.local_offer_rounded,
@@ -289,7 +289,7 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF132247) : Colors.white,
+                        color: isDark ? AppColors.darkSurface : Colors.white,
                         borderRadius: BorderRadius.circular(6),
                         boxShadow: [
                           BoxShadow(
@@ -474,7 +474,7 @@ class _AllBestDealsScreenState extends State<AllBestDealsScreen> {
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryAccent,
-                      foregroundColor: Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
                       ),

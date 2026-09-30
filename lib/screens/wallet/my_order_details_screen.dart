@@ -254,14 +254,14 @@ class _MyOrderDetailsScreenState extends State<MyOrderDetailsScreen> {
               child: ElevatedButton(
                 onPressed: () => Navigator.of(ctx).pop(),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.primaryBrown,
-                  foregroundColor: AppColors.cardBackground,
+                  backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                  foregroundColor: isDark ? AppColors.darkButtonText : AppColors.cardBackground,
                   padding: const EdgeInsets.symmetric(vertical: 14),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
                   ),
                 ),
-                child: Text('Close', style: AppTextStyles.buttonText(color: AppColors.cardBackground)),
+                child: Text('Close', style: AppTextStyles.buttonText(color: isDark ? AppColors.darkButtonText : AppColors.cardBackground)),
               ),
             ),
           ],

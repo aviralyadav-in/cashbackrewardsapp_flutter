@@ -5,6 +5,7 @@ import 'package:provider/provider.dart';
 
 import '../../providers/user_provider.dart';
 import '../../services/auth_service.dart';
+import '../../services/deep_link_service.dart';
 import '../../services/storage_service.dart';
 import '../../theme/app_theme.dart';
 import '../home/home_screen.dart';
@@ -92,6 +93,17 @@ class _SplashScreenState extends State<SplashScreen>
         ),
       ),
     );
+
+    // After the destination screen is in place, handle any pending cold-start
+    // deep link (e.g. product share link clicked when app was closed).
+    final pendingUri = DeepLinkService().consumePendingUri();
+    if (pendingUri != null) {
+      debugPrint('[SPLASH] Consuming pending cold-start deep link: $pendingUri');
+      // Wait one frame so the destination screen is fully mounted
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        DeepLinkService().handleUri(pendingUri);
+      });
+    }
   }
 
   @override

@@ -56,14 +56,14 @@ class PriceDropsSection extends StatelessWidget {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                         ),
                       ),
                       const SizedBox(width: 2),
                       Icon(
                         Icons.chevron_right_rounded,
                         size: 16,
-                        color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ],
                   ),
@@ -98,8 +98,8 @@ class PriceDropsSection extends StatelessWidget {
     Color textDark,
     Color textMuted,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return InkWell(
       onTap: () => onItemTap(item),
@@ -144,7 +144,7 @@ class PriceDropsSection extends StatelessWidget {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w700,
-                      color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                     ),
                   ),
                   const SizedBox(height: 2),
@@ -168,7 +168,7 @@ class PriceDropsSection extends StatelessWidget {
                         style: GoogleFonts.inter(
                           fontSize: 14,
                           fontWeight: FontWeight.w800,
-                          color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1E3A8A),
+                          color: isDark ? AppColors.darkPrimary : const Color(0xFF1E3A8A),
                         ),
                       ),
                       const SizedBox(width: 4),
@@ -217,7 +217,7 @@ class PriceDropsSection extends StatelessWidget {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 9.5,
                           fontWeight: FontWeight.w600,
-                          color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                         ),
                       ),
                     ],

@@ -83,11 +83,11 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     final parentTitle = _data.subcategory.categoryName ?? widget.parentCategoryTitle ?? 'Category';
     final title = widget.subcategoryTitle;
@@ -117,7 +117,7 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
@@ -184,12 +184,12 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
                           decoration: BoxDecoration(
                             color: isSelected
                                 ? primaryAccent
-                                : (isDark ? const Color(0xFF281F19) : const Color(0xFFF3ECE4)),
+                                : (isDark ? AppColors.darkSurface : const Color(0xFFF3ECE4)),
                             borderRadius: BorderRadius.circular(20),
                             border: Border.all(
                               color: isSelected
                                   ? primaryAccent
-                                  : (isDark ? const Color(0xFF453528) : const Color(0xFFE2D4C6)),
+                                  : (isDark ? AppColors.darkBorder : const Color(0xFFE2D4C6)),
                             ),
                           ),
                           child: Center(
@@ -199,7 +199,7 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
                                 fontSize: 12,
                                 fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
                                 color: isSelected
-                                    ? Colors.white
+                                    ? (isDark ? AppColors.darkButtonText : Colors.white)
                                     : (isDark ? AppColors.darkTextPrimary : const Color(0xFF1E3A8A)),
                               ),
                             ),
@@ -216,7 +216,7 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
                     height: 42,
                     padding: const EdgeInsets.symmetric(vertical: 4),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                      color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                     ),
                     child: ListView.separated(
                       padding: const EdgeInsets.symmetric(horizontal: 16),
@@ -383,7 +383,7 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
                       width: 90,
                       height: 90,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                        color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: borderColor, width: 0.8),
                       ),
@@ -530,14 +530,14 @@ class _SubcategoryDetailScreenState extends State<SubcategoryDetailScreen> {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: Colors.green.shade700,
+                              color: isDark ? AppColors.darkSuccess : Colors.green.shade700,
                             ),
                           ),
                           const Spacer(),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: primaryAccent,
-                              foregroundColor: Colors.white,
+                              foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               visualDensity: VisualDensity.compact,
                               shape: RoundedRectangleBorder(

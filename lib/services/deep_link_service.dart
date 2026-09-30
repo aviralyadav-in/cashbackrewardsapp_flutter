@@ -19,22 +19,33 @@ class DeepLinkService {
   StreamSubscription<Uri>? _sub;
   GlobalKey<NavigatorState>? _navigatorKey;
 
+  /// Holds a cold-start URI that arrived before the app finished its
+  /// splash/auth routing. Consumed by SplashScreen after it has already
+  /// navigated to the correct destination screen.
+  Uri? _pendingColdUri;
+
+  /// Returns and clears the pending cold-start URI (if any).
+  Uri? consumePendingUri() {
+    final uri = _pendingColdUri;
+    _pendingColdUri = null;
+    return uri;
+  }
+
   /// Initializes deep linking listeners for cold launch and background resume
   Future<void> init(GlobalKey<NavigatorState> navigatorKey) async {
     _navigatorKey = navigatorKey;
 
     try {
-      // 1. Handle cold-start link (when app opened from completely closed state)
+      // 1. Cold-start link: save it for SplashScreen to consume AFTER auth
+      //    routing is complete, so we never push on top of the SplashScreen
+      //    (which would be wiped by the subsequent pushReplacement).
       final initialUri = await _appLinks.getInitialLink();
       if (initialUri != null) {
-        debugPrint('[DEEP LINK] Cold launch URI: $initialUri');
-        // Give the UI a frame to mount before navigating
-        WidgetsBinding.instance.addPostFrameCallback((_) {
-          handleUri(initialUri);
-        });
+        debugPrint('[DEEP LINK] Cold launch URI saved (pending): $initialUri');
+        _pendingColdUri = initialUri;
       }
 
-      // 2. Handle background / foreground link events
+      // 2. Handle background / foreground link events (app already running)
       _sub = _appLinks.uriLinkStream.listen(
         (uri) {
           debugPrint('[DEEP LINK] Incoming URI stream: $uri');
@@ -63,12 +74,16 @@ class DeepLinkService {
 
     debugPrint('[DEEP LINK] Handling host="$host", path="$path", params=$queryParams');
 
-    // Pattern 0: Shared Deal link from Hybrid Web landing page: kashiq://deal?referrerId=...&productId=...
+    // Pattern 0: Shared Deal link: kashiq://deal?title=...&store=...&price=...&cashback=...&img=...&pid=...&ref=...
     if (host == 'deal' || path.contains('/deal')) {
-      final referrerId = queryParams['referrerId'] ?? queryParams['ref'] ?? '';
-      final productId = queryParams['productId'] ?? queryParams['pid'] ?? '';
-      final storeName = queryParams['store'] ?? queryParams['storeName'] ?? '';
-      final title = queryParams['title'] ?? queryParams['productName'] ?? '';
+      final referrerId  = queryParams['referrerId'] ?? queryParams['ref'] ?? '';
+      final productId   = queryParams['productId']  ?? queryParams['pid'] ?? '';
+      final storeName   = queryParams['store']   ?? queryParams['storeName']   ?? '';
+      final title       = queryParams['title']   ?? queryParams['productName'] ?? '';
+      final imageUrl    = queryParams['img']      ?? queryParams['imageUrl']    ?? '';
+      final affiliateUrl = queryParams['affUrl'] ?? '';
+      final priceStr    = queryParams['price']    ?? '';
+      final cashbackStr = queryParams['cashback'] ?? '';
 
       // Persist referrer ID for attribution when user creates an account
       if (referrerId.isNotEmpty) {
@@ -85,6 +100,11 @@ class DeepLinkService {
               productId: productId.isNotEmpty ? productId : null,
               customTitle: title.isNotEmpty ? title : null,
               customBrandName: storeName.isNotEmpty ? storeName : null,
+              customStoreName: storeName.isNotEmpty ? storeName : null,
+              customImageUrl: imageUrl.isNotEmpty ? imageUrl : null,
+              customAffiliateUrl: affiliateUrl.isNotEmpty ? affiliateUrl : null,
+              customOriginalPrice: priceStr.isNotEmpty ? priceStr : null,
+              customCashbackTag: cashbackStr.isNotEmpty ? '₹$cashbackStr Cashback' : null,
             ),
           ),
         );
@@ -97,6 +117,7 @@ class DeepLinkService {
       }
       return;
     }
+
 
     // Pattern 1: Referral link: kashiq://referral?code=ABC1234
     if (host == 'referral' || path.contains('/referral')) {

@@ -207,9 +207,9 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (ctx) {
-        final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
+        final cardBg = isDark ? AppColors.darkCard : Colors.white;
         final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-        final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+        final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
         return Container(
           padding: const EdgeInsets.fromLTRB(20, 16, 20, 24),
@@ -263,10 +263,10 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFFAF2E7),
+                        color: isDark ? AppColors.darkSurface : const Color(0xFFFAF2E7),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                          color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                         ),
                       ),
                       child: Row(
@@ -309,11 +309,11 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     final categoryName = _categoryData.category.name.isNotEmpty ? _categoryData.category.name : (widget.categoryTitle ?? 'Category');
     final categoryDesc = _categoryData.category.description;
@@ -321,7 +321,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
     return Scaffold(
       backgroundColor: bgColor,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         centerTitle: true,
@@ -353,7 +353,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                     width: double.infinity,
                     padding: const EdgeInsets.fromLTRB(16, 12, 16, 14),
                     decoration: BoxDecoration(
-                      color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                      color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                       border: Border(
                         bottom: BorderSide(color: borderColor.withValues(alpha: 0.6), width: 0.8),
                       ),
@@ -489,7 +489,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                     width: 38,
                                     height: 38,
                                     decoration: BoxDecoration(
-                                      color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFFAF2E7),
+                                      color: isDark ? AppColors.darkSurface : const Color(0xFFFAF2E7),
                                       shape: BoxShape.circle,
                                     ),
                                     child: Center(
@@ -599,7 +599,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                                         height: 44,
                                         padding: const EdgeInsets.all(6),
                                         decoration: BoxDecoration(
-                                          color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                                          color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                                           shape: BoxShape.circle,
                                           border: Border.all(color: borderColor, width: 0.8),
                                         ),
@@ -796,7 +796,7 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                       width: 90,
                       height: 90,
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                        color: isDark ? AppColors.darkSurface : const Color(0xFFFAF6F0),
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(color: borderColor, width: 0.8),
                       ),
@@ -943,14 +943,14 @@ class _CategoryDetailScreenState extends State<CategoryDetailScreen> {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 11,
                               fontWeight: FontWeight.w700,
-                              color: Colors.green.shade700,
+                              color: isDark ? AppColors.darkSuccess : Colors.green.shade700,
                             ),
                           ),
                           const Spacer(),
                           ElevatedButton(
                             style: ElevatedButton.styleFrom(
                               backgroundColor: primaryAccent,
-                              foregroundColor: Colors.white,
+                              foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                               visualDensity: VisualDensity.compact,
                               shape: RoundedRectangleBorder(

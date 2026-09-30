@@ -493,8 +493,8 @@ class _PaymentsScreenState extends State<PaymentsScreen> {
                         icon: const Icon(Icons.account_balance_wallet_outlined, size: 16),
                         label: const Text('My Earnings'),
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: AppColors.primaryBrown,
-                          foregroundColor: Colors.white,
+                          backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
+                          foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                           padding: const EdgeInsets.symmetric(vertical: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),

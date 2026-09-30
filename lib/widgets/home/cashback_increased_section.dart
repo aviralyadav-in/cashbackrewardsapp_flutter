@@ -81,8 +81,8 @@ class CashbackIncreasedSection extends StatelessWidget {
   }
 
   Widget _buildIncreaseCard(BuildContext context, CashbackIncreaseModel item) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
@@ -198,7 +198,7 @@ class CashbackIncreasedSection extends StatelessWidget {
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 11,
                     fontWeight: FontWeight.w700,
-                    color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                   ),
                 ),
               ],

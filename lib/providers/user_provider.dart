@@ -490,6 +490,49 @@ class UserProvider extends ChangeNotifier {
     notifyListeners();
   }
 
+  /// Permanently deletes user account from server and clears local user session.
+  Future<Map<String, dynamic>> deleteAccount({
+    String? reason,
+    String? feedback,
+  }) async {
+    final currentUid = _user?.uid ?? await _storageService.getUserId() ?? '';
+    if (currentUid.isEmpty) {
+      return {'success': false, 'message': 'No active user found to delete.'};
+    }
+
+    _isLoading = true;
+    notifyListeners();
+
+    try {
+      final res = await _authService.deleteAccount(
+        userId: currentUid,
+        reason: reason,
+        feedback: feedback,
+      );
+
+      if (res['success'] == true) {
+        _user = null;
+        _walletTransactions = [];
+        _dailySpending = [];
+        _monthlySpending = [];
+        _totalSpendAllTime = 0.0;
+        _totalCashbackAllTime = 0.0;
+        _totalOrdersCount = 0;
+        _errorMessage = null;
+        await _authService.signOut();
+      }
+
+      _isLoading = false;
+      notifyListeners();
+      return res;
+    } catch (e) {
+      _isLoading = false;
+      _errorMessage = 'Failed to delete account: ${e.toString()}';
+      notifyListeners();
+      return {'success': false, 'message': _errorMessage!};
+    }
+  }
+
   /// Clears user session data on logout.
   Future<void> clearUser() async {
     _user = null;

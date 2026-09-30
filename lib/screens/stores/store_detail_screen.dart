@@ -303,15 +303,15 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
 
     if (mounted) {
       final isDark = Theme.of(context).brightness == Brightness.dark;
-      final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+      final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Row(
             children: [
-              Icon(
+              const Icon(
                 Icons.rocket_launch_rounded,
-                color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                color: Colors.white,
                 size: 18,
               ),
               const SizedBox(width: 8),
@@ -321,7 +321,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                   style: GoogleFonts.plusJakartaSans(
                     fontSize: 13,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                    color: Colors.white,
                   ),
                 ),
               ),
@@ -355,10 +355,11 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
 
   void _showCashbackRatesSheet(BuildContext context, bool isDark) {
     final rateTiers = _getRateTiers(_resolvedName);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.border;
+    final textDark = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+    final textMuted = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
     showModalBottomSheet(
       context: context,
@@ -371,7 +372,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
             color: cardBg,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border.all(
-              color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+              color: borderColor,
             ),
           ),
           child: Column(
@@ -419,10 +420,10 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
 
               Container(
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF1E1712) : const Color(0xFFFAF6F0),
+                  color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
                   borderRadius: BorderRadius.circular(14),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF423226) : const Color(0xFFE2E8F0),
+                    color: borderColor,
                   ),
                 ),
                 child: ClipRRect(
@@ -433,7 +434,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                     itemCount: rateTiers.length,
                     separatorBuilder: (context, index) => Divider(
                       height: 1,
-                      color: isDark ? const Color(0xFF423226) : const Color(0xFFE2E8F0),
+                      color: borderColor,
                     ),
                     itemBuilder: (context, index) {
                       final tier = rateTiers[index];
@@ -479,11 +480,15 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 width: double.infinity,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryAccent,
-                    foregroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+                    backgroundColor: isDark ? const Color(0xFF18142A) : AppColors.navyDark,
+                    foregroundColor: Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12),
+                      side: BorderSide(
+                        color: isDark ? AppColors.darkBorder : Colors.transparent,
+                        width: isDark ? 1 : 0,
+                      ),
                     ),
                     elevation: 0,
                   ),
@@ -496,6 +501,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 14,
                       fontWeight: FontWeight.w700,
+                      color: Colors.white,
                     ),
                   ),
                 ),
@@ -511,10 +517,10 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
     showDialog(
       context: context,
       builder: (ctx) {
-        final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-        final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-        final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-        final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+        final cardBg = isDark ? AppColors.darkCard : Colors.white;
+        final textDark = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+        final textMuted = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+        final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
         return AlertDialog(
           backgroundColor: cardBg,
@@ -553,9 +559,10 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   }
 
   void _showAllTermsSheet(BuildContext context, bool isDark) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.border;
+    final textDark = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+    final textMuted = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
 
     showModalBottomSheet(
       context: context,
@@ -568,7 +575,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
             color: cardBg,
             borderRadius: const BorderRadius.vertical(top: Radius.circular(24)),
             border: Border.all(
-              color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+              color: borderColor,
             ),
           ),
           child: Column(
@@ -628,12 +635,12 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
   @override
   Widget build(BuildContext context) {
     final isDark = Theme.of(context).brightness == Brightness.dark;
-    final bgColor = isDark ? AppColors.darkBackground : const Color(0xFFFAF6F0);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
-    final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
-    final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final bgColor = isDark ? AppColors.darkBackground : AppColors.mainBackground;
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : AppColors.border;
+    final textDark = isDark ? AppColors.darkTextPrimary : AppColors.textPrimary;
+    final textMuted = isDark ? AppColors.darkTextSecondary : AppColors.textSecondary;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
     final heroBanners = _getHeroBanners(_resolvedName);
     final coupons = _getCouponsForStore(_resolvedName);
@@ -670,7 +677,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                               width: double.infinity,
                               height: 250,
                               errorBuilder: (context, error, stackTrace) => Container(
-                                color: isDark ? const Color(0xFF2D221A) : const Color(0xFFF3ECE4),
+                                color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
                                 child: Center(
                                   child: Icon(
                                     Icons.image_outlined,
@@ -719,7 +726,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                     color: isDark
-                                        ? const Color(0xFF2C2018).withValues(alpha: 0.92)
+                                        ? AppColors.darkCard.withValues(alpha: 0.92)
                                         : Colors.white.withValues(alpha: 0.92),
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -756,7 +763,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                       content: Text(
                                         'Store link copied to clipboard!',
                                         style: GoogleFonts.plusJakartaSans(
-                                          color: isDark ? const Color(0xFF0F172A) : Colors.white,
+                                          color: Colors.white,
                                           fontWeight: FontWeight.w600,
                                         ),
                                       ),
@@ -771,7 +778,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                   height: 40,
                                   decoration: BoxDecoration(
                                     color: isDark
-                                        ? const Color(0xFF2C2018).withValues(alpha: 0.92)
+                                        ? AppColors.darkCard.withValues(alpha: 0.92)
                                         : Colors.white.withValues(alpha: 0.92),
                                     shape: BoxShape.circle,
                                     border: Border.all(
@@ -980,7 +987,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 cardBg: cardBg,
                                 borderColor: borderColor,
                                 textDark: textDark,
-                                valueColor: primaryAccent,
+                                valueColor: textDark,
                                 onTap: () => _showDetailExplanation(
                                   context,
                                   'Cashback Tracking Time',
@@ -999,7 +1006,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                 cardBg: cardBg,
                                 borderColor: borderColor,
                                 textDark: textDark,
-                                valueColor: primaryAccent,
+                                valueColor: textDark,
                                 onTap: () => _showDetailExplanation(
                                   context,
                                   'Cashback Confirmation Period',
@@ -1024,7 +1031,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                             cardBg: cardBg,
                             borderColor: borderColor,
                             textDark: textDark,
-                            valueColor: primaryAccent,
+                            valueColor: textDark,
                             onTap: () => _showDetailExplanation(
                               context,
                               'App Orders Eligible',
@@ -1107,7 +1114,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                                         decoration: BoxDecoration(
                                           color: isDark
                                               ? AppColors.darkSurface
-                                              : const Color(0xFFF1F5F9),
+                                              : AppColors.surfaceSubtle,
                                           shape: BoxShape.circle,
                                           border: Border.all(
                                             color: borderColor,
@@ -1325,11 +1332,15 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                 height: 52,
                 child: ElevatedButton(
                   style: ElevatedButton.styleFrom(
-                    backgroundColor: primaryAccent,
-                    foregroundColor: isDark ? const Color(0xFF0F172A) : Colors.white,
+                    backgroundColor: isDark ? const Color(0xFF18142A) : AppColors.navyDark,
+                    foregroundColor: Colors.white,
                     elevation: 0,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(14),
+                      side: BorderSide(
+                        color: isDark ? AppColors.darkBorder : Colors.transparent,
+                        width: isDark ? 1 : 0,
+                      ),
                     ),
                   ),
                   onPressed: _handleShopNow,
@@ -1342,10 +1353,11 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                           fontSize: 15.5,
                           fontWeight: FontWeight.w800,
                           letterSpacing: 0.2,
+                          color: Colors.white,
                         ),
                       ),
                       const SizedBox(width: 8),
-                      const Icon(Icons.arrow_forward_rounded, size: 18),
+                      const Icon(Icons.arrow_forward_rounded, size: 18, color: Colors.white),
                     ],
                   ),
                 ),
@@ -1436,7 +1448,7 @@ class _StoreDetailScreenState extends State<StoreDetailScreen> {
                   width: 26,
                   height: 26,
                   decoration: BoxDecoration(
-                    color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
+                    color: isDark ? AppColors.darkSurface : AppColors.surfaceSubtle,
                     shape: BoxShape.circle,
                     border: Border.all(
                       color: borderColor,

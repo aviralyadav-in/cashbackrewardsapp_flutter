@@ -485,7 +485,7 @@ class _AllTimeEarningsCard extends StatelessWidget {
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                    foregroundColor: Colors.white,
+                    foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                     elevation: 2,
                     shadowColor: (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.35),
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 11),
@@ -1224,7 +1224,7 @@ class _NewUserShoppingNudge extends StatelessWidget {
               label: const Text('Explore Stores & Start Shopping'),
               style: ElevatedButton.styleFrom(
                 backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                foregroundColor: Colors.white,
+                foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                 padding: const EdgeInsets.symmetric(vertical: 10),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(10),

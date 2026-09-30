@@ -31,7 +31,7 @@ class HomeWalletCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final textAmount = isDark ? AppColors.darkTextPrimary : const Color(0xFF1E130D);
     final textSubtitle = isDark ? AppColors.darkTextMuted : const Color(0xFF64748B);
-    final walletIconColor = isDark ? const Color(0xFF2563EB) : const Color(0xFF0F172A);
+    final walletIconColor = isDark ? AppColors.darkPrimary : const Color(0xFF0F172A);
 
     return Material(
       color: Colors.transparent,
@@ -47,10 +47,8 @@ class HomeWalletCard extends StatelessWidget {
               end: Alignment.bottomRight,
               colors: isDark
                   ? const [
-                      Color(0xFF132247),
-                      Color(0xFF132247),
-                      Color(0xFF0A1128),
-                      Color(0xFF1B120E),
+                      AppColors.darkCard,
+                      AppColors.darkCardElevated,
                     ]
                   : const [
                       Color(0xFFFFFFFF),
@@ -58,14 +56,14 @@ class HomeWalletCard extends StatelessWidget {
                       Color(0xFFF2E5D2),
                       Color(0xFFFAF4EC),
                     ],
-              stops: const [0.0, 0.35, 0.72, 1.0],
+              stops: isDark ? const [0.0, 1.0] : const [0.0, 0.35, 0.72, 1.0],
             ),
             borderRadius: BorderRadius.circular(20),
             border: Border.all(
               color: isDark
-                  ? const Color(0xFF634A38).withValues(alpha: 0.6)
+                  ? AppColors.darkBorder
                   : const Color(0xFFE2E8F0),
-              width: 1.6,
+              width: 1.2,
             ),
             boxShadow: [
               BoxShadow(
@@ -77,7 +75,7 @@ class HomeWalletCard extends StatelessWidget {
               ),
               BoxShadow(
                 color: isDark
-                    ? const Color(0xFF1E3A8A).withValues(alpha: 0.25)
+                    ? AppColors.darkBorder.withValues(alpha: 0.25)
                     : Colors.white.withValues(alpha: 0.9),
                 blurRadius: 3,
                 offset: const Offset(0, -1),
@@ -99,7 +97,7 @@ class HomeWalletCard extends StatelessWidget {
                       shape: BoxShape.circle,
                       gradient: RadialGradient(
                         colors: [
-                          (isDark ? const Color(0xFF2563EB) : const Color(0xFF2563EB))
+                          (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB))
                               .withValues(alpha: isDark ? 0.16 : 0.12),
                           Colors.transparent,
                         ],
@@ -116,7 +114,7 @@ class HomeWalletCard extends StatelessWidget {
                     decoration: BoxDecoration(
                       shape: BoxShape.circle,
                       border: Border.all(
-                        color: (isDark ? const Color(0xFF2563EB) : const Color(0xFF2563EB))
+                        color: (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB))
                             .withValues(alpha: isDark ? 0.18 : 0.14),
                         width: 1.0,
                       ),
@@ -136,7 +134,7 @@ class HomeWalletCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           gradient: LinearGradient(
                             colors: isDark
-                                ? const [Color(0xFF132247), Color(0xFF0A1128)]
+                                ? const [AppColors.darkSurface, AppColors.darkCard]
                                 : const [Color(0xFFFFFFFF), Color(0xFFF1F5F9)],
                             begin: Alignment.topLeft,
                             end: Alignment.bottomRight,
@@ -144,7 +142,7 @@ class HomeWalletCard extends StatelessWidget {
                           borderRadius: BorderRadius.circular(13),
                           border: Border.all(
                             color: isDark
-                                ? const Color(0xFF6B4B36).withValues(alpha: 0.5)
+                                ? AppColors.darkBorder
                                 : const Color(0xFFE2E8F0),
                             width: 1,
                           ),
@@ -211,7 +209,7 @@ class HomeWalletCard extends StatelessWidget {
                                 fontSize: 11,
                                 fontWeight: FontWeight.w600,
                                 color: isDark
-                                    ? const Color(0xFF81C784)
+                                    ? AppColors.darkSuccess
                                     : const Color(0xFF2E7D32),
                               ),
                             ),
@@ -260,14 +258,14 @@ class HomeWalletCard extends StatelessWidget {
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 12,
                                   fontWeight: FontWeight.w700,
-                                  color: Colors.white,
+                                  color: isDark ? AppColors.darkButtonText : Colors.white,
                                 ),
                               ),
                               const SizedBox(width: 3.5),
-                              const Icon(
+                              Icon(
                                 Icons.arrow_forward_rounded,
                                 size: 12,
-                                color: Colors.white,
+                                color: isDark ? AppColors.darkButtonText : Colors.white,
                               ),
                             ],
                           ),

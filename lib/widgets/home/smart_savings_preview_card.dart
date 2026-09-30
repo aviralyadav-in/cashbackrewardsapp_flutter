@@ -21,8 +21,8 @@ class SmartSavingsPreviewCard extends StatelessWidget {
     if (smartSavings == null) return const SizedBox.shrink();
 
     final item = smartSavings!;
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
@@ -47,11 +47,11 @@ class SmartSavingsPreviewCard extends StatelessWidget {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: isDark ? const Color(0xFF132247) : const Color(0xFFF1F5F9),
+              color: isDark ? AppColors.darkCardElevated : const Color(0xFFF1F5F9),
               borderRadius: const BorderRadius.vertical(top: Radius.circular(17)),
               border: Border(
                 bottom: BorderSide(
-                  color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                  color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                   width: 0.8,
                 ),
               ),
@@ -61,13 +61,13 @@ class SmartSavingsPreviewCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(5),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF1F5F9),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
                     borderRadius: BorderRadius.circular(6),
                   ),
-                  child: const Icon(
+                  child: Icon(
                     Icons.calculate_rounded,
                     size: 18,
-                    color: AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                   ),
                 ),
                 const SizedBox(width: 8),
@@ -126,7 +126,7 @@ class SmartSavingsPreviewCard extends StatelessWidget {
                             style: GoogleFonts.plusJakartaSans(
                               fontSize: 10,
                               fontWeight: FontWeight.w700,
-                              color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                              color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                             ),
                           ),
                           Text(
@@ -157,7 +157,7 @@ class SmartSavingsPreviewCard extends StatelessWidget {
                 Container(
                   padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                    color: isDark ? const Color(0xFF1E1611) : const Color(0xFFF9F6F0),
+                    color: isDark ? AppColors.darkSurface : const Color(0xFFF9F6F0),
                     borderRadius: BorderRadius.circular(10),
                   ),
                   child: Column(
@@ -168,10 +168,10 @@ class SmartSavingsPreviewCard extends StatelessWidget {
                       const SizedBox(height: 4),
                       _buildCalcRow('Coupon Discount', '-₹${item.couponDiscount.toInt()}', const Color(0xFF10B981)),
                       const SizedBox(height: 4),
-                      _buildCalcRow('Cashback Earned', '+₹${item.cashback.toInt()}', isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown),
+                      _buildCalcRow('Cashback Earned', '+₹${item.cashback.toInt()}', isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
                       Divider(
                         height: 14,
-                        color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFE2E8F0),
+                        color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                       ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -207,7 +207,7 @@ class SmartSavingsPreviewCard extends StatelessWidget {
                     onPressed: onSeeSavingsTap,
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-                      foregroundColor: Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),

@@ -110,14 +110,14 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                       style: GoogleFonts.plusJakartaSans(
                         fontSize: 12.5,
                         fontWeight: FontWeight.w700,
-                        color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                        color: isDark ? AppColors.darkPrimary : Colors.black,
                       ),
                     ),
                     const SizedBox(width: 4),
                     Icon(
                       Icons.arrow_forward_ios_rounded,
                       size: 11.0,
-                      color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                      color: isDark ? AppColors.darkPrimary : Colors.black,
                     ),
                   ],
                 ),
@@ -138,7 +138,7 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
             return false;
           },
           child: SizedBox(
-            height: 172,
+            height: 180,
             child: PageView.builder(
               controller: _pageController,
               itemCount: widget.offers.length,
@@ -170,9 +170,9 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                 width: isActive ? 22 : 6,
                 decoration: BoxDecoration(
                   color: isActive
-                      ? AppColors.accentBlue
+                      ? (isDark ? AppColors.darkPrimary : AppColors.accentBlue)
                       : (isDark
-                          ? const Color(0xFF3F3765)
+                          ? AppColors.darkSurface
                           : const Color(0xFFD6DCF8)),
                   borderRadius: BorderRadius.circular(3),
                 ),
@@ -229,8 +229,8 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                       end: Alignment.bottomRight,
                       colors: isDark
                           ? const [
-                              Color(0xFF25203F),
-                              Color(0xFF2D274B),
+                              AppColors.darkCard,
+                              AppColors.darkCardElevated,
                             ]
                           : const [
                               Colors.white,
@@ -246,7 +246,7 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                 top: 0,
                 bottom: 0,
                 right: 0,
-                width: 170,
+                width: 165,
                 child: _buildBannerRightImage(offer, isDark),
               ),
 
@@ -257,18 +257,18 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                     gradient: LinearGradient(
                       begin: Alignment.centerLeft,
                       end: Alignment.centerRight,
-                      stops: const [0.0, 0.52, 0.85, 1.0],
+                      stops: const [0.0, 0.48, 0.80, 1.0],
                       colors: isDark
                           ? [
-                              const Color(0xFF25203F),
-                              const Color(0xFF25203F).withValues(alpha: 0.95),
-                              const Color(0xFF25203F).withValues(alpha: 0.4),
+                              AppColors.darkCard,
+                              AppColors.darkCard.withValues(alpha: 0.96),
+                              AppColors.darkCard.withValues(alpha: 0.35),
                               Colors.transparent,
                             ]
                           : [
                               Colors.white,
-                              Colors.white.withValues(alpha: 0.96),
-                              Colors.white.withValues(alpha: 0.35),
+                              Colors.white.withValues(alpha: 0.97),
+                              Colors.white.withValues(alpha: 0.30),
                               Colors.transparent,
                             ],
                     ),
@@ -284,95 +284,110 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     // A. STORE PILL + URGENCY BADGE
-                    Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        // Store pill with logo + store name
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                          decoration: BoxDecoration(
-                            color: isDark ? const Color(0xFF1E1A33) : const Color(0xFFEFF3FE),
-                            borderRadius: BorderRadius.circular(8),
-                            border: Border.all(
-                              color: isDark ? const Color(0xFF3F3765) : const Color(0xFFD6DCF8),
-                              width: 0.8,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              if (effectiveLogo.isNotEmpty) ...[
-                                Container(
-                                  width: 14,
-                                  height: 14,
-                                  margin: const EdgeInsets.only(right: 5),
-                                  child: ClipRRect(
-                                    borderRadius: BorderRadius.circular(3),
-                                    child: _buildSmallLogo(effectiveLogo, offer.store),
-                                  ),
-                                ),
-                              ],
-                              Text(
-                                offer.store.isNotEmpty ? offer.store : 'Exclusive Store',
-                                style: GoogleFonts.inter(
-                                  fontSize: 11,
-                                  fontWeight: FontWeight.w700,
-                                  color: textDark,
-                                ),
-                              ),
-                              if (offer.category.isNotEmpty) ...[
-                                Text(
-                                  ' • ',
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: textMuted,
-                                  ),
-                                ),
-                                Text(
-                                  offer.category,
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 10,
-                                    fontWeight: FontWeight.w600,
-                                    color: textMuted,
-                                  ),
-                                ),
-                              ],
-                            ],
-                          ),
-                        ),
-
-                        // Validity / Urgency tag if available
-                        if (offer.validity.isNotEmpty) ...[
-                          const SizedBox(width: 6),
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        children: [
+                          // Store pill with logo + store name
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 3),
+                            padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 4.5),
                             decoration: BoxDecoration(
-                              color: const Color(0xFFFEF3C7),
-                              borderRadius: BorderRadius.circular(6),
+                              color: isDark ? AppColors.darkSurface : const Color(0xFFEFF3FE),
+                              borderRadius: BorderRadius.circular(9),
+                              border: Border.all(
+                                color: isDark ? AppColors.darkBorder : const Color(0xFFD6DCF8),
+                                width: 0.8,
+                              ),
                             ),
                             child: Row(
                               mainAxisSize: MainAxisSize.min,
                               children: [
-                                const Icon(
-                                  Icons.bolt_rounded,
-                                  size: 11,
-                                  color: Color(0xFFD97706),
-                                ),
-                                const SizedBox(width: 2),
+                                if (effectiveLogo.isNotEmpty) ...[
+                                  Container(
+                                    width: 22,
+                                    height: 22,
+                                    margin: const EdgeInsets.only(right: 6),
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(5),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: Colors.black.withValues(alpha: 0.08),
+                                          blurRadius: 3,
+                                          offset: const Offset(0, 1),
+                                        ),
+                                      ],
+                                    ),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5),
+                                      child: _buildSmallLogo(effectiveLogo, offer.store),
+                                    ),
+                                  ),
+                                ],
                                 Text(
-                                  offer.validity,
-                                  style: GoogleFonts.plusJakartaSans(
-                                    fontSize: 9.5,
-                                    fontWeight: FontWeight.w800,
-                                    color: const Color(0xFF92400E),
+                                  offer.store.isNotEmpty ? offer.store : 'Exclusive Store',
+                                  style: GoogleFonts.inter(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w700,
+                                    color: textDark,
                                   ),
                                 ),
+                                if (offer.category.isNotEmpty) ...[
+                                  Text(
+                                    ' • ',
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: textMuted,
+                                    ),
+                                  ),
+                                  Text(
+                                    offer.category,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 10,
+                                      fontWeight: FontWeight.w600,
+                                      color: textMuted,
+                                    ),
+                                  ),
+                                ],
                               ],
                             ),
                           ),
+
+                          // Validity / Urgency tag if available
+                          if (offer.validity.isNotEmpty) ...[
+                            const SizedBox(width: 6),
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 4),
+                              decoration: BoxDecoration(
+                                color: const Color(0xFFFEF3C7),
+                                borderRadius: BorderRadius.circular(6),
+                              ),
+                              child: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  const Icon(
+                                    Icons.bolt_rounded,
+                                    size: 12,
+                                    color: Color(0xFFD97706),
+                                  ),
+                                  const SizedBox(width: 2),
+                                  Text(
+                                    offer.validity,
+                                    style: GoogleFonts.plusJakartaSans(
+                                      fontSize: 9.5,
+                                      fontWeight: FontWeight.w800,
+                                      color: const Color(0xFF92400E),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ),
+                          ],
                         ],
-                      ],
+                      ),
                     ),
 
                     // B. CAMPAIGN HEADLINE
@@ -393,93 +408,120 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
                     ),
 
                     // C. OFFER PILLS & CLAIM CTA BUTTON
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
-                        // Discount Badge
-                        if (offer.discount.isNotEmpty) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3.5),
-                            decoration: BoxDecoration(
-                              gradient: const LinearGradient(
-                                colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
-                                begin: Alignment.topLeft,
-                                end: Alignment.bottomRight,
+                    FittedBox(
+                      fit: BoxFit.scaleDown,
+                      alignment: Alignment.centerLeft,
+                      child: Row(
+                        mainAxisSize: MainAxisSize.min,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          // Discount Badge
+                          if (offer.discount.isNotEmpty) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5.5),
+                              decoration: BoxDecoration(
+                                gradient: const LinearGradient(
+                                  colors: [Color(0xFF8B5CF6), Color(0xFF6D28D9)],
+                                  begin: Alignment.topLeft,
+                                  end: Alignment.bottomRight,
+                                ),
+                                borderRadius: BorderRadius.circular(7),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: const Color(0xFF8B5CF6).withValues(alpha: 0.3),
+                                    blurRadius: 5,
+                                    offset: const Offset(0, 1.5),
+                                  ),
+                                ],
                               ),
-                              borderRadius: BorderRadius.circular(6),
+                              child: Text(
+                                offer.discount,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: Colors.white,
+                                ),
+                              ),
+                            ),
+                            const SizedBox(width: 6),
+                          ],
+
+                          // Cashback Pill
+                          if (offer.cashback.isNotEmpty) ...[
+                            Container(
+                              padding: const EdgeInsets.symmetric(horizontal: 9.5, vertical: 5.5),
+                              decoration: BoxDecoration(
+                                color: isDark ? const Color(0xFF143823) : const Color(0xFFECFDF5),
+                                borderRadius: BorderRadius.circular(7),
+                                border: Border.all(
+                                  color: isDark
+                                      ? const Color(0xFF059669).withValues(alpha: 0.5)
+                                      : const Color(0xFFA7F3D0),
+                                  width: 0.9,
+                                ),
+                              ),
+                              child: Text(
+                                offer.cashback,
+                                style: GoogleFonts.plusJakartaSans(
+                                  fontSize: 11.5,
+                                  fontWeight: FontWeight.w800,
+                                  color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
+                                ),
+                              ),
+                            ),
+                          ],
+
+                          const SizedBox(width: 8),
+
+                          // Action Pill CTA
+                          Container(
+                            padding: const EdgeInsets.symmetric(horizontal: 13, vertical: 6.5),
+                            decoration: BoxDecoration(
+                              gradient: isDark
+                                  ? const LinearGradient(
+                                      colors: [Color(0xFFA798FF), Color(0xFF8B77F6)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    )
+                                  : const LinearGradient(
+                                      colors: [Color(0xFF2D274B), Color(0xFF1E1A33)],
+                                      begin: Alignment.topLeft,
+                                      end: Alignment.bottomRight,
+                                    ),
+                              borderRadius: BorderRadius.circular(9),
                               boxShadow: [
                                 BoxShadow(
-                                  color: const Color(0xFF8B5CF6).withValues(alpha: 0.25),
-                                  blurRadius: 4,
-                                  offset: const Offset(0, 1),
+                                  color: isDark
+                                      ? const Color(0xFF8B77F6).withValues(alpha: 0.45)
+                                      : const Color(0xFF1E1A33).withValues(alpha: 0.28),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
                                 ),
                               ],
                             ),
-                            child: Text(
-                              offer.discount,
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                color: Colors.white,
-                              ),
-                            ),
-                          ),
-                          const SizedBox(width: 6),
-                        ],
-
-                        // Cashback Pill
-                        if (offer.cashback.isNotEmpty) ...[
-                          Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3.5),
-                            decoration: BoxDecoration(
-                              color: isDark ? const Color(0xFF143823) : const Color(0xFFECFDF5),
-                              borderRadius: BorderRadius.circular(6),
-                              border: Border.all(
-                                color: isDark ? const Color(0xFF059669).withValues(alpha: 0.4) : const Color(0xFFA7F3D0),
-                                width: 0.8,
-                              ),
-                            ),
-                            child: Text(
-                              offer.cashback,
-                              style: GoogleFonts.plusJakartaSans(
-                                fontSize: 11,
-                                fontWeight: FontWeight.w800,
-                                color: isDark ? const Color(0xFF34D399) : const Color(0xFF047857),
-                              ),
-                            ),
-                          ),
-                        ],
-
-                        const SizedBox(width: 8),
-
-                        // Action Pill CTA
-                        Container(
-                          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
-                          decoration: BoxDecoration(
-                            color: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                          child: Row(
-                            mainAxisSize: MainAxisSize.min,
-                            children: [
-                              Text(
-                                'Shop Now',
-                                style: GoogleFonts.plusJakartaSans(
-                                  fontSize: 10.5,
-                                  fontWeight: FontWeight.w700,
-                                  color: isDark ? const Color(0xFF1E1712) : Colors.white,
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: [
+                                Text(
+                                  'Shop Now',
+                                  style: GoogleFonts.plusJakartaSans(
+                                    fontSize: 11.5,
+                                    fontWeight: FontWeight.w800,
+                                    color: isDark ? AppColors.darkButtonText : Colors.white,
+                                    letterSpacing: 0.2,
+                                  ),
                                 ),
-                              ),
-                              const SizedBox(width: 2),
-                              Icon(
-                                Icons.arrow_forward_rounded,
-                                size: 11,
-                                color: isDark ? const Color(0xFF1E1712) : Colors.white,
-                              ),
-                            ],
+                                const SizedBox(width: 4),
+                                Icon(
+                                  Icons.arrow_forward_rounded,
+                                  size: 13,
+                                  color: isDark ? AppColors.darkButtonText : Colors.white,
+                                ),
+                              ],
+                            ),
                           ),
-                        ),
-                      ],
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -572,9 +614,9 @@ class _HomeOffersSectionState extends State<HomeOffersSection> {
       child: Text(
         name.isNotEmpty ? name[0].toUpperCase() : 'S',
         style: GoogleFonts.plusJakartaSans(
-          fontSize: 9,
+          fontSize: 11,
           fontWeight: FontWeight.w800,
-          color: const Color(0xFF2563EB),
+          color: widget.isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
         ),
       ),
     );

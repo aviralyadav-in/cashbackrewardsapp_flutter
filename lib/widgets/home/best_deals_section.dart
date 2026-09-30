@@ -25,7 +25,7 @@ class BestDealsSection extends StatelessWidget {
 
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
     final displayDeals = deals.take(5).toList();
 
     return Column(
@@ -103,8 +103,8 @@ class BestDealsSection extends StatelessWidget {
     Color textMuted,
     Color primaryAccent,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     // Compute prices & savings
     final effectivePrice = deal.effectivePrice.toInt();
@@ -241,7 +241,7 @@ class BestDealsSection extends StatelessWidget {
                     style: GoogleFonts.plusJakartaSans(
                       fontSize: 9.5,
                       fontWeight: FontWeight.w600,
-                      color: isDark ? const Color(0xFF94A3B8) : const Color(0xFF64748B),
+                      color: isDark ? AppColors.darkTextMuted : const Color(0xFF64748B),
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
@@ -254,12 +254,12 @@ class BestDealsSection extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(vertical: 2.5),
                   decoration: BoxDecoration(
                     color: isDark
-                        ? const Color(0xFF1E3A8A).withValues(alpha: 0.35)
+                        ? AppColors.darkSurface
                         : const Color(0xFFEFF6FF),
                     borderRadius: BorderRadius.circular(5),
                     border: Border.all(
                       color: isDark
-                          ? const Color(0xFF2563EB).withValues(alpha: 0.3)
+                          ? AppColors.darkBorder
                           : const Color(0xFFBFDBFE),
                       width: 0.6,
                     ),
@@ -270,7 +270,7 @@ class BestDealsSection extends StatelessWidget {
                       Icon(
                         Icons.bolt_rounded,
                         size: 13.5,
-                        color: isDark ? const Color(0xFF60A5FA) : const Color(0xFF1D4ED8),
+                        color: isDark ? AppColors.darkPrimary : const Color(0xFF1D4ED8),
                       ),
                       const SizedBox(width: 3),
                       Flexible(
@@ -279,7 +279,7 @@ class BestDealsSection extends StatelessWidget {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 11.5,
                             fontWeight: FontWeight.w800,
-                            color: isDark ? const Color(0xFF93C5FD) : const Color(0xFF1D4ED8),
+                            color: isDark ? AppColors.darkTextSecondary : const Color(0xFF1D4ED8),
                             letterSpacing: -0.1,
                           ),
                           maxLines: 1,
@@ -299,7 +299,7 @@ class BestDealsSection extends StatelessWidget {
                     onPressed: () => onShopNow(deal),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: isDark ? AppColors.darkPrimary : const Color(0xFF1B1B1E),
-                      foregroundColor: isDark ? const Color(0xFF1E1712) : Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       elevation: 0,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
@@ -386,7 +386,7 @@ class BestDealsSection extends StatelessWidget {
       child: Icon(
         Icons.local_mall_outlined,
         size: 26,
-        color: isDark ? const Color(0xFF64748B) : const Color(0xFF94A3B8),
+        color: isDark ? AppColors.darkIconDisabled : const Color(0xFF94A3B8),
       ),
     );
   }

@@ -391,10 +391,10 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF132247) : Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                    color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                     width: 1.2,
                   ),
                   boxShadow: [
@@ -409,7 +409,7 @@ class _AllCategoriesScreenState extends State<AllCategoriesScreen> {
                   children: [
                     Icon(
                       Icons.search_rounded,
-                      color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       size: 22,
                     ),
                     const SizedBox(width: 10),

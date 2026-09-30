@@ -24,7 +24,7 @@ class TrendingDealsSection extends StatelessWidget {
 
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
@@ -100,8 +100,8 @@ class TrendingDealsSection extends StatelessWidget {
     Color textMuted,
     Color primaryAccent,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final effectivePrice = deal.cashbackAmount > 0
         ? (deal.price - deal.cashbackAmount).toInt()
         : deal.price.toInt();
@@ -166,7 +166,7 @@ class TrendingDealsSection extends StatelessWidget {
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF132247) : Colors.white,
+                        color: isDark ? AppColors.darkSurface : Colors.white,
                         borderRadius: BorderRadius.circular(6),
                         boxShadow: [
                           BoxShadow(
@@ -270,7 +270,7 @@ class TrendingDealsSection extends StatelessWidget {
                       Container(
                         padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 1.5),
                         decoration: BoxDecoration(
-                          color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF1F5F9),
+                          color: isDark ? AppColors.darkSurface : const Color(0xFFF1F5F9),
                           borderRadius: BorderRadius.circular(4),
                         ),
                         child: Text(
@@ -278,7 +278,7 @@ class TrendingDealsSection extends StatelessWidget {
                           style: GoogleFonts.plusJakartaSans(
                             fontSize: 8.5,
                             fontWeight: FontWeight.w600,
-                            color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                            color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
@@ -300,7 +300,7 @@ class TrendingDealsSection extends StatelessWidget {
                     onPressed: () => onDealTap(deal),
                     style: ElevatedButton.styleFrom(
                       backgroundColor: primaryAccent,
-                      foregroundColor: Colors.white,
+                      foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(7),
                       ),

@@ -94,18 +94,21 @@ class AppTheme {
       textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
       colorScheme: const ColorScheme.dark(
         primary: AppColors.darkPrimary,
+        onPrimary: AppColors.darkButtonText,
         secondary: AppColors.navyMedium,
+        onSecondary: AppColors.darkButtonText,
         surface: AppColors.darkCard,
         onSurface: AppColors.darkTextPrimary,
-        onPrimary: AppColors.darkBackground,
+        surfaceContainerHighest: AppColors.darkSurface,
+        outline: AppColors.darkBorder,
       ),
       useMaterial3: true,
       iconTheme: const IconThemeData(
-        color: AppColors.darkPrimary,
+        color: AppColors.darkIconNormal,
         size: 24,
       ),
       primaryIconTheme: const IconThemeData(
-        color: AppColors.darkPrimary,
+        color: AppColors.darkIconActive,
         size: 24,
       ),
       appBarTheme: AppBarTheme(
@@ -115,9 +118,32 @@ class AppTheme {
         centerTitle: false,
         titleTextStyle: AppTextStyles.screenHeading(color: AppColors.darkTextPrimary),
         iconTheme: const IconThemeData(
-          color: AppColors.darkTextPrimary,
+          color: AppColors.darkIconNormal,
           size: 24,
         ),
+        actionsIconTheme: const IconThemeData(
+          color: AppColors.darkIconNormal,
+          size: 24,
+        ),
+      ),
+      bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+        backgroundColor: AppColors.darkCard,
+        selectedItemColor: AppColors.darkIconActive,
+        unselectedItemColor: AppColors.darkIconNormal,
+        type: BottomNavigationBarType.fixed,
+        elevation: 8,
+      ),
+      dialogTheme: const DialogThemeData(
+        backgroundColor: AppColors.darkCard,
+        surfaceTintColor: Colors.transparent,
+      ),
+      bottomSheetTheme: const BottomSheetThemeData(
+        backgroundColor: AppColors.darkCard,
+        surfaceTintColor: Colors.transparent,
+      ),
+      dividerTheme: const DividerThemeData(
+        color: AppColors.darkBorder,
+        thickness: 1,
       ),
       cardTheme: CardThemeData(
         color: AppColors.darkCard,
@@ -132,13 +158,13 @@ class AppTheme {
       ),
       elevatedButtonTheme: ElevatedButtonThemeData(
         style: ElevatedButton.styleFrom(
-          backgroundColor: AppColors.accentBlue,
-          foregroundColor: Colors.white,
+          backgroundColor: AppColors.darkPrimary,
+          foregroundColor: AppColors.darkButtonText,
           elevation: 0,
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(AppDimensions.radiusNormal),
           ),
-          textStyle: AppTextStyles.buttonText(color: Colors.white),
+          textStyle: AppTextStyles.buttonText(color: AppColors.darkButtonText),
         ),
       ),
       inputDecorationTheme: InputDecorationTheme(

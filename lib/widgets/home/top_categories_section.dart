@@ -338,12 +338,12 @@ class _CategoryCardItemState extends State<_CategoryCardItem> {
     final isDark = widget.isDark;
 
     // 1. Selected colors: Crisp Ice Blue pod + Electric Royal Blue icon & accents
-    final selectedIconBg = isDark ? const Color(0xFF1E3A8A) : AppColors.iceBlue;
+    final selectedIconBg = isDark ? AppColors.darkSurface : AppColors.iceBlue;
     final selectedIconColor = isDark ? AppColors.darkPrimary : AppColors.accentBlue;
 
     // 2. Unselected colors: Subtle light container + Navy Medium icon
     final unselectedIconBg = isDark ? AppColors.darkCard : AppColors.surfaceSubtle;
-    final unselectedIconColor = isDark ? AppColors.darkTextSecondary : AppColors.navyMedium;
+    final unselectedIconColor = isDark ? AppColors.darkIconNormal : AppColors.navyMedium;
 
     final iconBg = isSelected ? selectedIconBg : unselectedIconBg;
     final iconColor = isSelected ? selectedIconColor : unselectedIconColor;

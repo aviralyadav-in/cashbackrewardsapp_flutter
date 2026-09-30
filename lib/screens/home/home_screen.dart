@@ -149,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                           child: CircleAvatar(
                             radius: 20,
-                            backgroundColor: isDark ? const Color(0xFF1E1A33) : const Color(0xFFF3F6FE),
+                            backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF3F6FE),
                             backgroundImage: avatarImage,
                             onBackgroundImageError: (error, stackTrace) {},
                           ),
@@ -201,7 +201,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icons.close_rounded,
                               size: 14,
                               color: isDark
-                                  ? AppColors.darkTextSecondary
+                                  ? AppColors.darkIconNormal
                                   : AppColors.textSecondary,
                             ),
                           ),
@@ -249,7 +249,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               Icons.chevron_right_rounded,
                               size: 16,
                               color: isDark
-                                  ? AppColors.darkTextSecondary
+                                  ? AppColors.darkIconNormal
                                   : AppColors.textMuted,
                             ),
                           ],
@@ -274,7 +274,7 @@ class _HomeScreenState extends State<HomeScreen> {
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
             decoration: BoxDecoration(
-              color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+              color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
               border: Border(
                 bottom: BorderSide(
                   color: isDark
@@ -324,7 +324,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   icon: Icon(
                     Icons.notifications_outlined,
                     size: 24,
-                    color: isDark ? AppColors.darkTextPrimary : AppColors.primaryBrown,
+                    color: isDark ? AppColors.darkIconNormal : AppColors.primaryBrown,
                   ),
                   onPressed: () {
                     Navigator.of(context).pushNamed(NotificationsScreen.routeName);
@@ -365,7 +365,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         ),
                         child: CircleAvatar(
                           radius: 15,
-                          backgroundColor: isDark ? const Color(0xFF1E1A33) : const Color(0xFFF3F6FE),
+                          backgroundColor: isDark ? AppColors.darkSurface : const Color(0xFFF3F6FE),
                           backgroundImage: headerAvatar,
                           onBackgroundImageError: (error, stackTrace) {},
                         ),
@@ -379,7 +379,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
           // 2. UNIVERSAL SEARCH ENTRY BAR (Prominent, shopping search experience)
           Container(
-            color: isDark ? AppColors.darkCard : AppColors.mainBackground,
+            color: isDark ? AppColors.darkBackground : AppColors.mainBackground,
             padding: const EdgeInsets.fromLTRB(16, 8, 16, 8),
             child: GestureDetector(
               onTap: () {
@@ -389,10 +389,10 @@ class _HomeScreenState extends State<HomeScreen> {
                 height: 48,
                 padding: const EdgeInsets.symmetric(horizontal: 14),
                 decoration: BoxDecoration(
-                  color: isDark ? const Color(0xFF132247) : Colors.white,
+                  color: isDark ? AppColors.darkSurface : Colors.white,
                   borderRadius: BorderRadius.circular(24),
                   border: Border.all(
-                    color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                    color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                     width: 1.2,
                   ),
                   boxShadow: [
@@ -407,7 +407,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     Icon(
                       Icons.search_rounded,
-                      color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                      color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       size: 22,
                     ),
                     const SizedBox(width: 10),
@@ -417,7 +417,7 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 13,
                           fontWeight: FontWeight.w500,
-                          color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                          color: isDark ? AppColors.darkTextMuted : AppColors.textMuted,
                         ),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
@@ -425,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     Icon(
                       Icons.mic_none_rounded,
-                      color: isDark ? AppColors.darkTextSecondary : AppColors.textMuted,
+                      color: isDark ? AppColors.darkIconNormal : AppColors.textMuted,
                       size: 19,
                     ),
                   ],
@@ -782,7 +782,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 child: Icon(
                                   isSelected ? item.activeIcon : item.icon,
                                   size: 23.5,
-                                  color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                                  color: isDark
+                                      ? (isSelected ? AppColors.darkIconActive : AppColors.darkIconNormal)
+                                      : Colors.black,
                                 ),
                               ),
                               const SizedBox(height: 3),
@@ -791,7 +793,9 @@ class _HomeScreenState extends State<HomeScreen> {
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 12.0,
                                   fontWeight: isSelected ? FontWeight.w900 : FontWeight.w800,
-                                  color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                                  color: isDark
+                                      ? (isSelected ? AppColors.darkIconActive : AppColors.darkIconNormal)
+                                      : Colors.black,
                                   letterSpacing: -0.2,
                                 ),
                                 maxLines: 1,
@@ -804,7 +808,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                 width: isSelected ? 4 : 0,
                                 height: isSelected ? 4 : 0,
                                 decoration: BoxDecoration(
-                                  color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                                  color: isDark ? AppColors.darkIconActive : Colors.black,
                                   shape: BoxShape.circle,
                                 ),
                               ),
@@ -848,7 +852,7 @@ class _HomeScreenState extends State<HomeScreen> {
                               ],
                             ),
                             border: Border.all(
-                              color: isDark ? const Color(0xFF2D274B) : Colors.white,
+                              color: isDark ? AppColors.darkCard : Colors.white,
                               width: 3.5,
                             ),
                             boxShadow: [
@@ -877,7 +881,9 @@ class _HomeScreenState extends State<HomeScreen> {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12.0,
                           fontWeight: _selectedIndex == 2 ? FontWeight.w900 : FontWeight.w800,
-                          color: isDark ? AppColors.darkTextPrimary : Colors.black,
+                          color: isDark
+                              ? (_selectedIndex == 2 ? AppColors.darkIconActive : AppColors.darkIconNormal)
+                              : Colors.black,
                           letterSpacing: -0.2,
                         ),
                       ),

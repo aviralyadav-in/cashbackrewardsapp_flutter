@@ -289,13 +289,13 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
     final isDark = Theme.of(context).brightness == Brightness.dark;
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
       appBar: AppBar(
-        backgroundColor: isDark ? AppColors.darkCard : AppColors.mainBackground,
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.mainBackground,
         foregroundColor: textDark,
         elevation: 0,
         leading: IconButton(
@@ -365,7 +365,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                                   fontSize: 11,
                                   fontWeight: FontWeight.w700,
                                   color: isDark
-                                      ? const Color(0xFF2563EB)
+                                      ? AppColors.darkPrimary
                                       : AppColors.primaryBrown,
                                 ),
                               ),
@@ -403,12 +403,12 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: isDark
-                            ? const [Color(0xFF4A3420), Color(0xFF2E1F14)]
+                            ? [AppColors.darkCardElevated, AppColors.darkCard]
                             : const [Color(0xFFFAF1E4), Color(0xFFF5E4D0)],
                       ),
                       borderRadius: BorderRadius.circular(14),
                       border: Border.all(
-                        color: const Color(0xFF2563EB).withValues(alpha: 0.6),
+                        color: isDark ? AppColors.darkPrimary.withValues(alpha: 0.6) : const Color(0xFF2563EB).withValues(alpha: 0.6),
                         width: 1.2,
                       ),
                     ),
@@ -418,14 +418,14 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                           children: [
                             Container(
                               padding: const EdgeInsets.all(8),
-                              decoration: const BoxDecoration(
-                                color: Color(0xFF2563EB),
+                              decoration: BoxDecoration(
+                                color: isDark ? AppColors.darkPrimary : const Color(0xFF2563EB),
                                 shape: BoxShape.circle,
                               ),
-                              child: const Icon(
+                              child: Icon(
                                 Icons.emoji_events_rounded,
                                 size: 20,
-                                color: Colors.white,
+                                color: isDark ? AppColors.darkButtonText : Colors.white,
                               ),
                             ),
                             const SizedBox(width: 12),
@@ -448,7 +448,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                                       fontSize: 11.5,
                                       fontWeight: FontWeight.w600,
                                       color: isDark
-                                          ? const Color(0xFF2563EB)
+                                          ? AppColors.darkPrimary
                                           : const Color(0xFF8C430B),
                                     ),
                                   ),
@@ -545,7 +545,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                 color: cardBg,
                 border: Border(
                   top: BorderSide(
-                    color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                    color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                     width: 0.8,
                   ),
                 ),
@@ -585,7 +585,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
-                        foregroundColor: Colors.white,
+                        foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                         padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 13),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),
@@ -620,10 +620,10 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
     Color textMuted,
     bool isDark,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
     final borderColor = store.isBest
-        ? const Color(0xFF2563EB)
-        : (isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0));
+        ? (isDark ? AppColors.darkPrimary : const Color(0xFF2563EB))
+        : (isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0));
 
     return Container(
       margin: const EdgeInsets.only(bottom: 12),
@@ -660,7 +660,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                 Container(
                   padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 2.5),
                   decoration: BoxDecoration(
-                    color: const Color(0xFF2563EB),
+                    color: isDark ? AppColors.darkPrimary : const Color(0xFF2563EB),
                     borderRadius: BorderRadius.circular(6),
                   ),
                   child: Text(
@@ -689,7 +689,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                       fontSize: 18,
                       fontWeight: FontWeight.w800,
                       color: store.isBest
-                          ? const Color(0xFF10B981)
+                          ? (isDark ? AppColors.darkSuccess : const Color(0xFF10B981))
                           : textDark,
                     ),
                   ),
@@ -700,7 +700,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
           const SizedBox(height: 10),
           Divider(
             height: 1,
-            color: isDark ? const Color(0xFF382A20) : const Color(0xFFEDE4D8),
+            color: isDark ? AppColors.darkBorder : const Color(0xFFEDE4D8),
           ),
           const SizedBox(height: 10),
 
@@ -709,18 +709,18 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
             children: [
               _buildMiniMetric('Pay Now', '₹${store.payNow.toInt()}', textDark),
               const SizedBox(width: 12),
-              _buildMiniMetric('Cashback', '₹${store.cashback.toInt()}', isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown),
+              _buildMiniMetric('Cashback', '₹${store.cashback.toInt()}', isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
               const SizedBox(width: 12),
-              _buildMiniMetric('Effective', '₹${store.effectivePrice.toInt()}', const Color(0xFF10B981)),
+              _buildMiniMetric('Effective', '₹${store.effectivePrice.toInt()}', isDark ? AppColors.darkSuccess : const Color(0xFF10B981)),
               const Spacer(),
               ElevatedButton(
                 onPressed: () => _onShopOnStore(store),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: store.isBest
                       ? (isDark ? AppColors.darkPrimary : AppColors.primaryBrown)
-                      : (isDark ? const Color(0xFF3A2B20) : const Color(0xFFEFE4D6)),
+                      : (isDark ? AppColors.darkSurface : const Color(0xFFEFE4D6)),
                   foregroundColor: store.isBest
-                      ? Colors.white
+                      ? (isDark ? AppColors.darkButtonText : Colors.white)
                       : (isDark ? AppColors.darkTextPrimary : AppColors.deepBrown),
                   padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 7),
                   shape: RoundedRectangleBorder(
@@ -766,10 +766,10 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
       backgroundColor: Colors.transparent,
       isScrollControlled: true,
       builder: (ctx) {
-        final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
+        final cardBg = isDark ? AppColors.darkCard : Colors.white;
         final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
         final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-        final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+        final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
         final payNow = savings.productPrice - savings.storeDiscount - savings.couponDiscount;
 
@@ -819,14 +819,14 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
               const SizedBox(height: 16),
               _buildBreakdownRow('Product Price / MRP', '₹${savings.productPrice.toInt()}', textDark),
               const SizedBox(height: 6),
-              _buildBreakdownRow('Store Discount', '-₹${savings.storeDiscount.toInt()}', const Color(0xFF10B981)),
+              _buildBreakdownRow('Store Discount', '-₹${savings.storeDiscount.toInt()}', isDark ? AppColors.darkSuccess : const Color(0xFF10B981)),
               const SizedBox(height: 6),
-              _buildBreakdownRow('Coupon Discount', '-₹${savings.couponDiscount.toInt()}', const Color(0xFF10B981)),
-              Divider(height: 18, color: isDark ? const Color(0xFF382A20) : const Color(0xFFEDE4D8)),
+              _buildBreakdownRow('Coupon Discount', '-₹${savings.couponDiscount.toInt()}', isDark ? AppColors.darkSuccess : const Color(0xFF10B981)),
+              Divider(height: 18, color: isDark ? AppColors.darkBorder : const Color(0xFFEDE4D8)),
               _buildBreakdownRow('Pay Now at Checkout', '₹${payNow.toInt()}', primaryAccent),
               const SizedBox(height: 6),
-              _buildBreakdownRow('Potential Cashback to Wallet', '+₹${savings.cashback.toInt()}', isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown),
-              Divider(height: 18, color: isDark ? const Color(0xFF382A20) : const Color(0xFFEDE4D8)),
+              _buildBreakdownRow('Potential Cashback to Wallet', '+₹${savings.cashback.toInt()}', isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
+              Divider(height: 18, color: isDark ? AppColors.darkBorder : const Color(0xFFEDE4D8)),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
@@ -880,8 +880,8 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
     Color textMuted,
     bool isDark,
   ) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -894,14 +894,14 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
         children: [
           _buildBreakdownRow('MRP / Base Price', '₹${calc.productPrice.toInt()}', textDark),
           const SizedBox(height: 6),
-          _buildBreakdownRow('Merchant Store Discount', '-₹${calc.storeDiscount.toInt()}', const Color(0xFF10B981)),
+          _buildBreakdownRow('Merchant Store Discount', '-₹${calc.storeDiscount.toInt()}', isDark ? AppColors.darkSuccess : const Color(0xFF10B981)),
           const SizedBox(height: 6),
-          _buildBreakdownRow('Coupon Discount', '-₹${calc.couponDiscount.toInt()}', const Color(0xFF10B981)),
+          _buildBreakdownRow('Coupon Discount', '-₹${calc.couponDiscount.toInt()}', isDark ? AppColors.darkSuccess : const Color(0xFF10B981)),
           const SizedBox(height: 6),
-          _buildBreakdownRow('Real Cashback to KashIQ Wallet', '+₹${calc.cashback.toInt()}', isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown),
+          _buildBreakdownRow('Real Cashback to KashIQ Wallet', '+₹${calc.cashback.toInt()}', isDark ? AppColors.darkPrimary : AppColors.primaryBrown),
           Divider(
             height: 20,
-            color: isDark ? const Color(0xFF382A20) : const Color(0xFFEDE4D8),
+            color: isDark ? AppColors.darkBorder : const Color(0xFFEDE4D8),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -941,7 +941,7 @@ class _ProductComparisonScreenState extends State<ProductComparisonScreen> {
                 style: GoogleFonts.inter(
                   fontSize: 18,
                   fontWeight: FontWeight.w800,
-                  color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                  color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                 ),
               ),
             ],

@@ -186,7 +186,7 @@ class PrivacyPolicyScreen extends StatelessWidget {
                 icon: Icons.verified_user_outlined,
                 title: '9. Your Rights',
                 content:
-                    'You retain full rights to view, edit, or update your registered name, email, and phone number at any time via Account Settings inside the Profile section of the app.',
+                    'You retain full rights to view your profile information and update your registered name and email at any time via Account Settings inside the Profile section of the app. Phone numbers are linked to your account for identity and security purposes and cannot be directly changed.',
                 isDark: isDark,
               ),
 

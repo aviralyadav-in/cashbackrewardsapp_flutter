@@ -201,7 +201,7 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   },
                   style: ElevatedButton.styleFrom(
                     backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                    foregroundColor: Colors.white,
+                    foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                     padding: const EdgeInsets.symmetric(vertical: 14),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -209,7 +209,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                   ),
                   child: Text(
                     'Done',
-                    style: AppTextStyles.buttonText(color: Colors.white).copyWith(fontSize: 15),
+                    style: AppTextStyles.buttonText(
+                      color: isDark ? AppColors.darkButtonText : Colors.white,
+                    ).copyWith(fontSize: 15),
                   ),
                 ),
               ),
@@ -516,9 +518,9 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                 onPressed: _isSubmitting ? null : _handleWithdrawalSubmit,
                 style: ElevatedButton.styleFrom(
                   backgroundColor: isDark ? AppColors.darkPrimary : AppColors.accentBlue,
-                  foregroundColor: Colors.white,
+                  foregroundColor: isDark ? AppColors.darkButtonText : Colors.white,
                   disabledBackgroundColor: (isDark ? AppColors.darkPrimary : AppColors.accentBlue).withValues(alpha: 0.6),
-                  disabledForegroundColor: Colors.white.withValues(alpha: 0.7),
+                  disabledForegroundColor: (isDark ? AppColors.darkButtonText : Colors.white).withValues(alpha: 0.7),
                   padding: const EdgeInsets.symmetric(vertical: 16),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(AppDimensions.radiusCard),
@@ -539,10 +541,16 @@ class _WithdrawScreenState extends State<WithdrawScreen> {
                         children: [
                           Text(
                             'Proceed to Withdraw',
-                            style: AppTextStyles.buttonText(color: Colors.white).copyWith(fontSize: 14),
+                            style: AppTextStyles.buttonText(
+                              color: isDark ? AppColors.darkButtonText : Colors.white,
+                            ).copyWith(fontSize: 14),
                           ),
                           const SizedBox(width: 8),
-                          const Icon(Icons.arrow_forward_rounded, size: 18),
+                          Icon(
+                            Icons.arrow_forward_rounded,
+                            size: 18,
+                            color: isDark ? AppColors.darkButtonText : Colors.white,
+                          ),
                         ],
                       ),
               ),

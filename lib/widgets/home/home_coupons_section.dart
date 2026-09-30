@@ -53,14 +53,14 @@ class HomeCouponsSection extends StatelessWidget {
                         style: GoogleFonts.plusJakartaSans(
                           fontSize: 12.5,
                           fontWeight: FontWeight.w700,
-                          color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                          color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                         ),
                       ),
                       const SizedBox(width: 2),
                       Icon(
                         Icons.chevron_right_rounded,
                         size: 16,
-                        color: isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown,
+                        color: isDark ? AppColors.darkPrimary : AppColors.primaryBrown,
                       ),
                     ],
                   ),
@@ -90,11 +90,11 @@ class HomeCouponsSection extends StatelessWidget {
   }
 
   Widget _buildCouponCard(BuildContext context, HomeCouponModel coupon) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
-    final primaryAccent = isDark ? const Color(0xFF2563EB) : AppColors.primaryBrown;
+    final primaryAccent = isDark ? AppColors.darkPrimary : AppColors.primaryBrown;
 
     final resolvedLogo = coupon.logoUrl.isNotEmpty
         ? coupon.logoUrl
@@ -140,10 +140,10 @@ class HomeCouponsSection extends StatelessWidget {
                       height: 38,
                       padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
-                        color: isDark ? const Color(0xFF132247) : Colors.white,
+                        color: isDark ? AppColors.darkSurface : Colors.white,
                         borderRadius: BorderRadius.circular(10),
                         border: Border.all(
-                          color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                          color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                           width: 1,
                         ),
                       ),
@@ -182,7 +182,7 @@ class HomeCouponsSection extends StatelessWidget {
                               Icon(
                                 Icons.verified_rounded,
                                 size: 11,
-                                color: Colors.green.shade600,
+                                color: isDark ? AppColors.darkSuccess : Colors.green.shade600,
                               ),
                               const SizedBox(width: 3),
                               Text(
@@ -190,7 +190,7 @@ class HomeCouponsSection extends StatelessWidget {
                                 style: GoogleFonts.plusJakartaSans(
                                   fontSize: 10,
                                   fontWeight: FontWeight.w600,
-                                  color: Colors.green.shade700,
+                                  color: isDark ? AppColors.darkSuccess : Colors.green.shade700,
                                 ),
                               ),
                             ],

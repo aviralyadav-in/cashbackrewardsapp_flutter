@@ -26,8 +26,8 @@ class HomeCompactCashbackCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cardBg = isDark ? const Color(0xFF132247) : Colors.white;
-    final borderColor = isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0);
+    final cardBg = isDark ? AppColors.darkCard : Colors.white;
+    final borderColor = isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0);
     final textDark = isDark ? AppColors.darkTextPrimary : const Color(0xFF0F172A);
     final textMuted = isDark ? AppColors.darkTextSecondary : const Color(0xFF64748B);
 
@@ -57,7 +57,7 @@ class HomeCompactCashbackCard extends StatelessWidget {
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
                 colors: isDark
-                    ? const [Color(0xFF1E3A8A), Color(0xFF132247)]
+                    ? const [AppColors.darkSurface, AppColors.darkCard]
                     : const [AppColors.primaryBrown, AppColors.deepBrown],
               ),
               borderRadius: BorderRadius.circular(10),
@@ -103,7 +103,7 @@ class HomeCompactCashbackCard extends StatelessWidget {
           Container(
             height: 28,
             width: 1,
-            color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFE2E8F0),
+            color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
             margin: const EdgeInsets.symmetric(horizontal: 8),
           ),
 
@@ -127,7 +127,7 @@ class HomeCompactCashbackCard extends StatelessWidget {
                   style: GoogleFonts.inter(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
-                    color: isDark ? const Color(0xFF2563EB) : const Color(0xFFB45309),
+                    color: isDark ? AppColors.darkWarning : const Color(0xFFB45309),
                   ),
                 ),
               ],
@@ -141,10 +141,10 @@ class HomeCompactCashbackCard extends StatelessWidget {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
               decoration: BoxDecoration(
-                color: isDark ? const Color(0xFF1C2D5A) : const Color(0xFFF3ECE4),
+                color: isDark ? AppColors.darkSurface : const Color(0xFFF3ECE4),
                 borderRadius: BorderRadius.circular(10),
                 border: Border.all(
-                  color: isDark ? const Color(0xFF1E3A8A) : const Color(0xFFE2E8F0),
+                  color: isDark ? AppColors.darkBorder : const Color(0xFFE2E8F0),
                   width: 0.8,
                 ),
               ),
